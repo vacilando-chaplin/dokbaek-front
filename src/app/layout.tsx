@@ -1,0 +1,31 @@
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import RecoilRootProvider from "./recoilRootProvider";
+
+export const metadata: Metadata = {
+  title: "filogram",
+  description: "배우 프로필 제작 서비스",
+};
+
+export const pretendard = localFont({
+  src: "../../public/fonts/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard"
+});
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ko" className={`${pretendard.variable}`}>
+      <body className={pretendard.className}>
+        <RecoilRootProvider>
+          {children}
+        </RecoilRootProvider>
+        </body>
+    </html>
+  );
+}
