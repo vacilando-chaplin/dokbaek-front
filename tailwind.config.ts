@@ -5,16 +5,16 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))"
       },
-            // toast enter and leave animation
+      // toast enter and leave animation
       animation: {
         enter: "enter 300ms ease-out",
         leave: "leave 300ms ease-in forwards"
@@ -45,12 +45,12 @@ const config: Config = {
       boxShadow: {
         light: "0 4px 16px 0 rgba(0, 0, 0, 0.1)",
         modal: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
-        header: "0 16px 8px 0 rgba(255, 255, 255, 0.5)",
+        header: "0 0 8px 0 rgba(0, 0, 0, 0.1)",
         footer: "0 -16px 8px 0 rgba(255, 255, 255, 0.5)"
       },
       // Pretendard font 추가
       fontFamily: {
-        pretendard: ["var(--font-pretendard)"],
+        pretendard: ["var(--font-pretendard)"]
       },
       // Typography Text Style
       fontSize: {
@@ -289,8 +289,8 @@ const config: Config = {
           dark: "#FACAC7"
         }
       }
-    },
+    }
   },
-  plugins: [],
+  plugins: []
 };
 export default config;

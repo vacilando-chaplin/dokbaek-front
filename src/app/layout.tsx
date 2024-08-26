@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import RecoilRootProvider from "./recoilRootProvider";
+import Nav from "@/components/organisms/nav";
+import "../styles/globals.css";
 
 export const metadata: Metadata = {
   title: "filogram",
-  description: "배우 프로필 제작 서비스",
+  description: "배우 프로필 제작 서비스"
 };
 
 export const pretendard = localFont({
@@ -15,7 +17,7 @@ export const pretendard = localFont({
 });
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -23,9 +25,10 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={pretendard.className}>
         <RecoilRootProvider>
-          {children}
+          <Nav />
+          <main>{children}</main>
         </RecoilRootProvider>
-        </body>
+      </body>
     </html>
   );
 }
