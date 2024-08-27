@@ -1,4 +1,13 @@
-export const steps = ["내 정보", "사진", "필모그래피"];
+export const navList = [
+  { name: "로고", href: "/home" },
+  { name: "로그아웃", href: "/login" }
+];
+
+export const stepList = [
+  { name: "내 정보", id: 0 },
+  { name: "사진", id: 1 },
+  { name: "작품 활동", id: 2 }
+];
 export const educationList = [
   "졸업",
   "졸업 예정",

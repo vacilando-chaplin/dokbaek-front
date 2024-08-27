@@ -1,3 +1,8 @@
+export interface StepperTypes {
+  name: string;
+  id: number;
+}
+
 export interface InputsTypes {
   name: string;
   specialty: string;

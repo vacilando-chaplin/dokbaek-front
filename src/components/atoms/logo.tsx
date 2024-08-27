@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import LogoHorizontal from "../../../public/icons/LogoHorizontal.svg";
 import Link from "next/link";
