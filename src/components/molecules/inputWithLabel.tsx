@@ -3,19 +3,33 @@ import Label from "../atoms/label";
 
 interface InputWithLabelProps {
   name: string;
-  required: boolean;
+  text: string;
+  type: string;
+  required?: boolean;
   placeholder?: string;
+  dropdown?: boolean;
+  parameter?: string;
 }
 
 const InputWithLabel = ({
   name,
+  text,
+  type,
   required,
-  placeholder
+  placeholder,
+  dropdown,
+  parameter
 }: InputWithLabelProps) => {
   return (
     <div className="h-auto w-full">
       <Label name={name} required={required} />
-      <Input text="" placeholder={placeholder} />
+      <Input
+        text={text}
+        type={type}
+        placeholder={placeholder}
+        dropdown={dropdown}
+        parameter={parameter}
+      />
     </div>
   );
 };

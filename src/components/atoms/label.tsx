@@ -1,6 +1,6 @@
 interface LabelProps {
   name: string;
-  required: boolean;
+  required?: boolean;
 }
 
 const Label = ({ name, required }: LabelProps) => {

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import RecoilRootProvider from "./recoilRootProvider";
-import Nav from "@/components/organisms/nav";
 import "../styles/globals.css";
+import TopBar from "@/components/organisms/topBar";
 
 export const metadata: Metadata = {
   title: "filogram",
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={pretendard.className}>
         <RecoilRootProvider>
-          <Nav />
+          <TopBar />
           <main>{children}</main>
         </RecoilRootProvider>
       </body>
