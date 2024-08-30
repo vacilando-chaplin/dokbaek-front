@@ -60,13 +60,13 @@ const InfoMain = () => {
               type="link"
               text=""
               placeholder="인스타그램 링크를 입력해주세요."
-              icon="/icons/Instagram.svg"
+              icon="instagram"
             />
             <Input
               type="link"
               text=""
               placeholder="유튜브 채널 링크를 입력해주세요."
-              icon="/icons/Youtube.svg"
+              icon="youtube"
             />
           </div>
         </div>
