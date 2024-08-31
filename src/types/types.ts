@@ -3,11 +3,25 @@ export interface StepperTypes {
   id: number;
 }
 
-export interface InputsTypes {
+export interface infoInputsTypes {
   name: string;
+  birth: string;
+  height: string;
+  weight: string;
+  contact: string;
+  email: string;
   specialty: string;
-  link: string;
+  instagram: string;
+  youtube: string;
+  school: string;
   major: string;
+  education: string;
+}
+
+export interface infoActivesTypes {
+  birth: boolean;
+  school: boolean;
+  education: boolean;
 }
 
 export interface ParameterTypes {

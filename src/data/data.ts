@@ -8,6 +8,28 @@ export const stepList = [
   { name: "사진", id: 1 },
   { name: "작품 활동", id: 2 }
 ];
+
+export const infoInputList = {
+  name: "",
+  birth: "",
+  height: "",
+  weight: "",
+  contact: "",
+  email: "",
+  specialty: "",
+  instagram: "",
+  youtube: "",
+  school: "",
+  major: "",
+  education: "졸업"
+};
+
+export const infoActiveList = {
+  birth: false,
+  school: false,
+  education: false
+};
+
 export const educationList = [
   "졸업",
   "졸업 예정",

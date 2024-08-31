@@ -2,33 +2,48 @@ import Input from "../atoms/input";
 import Label from "../atoms/label";
 
 interface InputWithLabelProps {
-  name: string;
-  text: string;
+  label: string;
   type: string;
   required?: boolean;
   placeholder?: string;
   dropdown?: boolean;
   parameter?: string;
+  maxLength: number;
+  name: string;
+  value: string;
+  active?: boolean;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onActive?: (name: string, state: boolean) => void;
 }
 
 const InputWithLabel = ({
-  name,
-  text,
+  label,
   type,
   required,
   placeholder,
   dropdown,
-  parameter
+  parameter,
+  maxLength,
+  name,
+  value,
+  active,
+  onChange,
+  onActive
 }: InputWithLabelProps) => {
   return (
     <div className="h-auto w-full">
-      <Label name={name} required={required} />
+      <Label label={label} required={required} />
       <Input
-        text={text}
         type={type}
         placeholder={placeholder}
         dropdown={dropdown}
         parameter={parameter}
+        maxLength={maxLength}
+        name={name}
+        value={value}
+        active={active}
+        onChange={onChange}
+        onActive={onActive}
       />
     </div>
   );

@@ -43,7 +43,7 @@ const config: Config = {
       },
       // shadow
       boxShadow: {
-        light: "0 4px 16px 0 rgba(0, 0, 0, 0.1)",
+        low: "0 4px 16px 0 rgba(0, 0, 0, 0.1)",
         modal: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
         header: "0 0 8px 0 rgba(0, 0, 0, 0.1)",
         footer: "0 4px 16px 0 rgba(0, 0, 0, 0.1)"
