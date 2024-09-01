@@ -59,6 +59,19 @@ const Profile = () => {
     getSearchSchool(debounceSearch);
   }, [debounceSearch]);
 
+  // photo
+
+  const [photoList, setPhotoList] = useState<string[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const onAddPhoto = (photo: string) => {
+    setPhotoList([...photoList, photo]);
+  };
+
+  const onModalOpen = () => {
+    setModalOpen(!modalOpen);
+  };
+
   return (
     <div className="mb-16 mt-16 flex flex-row gap-4 p-10">
       <SideMenu stepper={stepper} setStepper={setStepper} />
@@ -86,7 +99,12 @@ const Profile = () => {
         )}
         {stepper === 1 && (
           <>
-            <PhotoMain />
+            <PhotoMain
+              photoList={photoList}
+              modalOpen={modalOpen}
+              onAddPhoto={onAddPhoto}
+              onModalOpen={onModalOpen}
+            />
           </>
         )}
       </div>

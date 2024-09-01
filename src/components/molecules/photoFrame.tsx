@@ -1,8 +1,13 @@
-const PhotoFrame = () => {
+interface PhotoFrameProps {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+const PhotoFrame = ({ onClick }: PhotoFrameProps) => {
   return (
     <button
       type="button"
       className="flex h-[204px] w-40 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-disabled-light bg-gray-50 text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light"
+      onClick={onClick}
     >
       <svg
         width="16"
