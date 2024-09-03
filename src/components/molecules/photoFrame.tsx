@@ -1,14 +1,22 @@
 interface PhotoFrameProps {
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  style: string;
+  onClick: React.MouseEventHandler<HTMLInputElement>;
+  onChange: any;
 }
 
-const PhotoFrame = ({ onClick }: PhotoFrameProps) => {
+const PhotoFrame = ({ style, onClick, onChange }: PhotoFrameProps) => {
   return (
-    <button
-      type="button"
-      className="flex h-[204px] w-40 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-disabled-light bg-gray-50 text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light"
-      onClick={onClick}
+    <label
+      className={`flex ${style} cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-disabled-light bg-gray-50 text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light`}
     >
+      <input
+        id="upload"
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onClick={onClick}
+        onChange={onChange}
+      />
       <svg
         width="16"
         height="16"
@@ -24,7 +32,7 @@ const PhotoFrame = ({ onClick }: PhotoFrameProps) => {
         />
       </svg>
       추가
-    </button>
+    </label>
   );
 };
 

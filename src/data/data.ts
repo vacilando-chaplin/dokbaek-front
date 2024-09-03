@@ -30,6 +30,25 @@ export const infoActiveList = {
   education: false
 };
 
+export const filmographyInputList = {
+  classification: "",
+  production: "",
+  title: "",
+  cast: "",
+  casting: "",
+  description: "",
+  link: "",
+  thumbnail: "",
+  representive: false,
+  id: ""
+};
+
+export const filmographyActiveList = {
+  classification: false,
+  production: false,
+  cast: false
+};
+
 export const educationList = [
   "졸업",
   "졸업 예정",
@@ -64,65 +83,7 @@ export const castList = [
   "찬조출연"
 ];
 
-export const photoSize = {
-  main: {
-    width: 352,
-    height: 373
-  },
-  sub1: {
-    width: 352,
-    height: 427
-  },
-  sub2: {
-    width: 352,
-    height: 213
-  },
-  sub3: {
-    width: 172,
-    height: 209
-  },
-  sub4: {
-    width: 112,
-    height: 205
-  },
-  sub5: {
-    width: 232,
-    height: 222
-  },
-  sub6: {
-    width: 112,
-    height: 222
-  },
-  sub7: {
-    width: 112,
-    height: 110
-  }
-};
-
 export const year = new Date().getFullYear();
 export const yearList = Array.from(new Array(70), (v, index) =>
   (year - index).toString()
 );
-
-export const initInfo = {
-  name: "",
-  birth: "",
-  height: "",
-  weight: "",
-  specialty: "",
-  contact: "",
-  link: "",
-  school: "",
-  major: "",
-  education: "",
-
-  selectLayout: "",
-  mainImage: "",
-  subImage1: "",
-  subImage2: "",
-  subImage3: "",
-  subImage4: "",
-  subImage5: "",
-
-  filmography: []
-};

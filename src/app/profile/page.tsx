@@ -2,14 +2,23 @@
 
 import { getSchoolName } from "@/api/api";
 import SideMenu from "@/components/molecules/sideMenu";
+import FilmographyMain from "@/components/organisms/filmographyMain";
+import FilmographyModal from "@/components/organisms/filmographyModal";
 import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import PhotoMain from "@/components/organisms/photoMain";
-import { infoActiveList, infoInputList } from "@/data/data";
+import PhotoModal from "@/components/organisms/photoModal";
+import {
+  filmographyActiveList,
+  filmographyInputList,
+  infoActiveList,
+  infoInputList
+} from "@/data/data";
 import { useDebounce } from "@/hooks/hooks";
 import { SchoolTypes } from "@/types/types";
-import { contactFormat, setOnlyNumber } from "@/utils/utils";
-import { useEffect, useState } from "react";
+import { contactFormat, setCanvasPreview, setOnlyNumber } from "@/utils/utils";
+import { useEffect, useRef, useState } from "react";
+import { convertToPixelCrop } from "react-image-crop";
 
 const Profile = () => {
   const [stepper, setStepper] = useState(0);
@@ -54,7 +63,6 @@ const Profile = () => {
         (school: SchoolTypes) => school.schoolName
       );
       setSchoolList(filteredSchoolName);
-      console.log(filteredSchoolName);
     };
     getSearchSchool(debounceSearch);
   }, [debounceSearch]);
@@ -62,14 +70,81 @@ const Profile = () => {
   // photo
 
   const [photoList, setPhotoList] = useState<string[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [photoModalActive, setPhotoModalActive] = useState(false);
+  const [selectImage, setSelectImage] = useState("");
 
-  const onAddPhoto = (photo: string) => {
-    setPhotoList([...photoList, photo]);
+  // 크롭 할 이미지
+  const imgRef = useRef<any>(null);
+
+  // 크롭 할 이미지 미리보기
+  const previewCanvasRef = useRef<any>(null);
+
+  // 크롭 동작 수행
+  const [crop, setCrop] = useState<any>();
+
+  const onAddPhoto = () => {
+    setCanvasPreview(
+      imgRef.current,
+      previewCanvasRef.current,
+      convertToPixelCrop(crop, imgRef.current?.width, imgRef.current?.height)
+    );
+    const dataUrl = previewCanvasRef.current?.toDataURL();
+
+    if (dataUrl) {
+      setPhotoList([...photoList, dataUrl]);
+    }
+    setPhotoModalActive(!photoModalActive);
+    setSelectImage("");
   };
 
-  const onModalOpen = () => {
-    setModalOpen(!modalOpen);
+  const onPhotoModalActive = () => {
+    setPhotoModalActive(!photoModalActive);
+    setSelectImage("");
+  };
+
+  // 모달에 크롭 할 이미지 선택
+  const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setCrop(undefined);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const imageElement = new Image();
+        const imageUrl = reader.result?.toString() || "";
+        imageElement.src = imageUrl;
+
+        setSelectImage(imageUrl);
+      });
+
+      reader.readAsDataURL(e.target.files[0]);
+      e.currentTarget.value = "";
+    }
+  };
+
+  // filmography
+
+  const [filmoModalActive, setFilmoModalActive] = useState(false);
+  const [filmoList, setFilmoList] = useState(filmographyInputList);
+  const [filmoInputs, setFilmoInputs] = useState(filmographyInputList);
+  const [filmoActives, setFilmoActives] = useState(filmographyActiveList);
+
+  const onFilmoModalActive = () => {
+    setFilmoModalActive(!filmoModalActive);
+  };
+
+  const onFilmoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilmoInputs({
+      ...filmoInputs,
+      [name]: value
+    });
+  };
+
+  const onFilmoActiveClick = (name: string, state: boolean) => {
+    setFilmoActives({ ...filmoActives, [name]: !state });
+  };
+
+  const onFilmoDropdownClick = (name: string, item: string) => {
+    setFilmoInputs({ ...filmoInputs, [name]: item });
   };
 
   return (
@@ -101,10 +176,35 @@ const Profile = () => {
           <>
             <PhotoMain
               photoList={photoList}
-              modalOpen={modalOpen}
-              onAddPhoto={onAddPhoto}
-              onModalOpen={onModalOpen}
+              onSelectFile={onSelectFile}
+              onPhotoModalActive={onPhotoModalActive}
             />
+            {photoModalActive && (
+              <PhotoModal
+                selectImage={selectImage}
+                imgRef={imgRef}
+                previewCanvasRef={previewCanvasRef}
+                crop={crop}
+                setCrop={setCrop}
+                onModalActive={onPhotoModalActive}
+                onAddPhoto={onAddPhoto}
+              />
+            )}
+          </>
+        )}
+        {stepper === 2 && (
+          <>
+            <FilmographyMain onFilmoModalActive={onFilmoModalActive} />
+            {filmoModalActive && (
+              <FilmographyModal
+                filmoInputs={filmoInputs}
+                filmoActives={filmoActives}
+                onFilmoModalActive={onFilmoModalActive}
+                onFilmoInputChange={onFilmoInputChange}
+                onFilmoActiveClick={onFilmoActiveClick}
+                onFilmoDropdownClick={onFilmoDropdownClick}
+              />
+            )}
           </>
         )}
       </div>

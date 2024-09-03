@@ -1,24 +1,40 @@
+import Image from "next/image";
 import Title from "../atoms/title";
 import PhotoFrame from "../molecules/photoFrame";
 
 interface PhotoMainProps {
   photoList: string[];
-  modalOpen: boolean;
-  onAddPhoto: any;
-  onModalOpen: React.MouseEventHandler<HTMLButtonElement>;
+  onSelectFile: any;
+  onPhotoModalActive: React.MouseEventHandler<HTMLInputElement>;
 }
 
 const PhotoMain = ({
   photoList,
-  modalOpen,
-  onAddPhoto,
-  onModalOpen
+  onSelectFile,
+  onPhotoModalActive
 }: PhotoMainProps) => {
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
       <Title name="사진" />
-      <div className="flex h-auto w-full gap-2">
-        <PhotoFrame onClick={onModalOpen} />
+      <div className="flex h-auto w-full flex-wrap gap-2">
+        <PhotoFrame
+          style="w-[160px] h-[204px]"
+          onClick={onPhotoModalActive}
+          onChange={onSelectFile}
+        />
+        {photoList &&
+          photoList.map((photo: string, index: number) => {
+            return (
+              <Image
+                src={photo}
+                alt={`photo${+index + 1}`}
+                width={160}
+                height={204}
+                priority
+                className="max-h-[204px] rounded-lg bg-gray-100"
+              />
+            );
+          })}
       </div>
     </section>
   );
