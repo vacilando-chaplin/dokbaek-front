@@ -8,9 +8,11 @@ interface InputWithLabelProps {
   placeholder?: string;
   dropdown?: boolean;
   parameter?: string;
+  icon?: string;
   maxLength: number;
   name: string;
   value: string;
+  readOnly?: boolean;
   active?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onActive?: (name: string, state: boolean) => void;
@@ -23,9 +25,11 @@ const InputWithLabel = ({
   placeholder,
   dropdown,
   parameter,
+  icon,
   maxLength,
   name,
   value,
+  readOnly,
   active,
   onChange,
   onActive
@@ -38,9 +42,11 @@ const InputWithLabel = ({
         placeholder={placeholder}
         dropdown={dropdown}
         parameter={parameter}
+        icon={icon}
         maxLength={maxLength}
         name={name}
         value={value}
+        readOnly={readOnly}
         active={active}
         onChange={onChange}
         onActive={onActive}

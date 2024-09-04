@@ -15,7 +15,7 @@ import {
   infoInputList
 } from "@/data/data";
 import { useDebounce } from "@/hooks/hooks";
-import { SchoolTypes } from "@/types/types";
+import { filmoInputsTypes, SchoolTypes } from "@/types/types";
 import { contactFormat, setCanvasPreview, setOnlyNumber } from "@/utils/utils";
 import { useEffect, useRef, useState } from "react";
 import { convertToPixelCrop } from "react-image-crop";
@@ -123,12 +123,13 @@ const Profile = () => {
   // filmography
 
   const [filmoModalActive, setFilmoModalActive] = useState(false);
-  const [filmoList, setFilmoList] = useState(filmographyInputList);
+  const [filmoList, setFilmoList] = useState<filmoInputsTypes[]>([]);
   const [filmoInputs, setFilmoInputs] = useState(filmographyInputList);
   const [filmoActives, setFilmoActives] = useState(filmographyActiveList);
 
   const onFilmoModalActive = () => {
     setFilmoModalActive(!filmoModalActive);
+    setFilmoInputs(filmographyInputList);
   };
 
   const onFilmoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,6 +146,28 @@ const Profile = () => {
 
   const onFilmoDropdownClick = (name: string, item: string) => {
     setFilmoInputs({ ...filmoInputs, [name]: item });
+  };
+
+  const onSelectThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const imageElement = new Image();
+        const imageUrl = reader.result?.toString() || "";
+        imageElement.src = imageUrl;
+
+        setFilmoInputs({ ...filmoInputs, thumbnail: imageUrl });
+      });
+
+      reader.readAsDataURL(e.target.files[0]);
+      e.currentTarget.value = "";
+    }
+  };
+
+  const onFilmoSaveClick = () => {
+    setFilmoList([...filmoList, filmoInputs]);
+    setFilmoInputs(filmographyInputList);
+    setFilmoModalActive(!filmoModalActive);
   };
 
   return (
@@ -203,6 +226,8 @@ const Profile = () => {
                 onFilmoInputChange={onFilmoInputChange}
                 onFilmoActiveClick={onFilmoActiveClick}
                 onFilmoDropdownClick={onFilmoDropdownClick}
+                onSelectThumbnail={onSelectThumbnail}
+                onFilmoSaveClick={onFilmoSaveClick}
               />
             )}
           </>

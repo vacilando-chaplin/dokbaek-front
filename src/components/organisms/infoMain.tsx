@@ -67,7 +67,7 @@ const InfoMain = ({
               onActive={onActiveClick}
             />
             {infoActives.birth && (
-              <div className="absolute top-[72px] w-full">
+              <div className="absolute top-[72px] z-40 w-full">
                 <Dropdown
                   name="birth"
                   content={yearList}
@@ -139,7 +139,7 @@ const InfoMain = ({
               type="link"
               placeholder="인스타그램 링크를 입력해주세요."
               icon="instagram"
-              maxLength={100}
+              maxLength={300}
               name="instagram"
               value={instagram}
               onChange={onInputChange}
@@ -148,7 +148,7 @@ const InfoMain = ({
               type="link"
               placeholder="유튜브 채널 링크를 입력해주세요."
               icon="youtube"
-              maxLength={100}
+              maxLength={300}
               name="youtube"
               value={youtube}
               onChange={onInputChange}

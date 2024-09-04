@@ -3,6 +3,10 @@ import InputWithLabel from "../molecules/inputWithLabel";
 import Dropdown from "../molecules/dropdown";
 import { castList, classificationList, yearList } from "@/data/data";
 import Label from "../atoms/label";
+import Input from "../atoms/input";
+import HelperText from "../atoms/helperText";
+import PhotoFrame from "../molecules/photoFrame";
+import Image from "next/image";
 
 interface FilmographySubProps {
   filmoInputs: filmoInputsTypes;
@@ -10,6 +14,7 @@ interface FilmographySubProps {
   onFilmoInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoActiveClick: (name: string, state: boolean) => void;
   onFilmoDropdownClick: (name: string, item: string) => void;
+  onSelectThumbnail: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FilmographySub = ({
@@ -17,7 +22,8 @@ const FilmographySub = ({
   filmoActives,
   onFilmoInputChange,
   onFilmoActiveClick,
-  onFilmoDropdownClick
+  onFilmoDropdownClick,
+  onSelectThumbnail
 }: FilmographySubProps) => {
   const {
     classification,
@@ -44,11 +50,12 @@ const FilmographySub = ({
               maxLength={10}
               name="classification"
               value={classification}
+              readOnly={true}
               active={filmoActives.classification}
               onActive={onFilmoActiveClick}
             />
             {filmoActives.classification && (
-              <div className="absolute top-[72px] w-full">
+              <div className="absolute top-[72px] z-40 w-full">
                 <Dropdown
                   name="classification"
                   content={classificationList}
@@ -74,7 +81,7 @@ const FilmographySub = ({
               onActive={onFilmoActiveClick}
             />
             {filmoActives.production && (
-              <div className="absolute top-[72px] w-full">
+              <div className="absolute top-[72px] z-40 w-full">
                 <Dropdown
                   name="production"
                   content={yearList}
@@ -113,7 +120,7 @@ const FilmographySub = ({
               onActive={onFilmoActiveClick}
             />
             {filmoActives.cast && (
-              <div className="absolute top-[72px] w-full">
+              <div className="absolute top-[72px] z-40 w-full">
                 <Dropdown
                   name="cast"
                   content={castList}
@@ -134,8 +141,48 @@ const FilmographySub = ({
             onChange={onFilmoInputChange}
           />
         </div>
-        <div className="flex h-auto w-full flex-row gap-4">
+        <div className="flex h-auto w-full flex-col">
           <Label label="부가 설명 (수상 등)" />
+          <div className="flex flex-col gap-1">
+            <Input
+              type="text"
+              maxLength={20}
+              name="description"
+              value={description}
+              limit={true}
+              onChange={onFilmoInputChange}
+            />
+            <HelperText text="20자 이내로 작성해주세요." />
+          </div>
+        </div>
+        <div className="flex h-auto w-full flex-row gap-4">
+          <InputWithLabel
+            label="영상 링크"
+            type="text"
+            maxLength={300}
+            name="link"
+            value={link}
+            icon="youtube"
+            onChange={onFilmoInputChange}
+          />
+        </div>
+        <div className="flex h-auto w-full flex-col">
+          <Label label="썸네일 이미지" />
+          {thumbnail ? (
+            <Image
+              src={thumbnail}
+              alt="thumbnail"
+              width={100}
+              height={150}
+              priority
+              className="h-[150px] w-[100px] rounded-lg bg-gray-100"
+            />
+          ) : (
+            <PhotoFrame
+              style="w-[100px] h-[150px]"
+              onChange={onSelectThumbnail}
+            />
+          )}
         </div>
       </div>
     </div>

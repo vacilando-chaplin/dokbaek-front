@@ -79,11 +79,12 @@ const InfoSub = ({
                 maxLength={10}
                 name="education"
                 value={education}
+                readOnly={true}
                 active={infoActives.education}
                 onActive={onActiveClick}
               />
               {infoActives.education && (
-                <div className="absolute top-12 w-full">
+                <div className="absolute top-12 z-40 w-full">
                   <Dropdown
                     name="education"
                     content={educationList}

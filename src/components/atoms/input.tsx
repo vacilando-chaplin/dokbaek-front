@@ -7,7 +7,9 @@ interface InputProps {
   maxLength: number;
   name: string;
   value: string;
+  readOnly?: boolean;
   active?: boolean;
+  limit?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onActive?: any;
 }
@@ -21,7 +23,9 @@ const Input = ({
   maxLength,
   name,
   value,
+  readOnly,
   active,
+  limit,
   onChange,
   onActive
 }: InputProps) => {
@@ -65,6 +69,7 @@ const Input = ({
         autoComplete="off"
         name={name}
         value={value}
+        readOnly={readOnly}
         onChange={onChange}
       />
       {dropdown && (
@@ -89,6 +94,11 @@ const Input = ({
       )}
       {parameter && (
         <label className="text-content-secondary-light">{parameter}</label>
+      )}
+      {limit && (
+        <label className="text-[12px] text-[#787887]">
+          {value.length}/{maxLength}
+        </label>
       )}
     </div>
   );

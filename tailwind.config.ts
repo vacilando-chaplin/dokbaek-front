@@ -195,7 +195,7 @@ const config: Config = {
       },
       border: {
         default: {
-          light: "#CED4DA",
+          light: "#DEE2E6",
           dark: "#5E656C"
         },
         active: {
@@ -203,7 +203,7 @@ const config: Config = {
           dark: "#E9ECEF"
         },
         disabled: {
-          light: "#DEE2E6",
+          light: "#E9ECEF",
           dark: "#495057"
         },
         default_inverse: {

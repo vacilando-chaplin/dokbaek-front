@@ -4,7 +4,7 @@ import PhotoFrame from "../molecules/photoFrame";
 
 interface PhotoMainProps {
   photoList: string[];
-  onSelectFile: any;
+  onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPhotoModalActive: React.MouseEventHandler<HTMLInputElement>;
 }
 
@@ -31,7 +31,7 @@ const PhotoMain = ({
                 width={160}
                 height={204}
                 priority
-                className="max-h-[204px] rounded-lg bg-gray-100"
+                className="h-[204px] w-[160px] rounded-lg bg-gray-100"
               />
             );
           })}
