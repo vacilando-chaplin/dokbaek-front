@@ -9,10 +9,10 @@ import InfoSub from "@/components/organisms/infoSub";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
 import {
-  filmographyActiveList,
-  filmographyInputList,
-  infoActiveList,
-  infoInputList
+  filmographyActiveInit,
+  filmographyInputInit,
+  infoActiveInit,
+  infoInputInit
 } from "@/data/data";
 import { useDebounce } from "@/hooks/hooks";
 import { filmoInputsTypes, SchoolTypes } from "@/types/types";
@@ -22,8 +22,8 @@ import { convertToPixelCrop } from "react-image-crop";
 
 const Profile = () => {
   const [stepper, setStepper] = useState(0);
-  const [infoInputs, setInfoInputs] = useState(infoInputList);
-  const [infoActives, setInfoActives] = useState(infoActiveList);
+  const [infoInputs, setInfoInputs] = useState(infoInputInit);
+  const [infoActives, setInfoActives] = useState(infoActiveInit);
   const [schoolList, setSchoolList] = useState([]);
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,12 +124,13 @@ const Profile = () => {
 
   const [filmoModalActive, setFilmoModalActive] = useState(false);
   const [filmoList, setFilmoList] = useState<filmoInputsTypes[]>([]);
-  const [filmoInputs, setFilmoInputs] = useState(filmographyInputList);
-  const [filmoActives, setFilmoActives] = useState(filmographyActiveList);
+  const [filmoInputs, setFilmoInputs] = useState(filmographyInputInit);
+  const [filmoActives, setFilmoActives] = useState(filmographyActiveInit);
+  const [filmoId, setFilmoId] = useState(0);
 
   const onFilmoModalActive = () => {
     setFilmoModalActive(!filmoModalActive);
-    setFilmoInputs(filmographyInputList);
+    setFilmoInputs(filmographyInputInit);
   };
 
   const onFilmoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,11 +166,21 @@ const Profile = () => {
   };
 
   const onFilmoSaveClick = () => {
+    setFilmoId(filmoId + 1);
+    setFilmoInputs({ ...filmoInputs, id: filmoId });
     setFilmoList([...filmoList, filmoInputs]);
-    setFilmoInputs(filmographyInputList);
+    setFilmoInputs(filmographyInputInit);
     setFilmoModalActive(!filmoModalActive);
   };
 
+  const onFilmoDeleteClick = (id: number) => {
+    const filteredFilmo = filmoList.filter(
+      (filmo: filmoInputsTypes) => filmo.id !== id
+    );
+    setFilmoList(filteredFilmo);
+  };
+  console.log(filmoId);
+  console.log(filmoList);
   return (
     <div className="mb-16 mt-16 flex flex-row gap-4 p-10">
       <SideMenu stepper={stepper} setStepper={setStepper} />
@@ -217,7 +228,11 @@ const Profile = () => {
         )}
         {stepper === 2 && (
           <>
-            <FilmographyMain onFilmoModalActive={onFilmoModalActive} />
+            <FilmographyMain
+              filmoList={filmoList}
+              onFilmoModalActive={onFilmoModalActive}
+              onFilmoDeleteClick={() => onFilmoDeleteClick}
+            />
             {filmoModalActive && (
               <FilmographyModal
                 filmoInputs={filmoInputs}

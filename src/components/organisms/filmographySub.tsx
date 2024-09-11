@@ -158,7 +158,7 @@ const FilmographySub = ({
         <div className="flex h-auto w-full flex-row gap-4">
           <InputWithLabel
             label="영상 링크"
-            type="text"
+            type="link"
             maxLength={300}
             name="link"
             value={link}

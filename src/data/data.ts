@@ -9,7 +9,7 @@ export const stepList = [
   { name: "작품 활동", id: 2 }
 ];
 
-export const infoInputList = {
+export const infoInputInit = {
   name: "",
   birth: "",
   height: "",
@@ -24,13 +24,13 @@ export const infoInputList = {
   education: "졸업"
 };
 
-export const infoActiveList = {
+export const infoActiveInit = {
   birth: false,
   school: false,
   education: false
 };
 
-export const filmographyInputList = {
+export const filmographyInputInit = {
   classification: "",
   production: "",
   title: "",
@@ -40,10 +40,10 @@ export const filmographyInputList = {
   link: "",
   thumbnail: "",
   representive: false,
-  id: ""
+  id: 0
 };
 
-export const filmographyActiveList = {
+export const filmographyActiveInit = {
   classification: false,
   production: false,
   cast: false
