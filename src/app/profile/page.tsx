@@ -2,6 +2,8 @@
 
 import { getSchoolName } from "@/api/api";
 import SideMenu from "@/components/molecules/sideMenu";
+import FilmographyDeleteModal from "@/components/organisms/filmographyDeleteModal";
+import FilmographyEditModal from "@/components/organisms/filmographyEditModal";
 import FilmographyMain from "@/components/organisms/filmographyMain";
 import FilmographyModal from "@/components/organisms/filmographyModal";
 import InfoMain from "@/components/organisms/infoMain";
@@ -17,7 +19,7 @@ import {
 import { useDebounce } from "@/hooks/hooks";
 import { filmoInputsTypes, SchoolTypes } from "@/types/types";
 import { contactFormat, setCanvasPreview, setOnlyNumber } from "@/utils/utils";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { convertToPixelCrop } from "react-image-crop";
 
 const Profile = () => {
@@ -122,16 +124,74 @@ const Profile = () => {
 
   // filmography
 
+  const [filmoRepresentActive, setFilmoRepresentActive] = useState(false);
   const [filmoModalActive, setFilmoModalActive] = useState(false);
   const [filmoList, setFilmoList] = useState<filmoInputsTypes[]>([]);
   const [filmoInputs, setFilmoInputs] = useState(filmographyInputInit);
   const [filmoActives, setFilmoActives] = useState(filmographyActiveInit);
-  const [filmoId, setFilmoId] = useState(0);
+  const [filmoDeleteModal, setFilmoDeleteModal] = useState(false);
+  const [filmoEditModal, setFilmoEditModal] = useState(false);
+  const [selectFilmo, setSelectFilmo] = useState(filmographyInputInit);
+  const [editRepresentative, setEditRepresentative] = useState([...filmoList]);
+  const [representativeCount, setRepresentativeCount] = useState(0);
+
+  useEffect(() => {
+    setEditRepresentative([...filmoList]);
+  }, [filmoList]);
+
+  useEffect(() => {
+    const count = editRepresentative.filter(
+      (v) => v.representative === true
+    ).length;
+    setRepresentativeCount(count);
+  }, [editRepresentative]);
+
+  console.log(filmoList);
+
+  // filmographyMain
+
+  const onRepresentativeActive = () => {
+    setFilmoRepresentActive(!filmoRepresentActive);
+  };
+
+  const onCancelRepActive = () => {
+    setFilmoRepresentActive(!filmoRepresentActive);
+    setEditRepresentative([...filmoList]);
+  };
+
+  const onSaveRepActive = () => {
+    setFilmoRepresentActive(!filmoRepresentActive);
+    setFilmoList(editRepresentative);
+  };
+
+  const onRepresentativeCheck = (id: string) => {
+    const updateFilmoList = editRepresentative.map((filmo) =>
+      filmo.id === id
+        ? { ...filmo, representative: !filmo.representative }
+        : filmo
+    );
+    setEditRepresentative(updateFilmoList);
+  };
 
   const onFilmoModalActive = () => {
     setFilmoModalActive(!filmoModalActive);
     setFilmoInputs(filmographyInputInit);
   };
+
+  const onFilmoSelectClick = (filmo: filmoInputsTypes) => {
+    setSelectFilmo(filmo);
+  };
+
+  const onFilmoEditClick = (filmo: filmoInputsTypes) => {
+    setFilmoInputs(filmo);
+    setFilmoEditModal(!filmoEditModal);
+  };
+
+  const onFilmoEditActive = () => {
+    setFilmoEditModal(!filmoEditModal);
+  };
+
+  // filmographyModal
 
   const onFilmoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -166,21 +226,55 @@ const Profile = () => {
   };
 
   const onFilmoSaveClick = () => {
-    setFilmoId(filmoId + 1);
-    setFilmoInputs({ ...filmoInputs, id: filmoId });
-    setFilmoList([...filmoList, filmoInputs]);
+    const filmo = {
+      ...filmoInputs,
+      id: filmoInputs.title + filmoInputs.production
+    };
+    const updateFilmoList = [...filmoList, filmo];
+    const sortedFilmoList = updateFilmoList.sort(
+      (a, b) =>
+        Number(b.production) - Number(a.production) ||
+        a.title.localeCompare(b.title)
+    );
+    setFilmoList(sortedFilmoList);
     setFilmoInputs(filmographyInputInit);
     setFilmoModalActive(!filmoModalActive);
   };
 
-  const onFilmoDeleteClick = (id: number) => {
+  // filmographyEditModal
+
+  const onFilmoEditSaveClick = () => {
+    const filmo = {
+      ...filmoInputs,
+      id: filmoInputs.title + filmoInputs.production
+    };
+    const updateFilmoList = [...filmoList];
+    const index = updateFilmoList.findIndex((v) => v.id === selectFilmo.id);
+    updateFilmoList[index] = filmo;
+    const sortedFilmoList = updateFilmoList.sort(
+      (a, b) =>
+        Number(b.production) - Number(a.production) ||
+        a.title.localeCompare(b.title)
+    );
+    setFilmoList(sortedFilmoList);
+    setFilmoEditModal(!filmoEditModal);
+  };
+
+  // filmographyDeleteModal
+
+  const onFilmoDeleteModalActive = () => {
+    setFilmoDeleteModal(!filmoDeleteModal);
+  };
+
+  const onFilmoDeleteClick = () => {
     const filteredFilmo = filmoList.filter(
-      (filmo: filmoInputsTypes) => filmo.id !== id
+      (filmo: filmoInputsTypes) => filmo.id !== selectFilmo.id
     );
     setFilmoList(filteredFilmo);
+    setFilmoDeleteModal(!filmoDeleteModal);
+    setSelectFilmo(filmographyInputInit);
   };
-  console.log(filmoId);
-  console.log(filmoList);
+
   return (
     <div className="mb-16 mt-16 flex flex-row gap-4 p-10">
       <SideMenu stepper={stepper} setStepper={setStepper} />
@@ -230,8 +324,17 @@ const Profile = () => {
           <>
             <FilmographyMain
               filmoList={filmoList}
+              filmoRepresentActive={filmoRepresentActive}
+              editRepresentative={editRepresentative}
+              representativeCount={representativeCount}
+              onRepresentativeActive={onRepresentativeActive}
+              onCancelRepActive={onCancelRepActive}
+              onSaveRepActive={onSaveRepActive}
               onFilmoModalActive={onFilmoModalActive}
-              onFilmoDeleteClick={() => onFilmoDeleteClick}
+              onFilmoEditClick={onFilmoEditClick}
+              onFilmoDeleteModalActive={onFilmoDeleteModalActive}
+              onFilmoSelectClick={onFilmoSelectClick}
+              onRepresentativeCheck={onRepresentativeCheck}
             />
             {filmoModalActive && (
               <FilmographyModal
@@ -243,6 +346,24 @@ const Profile = () => {
                 onFilmoDropdownClick={onFilmoDropdownClick}
                 onSelectThumbnail={onSelectThumbnail}
                 onFilmoSaveClick={onFilmoSaveClick}
+              />
+            )}
+            {filmoEditModal && (
+              <FilmographyEditModal
+                filmoInputs={filmoInputs}
+                filmoActives={filmoActives}
+                onFilmoEditActive={onFilmoEditActive}
+                onFilmoInputChange={onFilmoInputChange}
+                onFilmoActiveClick={onFilmoActiveClick}
+                onFilmoDropdownClick={onFilmoDropdownClick}
+                onSelectThumbnail={onSelectThumbnail}
+                onFilmoEditSaveClick={onFilmoEditSaveClick}
+              />
+            )}
+            {filmoDeleteModal && (
+              <FilmographyDeleteModal
+                onCancel={onFilmoDeleteModalActive}
+                onDelete={onFilmoDeleteClick}
               />
             )}
           </>

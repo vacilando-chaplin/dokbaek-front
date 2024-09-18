@@ -84,7 +84,7 @@ const InfoSub = ({
                 onActive={onActiveClick}
               />
               {infoActives.education && (
-                <div className="absolute top-12 z-40 w-full">
+                <div className="absolute bottom-12 z-40 w-full">
                   <Dropdown
                     name="education"
                     content={educationList}

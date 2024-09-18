@@ -13,7 +13,7 @@ const SideMenu = ({ stepper, setStepper }: SideMenuProps) => {
   const steps = stepList;
 
   return (
-    <aside className="h-fit w-[200px] rounded-2xl bg-background-surface-light p-3">
+    <aside className="sticky top-[104px] h-fit w-[200px] rounded-2xl bg-background-surface-light p-3">
       {steps.map((step: StepperTypes, index: number) => {
         return (
           <MenuItem

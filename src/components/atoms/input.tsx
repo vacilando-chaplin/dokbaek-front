@@ -61,17 +61,31 @@ const Input = ({
           />
         </svg>
       )}
-      <input
-        className="w-full outline-none"
-        type={type}
-        placeholder={placeholder}
-        maxLength={maxLength}
-        autoComplete="off"
-        name={name}
-        value={value}
-        readOnly={readOnly}
-        onChange={onChange}
-      />
+      {icon ? (
+        <input
+          className={`w-full outline-none ${value.includes(icon) || value.length === 0 ? "text-content-primary-light" : "text-state-negative-light"}`}
+          type={type}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          autoComplete="off"
+          name={name}
+          value={value}
+          readOnly={readOnly}
+          onChange={onChange}
+        />
+      ) : (
+        <input
+          className="w-full outline-none"
+          type={type}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          autoComplete="off"
+          name={name}
+          value={value}
+          readOnly={readOnly}
+          onChange={onChange}
+        />
+      )}
       {dropdown && (
         <button
           type="button"

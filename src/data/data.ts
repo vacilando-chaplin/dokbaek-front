@@ -39,8 +39,8 @@ export const filmographyInputInit = {
   description: "",
   link: "",
   thumbnail: "",
-  representive: false,
-  id: 0
+  representative: false,
+  id: ""
 };
 
 export const filmographyActiveInit = {

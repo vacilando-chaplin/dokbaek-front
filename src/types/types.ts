@@ -58,8 +58,8 @@ export interface filmoInputsTypes {
   description: string;
   link: string;
   thumbnail: string;
-  representive: boolean;
-  id: number;
+  representative: boolean;
+  id: string;
 }
 
 export interface filmoActivesTypes {
