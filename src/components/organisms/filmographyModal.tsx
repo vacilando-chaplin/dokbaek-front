@@ -39,9 +39,9 @@ const FilmographyModal = ({
           />
           <ModalBottom
             saveButtonText="추가"
-            required={
-              filmoInputs.classification.length >= 1 &&
-              filmoInputs.title.length >= 1
+            disabled={
+              filmoInputs.classification.length === 0 ||
+              filmoInputs.title.length === 0
             }
             onCloseClick={onFilmoModalActive}
             onSaveClick={onFilmoSaveClick}

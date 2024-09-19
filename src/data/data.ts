@@ -1,6 +1,6 @@
 export const topBarList = [
-  { name: "로고", href: "/home" },
-  { name: "로그아웃", href: "/login" }
+  { name: "로고", href: "/" },
+  { name: "로그아웃", href: "/" }
 ];
 
 export const stepList = [

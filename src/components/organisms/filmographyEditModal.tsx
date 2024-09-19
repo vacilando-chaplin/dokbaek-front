@@ -39,9 +39,9 @@ const FilmographyEditModal = ({
           />
           <ModalBottom
             saveButtonText="저장"
-            required={
-              filmoInputs.classification.length >= 1 &&
-              filmoInputs.title.length >= 1
+            disabled={
+              filmoInputs.classification.length === 0 ||
+              filmoInputs.title.length === 0
             }
             onCloseClick={onFilmoEditActive}
             onSaveClick={onFilmoEditSaveClick}

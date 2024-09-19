@@ -1,7 +1,9 @@
 "use client";
 
 import { getSchoolName } from "@/api/api";
+import Toast from "@/components/atoms/toast";
 import SideMenu from "@/components/molecules/sideMenu";
+import BottomBar from "@/components/organisms/bottomBar";
 import FilmographyDeleteModal from "@/components/organisms/filmographyDeleteModal";
 import FilmographyEditModal from "@/components/organisms/filmographyEditModal";
 import FilmographyMain from "@/components/organisms/filmographyMain";
@@ -10,6 +12,7 @@ import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
+import { profile } from "@/data/atom";
 import {
   filmographyActiveInit,
   filmographyInputInit,
@@ -19,8 +22,10 @@ import {
 import { useDebounce } from "@/hooks/hooks";
 import { filmoInputsTypes, SchoolTypes } from "@/types/types";
 import { contactFormat, setCanvasPreview, setOnlyNumber } from "@/utils/utils";
-import { use, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { convertToPixelCrop } from "react-image-crop";
+import { useSetRecoilState } from "recoil";
 
 const Profile = () => {
   const [stepper, setStepper] = useState(0);
@@ -134,11 +139,13 @@ const Profile = () => {
   const [selectFilmo, setSelectFilmo] = useState(filmographyInputInit);
   const [editRepresentative, setEditRepresentative] = useState([...filmoList]);
   const [representativeCount, setRepresentativeCount] = useState(0);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     setEditRepresentative([...filmoList]);
   }, [filmoList]);
 
+  // count 수정 필요 (불필요한 리렌더링)
   useEffect(() => {
     const count = editRepresentative.filter(
       (v) => v.representative === true
@@ -146,7 +153,10 @@ const Profile = () => {
     setRepresentativeCount(count);
   }, [editRepresentative]);
 
-  console.log(filmoList);
+  useEffect(() => {
+    const timeout = setTimeout(() => setToastMessage(""), 3000);
+    return () => clearTimeout(timeout);
+  }, [toastMessage]);
 
   // filmographyMain
 
@@ -239,6 +249,7 @@ const Profile = () => {
     setFilmoList(sortedFilmoList);
     setFilmoInputs(filmographyInputInit);
     setFilmoModalActive(!filmoModalActive);
+    setToastMessage("작품 활동을 추가했어요.");
   };
 
   // filmographyEditModal
@@ -258,6 +269,7 @@ const Profile = () => {
     );
     setFilmoList(sortedFilmoList);
     setFilmoEditModal(!filmoEditModal);
+    setToastMessage("작품 활동을 수정했어요.");
   };
 
   // filmographyDeleteModal
@@ -273,10 +285,29 @@ const Profile = () => {
     setFilmoList(filteredFilmo);
     setFilmoDeleteModal(!filmoDeleteModal);
     setSelectFilmo(filmographyInputInit);
+    setToastMessage("작품 활동을 삭제했어요.");
+  };
+
+  // recoil
+
+  const router = useRouter();
+
+  const setProfileData = useSetRecoilState(profile);
+
+  const profileData = {
+    info: infoInputs,
+    photo: photoList,
+    filmography: filmoList
+  };
+
+  const onSaveProfileClick = () => {
+    setProfileData(profileData);
+    router.push("myProfile");
   };
 
   return (
-    <div className="mb-16 mt-16 flex flex-row gap-4 p-10">
+    <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
+      {toastMessage && <Toast text={toastMessage} />}
       <SideMenu stepper={stepper} setStepper={setStepper} />
       <div className="flex w-[728px] flex-col gap-3">
         {stepper === 0 && (
@@ -369,6 +400,14 @@ const Profile = () => {
           </>
         )}
       </div>
+      <BottomBar
+        disabled={
+          infoInputs.name.length === 0 ||
+          infoInputs.birth.length === 0 ||
+          infoInputs.contact.length === 0
+        }
+        onSave={onSaveProfileClick}
+      />
     </div>
   );
 };

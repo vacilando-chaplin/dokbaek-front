@@ -1,0 +1,15 @@
+interface ToastProps {
+  text: string;
+}
+
+const Toast = ({ text }: ToastProps) => {
+  return (
+    <div className="absolute -top-6 z-[51] flex h-auto w-auto gap-2 rounded-full bg-background-base_inverse-light px-4 py-3 shadow-modal">
+      <label className="text-center text-body2 font-medium leading-body2 tracking-body2 text-content-on_color-light">
+        {text}
+      </label>
+    </div>
+  );
+};
+
+export default Toast;

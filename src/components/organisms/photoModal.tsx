@@ -38,7 +38,7 @@ const PhotoModal = ({
           </div>
           <ModalBottom
             saveButtonText="저장"
-            required={selectImage.length >= 1}
+            disabled={selectImage.length === 0}
             onCloseClick={onModalActive}
             onSaveClick={onAddPhoto}
           />

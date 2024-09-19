@@ -1,7 +1,11 @@
 import Button from "../atoms/button";
-import SaveButton from "../atoms/saveButton";
 
-const BottomBar = () => {
+interface BottomBarProps {
+  disabled: boolean;
+  onSave: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+const BottomBar = ({ disabled, onSave }: BottomBarProps) => {
   return (
     <section className="fixed bottom-0 z-50 flex h-auto w-full items-center justify-between border-t-[1px] bg-background-elevated-light px-6 py-3 shadow-footer">
       <div className="flex gap-4">
@@ -27,7 +31,12 @@ const BottomBar = () => {
       <div className="flex gap-2">
         <Button icon="/icons/Download.svg" text="PDF 프로필 다운로드" />
         <Button icon="/icons/Circle.svg" text="프로필 미리보기" />
-        <SaveButton text="프로필 저장" required={true} />
+        <Button
+          text="프로필 저장"
+          color="bg-accent-primary-light text-static-white"
+          disabled={disabled}
+          onClick={onSave}
+        />
       </div>
     </section>
   );
