@@ -3,6 +3,11 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
+export const stepperAtom = atom({
+  key: "stepperAtom",
+  default: 0
+});
+
 export const profile = atom({
   key: "profile",
   default: {
@@ -16,12 +21,13 @@ export const profile = atom({
       specialty: "",
       instagram: "",
       youtube: "",
+      introduction: "",
       school: "",
       major: "",
       education: "졸업"
     },
-    photo: [{}],
-    filmography: [{}]
+    photo: [],
+    filmography: []
   }
   // effects_UNSTABLE: [persistAtom]
 });

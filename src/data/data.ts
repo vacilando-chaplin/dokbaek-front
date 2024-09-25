@@ -19,6 +19,7 @@ export const infoInputInit = {
   specialty: "",
   instagram: "",
   youtube: "",
+  introduction: "",
   school: "",
   major: "",
   education: "졸업"

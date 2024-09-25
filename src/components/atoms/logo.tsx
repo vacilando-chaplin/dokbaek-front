@@ -11,7 +11,7 @@ interface LogoProps {
 
 const Logo = ({ name, href }: LogoProps) => {
   return (
-    <Link href={href}>
+    <Link href={href} className="outline-none">
       <Image src={LogoHorizontal} alt={name} />
     </Link>
   );

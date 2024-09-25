@@ -12,7 +12,7 @@ import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
-import { profile } from "@/data/atom";
+import { profile, stepperAtom } from "@/data/atom";
 import {
   filmographyActiveInit,
   filmographyInputInit,
@@ -25,10 +25,10 @@ import { contactFormat, setCanvasPreview, setOnlyNumber } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { convertToPixelCrop } from "react-image-crop";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const Profile = () => {
-  const [stepper, setStepper] = useState(0);
+  const [stepper, setStepper] = useRecoilState(stepperAtom);
   const [infoInputs, setInfoInputs] = useState(infoInputInit);
   const [infoActives, setInfoActives] = useState(infoActiveInit);
   const [schoolList, setSchoolList] = useState([]);

@@ -13,6 +13,7 @@ export interface infoInputsTypes {
   specialty: string;
   instagram: string;
   youtube: string;
+  introduction: string;
   school: string;
   major: string;
   education: string;

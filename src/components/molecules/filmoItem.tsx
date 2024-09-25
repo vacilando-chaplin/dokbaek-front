@@ -6,18 +6,20 @@ import { useEffect, useState } from "react";
 
 interface FilmoItemProps {
   filmo: filmoInputsTypes;
-  filmoRepresentActive: boolean;
-  representativeCount: number;
-  onEdit: (filmo: filmoInputsTypes) => void;
-  onDelete: any;
-  onSelect: (filmo: filmoInputsTypes) => void;
-  onCheck: (id: string) => void;
+  filmoRepresentActive?: boolean;
+  representativeCount?: number;
+  canEdit: boolean;
+  onEdit?: any;
+  onDelete?: any;
+  onSelect?: any;
+  onCheck?: any;
 }
 
 const FilmoItem = ({
   filmo,
   filmoRepresentActive,
   representativeCount,
+  canEdit,
   onEdit,
   onDelete,
   onSelect,
@@ -39,7 +41,7 @@ const FilmoItem = ({
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    if (representativeCount >= 6) {
+    if (representativeCount && representativeCount >= 6) {
       if (representative) {
         setDisabled(false);
       }
@@ -53,7 +55,7 @@ const FilmoItem = ({
 
   return (
     <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5">
-      {filmoRepresentActive ? (
+      {filmoRepresentActive && (
         <div className="flex gap-2">
           <input
             type="checkbox"
@@ -83,7 +85,8 @@ const FilmoItem = ({
             className={`select-none text-body2 font-regular leading-body2 tracking-body2 ${disabled ? "text-content-disabled-light" : "text-content-primary-light"}`}
           />
         </div>
-      ) : (
+      )}
+      {!filmoRepresentActive && canEdit && (
         <div className="flex flex-col gap-1">
           {/* edit */}
           <button
@@ -143,7 +146,9 @@ const FilmoItem = ({
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
             <label className="text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light">
-              {production}
+              {canEdit
+                ? production
+                : `${production ? production + " |" : production} ${classification}`}
             </label>
             <label className="text-body1 font-semibold leading-body1 tracking-body1 text-content-primary-light">
               {title}
@@ -156,6 +161,7 @@ const FilmoItem = ({
             <label>{description}</label>
           </div>
         </div>
+        {/* link */}
         <svg
           width="16"
           height="16"

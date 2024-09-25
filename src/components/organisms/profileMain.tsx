@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Button from "../atoms/button";
 import { infoInputsTypes } from "@/types/types";
-import ProfileBox from "../molecules/profileBox";
 import ProfileButton from "../atoms/profileButton";
+import ProfileEmpty from "../atoms/profileEmpty";
 
 interface ProfileMainProps {
   info: infoInputsTypes;
@@ -21,13 +21,15 @@ const ProfileMain = ({ info }: ProfileMainProps) => {
     specialty,
     email,
     instagram,
-    youtube
+    youtube,
+    introduction
   } = info;
+
   return (
-    <div className="flex h-full w-[480px] flex-col gap-2 border-r-[1px] border-border-default-light p-8">
-      <div className="mt-12 flex h-[532px] w-[416px] flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
+    <section className="flex h-full w-[480px] flex-col gap-2 p-8">
+      <div className="flex h-[532px] w-[416px] flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
         <Image src="/icons/Account.svg" alt="account" width={40} height={40} />
-        <ProfileButton text="메인 사진" />
+        <ProfileButton text="메인 사진 추가" />
       </div>
       <div className="flex h-auto w-full flex-row items-center justify-between gap-2">
         <Button text="PDF 다운로드" icon="/icons/download.svg" />
@@ -71,14 +73,16 @@ const ProfileMain = ({ info }: ProfileMainProps) => {
           )}
         </div>
       ) : (
-        <ProfileBox text="정보" />
+        <div className="flex h-auto w-full items-center justify-center gap-2 rounded-2xl border border-gray-100 bg-gray-50 py-16">
+          <ProfileEmpty text="정보가 없어요." />
+        </div>
       )}
-      {/* <div className="flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
-        {introduction && <span>
+      {introduction && (
+        <span className="flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
           {introduction}
-        </span>}
-      </div> */}
-    </div>
+        </span>
+      )}
+    </section>
   );
 };
 

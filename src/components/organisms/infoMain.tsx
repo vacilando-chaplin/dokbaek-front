@@ -34,7 +34,8 @@ const InfoMain = ({
     email,
     specialty,
     instagram,
-    youtube
+    youtube,
+    introduction
   } = infoInputs;
 
   return (
@@ -154,6 +155,17 @@ const InfoMain = ({
               onChange={onInputChange}
             />
           </div>
+        </div>
+        <div className="flex h-auto w-full">
+          <InputWithLabel
+            label="자기 소개"
+            type="text"
+            placeholder="간단한 자기 소개를 적어주세요."
+            maxLength={50}
+            name="introduction"
+            value={introduction}
+            onChange={onInputChange}
+          />
         </div>
       </div>
     </section>
