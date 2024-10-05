@@ -61,7 +61,7 @@ const Input = ({
           />
         </svg>
       )}
-      {icon ? (
+      {icon && value ? (
         <input
           className={`w-full outline-none ${value.includes(icon) || value.length === 0 ? "text-content-primary-light" : "text-state-negative-light"}`}
           type={type}

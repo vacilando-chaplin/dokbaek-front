@@ -1,14 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import Button from "../atoms/button";
 import { infoInputsTypes } from "@/types/types";
 import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
+import { useRouter } from "next/navigation";
 
 interface ProfileMainProps {
   info: infoInputsTypes;
+  setStepper: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ProfileMain = ({ info }: ProfileMainProps) => {
+const ProfileMain = ({ info, setStepper }: ProfileMainProps) => {
+  const router = useRouter();
+
   const {
     name,
     birth,
@@ -26,15 +32,22 @@ const ProfileMain = ({ info }: ProfileMainProps) => {
   } = info;
 
   return (
-    <section className="flex h-full w-[480px] flex-col gap-2 p-8">
-      <div className="flex h-[532px] w-[416px] flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
+    <section className="flex h-full w-[33%] flex-col gap-2 p-8">
+      <div className="flex h-[60vh] w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
         <Image src="/icons/Account.svg" alt="account" width={40} height={40} />
         <ProfileButton text="메인 사진 추가" />
       </div>
-      <div className="flex h-auto w-full flex-row items-center justify-between gap-2">
+      <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
         <Button text="PDF 다운로드" icon="/icons/download.svg" />
         <Button text="링크 복사" icon="/icons/copy.svg" />
-        <Button text="프로필 편집" icon="/icons/edit.svg" />
+        <Button
+          text="프로필 편집"
+          icon="/icons/edit.svg"
+          onClick={() => {
+            router.push("/profile");
+            setStepper(0);
+          }}
+        />
       </div>
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
         <label className="text-body1 font-semibold leading-body1 tracking-body1">

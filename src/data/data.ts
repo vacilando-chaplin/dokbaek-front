@@ -9,22 +9,6 @@ export const stepList = [
   { name: "작품 활동", id: 2 }
 ];
 
-export const infoInputInit = {
-  name: "",
-  birth: "",
-  height: "",
-  weight: "",
-  contact: "",
-  email: "",
-  specialty: "",
-  instagram: "",
-  youtube: "",
-  introduction: "",
-  school: "",
-  major: "",
-  education: "졸업"
-};
-
 export const infoActiveInit = {
   birth: false,
   school: false,

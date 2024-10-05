@@ -12,24 +12,24 @@ import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
-import { profile, stepperAtom } from "@/data/atom";
+import { filmography, info, photo, profile, stepperAtom } from "@/data/atom";
 import {
   filmographyActiveInit,
   filmographyInputInit,
-  infoActiveInit,
-  infoInputInit
+  infoActiveInit
 } from "@/data/data";
 import { useDebounce } from "@/hooks/hooks";
 import { filmoInputsTypes, SchoolTypes } from "@/types/types";
 import { contactFormat, setCanvasPreview, setOnlyNumber } from "@/utils/utils";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { convertToPixelCrop } from "react-image-crop";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 const Profile = () => {
   const [stepper, setStepper] = useRecoilState(stepperAtom);
-  const [infoInputs, setInfoInputs] = useState(infoInputInit);
+  const [infoInputs, setInfoInputs] = useRecoilState(info);
   const [infoActives, setInfoActives] = useState(infoActiveInit);
   const [schoolList, setSchoolList] = useState([]);
 
@@ -76,7 +76,7 @@ const Profile = () => {
 
   // photo
 
-  const [photoList, setPhotoList] = useState<string[]>([]);
+  const [photoList, setPhotoList] = useRecoilState<any>(photo);
   const [photoModalActive, setPhotoModalActive] = useState(false);
   const [selectImage, setSelectImage] = useState("");
 
@@ -129,9 +129,10 @@ const Profile = () => {
 
   // filmography
 
+  const [filmoList, setFilmoList] = useRecoilState<any>(filmography);
+
   const [filmoRepresentActive, setFilmoRepresentActive] = useState(false);
   const [filmoModalActive, setFilmoModalActive] = useState(false);
-  const [filmoList, setFilmoList] = useState<filmoInputsTypes[]>([]);
   const [filmoInputs, setFilmoInputs] = useState(filmographyInputInit);
   const [filmoActives, setFilmoActives] = useState(filmographyActiveInit);
   const [filmoDeleteModal, setFilmoDeleteModal] = useState(false);
@@ -294,7 +295,7 @@ const Profile = () => {
 
   const setProfileData = useSetRecoilState(profile);
 
-  const profileData = {
+  const profileData: any = {
     info: infoInputs,
     photo: photoList,
     filmography: filmoList
@@ -401,11 +402,12 @@ const Profile = () => {
         )}
       </div>
       <BottomBar
-        disabled={
-          infoInputs.name.length === 0 ||
-          infoInputs.birth.length === 0 ||
-          infoInputs.contact.length === 0
-        }
+        // disabled={
+        //   infoInputs.name.length === 0 ||
+        //   infoInputs.birth.length === 0 ||
+        //   infoInputs.contact.length === 0
+        // }
+        disabled={false}
         onSave={onSaveProfileClick}
       />
     </div>

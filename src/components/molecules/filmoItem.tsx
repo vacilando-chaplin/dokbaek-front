@@ -9,10 +9,12 @@ interface FilmoItemProps {
   filmoRepresentActive?: boolean;
   representativeCount?: number;
   canEdit: boolean;
+  canLink: boolean;
   onEdit?: any;
   onDelete?: any;
   onSelect?: any;
   onCheck?: any;
+  onLink?: any;
 }
 
 const FilmoItem = ({
@@ -20,10 +22,12 @@ const FilmoItem = ({
   filmoRepresentActive,
   representativeCount,
   canEdit,
+  canLink,
   onEdit,
   onDelete,
   onSelect,
-  onCheck
+  onCheck,
+  onLink
 }: FilmoItemProps) => {
   const {
     classification,
@@ -37,6 +41,8 @@ const FilmoItem = ({
     representative,
     id
   } = filmo;
+
+  const checkYoutube = link.includes("youtube");
 
   const [disabled, setDisabled] = useState(false);
 
@@ -162,20 +168,39 @@ const FilmoItem = ({
           </div>
         </div>
         {/* link */}
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM10.53 16.0438L15.6432 12.848C16.2699 12.4563 16.2699 11.5437 15.6432 11.152L10.53 7.95625C9.86395 7.53997 9 8.01881 9 8.80425V15.1958C9 15.9812 9.86395 16.46 10.53 16.0438Z"
-            fill="#ADB5BD"
-          />
-        </svg>
+        {canLink && checkYoutube ? (
+          <button type="button" className="w-fit" onClick={() => onLink(link)}>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM10.53 16.0438L15.6432 12.848C16.2699 12.4563 16.2699 11.5437 15.6432 11.152L10.53 7.95625C9.86395 7.53997 9 8.01881 9 8.80425V15.1958C9 15.9812 9.86395 16.46 10.53 16.0438Z"
+                fill={`${checkYoutube ? "#212529" : "#ADB5BD"}`}
+              />
+            </svg>
+          </button>
+        ) : (
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM10.53 16.0438L15.6432 12.848C16.2699 12.4563 16.2699 11.5437 15.6432 11.152L10.53 7.95625C9.86395 7.53997 9 8.01881 9 8.80425V15.1958C9 15.9812 9.86395 16.46 10.53 16.0438Z"
+              fill={`${checkYoutube ? "#212529" : "#ADB5BD"}`}
+            />
+          </svg>
+        )}
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
         {thumbnail ? (

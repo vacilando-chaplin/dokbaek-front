@@ -143,6 +143,7 @@ const FilmographyMain = ({
                     filmoRepresentActive={filmoRepresentActive}
                     representativeCount={representativeCount}
                     canEdit={true}
+                    canLink={false}
                     onEdit={onFilmoEditClick}
                     onDelete={onFilmoDeleteModalActive}
                     onSelect={onFilmoSelectClick}

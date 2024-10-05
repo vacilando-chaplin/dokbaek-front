@@ -1,26 +1,39 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import ProfileBox from "../molecules/profileBox";
 import Title from "../atoms/title";
 import { filmoInputsTypes } from "@/types/types";
 import Image from "next/image";
 import FilmoItem from "../molecules/filmoItem";
+import YoutubeVideo from "../atoms/youtubeVideo";
+import { useState } from "react";
 
 interface PropfileSubProps {
   photo: string[];
   filmography: filmoInputsTypes[];
   setStepper: React.Dispatch<React.SetStateAction<number>>;
+  onPhotoModalActive: (photo: string) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
+  onLinkModalActive: (link: string) => void;
 }
 
 const ProfileSub = ({
   photo,
   filmography,
   setStepper,
-  onFilmoModalActive
+  onPhotoModalActive,
+  onFilmoModalActive,
+  onLinkModalActive
 }: PropfileSubProps) => {
   const router = useRouter();
+
+  const [photoSlider, setPhotoSlider] = useState(0);
+
+  const onSlide = () => {};
+
   return (
-    <section className="flex h-full w-full flex-col gap-10 p-8">
+    <section className="flex h-full w-full flex-col gap-10 border-l-[1px] border-border-default-light p-8">
       {/* photo */}
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
@@ -63,17 +76,46 @@ const ProfileSub = ({
           )}
         </div>
         {photo.length >= 1 ? (
-          <div className="flex flex-row gap-2">
+          <div className="relative flex w-full flex-row gap-2">
             {photo.map((item: string, index: number) => {
               return (
-                <Image
+                <figure
                   key={item + index}
-                  src={item}
-                  alt={"photo" + (index + 1)}
-                  width={258}
-                  height={330}
-                  className="rounded-2xl bg-gray-100"
-                />
+                  className="relative flex cursor-pointer items-center justify-center rounded-[18px]"
+                  onClick={() => onPhotoModalActive(item)}
+                >
+                  <Image
+                    src={item}
+                    alt={"photo" + (index + 1)}
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="h-[40vh] w-auto rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
+                  />
+                  <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V11H8C7.44772 11 7 11.4477 7 12C7 12.5522 7.44772 13 8 13H11V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V13H16C16.5523 13 17 12.5522 17 12C17 11.4477 16.5523 11 16 11H13V8Z"
+                        fill="#ffffff"
+                      />
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                        fill="#ffffff"
+                      />
+                    </svg>
+                    <span className="text-body2 font-semibold leading-body2 tracking-body2">
+                      크게 보기
+                    </span>
+                  </div>
+                </figure>
               );
             })}
           </div>
@@ -88,6 +130,7 @@ const ProfileSub = ({
           />
         )}
       </div>
+      {/* filmography */}
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title name="작품 활동" />
@@ -104,13 +147,19 @@ const ProfileSub = ({
           )}
         </div>
         {filmography.length >= 1 ? (
-          <div className="flex h-auto w-full flex-row flex-wrap gap-2">
+          <div className="grid h-auto w-auto grid-cols-3 gap-2">
             {filmography.map((filmo: filmoInputsTypes, index: number) => {
               return (
                 <div
-                  className={`flex h-auto w-[447px] gap-2 ${index > 5 && "hidden"}`}
+                  key={filmo.id + index}
+                  className={`grid gap-2 ${index > 5 && "hidden"}`}
                 >
-                  <FilmoItem key={filmo.id} filmo={filmo} canEdit={false} />
+                  <FilmoItem
+                    filmo={filmo}
+                    canEdit={false}
+                    canLink={true}
+                    onLink={onLinkModalActive}
+                  />
                 </div>
               );
             })}
@@ -126,13 +175,19 @@ const ProfileSub = ({
           />
         )}
       </div>
+      {/* Youtube Video */}
       <div className="flex h-auto w-full flex-col gap-3">
         <Title name="영상" />
-        <ProfileBox
+        {/* <ProfileBox
           text="영상이 없어요."
           buttonText="영상 추가"
           onClick={() => router.push("/profile")}
-        />
+        /> */}
+        <div className="flex h-auto w-full flex-row gap-2">
+          <YoutubeVideo link="gC_pi5VWOwo" state="list" />
+          <YoutubeVideo link="gC_pi5VWOwo" state="list" />
+          <YoutubeVideo link="gC_pi5VWOwo" state="list" />
+        </div>
       </div>
     </section>
   );
