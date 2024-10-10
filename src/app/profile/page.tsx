@@ -111,20 +111,20 @@ const Profile = () => {
 
   // 모달에 크롭 할 이미지 선택
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setCrop(undefined);
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        const imageElement = new Image();
-        const imageUrl = reader.result?.toString() || "";
-        imageElement.src = imageUrl;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-        setSelectImage(imageUrl);
-      });
+    // const reader = new FileReader();
+    // reader.addEventListener("load", () => {
+    //   const imageElement = new Image();
+    //   const imageUrl = reader.result?.toString() || "";
+    //   imageElement.src = imageUrl;
 
-      reader.readAsDataURL(e.target.files[0]);
-      e.currentTarget.value = "";
-    }
+    //   setSelectImage(imageUrl);
+    // });
+    // reader.readAsDataURL(file);
+    setSelectImage(URL.createObjectURL(file));
+    e.currentTarget.value = "";
   };
 
   // filmography

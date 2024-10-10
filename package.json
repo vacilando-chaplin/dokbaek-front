@@ -28,7 +28,7 @@
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "qrcode.react": "^3.1.0",
-    "react-image-crop": "^11.0.6",
+    "react-image-crop": "^10.1.8",
     "react-youtube": "^10.1.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",

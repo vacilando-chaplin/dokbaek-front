@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
   PercentCrop,
   PixelCrop,
@@ -22,8 +25,8 @@ const ImageCropper = ({
   crop,
   setCrop
 }: ImageCropperProps) => {
-  const cropWidth = 160;
-  const cropHeight = 204;
+  const cropWidth = 100;
+  const cropHeight = 100;
 
   const ASPECT_RATIO = cropWidth / cropHeight; // 가로, 세로 비율
 
@@ -48,8 +51,10 @@ const ImageCropper = ({
     }
   };
 
+  // console.log(crop);
+
   return (
-    <div className="min-h-[480px]">
+    <div className="min-h-[60vh]">
       {selectImage && (
         <div className="flex flex-col items-center">
           <ReactCrop
@@ -68,7 +73,7 @@ const ImageCropper = ({
               height={500}
               style={{ maxHeight: "70vh" }}
               priority
-              onLoadingComplete={onImageLoad}
+              onLoadingComplete={(e) => onImageLoad(e)}
             />
           </ReactCrop>
         </div>

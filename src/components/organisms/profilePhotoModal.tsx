@@ -11,7 +11,7 @@ const ProfilePhotoModal = ({
 }: ProfilePhotoModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-50 backdrop-blur-3xl md:inset-0">
-      <div className="relative flex h-[80vh] w-full max-w-7xl flex-col items-center justify-center gap-6">
+      <div className="relative flex h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center gap-6">
         <button
           type="button"
           className="rounded-full bg-static-black p-2"

@@ -30,7 +30,15 @@ const ProfileSub = ({
 
   const [photoSlider, setPhotoSlider] = useState(0);
 
-  const onSlide = () => {};
+  const onSliderPrev = () => {
+    setPhotoSlider((prev) => (prev !== 0 ? prev - 1 : 0));
+  };
+
+  const onSliderNext = (slides: number) => {
+    setPhotoSlider((prev) =>
+      prev === Math.floor(slides / 5) - 1 ? prev + 1 : prev
+    );
+  };
 
   return (
     <section className="flex h-full w-full flex-col gap-10 border-l-[1px] border-border-default-light p-8">
@@ -40,7 +48,11 @@ const ProfileSub = ({
           <Title name="사진" />
           {photo.length > 4 && (
             <div className="flex gap-1">
-              <div className={`rounded-full bg-gray-150 p-1.5 opacity-40`}>
+              {/* PrevButton */}
+              <div
+                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === 0 && "opacity-40"}`}
+                onClick={onSliderPrev}
+              >
                 <svg
                   width="16"
                   height="16"
@@ -56,7 +68,11 @@ const ProfileSub = ({
                   />
                 </svg>
               </div>
-              <div className={`rounded-full bg-gray-150 p-1.5`}>
+              {/* NextButton */}
+              <div
+                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(photo.length / 5) && "opacity-40"}`}
+                onClick={() => onSliderNext(photo.length)}
+              >
                 <svg
                   width="16"
                   height="16"
@@ -76,48 +92,53 @@ const ProfileSub = ({
           )}
         </div>
         {photo.length >= 1 ? (
-          <div className="relative flex w-full flex-row gap-2">
-            {photo.map((item: string, index: number) => {
-              return (
-                <figure
-                  key={item + index}
-                  className="relative flex cursor-pointer items-center justify-center rounded-[18px]"
-                  onClick={() => onPhotoModalActive(item)}
-                >
-                  <Image
-                    src={item}
-                    alt={"photo" + (index + 1)}
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    className="h-[40vh] w-auto rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
-                  />
-                  <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V11H8C7.44772 11 7 11.4477 7 12C7 12.5522 7.44772 13 8 13H11V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V13H16C16.5523 13 17 12.5522 17 12C17 11.4477 16.5523 11 16 11H13V8Z"
-                        fill="#ffffff"
-                      />
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-                        fill="#ffffff"
-                      />
-                    </svg>
-                    <span className="text-body2 font-semibold leading-body2 tracking-body2">
-                      크게 보기
-                    </span>
-                  </div>
-                </figure>
-              );
-            })}
+          <div className="relative overflow-hidden">
+            <div
+              className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
+              style={{ transform: `translateX(-${photoSlider * 100}%)` }}
+            >
+              {photo.map((item: string, index: number) => {
+                return (
+                  <figure
+                    key={item + index}
+                    className={`relative flex min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]`}
+                    onClick={() => onPhotoModalActive(item)}
+                  >
+                    <Image
+                      src={item}
+                      alt={"photo" + (index + 1)}
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="h-[40vh] w-auto rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
+                    />
+                    <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V11H8C7.44772 11 7 11.4477 7 12C7 12.5522 7.44772 13 8 13H11V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V13H16C16.5523 13 17 12.5522 17 12C17 11.4477 16.5523 11 16 11H13V8Z"
+                          fill="#ffffff"
+                        />
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                          fill="#ffffff"
+                        />
+                      </svg>
+                      <span className="text-body2 font-semibold leading-body2 tracking-body2">
+                        크게 보기
+                      </span>
+                    </div>
+                  </figure>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <ProfileBox
