@@ -1,6 +1,8 @@
 import { filmoInputsTypes } from "@/types/types";
 import Title from "../atoms/title";
 import FilmoItem from "../molecules/filmoItem";
+import RepresentativeButton from "../atoms/representiveButton";
+import EmptyBox from "../atoms/emptyBox";
 
 interface FilmographyMainProps {
   filmoList: filmoInputsTypes[];
@@ -52,43 +54,16 @@ const FilmographyMain = ({
           <div className="flex items-center gap-1">
             {filmoList.length >= 1 &&
               (filmoRepresentActive ? (
-                <button
-                  className="flex h-auto w-auto items-center gap-1 rounded-[10px] border border-border-default-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-content-primary-light"
-                  type="button"
-                  onClick={onCancelRepActive}
-                >
-                  취소
-                </button>
+                <RepresentativeButton
+                  text="취소"
+                  onActive={onCancelRepActive}
+                />
               ) : (
-                <button
-                  className="flex h-auto w-auto items-center gap-1 rounded-[10px] border border-border-default-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-content-primary-light"
-                  type="button"
-                  onClick={onRepresentativeActive}
-                >
-                  대표작 설정
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12 10.5C12.5523 10.5 13 10.9477 13 11.5V17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17V11.5C11 10.9477 11.4477 10.5 12 10.5Z"
-                      fill="#868E96"
-                    />
-                    <path
-                      d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V7.5C11 8.05228 11.4477 8.5 12 8.5C12.5523 8.5 13 8.05228 13 7.5V7Z"
-                      fill="#868E96"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
-                      fill="#868E96"
-                    />
-                  </svg>
-                </button>
+                <RepresentativeButton
+                  icon={true}
+                  text="대표작 설정"
+                  onActive={onRepresentativeActive}
+                />
               ))}
             {filmoRepresentActive ? (
               <button
@@ -155,9 +130,7 @@ const FilmographyMain = ({
           );
         })
       ) : (
-        <label className="flex h-auto w-full items-center justify-center gap-4 rounded-xl border border-gray-150 bg-background-surface-light px-6 py-16 text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light">
-          작품 활동을 추가해주세요.
-        </label>
+        <EmptyBox text="작품 활동을 추가해주세요." />
       )}
     </section>
   );

@@ -101,7 +101,7 @@ const ProfileSub = ({
                 return (
                   <figure
                     key={item + index}
-                    className={`relative flex min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]`}
+                    className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
                     onClick={() => onPhotoModalActive(item)}
                   >
                     <Image
@@ -110,7 +110,7 @@ const ProfileSub = ({
                       width={0}
                       height={0}
                       sizes="100vw"
-                      className="h-[40vh] w-auto rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
+                      className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
                     />
                     <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                       <svg

@@ -20,15 +20,21 @@ import {
 } from "@/data/data";
 import { useDebounce } from "@/hooks/hooks";
 import { filmoInputsTypes, SchoolTypes } from "@/types/types";
-import { contactFormat, setCanvasPreview, setOnlyNumber } from "@/utils/utils";
+import { contactFormat, setOnlyNumber } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { convertToPixelCrop } from "react-image-crop";
+import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 const Profile = () => {
   const [stepper, setStepper] = useRecoilState(stepperAtom);
+  const [toastMessage, setToastMessage] = useState("");
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setToastMessage(""), 3000);
+    return () => clearTimeout(timeout);
+  }, [toastMessage]);
+
   const [infoInputs, setInfoInputs] = useRecoilState(info);
   const [infoActives, setInfoActives] = useState(infoActiveInit);
   const [schoolList, setSchoolList] = useState([]);
@@ -74,60 +80,85 @@ const Profile = () => {
     getSearchSchool(debounceSearch);
   }, [debounceSearch]);
 
-  // photo
+  //
+  // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Photo ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+  //
 
   const [photoList, setPhotoList] = useRecoilState<any>(photo);
   const [photoModalActive, setPhotoModalActive] = useState(false);
   const [selectImage, setSelectImage] = useState("");
+  const [cropImage, setCropImage] = useState("");
+  const [photoEdit, setPhotoEdit] = useState("");
+  const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
 
-  // 크롭 할 이미지
-  const imgRef = useRef<any>(null);
-
-  // 크롭 할 이미지 미리보기
-  const previewCanvasRef = useRef<any>(null);
-
-  // 크롭 동작 수행
-  const [crop, setCrop] = useState<any>();
-
+  // photoModal 저장
   const onAddPhoto = () => {
-    setCanvasPreview(
-      imgRef.current,
-      previewCanvasRef.current,
-      convertToPixelCrop(crop, imgRef.current?.width, imgRef.current?.height)
-    );
-    const dataUrl = previewCanvasRef.current?.toDataURL();
-
-    if (dataUrl) {
-      setPhotoList([...photoList, dataUrl]);
-    }
+    cropImage
+      ? setPhotoList([...photoList, cropImage])
+      : setPhotoList([...photoList, selectImage]);
     setPhotoModalActive(!photoModalActive);
     setSelectImage("");
   };
 
+  // photoModal 편집
+  const onEditPhoto = () => {
+    const index = photoList.find((v: string) => v === photoEdit);
+    const list = [...photoList];
+    if (cropImage) {
+      list.splice(index, 1, cropImage);
+    } else {
+      list.splice(index, 1, selectImage);
+    }
+    setPhotoList(list);
+    setPhotoEdit("");
+    setPhotoModalActive(!photoModalActive);
+    setSelectImage("");
+  };
+
+  const onDeletePhoto = (photo: string) => {
+    const index = photoList.find((v: string) => v === photo);
+    const list = [...photoList];
+    list.splice(index, 1);
+    setPhotoList(list);
+    setPhotoDeleteActive(!photoDeleteActive);
+    setToastMessage("사진을 삭제했어요.");
+  };
+
+  // photoDlet
+  const onDeletePhotoActive = () => {
+    setPhotoDeleteActive(!photoDeleteActive);
+  };
+
+  // photoModal 액티브
   const onPhotoModalActive = () => {
+    setPhotoModalActive(!photoModalActive);
+    setPhotoEdit("");
+    setSelectImage("");
+  };
+
+  // photoEditModal 액티브
+  const onEditPhotoModalActive = (photo: string) => {
+    setPhotoEdit(photo);
     setPhotoModalActive(!photoModalActive);
     setSelectImage("");
   };
 
   // 모달에 크롭 할 이미지 선택
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // const reader = new FileReader();
-    // reader.addEventListener("load", () => {
-    //   const imageElement = new Image();
-    //   const imageUrl = reader.result?.toString() || "";
-    //   imageElement.src = imageUrl;
-
-    //   setSelectImage(imageUrl);
-    // });
-    // reader.readAsDataURL(file);
-    setSelectImage(URL.createObjectURL(file));
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setCropImage(reader.result?.toString() || "");
+        setSelectImage(reader.result?.toString() || "");
+      });
+      reader.readAsDataURL(e.target.files[0]);
+    }
     e.currentTarget.value = "";
   };
 
-  // filmography
+  //
+  // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Filmography ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+  //
 
   const [filmoList, setFilmoList] = useRecoilState<any>(filmography);
 
@@ -140,7 +171,6 @@ const Profile = () => {
   const [selectFilmo, setSelectFilmo] = useState(filmographyInputInit);
   const [editRepresentative, setEditRepresentative] = useState([...filmoList]);
   const [representativeCount, setRepresentativeCount] = useState(0);
-  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     setEditRepresentative([...filmoList]);
@@ -153,11 +183,6 @@ const Profile = () => {
     ).length;
     setRepresentativeCount(count);
   }, [editRepresentative]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setToastMessage(""), 3000);
-    return () => clearTimeout(timeout);
-  }, [toastMessage]);
 
   // filmographyMain
 
@@ -336,18 +361,21 @@ const Profile = () => {
           <>
             <PhotoMain
               photoList={photoList}
+              photoDeleteActive={photoDeleteActive}
               onSelectFile={onSelectFile}
               onPhotoModalActive={onPhotoModalActive}
+              onEditPhotoModalActive={onEditPhotoModalActive}
+              onDeletePhoto={onDeletePhoto}
+              onDeletePhotoActive={onDeletePhotoActive}
             />
             {photoModalActive && (
               <PhotoModal
                 selectImage={selectImage}
-                imgRef={imgRef}
-                previewCanvasRef={previewCanvasRef}
-                crop={crop}
-                setCrop={setCrop}
+                photoEdit={photoEdit}
                 onModalActive={onPhotoModalActive}
                 onAddPhoto={onAddPhoto}
+                onEditPhoto={onEditPhoto}
+                setCropImage={setCropImage}
               />
             )}
           </>

@@ -38,7 +38,7 @@ const ProfilePhotoModal = ({
           width={0}
           height={0}
           sizes="100vw"
-          className="h-[80vh] w-auto rounded-2xl"
+          className="h-[80vh] w-[40%] rounded-2xl"
         />
       </div>
     </section>
