@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "배우 프로필 제작 서비스"
 };
 
-export const pretendard = localFont({
+const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
   display: "swap",
   weight: "45 920",

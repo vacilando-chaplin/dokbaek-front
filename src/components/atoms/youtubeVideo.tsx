@@ -1,21 +1,22 @@
 import YouTube, { YouTubeProps } from "react-youtube";
 
 interface YoutubeVideoProps {
-  link?: string;
-  state: string;
+  link: string;
 }
 
-const YoutubeVideo = ({ link, state }: YoutubeVideoProps) => {
+const YoutubeVideo = ({ link }: YoutubeVideoProps) => {
+  const videoId = link.slice(32, 43);
+
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
     event.target.pauseVideo();
   };
 
   return (
     <YouTube
-      videoId={link}
+      videoId={videoId}
       onReady={onPlayerReady}
       iframeClassName="iframe-border iframe-video"
-      className={`iframe-wrap ${state === "list" && "iframe-list"} ${state === "modal" && "iframe-modal"}`}
+      className="iframe-wrap iframe-size"
     />
   );
 };

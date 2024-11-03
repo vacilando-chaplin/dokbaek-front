@@ -6,7 +6,8 @@ export const topBarList = [
 export const stepList = [
   { name: "내 정보", id: 0 },
   { name: "사진", id: 1 },
-  { name: "작품 활동", id: 2 }
+  { name: "작품 활동", id: 2 },
+  { name: "영상", id: 3 }
 ];
 
 export const infoActiveInit = {

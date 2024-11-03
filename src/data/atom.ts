@@ -37,6 +37,16 @@ export const filmography = atom({
   default: []
 });
 
+export const mainPhoto = atom({
+  key: "mainPhoto",
+  default: { photo: "", id: 0 }
+});
+
+export const video = atom({
+  key: "video",
+  default: []
+});
+
 export const profile = atom({
   key: "profile",
   default: {

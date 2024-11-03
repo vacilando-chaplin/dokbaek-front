@@ -4,7 +4,7 @@ import ModalTop from "../molecules/modalTop";
 
 interface PhotoModalProps {
   selectImage: string;
-  photoEdit: string;
+  photoEdit: { photo: string; id: number };
   onModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onAddPhoto: React.MouseEventHandler<HTMLButtonElement>;
   onEditPhoto: React.MouseEventHandler<HTMLButtonElement>;
@@ -31,10 +31,10 @@ const PhotoModal = ({
             />
           </div>
           <ModalBottom
-            saveButtonText="완료"
+            text="완료"
             disabled={selectImage.length === 0}
             onCloseClick={onModalActive}
-            onSaveClick={photoEdit ? onEditPhoto : onAddPhoto}
+            onSaveClick={photoEdit.photo ? onEditPhoto : onAddPhoto}
           />
         </div>
       </div>

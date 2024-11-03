@@ -2,17 +2,26 @@
 
 import Image from "next/image";
 import Button from "../atoms/button";
-import { infoInputsTypes } from "@/types/types";
+import { infoInputsTypes, PhotoTypes } from "@/types/types";
 import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
 import { useRouter } from "next/navigation";
 
 interface ProfileMainProps {
+  linear: string;
+  mainRef: any;
+  mainPhoto: PhotoTypes;
   info: infoInputsTypes;
   setStepper: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ProfileMain = ({ info, setStepper }: ProfileMainProps) => {
+const ProfileMain = ({
+  linear,
+  mainRef,
+  mainPhoto,
+  info,
+  setStepper
+}: ProfileMainProps) => {
   const router = useRouter();
 
   const {
@@ -32,11 +41,38 @@ const ProfileMain = ({ info, setStepper }: ProfileMainProps) => {
   } = info;
 
   return (
-    <section className="flex h-full w-[33%] flex-col gap-2 p-8">
-      <div className="flex h-[60vh] w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
-        <Image src="/icons/Account.svg" alt="account" width={40} height={40} />
-        <ProfileButton text="메인 사진 추가" />
-      </div>
+    <section
+      ref={mainRef}
+      className={`flex h-full w-[33%] flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
+    >
+      {mainPhoto.photo ? (
+        <div className="flex h-[60vh] w-full">
+          <Image
+            src={mainPhoto.photo}
+            alt="대표 사진"
+            width="0"
+            height="0"
+            sizes="100vw"
+            className="h-auto w-full rounded-2xl"
+          />
+        </div>
+      ) : (
+        <div className="flex h-[60vh] w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
+          <Image
+            src="/icons/Account.svg"
+            alt="account"
+            width={40}
+            height={40}
+          />
+          <ProfileButton
+            text="메인 사진 추가"
+            onClick={() => {
+              router.push("/profile");
+              setStepper(1);
+            }}
+          />
+        </div>
+      )}
       <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
         <Button text="PDF 다운로드" icon="/icons/download.svg" />
         <Button text="링크 복사" icon="/icons/copy.svg" />
@@ -91,9 +127,9 @@ const ProfileMain = ({ info, setStepper }: ProfileMainProps) => {
         </div>
       )}
       {introduction && (
-        <span className="flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
+        <p className="flex h-full w-full gap-2 break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
           {introduction}
-        </span>
+        </p>
       )}
     </section>
   );

@@ -3,28 +3,34 @@
 import { useRouter } from "next/navigation";
 import ProfileBox from "../molecules/profileBox";
 import Title from "../atoms/title";
-import { filmoInputsTypes } from "@/types/types";
+import { filmoInputsTypes, PhotoTypes, VideoTypes } from "@/types/types";
 import Image from "next/image";
 import FilmoItem from "../molecules/filmoItem";
 import YoutubeVideo from "../atoms/youtubeVideo";
 import { useState } from "react";
 
 interface PropfileSubProps {
-  photo: string[];
+  linear: string;
+  subRef: any;
+  photo: any;
   filmography: filmoInputsTypes[];
+  video: VideoTypes[];
   setStepper: React.Dispatch<React.SetStateAction<number>>;
   onPhotoModalActive: (photo: string) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onLinkModalActive: (link: string) => void;
+  onFilmoLink: (link: string) => void;
 }
 
 const ProfileSub = ({
+  linear,
+  subRef,
   photo,
   filmography,
+  video,
   setStepper,
   onPhotoModalActive,
   onFilmoModalActive,
-  onLinkModalActive
+  onFilmoLink
 }: PropfileSubProps) => {
   const router = useRouter();
 
@@ -40,8 +46,15 @@ const ProfileSub = ({
     );
   };
 
+  const repFilmoList = filmography.filter(
+    (filmo: filmoInputsTypes) => filmo.representative === true
+  );
+
   return (
-    <section className="flex h-full w-full flex-col gap-10 border-l-[1px] border-border-default-light p-8">
+    <section
+      ref={subRef}
+      className={`flex h-full w-full flex-col gap-10 p-8 ${linear === "sub" && "border-l-[1px] border-border-default-light"}`}
+    >
       {/* photo */}
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
@@ -97,16 +110,16 @@ const ProfileSub = ({
               className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
               style={{ transform: `translateX(-${photoSlider * 100}%)` }}
             >
-              {photo.map((item: string, index: number) => {
+              {photo.map((item: PhotoTypes) => {
                 return (
                   <figure
-                    key={item + index}
+                    key={`photo${item.id}`}
                     className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
-                    onClick={() => onPhotoModalActive(item)}
+                    onClick={() => onPhotoModalActive(item.photo)}
                   >
                     <Image
-                      src={item}
-                      alt={"photo" + (index + 1)}
+                      src={item.photo}
+                      alt={`photo${item.id}`}
                       width={0}
                       height={0}
                       sizes="100vw"
@@ -155,31 +168,32 @@ const ProfileSub = ({
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title name="작품 활동" />
-          {filmography.length > 6 && (
-            <button
-              type="button"
-              className="flex gap-1 rounded"
-              onClick={onFilmoModalActive}
-            >
-              <span className="text-body2 font-medium leading-body2 tracking-body2 text-content-tertiary-light">
-                모두 보기
-              </span>
-            </button>
-          )}
+          {filmography.length >= 1 &&
+            repFilmoList.length !== filmography.length && (
+              <button
+                type="button"
+                className="flex gap-1 rounded"
+                onClick={onFilmoModalActive}
+              >
+                <span className="text-body2 font-medium leading-body2 tracking-body2 text-content-tertiary-light">
+                  모두 보기
+                </span>
+              </button>
+            )}
         </div>
         {filmography.length >= 1 ? (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">
-            {filmography.map((filmo: filmoInputsTypes, index: number) => {
+            {repFilmoList.map((filmo: filmoInputsTypes, index: number) => {
               return (
                 <div
-                  key={filmo.id + index}
+                  key={filmo.id}
                   className={`grid gap-2 ${index > 5 && "hidden"}`}
                 >
                   <FilmoItem
                     filmo={filmo}
                     canEdit={false}
                     canLink={true}
-                    onLink={onLinkModalActive}
+                    onLink={onFilmoLink}
                   />
                 </div>
               );
@@ -199,16 +213,19 @@ const ProfileSub = ({
       {/* Youtube Video */}
       <div className="flex h-auto w-full flex-col gap-3">
         <Title name="영상" />
-        {/* <ProfileBox
-          text="영상이 없어요."
-          buttonText="영상 추가"
-          onClick={() => router.push("/profile")}
-        /> */}
-        <div className="flex h-auto w-full flex-row gap-2">
-          <YoutubeVideo link="gC_pi5VWOwo" state="list" />
-          <YoutubeVideo link="gC_pi5VWOwo" state="list" />
-          <YoutubeVideo link="gC_pi5VWOwo" state="list" />
-        </div>
+        {video.length >= 1 ? (
+          <div className="grid h-auto w-full grid-cols-3 flex-row gap-2">
+            {video.map((item: VideoTypes) => {
+              return <YoutubeVideo key={item.id} link={item.link} />;
+            })}
+          </div>
+        ) : (
+          <ProfileBox
+            text="영상이 없어요."
+            buttonText="영상 추가"
+            onClick={() => router.push("/profile")}
+          />
+        )}
       </div>
     </section>
   );

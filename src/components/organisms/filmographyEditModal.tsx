@@ -38,7 +38,7 @@ const FilmographyEditModal = ({
             onSelectThumbnail={onSelectThumbnail}
           />
           <ModalBottom
-            saveButtonText="저장"
+            text="저장"
             disabled={
               filmoInputs.classification.length === 0 ||
               filmoInputs.title.length === 0

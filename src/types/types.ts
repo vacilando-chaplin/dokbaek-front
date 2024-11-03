@@ -50,6 +50,11 @@ export interface ActiveTypes {
   school: boolean;
 }
 
+export interface PhotoTypes {
+  photo: string;
+  id: number;
+}
+
 export interface filmoInputsTypes {
   classification: string;
   production: string;
@@ -67,4 +72,9 @@ export interface filmoActivesTypes {
   classification: boolean;
   production: boolean;
   cast: boolean;
+}
+
+export interface VideoTypes {
+  link: string;
+  id: number;
 }

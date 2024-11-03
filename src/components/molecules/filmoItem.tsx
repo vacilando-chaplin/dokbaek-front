@@ -60,9 +60,10 @@ const FilmoItem = ({
   }, [representativeCount]);
 
   return (
-    <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5">
+    <div className="flex h-[154px] w-full animate-enter gap-4 rounded-2xl border border-border-default-light p-5">
       {filmoRepresentActive && (
         <div className="flex gap-2">
+          {/* checkbox */}
           <input
             type="checkbox"
             disabled={disabled}

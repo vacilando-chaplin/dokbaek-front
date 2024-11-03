@@ -20,7 +20,7 @@
     },
     "ecmaVersion": "latest"
   },
-  "plugins": ["import", "react", "prettier", "next"],
+  "plugins": ["import", "react", "prettier", "next", "@typescript-eslint"],
   "extends": [
     "next/core-web-vitals",
     "plugin:import/recommended",
