@@ -105,6 +105,7 @@ const myProfile = () => {
         <ProfileFilmographyModal
           filmography={filmographyData}
           onFilmoModalActive={onFilmoModalActive}
+          onFilmoLink={onFilmoLink}
         />
       )}
       {linkModalActive && (

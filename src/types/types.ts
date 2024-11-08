@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 export interface StepperTypes {
   name: string;
   id: number;
@@ -77,4 +83,29 @@ export interface filmoActivesTypes {
 export interface VideoTypes {
   link: string;
   id: number;
+}
+
+export interface KakaoDataTypes {
+  data: {
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    refresh_token_expires_in: number;
+    scope: string;
+    token_type: string;
+  };
+}
+
+export interface SignUpRequestTypes {
+  domain: string;
+  accessToken: string;
+  deviceId: string;
+}
+
+export interface SignUpResponseTypes {
+  token: {
+    jwt: string;
+    refreshToken: string;
+  };
+  defaultProfileId: number;
 }

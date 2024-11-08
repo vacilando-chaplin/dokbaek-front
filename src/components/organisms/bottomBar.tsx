@@ -29,8 +29,6 @@ const BottomBar = ({ disabled, onSave }: BottomBarProps) => {
         </label>
       </div>
       <div className="flex gap-2">
-        <Button icon="/icons/Download.svg" text="PDF 프로필 다운로드" />
-        <Button icon="/icons/Circle.svg" text="프로필 미리보기" />
         <Button
           text="프로필 저장"
           color="bg-accent-primary-light text-static-white"

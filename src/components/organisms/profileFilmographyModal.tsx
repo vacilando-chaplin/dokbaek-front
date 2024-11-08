@@ -6,11 +6,13 @@ import FilmoItem from "../molecules/filmoItem";
 interface ProfileFilmographyModalProps {
   filmography: filmoInputsTypes[];
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
+  onFilmoLink: (link: string) => void;
 }
 
 const ProfileFilmographyModal = ({
   filmography,
-  onFilmoModalActive
+  onFilmoModalActive,
+  onFilmoLink
 }: ProfileFilmographyModalProps) => {
   const classificationList = Array.from(
     new Set(
@@ -45,7 +47,7 @@ const ProfileFilmographyModal = ({
                             key={item.id}
                             filmo={item}
                             canEdit={false}
-                            canLink={false}
+                            onLink={onFilmoLink}
                           />
                         </div>
                       );

@@ -9,7 +9,6 @@ interface FilmoItemProps {
   filmoRepresentActive?: boolean;
   representativeCount?: number;
   canEdit: boolean;
-  canLink: boolean;
   onEdit?: any;
   onDelete?: any;
   onSelect?: any;
@@ -22,7 +21,6 @@ const FilmoItem = ({
   filmoRepresentActive,
   representativeCount,
   canEdit,
-  canLink,
   onEdit,
   onDelete,
   onSelect,
@@ -169,7 +167,7 @@ const FilmoItem = ({
           </div>
         </div>
         {/* link */}
-        {canLink && checkYoutube ? (
+        {checkYoutube ? (
           <button type="button" className="w-fit" onClick={() => onLink(link)}>
             <svg
               width="16"

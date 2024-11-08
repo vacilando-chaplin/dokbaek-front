@@ -192,7 +192,6 @@ const ProfileSub = ({
                   <FilmoItem
                     filmo={filmo}
                     canEdit={false}
-                    canLink={true}
                     onLink={onFilmoLink}
                   />
                 </div>

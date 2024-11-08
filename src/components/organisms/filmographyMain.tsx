@@ -3,7 +3,6 @@ import Title from "../atoms/title";
 import FilmoItem from "../molecules/filmoItem";
 import RepresentativeButton from "../atoms/representiveButton";
 import EmptyBox from "../atoms/emptyBox";
-import { useEffect, useState } from "react";
 import CreateButton from "../atoms/createButton";
 
 interface FilmographyMainProps {
@@ -19,6 +18,7 @@ interface FilmographyMainProps {
   onFilmoDeleteModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoSelectClick: (filmo: filmoInputsTypes) => void;
   onRepresentativeCheck: (id: string) => void;
+  onFilmoLink: (link: string) => void;
 }
 
 const FilmographyMain = ({
@@ -33,7 +33,8 @@ const FilmographyMain = ({
   onFilmoEditClick,
   onFilmoDeleteModalActive,
   onFilmoSelectClick,
-  onRepresentativeCheck
+  onRepresentativeCheck,
+  onFilmoLink
 }: FilmographyMainProps) => {
   const classificationList = Array.from(
     new Set(
@@ -99,11 +100,11 @@ const FilmographyMain = ({
                     filmoRepresentActive={filmoRepresentActive}
                     representativeCount={representativeCount}
                     canEdit={true}
-                    canLink={false}
                     onEdit={onFilmoEditClick}
                     onDelete={onFilmoDeleteModalActive}
                     onSelect={onFilmoSelectClick}
                     onCheck={onRepresentativeCheck}
+                    onLink={onFilmoLink}
                   />
                 )}
               </>
@@ -121,7 +122,7 @@ const FilmographyMain = ({
               {filmography.find((v) => v.representative === false) && (
                 <div
                   className="flex h-auto w-full flex-col gap-2"
-                  key={classification}
+                  key={classification + index}
                 >
                   <label className="text-body2 font-medium leading-body2 tracking-body2 text-content-secondary-light">
                     {classification}
@@ -136,11 +137,11 @@ const FilmographyMain = ({
                             filmoRepresentActive={filmoRepresentActive}
                             representativeCount={representativeCount}
                             canEdit={true}
-                            canLink={false}
                             onEdit={onFilmoEditClick}
                             onDelete={onFilmoDeleteModalActive}
                             onSelect={onFilmoSelectClick}
                             onCheck={onRepresentativeCheck}
+                            onLink={onFilmoLink}
                           />
                         )}
                       </>

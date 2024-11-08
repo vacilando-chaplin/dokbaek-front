@@ -32,7 +32,10 @@ const DeleteModal = ({ text, id, onCancel, onDelete }: DeleteModalProps) => {
           <RepresentativeButton
             text="삭제"
             color="text-static-white bg-state-negative-light"
-            onActive={() => onDelete(id)}
+            onActive={(e) => {
+              e.stopPropagation();
+              onDelete(id);
+            }}
           />
         </div>
       </div>

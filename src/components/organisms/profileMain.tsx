@@ -6,6 +6,7 @@ import { infoInputsTypes, PhotoTypes } from "@/types/types";
 import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface ProfileMainProps {
   linear: string;
@@ -109,16 +110,22 @@ const ProfileMain = ({
           {specialty && <span>{specialty && "특기: " + specialty}</span>}
           {email && <span>{email}</span>}
           {instagram && (
-            <span className="flex items-center gap-1">
+            <Link
+              href={instagram}
+              className="flex w-fit items-center gap-1"
+              target="_blank"
+            >
               <img src="/icons/instagram.svg" />
-              {instagram}
-            </span>
+            </Link>
           )}
           {youtube && (
-            <span className="flex items-center gap-1">
+            <Link
+              href={youtube}
+              className="flex w-fit items-center gap-1"
+              target="_blank"
+            >
               <img src="/icons/youtube.svg" />
-              {youtube}
-            </span>
+            </Link>
           )}
         </div>
       ) : (
@@ -127,7 +134,7 @@ const ProfileMain = ({
         </div>
       )}
       {introduction && (
-        <p className="flex h-full w-full gap-2 break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
+        <p className="flex h-full w-full gap-2 whitespace-pre break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
           {introduction}
         </p>
       )}

@@ -16,7 +16,17 @@ const ImageCropper = ({ selectImage, setCropImage }: any) => {
     }
   };
 
-  return <Cropper ref={cropperRef} src={selectImage} onChange={onCrop} />;
+  return (
+    <Cropper
+      ref={cropperRef}
+      src={selectImage}
+      onChange={onCrop}
+      stencilProps={{
+        aspectRatio: 160 / 204
+      }}
+      defaultSize={{ width: 160, height: 204 }}
+    />
+  );
 };
 
 export default ImageCropper;

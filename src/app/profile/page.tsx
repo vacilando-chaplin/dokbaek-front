@@ -11,8 +11,11 @@ import FilmographyModal from "@/components/organisms/filmographyModal";
 import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import InfoThird from "@/components/organisms/infoThird";
+import PhotoEditModal from "@/components/organisms/photoEditModal";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
+import ProfileLinkModal from "@/components/organisms/profilelinkModal";
+import VideoEditModal from "@/components/organisms/videoEditModal";
 import VideoMain from "@/components/organisms/videoMain";
 import VideoModal from "@/components/organisms/videoModal";
 import {
@@ -111,6 +114,7 @@ const Profile = () => {
     photo: "",
     id: 0
   });
+  const [photoEditModalActive, setPhotoEditModalActive] = useState(false);
   const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
   const [photoRepresentativeActive, setPhotoRepresentativeActive] = useState({
     state: false,
@@ -144,9 +148,8 @@ const Profile = () => {
     }
     setPhotoList(list);
     setPhotoEdit({ photo: "", id: 0 });
-    setPhotoModalActive(!photoModalActive);
+    setPhotoEditModalActive(!photoEditModalActive);
     setSelectImage("");
-    console.log(index);
   };
 
   const onDeletePhoto = (id: number) => {
@@ -170,10 +173,14 @@ const Profile = () => {
     setSelectImage("");
   };
 
+  const onPhotoEditModalClose = () => {
+    setPhotoEditModalActive(!photoEditModalActive);
+  };
+
   // photoEditModal 액티브
   const onEditPhotoModalActive = (photo: string, id: number) => {
+    setPhotoEditModalActive(!photoEditModalActive);
     setPhotoEdit({ photo: photo, id: id });
-    setPhotoModalActive(!photoModalActive);
     setSelectImage("");
   };
 
@@ -260,6 +267,8 @@ const Profile = () => {
   const [selectFilmo, setSelectFilmo] = useState(filmographyInputInit);
   const [editRepresentative, setEditRepresentative] = useState([...filmoList]);
   const [representativeCount, setRepresentativeCount] = useState(0);
+  const [filmoLink, setFilmoLink] = useState("");
+  const [linkModalActive, setLinkModalActive] = useState(false);
 
   useEffect(() => {
     setEditRepresentative([...filmoList]);
@@ -403,6 +412,15 @@ const Profile = () => {
     setToastMessage("작품 활동을 삭제했어요.");
   };
 
+  const onFilmoLink = (link: string) => {
+    setFilmoLink(link);
+    setLinkModalActive(!linkModalActive);
+  };
+
+  const onLinkModalActive = () => {
+    setLinkModalActive(!linkModalActive);
+  };
+
   // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Video ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
   const [videoList, setVideoList] = useRecoilState<any>(video);
@@ -410,15 +428,23 @@ const Profile = () => {
   const [videoId, setVideoId] = useState(0);
   const [videoInputs, setVideoInputs] = useState("");
   const [videoModalActive, setVideoModalActive] = useState(false);
+  const [videoEditModalActive, setVideoEditModalActive] = useState(false);
   const [videoEdit, setVideoEdit] = useState({ link: "", id: 0 });
-  const [videoDeleteModal, setVideoDeleteModal] = useState(false);
+  const [videoDeleteModalActive, setVideoDeleteModalActive] = useState(false);
+  const [videoLink, setVideoLink] = useState("");
+  const [videoLinkModalActive, setVideoLinkModalActive] = useState(false);
 
   const onVideoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVideoInputs(e.target.value);
   };
 
   const onVideoModalActive = () => {
+    setVideoInputs("");
     setVideoModalActive(!videoModalActive);
+  };
+
+  const onVideoEditModalClose = () => {
+    setVideoEditModalActive(!videoEditModalActive);
   };
 
   const onVideoModalSave = () => {
@@ -428,11 +454,49 @@ const Profile = () => {
     setVideoList(updateVideoList);
     setVideoId(videoId + 1);
     setVideoInputs("");
+    setToastMessage("영상을 추가했어요.");
   };
 
   const onVideoEditModalActive = (link: string, id: number) => {
-    setVideoModalActive(!videoModalActive);
+    setVideoEditModalActive(!videoEditModalActive);
+    setVideoInputs(link);
     setVideoEdit({ ...videoEdit, link: link, id: id });
+  };
+
+  const onVideoEditModalSave = () => {
+    const index = videoList.findIndex((v: VideoTypes) => v.id === videoEdit.id);
+    const list = [...videoList];
+    list.splice(index, 1, {
+      link: videoInputs,
+      id: videoEdit.id
+    });
+    setVideoList(list);
+    setVideoEdit({ link: "", id: 0 });
+    setVideoInputs("");
+    setVideoEditModalActive(!videoEditModalActive);
+    setToastMessage("영상을 수정했어요.");
+  };
+
+  const onVideoDeleteModalActive = () => {
+    setVideoDeleteModalActive(!videoDeleteModalActive);
+  };
+
+  const onVideoDelete = (id: number) => {
+    const index = videoList.findIndex((v: VideoTypes) => v.id === id);
+    const list = [...videoList];
+    list.splice(index, 1);
+    setVideoList(list);
+    setVideoDeleteModalActive(!videoDeleteModalActive);
+    setToastMessage("영상을 삭제했어요.");
+  };
+
+  const onVideoLinkModalActive = () => {
+    setVideoLinkModalActive(!videoLinkModalActive);
+  };
+
+  const onVideoLinkModalOpen = (link: string) => {
+    setVideoLink(link);
+    setVideoLinkModalActive(!videoLinkModalActive);
   };
 
   // recoil
@@ -507,6 +571,16 @@ const Profile = () => {
                 setCropImage={setCropImage}
               />
             )}
+            {photoEditModalActive && (
+              <PhotoEditModal
+                selectImage={selectImage}
+                photoEdit={photoEdit}
+                onModalActive={onPhotoEditModalClose}
+                onAddPhoto={onAddPhoto}
+                onEditPhoto={onEditPhoto}
+                setCropImage={setCropImage}
+              />
+            )}
           </>
         )}
         {stepper === 2 && (
@@ -524,6 +598,7 @@ const Profile = () => {
               onFilmoDeleteModalActive={onFilmoDeleteModalActive}
               onFilmoSelectClick={onFilmoSelectClick}
               onRepresentativeCheck={onRepresentativeCheck}
+              onFilmoLink={onFilmoLink}
             />
             {filmoModalActive && (
               <FilmographyModal
@@ -555,13 +630,24 @@ const Profile = () => {
                 onDelete={onFilmoDeleteClick}
               />
             )}
+            {linkModalActive && (
+              <ProfileLinkModal
+                filmoLink={filmoLink}
+                onLinkModalActive={onLinkModalActive}
+              />
+            )}
           </>
         )}
         {stepper === 3 && (
           <>
             <VideoMain
               videoList={videoList}
+              videoDeleteModalActive={videoDeleteModalActive}
               onVideoModalActive={onVideoModalActive}
+              onVideoEditModalActive={onVideoEditModalActive}
+              onVideoDeleteModalActive={onVideoDeleteModalActive}
+              onVideoDelete={onVideoDelete}
+              onVideoLinkModalOpen={onVideoLinkModalOpen}
             />
             {videoModalActive && (
               <VideoModal
@@ -569,6 +655,20 @@ const Profile = () => {
                 onVideoInputChange={onVideoInputChange}
                 onVideoModalActive={onVideoModalActive}
                 onVideoModalSave={onVideoModalSave}
+              />
+            )}
+            {videoEditModalActive && (
+              <VideoEditModal
+                videoInputs={videoInputs}
+                onVideoInputChange={onVideoInputChange}
+                onVideoEditModalClose={onVideoEditModalClose}
+                onVideoEditModalSave={onVideoEditModalSave}
+              />
+            )}
+            {videoLinkModalActive && (
+              <ProfileLinkModal
+                filmoLink={videoLink}
+                onLinkModalActive={onVideoLinkModalActive}
               />
             )}
           </>
