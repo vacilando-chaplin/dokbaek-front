@@ -1,11 +1,10 @@
 "use client";
 
+import { AuthLogin, postUser } from "@/api/api";
+import { KakaoDataTypes, SignUpResponseTypes } from "@/types/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import Loading from "../../../../components/atoms/loading";
-import { AuthLogin } from "@/app/api/oauth/callback/kakao/route";
-import { KakaoDataTypes, SignUpResponseTypes } from "@/types/types";
-import { postUser } from "@/api/api";
 
 const Kakao = () => {
   const router = useRouter();
@@ -54,7 +53,7 @@ const Kakao = () => {
       });
   }, [postData]);
 
-  console.log(postData);
+  console.log(resData);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -74,7 +73,7 @@ const Kakao = () => {
               fill="#01C043"
             />
           </svg>
-          <div className="flex flex-col items-center text-heading3 font-semibold leading-heading3 tracking-heading3">
+          <div className="flex flex-col items-center text-heading3 font-semibold leading-heading3 tracking-heading3 text-content-primary-light">
             <p>{`{카카오}`} 계정으로</p>
             <p>회원가입이 완료되었어요.</p>
           </div>

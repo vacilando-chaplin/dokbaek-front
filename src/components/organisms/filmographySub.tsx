@@ -1,12 +1,12 @@
-import { filmoActivesTypes, filmoInputsTypes } from "@/types/types";
-import InputWithLabel from "../molecules/inputWithLabel";
-import Dropdown from "../molecules/dropdown";
 import { castList, classificationList, yearList } from "@/data/data";
-import Label from "../atoms/label";
-import Input from "../atoms/input";
-import HelperText from "../atoms/helperText";
-import PhotoFrame from "../molecules/photoFrame";
+import { filmoActivesTypes, filmoInputsTypes } from "@/types/types";
 import Image from "next/image";
+import HelperText from "../atoms/helperText";
+import Input from "../atoms/input";
+import Label from "../atoms/label";
+import Dropdown from "../molecules/dropdown";
+import InputWithLabel from "../molecules/inputWithLabel";
+import PhotoFrame from "../molecules/photoFrame";
 
 interface FilmographySubProps {
   filmoInputs: filmoInputsTypes;
@@ -30,6 +30,7 @@ const FilmographySub = ({
     production,
     title,
     cast,
+    castInput,
     casting,
     description,
     link,
@@ -37,7 +38,7 @@ const FilmographySub = ({
   } = filmoInputs;
 
   return (
-    <div className="flex h-auto w-full gap-4 bg-background-surface-light p-6">
+    <div className="flex h-auto w-full gap-4 bg-background-surface-light p-6 overflow-auto">
       <div className="flex h-auto w-full flex-col gap-4">
         <div className="flex h-auto w-full flex-row gap-4">
           <div className="relative flex w-full">
@@ -106,19 +107,32 @@ const FilmographySub = ({
           />
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <div className="relative flex w-full">
-            <InputWithLabel
-              label="출연 형태"
-              type="text"
-              placeholder="선택해주세요."
-              dropdown={true}
-              maxLength={10}
-              name="cast"
-              value={cast}
-              active={filmoActives.cast}
-              onChange={onFilmoInputChange}
-              onActive={onFilmoActiveClick}
-            />
+          <div className="relative flex w-full h-auto flex-col">
+            <Label label="출연 형태" />
+            <div className="flex gap-1 flex-row">
+              <div className="flex w-full">
+                <Input
+                  type="text"
+                  placeholder="선택해주세요."
+                  dropdown={true}
+                  maxLength={10}
+                  name="cast"
+                  value={cast}
+                  readOnly={true}
+                  active={filmoActives.cast}
+                  onActive={onFilmoActiveClick}
+                />
+              </div>
+              {cast === "직접 입력" && (
+                <Input
+                  type="text"
+                  maxLength={10}
+                  name="castInput"
+                  value={castInput}
+                  onChange={onFilmoInputChange}
+                />
+              )}
+            </div>
             {filmoActives.cast && (
               <div className="absolute top-[72px] z-40 w-full">
                 <Dropdown

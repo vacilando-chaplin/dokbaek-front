@@ -66,6 +66,7 @@ export interface filmoInputsTypes {
   production: string;
   title: string;
   cast: string;
+  castInput: string;
   casting: string;
   description: string;
   link: string;

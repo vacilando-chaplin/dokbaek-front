@@ -1,7 +1,7 @@
 import Button from "../atoms/button";
 
 interface BottomBarProps {
-  disabled: boolean;
+  disabled?: boolean;
   onSave: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -32,6 +32,7 @@ const BottomBar = ({ disabled, onSave }: BottomBarProps) => {
         <Button
           text="프로필 저장"
           color="bg-accent-primary-light text-static-white"
+          disabled={disabled}
           onClick={onSave}
         />
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import Loading from "../../components/atoms/loading";
 
 const Login = () => {
@@ -117,7 +117,7 @@ const Login = () => {
               </clipPath>
             </defs>
           </svg>
-          <label className="text-body2 font-semibold leading-body2 tracking-body2">
+          <label className="text-body2 font-semibold leading-body2 tracking-body2 text-content-primary-light">
             필로그램으로 쉽고 빠르게 프로필을 만들어 보세요.
           </label>
         </div>

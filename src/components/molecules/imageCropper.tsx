@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { CropperRef, Cropper, Coordinates } from "react-advanced-cropper";
+import { useRef, useState } from "react";
+import { Coordinates, Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 
 const ImageCropper = ({ selectImage, setCropImage }: any) => {
@@ -24,7 +24,6 @@ const ImageCropper = ({ selectImage, setCropImage }: any) => {
       stencilProps={{
         aspectRatio: 160 / 204
       }}
-      defaultSize={{ width: 160, height: 204 }}
     />
   );
 };

@@ -2,7 +2,7 @@ import { SignUpRequestTypes } from "@/types/types";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://3.38.102.209:8080",
+  baseURL: "http://filogram.my/api",
   headers: {
     "Content-Type": "application/json"
   },
@@ -28,14 +28,22 @@ export const getSchoolName = async (search: string) => {
   return await data;
 };
 
+export const AuthLogin = async (code: string | string[]) => {
+  const res = await axios.post(`/api/oauth/callback/kakao?code=${code}`);
+  const data = res.data;
+
+  return data;
+};
+
 export const postUser = async (data: SignUpRequestTypes) => {
   if (!data.accessToken) {
     return false;
   }
   try {
-    const res = await api.post("/signup", data);
+    const res = await api.post("/auth/signup", data);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
+

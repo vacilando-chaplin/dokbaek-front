@@ -12,7 +12,7 @@ export const stepList = [
 
 export const infoActiveInit = {
   birth: false,
-  school: false,
+  school: true,
   education: false
 };
 
@@ -21,6 +21,7 @@ export const filmographyInputInit = {
   production: "",
   title: "",
   cast: "",
+  castInput: "",
   casting: "",
   description: "",
   link: "",
@@ -62,11 +63,7 @@ export const castList = [
   "주연",
   "조연",
   "단역",
-  "엑스트라",
-  "까메오",
-  "우정출연",
-  "특별출연",
-  "찬조출연"
+  "직접 입력"
 ];
 
 export const year = new Date().getFullYear();

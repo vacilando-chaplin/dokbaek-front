@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import Button from "../atoms/button";
 import { infoInputsTypes, PhotoTypes } from "@/types/types";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Button from "../atoms/button";
 import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface ProfileMainProps {
   linear: string;
@@ -44,7 +44,7 @@ const ProfileMain = ({
   return (
     <section
       ref={mainRef}
-      className={`flex h-full w-[33%] flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
+      className={`flex h-full w-[50vw] flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
     >
       {mainPhoto.photo ? (
         <div className="flex h-[60vh] w-full">
@@ -75,8 +75,8 @@ const ProfileMain = ({
         </div>
       )}
       <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-        <Button text="PDF 다운로드" icon="/icons/download.svg" />
-        <Button text="링크 복사" icon="/icons/copy.svg" />
+        <Button text="PDF 다운로드" icon="/icons/download.svg"/>
+        <Button text="링크 복사" icon="/icons/copy.svg"/>
         <Button
           text="프로필 편집"
           icon="/icons/edit.svg"
@@ -97,8 +97,8 @@ const ProfileMain = ({
       {birth || contact ? (
         <div className="flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
           <span>
-            {birth}년생 <label className="opacity-50">·</label>
-            {height && height + "cm"}
+            {birth}년생 <label className="opacity-50">{(height || weight) && "· "}</label>
+            {height && height + "cm "}
             {weight && weight + "kg"}
           </span>
           {contact && <span>{contact}</span>}
@@ -109,7 +109,7 @@ const ProfileMain = ({
           )}
           {specialty && <span>{specialty && "특기: " + specialty}</span>}
           {email && <span>{email}</span>}
-          {instagram && (
+          {instagram.length >= 27 && (
             <Link
               href={instagram}
               className="flex w-fit items-center gap-1"
@@ -118,7 +118,7 @@ const ProfileMain = ({
               <img src="/icons/instagram.svg" />
             </Link>
           )}
-          {youtube && (
+          {youtube.length >= 26 && (
             <Link
               href={youtube}
               className="flex w-fit items-center gap-1"

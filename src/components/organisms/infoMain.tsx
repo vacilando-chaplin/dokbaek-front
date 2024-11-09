@@ -1,10 +1,10 @@
+import { yearList } from "@/data/data";
 import { infoActivesTypes, infoInputsTypes } from "@/types/types";
 import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
-import InputWithLabel from "../molecules/inputWithLabel";
-import { yearList } from "@/data/data";
 import Dropdown from "../molecules/dropdown";
+import InputWithLabel from "../molecules/inputWithLabel";
 
 interface InfoMainProps {
   infoInputs: infoInputsTypes;
@@ -14,6 +14,8 @@ interface InfoMainProps {
   onContactChange: React.ChangeEventHandler<HTMLInputElement>;
   onActiveClick: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
+  onInstagramChange: any;
+  onYoutubeChange: any;
 }
 
 const InfoMain = ({
@@ -23,7 +25,9 @@ const InfoMain = ({
   onNumberChange,
   onContactChange,
   onActiveClick,
-  onItemClick
+  onItemClick,
+  onInstagramChange,
+  onYoutubeChange
 }: InfoMainProps) => {
   const {
     name,
@@ -142,7 +146,7 @@ const InfoMain = ({
               maxLength={300}
               name="instagram"
               value={instagram}
-              onChange={onInputChange}
+              onChange={onInstagramChange}
             />
             <Input
               type="link"
@@ -151,7 +155,7 @@ const InfoMain = ({
               maxLength={300}
               name="youtube"
               value={youtube}
-              onChange={onInputChange}
+              onChange={onYoutubeChange}
             />
           </div>
         </div>

@@ -151,9 +151,10 @@ const FilmoItem = ({
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
             <label className="text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light">
-              {canEdit
-                ? production
-                : `${production ? production + " |" : production} ${classification}`}
+              {production
+                ? `${production + " | " + classification}`
+                : production
+              }
             </label>
             <label className="text-body1 font-semibold leading-body1 tracking-body1 text-content-primary-light">
               {title}
@@ -167,7 +168,7 @@ const FilmoItem = ({
           </div>
         </div>
         {/* link */}
-        {checkYoutube ? (
+        {checkYoutube && (
           <button type="button" className="w-fit" onClick={() => onLink(link)}>
             <svg
               width="16"
@@ -184,21 +185,6 @@ const FilmoItem = ({
               />
             </svg>
           </button>
-        ) : (
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM10.53 16.0438L15.6432 12.848C16.2699 12.4563 16.2699 11.5437 15.6432 11.152L10.53 7.95625C9.86395 7.53997 9 8.01881 9 8.80425V15.1958C9 15.9812 9.86395 16.46 10.53 16.0438Z"
-              fill={`${checkYoutube ? "#212529" : "#ADB5BD"}`}
-            />
-          </svg>
         )}
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">

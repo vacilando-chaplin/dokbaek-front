@@ -41,8 +41,7 @@ import {
 } from "@/types/types";
 import { contactFormat, setOnlyNumber } from "@/utils/utils";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 const Profile = () => {
@@ -78,6 +77,18 @@ const Profile = () => {
     setInfoInputs({ ...infoInputs, [name]: inputContact });
   };
 
+  const onInstagramChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setInfoInputs({ ...infoInputs, [name]: value });
+  }
+
+  const onYoutubeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setInfoInputs({ ...infoInputs, [name]: value });
+  }
+
   const onActiveClick = (name: string, state: boolean) => {
     setInfoActives({ ...infoActives, [name]: !state });
   };
@@ -98,6 +109,15 @@ const Profile = () => {
     };
     getSearchSchool(debounceSearch);
   }, [debounceSearch]);
+
+  useEffect(() => {
+    if (schoolList.length === 1 && schoolList[0] === infoInputs.school) {
+      setInfoActives({ ...infoActives, school: false})
+    } else {
+      setInfoActives({ ...infoActives, school: true});
+    }
+  }, [infoInputs.school])
+  
 
   //
   // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Photo ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -533,6 +553,8 @@ const Profile = () => {
               onContactChange={onContactChange}
               onActiveClick={onActiveClick}
               onItemClick={onItemClick}
+              onInstagramChange={onInstagramChange}
+              onYoutubeChange={onYoutubeChange}
             />
             <InfoSub
               infoInputs={infoInputs}
@@ -675,12 +697,11 @@ const Profile = () => {
         )}
       </div>
       <BottomBar
-        // disabled={
-        //   infoInputs.name.length === 0 ||
-        //   infoInputs.birth.length === 0 ||
-        //   infoInputs.contact.length === 0
-        // }
-        disabled={false}
+        disabled={
+          infoInputs.name.length === 0 ||
+          infoInputs.birth.length === 0 ||
+          infoInputs.contact.length === 0
+        }
         onSave={onSaveProfileClick}
       />
     </div>

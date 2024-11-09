@@ -1,13 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import ProfileBox from "../molecules/profileBox";
-import Title from "../atoms/title";
 import { filmoInputsTypes, PhotoTypes, VideoTypes } from "@/types/types";
 import Image from "next/image";
-import FilmoItem from "../molecules/filmoItem";
-import YoutubeVideo from "../atoms/youtubeVideo";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Title from "../atoms/title";
+import YoutubeVideo from "../atoms/youtubeVideo";
+import FilmoItem from "../molecules/filmoItem";
+import ProfileBox from "../molecules/profileBox";
 
 interface PropfileSubProps {
   linear: string;
@@ -112,6 +112,8 @@ const ProfileSub = ({
             >
               {photo.map((item: PhotoTypes) => {
                 return (
+                <>
+                  {
                   <figure
                     key={`photo${item.id}`}
                     className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
@@ -149,6 +151,8 @@ const ProfileSub = ({
                       </span>
                     </div>
                   </figure>
+                  }
+                  </>
                 );
               })}
             </div>

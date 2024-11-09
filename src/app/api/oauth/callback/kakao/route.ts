@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   const url = new URL(req.url); // url 객체 생성
@@ -25,11 +25,4 @@ export const POST = async (req: NextRequest) => {
       data: "fail"
     });
   }
-};
-
-export const AuthLogin = async (code: string | string[]) => {
-  const res = await axios.post(`/api/oauth/callback/kakao?code=${code}`);
-  const data = res.data;
-
-  return data;
 };

@@ -1,10 +1,10 @@
 import { educationList } from "@/data/data";
+import { infoActivesTypes, infoInputsTypes } from "@/types/types";
 import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
 import Dropdown from "../molecules/dropdown";
 import InputWithLabel from "../molecules/inputWithLabel";
-import { infoActivesTypes, infoInputsTypes, SchoolTypes } from "@/types/types";
 
 interface infoSubProps {
   infoInputs: infoInputsTypes;
@@ -84,7 +84,7 @@ const InfoSub = ({
                 onActive={onActiveClick}
               />
               {infoActives.education && (
-                <div className="absolute bottom-12 z-40 w-full">
+                <div className="absolute top-12 z-40 w-full">
                   <Dropdown
                     name="education"
                     content={educationList}
