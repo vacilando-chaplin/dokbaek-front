@@ -4,6 +4,7 @@ import { infoInputsTypes, PhotoTypes } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Button from "../atoms/button";
 import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
 
@@ -74,7 +75,7 @@ const ProfileMain = ({
         </div>
       )}
       <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-        <button
+        {/* <button
           type="button"
           className="flex h-auto items-center w-auto justify-center gap-1.5 rounded-xl border border-border-default-light px-5 py-[11px] text-body3 font-medium leading-body3 tracking-body3 outline-none bg-background-surface-light text-content-primary-light"
         >
@@ -108,17 +109,17 @@ const ProfileMain = ({
           <path d="M4 4.99997C4 4.44769 4.44772 3.99997 5 3.99997H11C11.5523 3.99997 12 3.55226 12 2.99997C12 2.44769 11.5523 1.99997 11 1.99997H5C3.34315 1.99997 2 3.34312 2 4.99997V19C2 20.6568 3.34315 22 5 22H19C20.6569 22 22 20.6568 22 19V13C22 12.4477 21.5523 12 21 12C20.4477 12 20 12.4477 20 13V19C20 19.5523 19.5523 20 19 20H5C4.44772 20 4 19.5523 4 19V4.99997Z" fill="#212529"/>
         </svg>
         프로필 편집
-      </button>
-        {/* <Button text="PDF 다운로드" icon="/icons/Download.svg"/> */}
-        {/* <Button text="링크 복사" icon="/icons/Copy.svg"/> */}
-        {/* <Button
+      </button> */}
+        <Button text="PDF 다운로드" icon="/icons/Download.svg"/>
+        <Button text="링크 복사" icon="/icons/Copy.svg"/>
+        <Button
           text="프로필 편집"
           icon="/icons/Edit.svg"
           onClick={() => {
             router.push("/profile");
             setStepper(0);
           }}
-        /> */}
+        />
       </div>
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
         <label className="text-body1 font-semibold leading-body1 tracking-body1">
