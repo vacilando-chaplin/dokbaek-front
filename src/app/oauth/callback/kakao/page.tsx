@@ -25,12 +25,12 @@ const Kakao = () => {
   });
 
   const [resData, setResData] = useState<any>({});
-  
-  console.log(resData);
+
+  console.log(resData.data);
 
   const onClick = () => {
-    setId(resData.defaultProfileId);
-    setJWT(resData.token.jwt);
+    setId(resData.data.defaultProfileId);
+    setJWT(resData.data.token.jwt);
     router.push(`/profile`);
   };
 

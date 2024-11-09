@@ -75,11 +75,11 @@ const ProfileMain = ({
         </div>
       )}
       <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-        <Button text="PDF 다운로드" icon="/icons/download.svg"/>
-        <Button text="링크 복사" icon="/icons/copy.svg"/>
+        <Button text="PDF 다운로드" icon="/icons/Download.svg"/>
+        <Button text="링크 복사" icon="/icons/Copy.svg"/>
         <Button
           text="프로필 편집"
-          icon="/icons/edit.svg"
+          icon="/icons/Edit.svg"
           onClick={() => {
             router.push("/profile");
             setStepper(0);

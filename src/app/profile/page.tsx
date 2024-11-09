@@ -110,7 +110,7 @@ const Profile = () => {
     if (!token) {
       return;
     }
-    if (index === 1) {
+    if (index !== 0) {
       const info = {
         status: "PUBLIC",
         name: infoInputs.name,
@@ -142,6 +142,10 @@ const Profile = () => {
     }
     setStepper(index);
   }
+
+  useEffect(() => {
+    console.log(infoData);
+  }, [stepper])
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

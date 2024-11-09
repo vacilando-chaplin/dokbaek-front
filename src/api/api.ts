@@ -47,7 +47,7 @@ export const postUser = async (data: SignUpRequestTypes) => {
       return res.data;
     }
     if (res.status === 201) {
-      return res;
+      return res.data;
     }
   } catch (error) {
     throw error;
