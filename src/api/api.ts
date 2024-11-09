@@ -2,7 +2,7 @@ import { SignUpRequestTypes } from "@/types/types";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://filogram.my/api",
+  baseURL: "http://3.38.102.209:8080",
   headers: {
     "Content-Type": "application/json"
   },

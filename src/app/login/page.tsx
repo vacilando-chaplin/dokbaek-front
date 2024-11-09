@@ -1,7 +1,6 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
-import Loading from "../../components/atoms/loading";
+import { useEffect } from "react";
 
 const Login = () => {
   const redirectUri = "http://localhost:3000/oauth/callback/kakao";
@@ -51,7 +50,6 @@ const Login = () => {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
       <main className="flex h-auto w-auto flex-col gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20">
         <div className="flex flex-col items-center justify-center gap-4">
           <svg
@@ -167,7 +165,6 @@ const Login = () => {
           </button>
         </div>
       </main>
-    </Suspense>
   );
 };
 
