@@ -10,6 +10,31 @@ export const stepList = [
   { name: "영상", id: 3 }
 ];
 
+export const infoInitData = {
+  status: "PUBLIC",
+  name: "",
+  bornYear: 0,
+  height: 0,
+  weight: 0,
+  email: "",
+  contact: "",
+  speciality: "",
+  instagramLink: "",
+  youtubeLink: "",
+  introduction: "",
+  education: [
+    {
+      school: {
+        name: "",
+        schoolType: "",
+        schoolGubun: ""
+      },
+      major: "",
+      status: "GRADUATED"
+    }
+  ]
+}
+
 export const infoActiveInit = {
   birth: false,
   school: true,
@@ -42,8 +67,7 @@ export const educationList = [
   "재학 중",
   "휴학",
   "수료",
-  "중퇴",
-  "자퇴"
+  "중퇴"
 ];
 
 export const classificationList = [

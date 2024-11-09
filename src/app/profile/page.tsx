@@ -1,6 +1,6 @@
 "use client";
 
-import { getSchoolName } from "@/api/api";
+import { getSchoolName, patchPhotoDefault, postPhoto, putInfo } from "@/api/api";
 import Toast from "@/components/atoms/toast";
 import SideMenu from "@/components/molecules/sideMenu";
 import BottomBar from "@/components/organisms/bottomBar";
@@ -19,8 +19,10 @@ import VideoEditModal from "@/components/organisms/videoEditModal";
 import VideoMain from "@/components/organisms/videoMain";
 import VideoModal from "@/components/organisms/videoModal";
 import {
+  defaultId,
   filmography,
   info,
+  jwt,
   mainPhoto,
   photo,
   profile,
@@ -30,7 +32,8 @@ import {
 import {
   filmographyActiveInit,
   filmographyInputInit,
-  infoActiveInit
+  infoActiveInit,
+  infoInitData
 } from "@/data/data";
 import { useDebounce } from "@/hooks/hooks";
 import {
@@ -42,11 +45,30 @@ import {
 import { contactFormat, setOnlyNumber } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Profile = () => {
+  const userId = useRecoilValue(defaultId);
+  const token = useRecoilValue(jwt);
+
   const [stepper, setStepper] = useRecoilState(stepperAtom);
   const [toastMessage, setToastMessage] = useState("");
+  const [infoData, setInfoData] = useState(infoInitData);
+
+  const [education, setEducation] = useState("");
+
+  // const getData = async () => {
+  //   try {
+  //     const data = await getProfile(userId);
+  //     setInfoData(data);
+  //   } catch (error) {
+  //     throw error
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   getData();
+  // }, [stepper])
 
   useEffect(() => {
     const timeout = setTimeout(() => setToastMessage(""), 3000);
@@ -56,6 +78,70 @@ const Profile = () => {
   const [infoInputs, setInfoInputs] = useRecoilState(info);
   const [infoActives, setInfoActives] = useState(infoActiveInit);
   const [schoolList, setSchoolList] = useState([]);
+
+  useEffect(() => {
+    if (infoInputs.education === "졸업") {
+      setEducation("GRADUATED")
+      return;
+    }
+    if (infoInputs.education === "졸업 예정") {
+      setEducation("PENDING")
+      return;
+        }
+    if (infoInputs.education === "재학 중") {
+      setEducation("ENROLLED")
+      return;
+        }
+    if (infoInputs.education === "휴학") {
+      setEducation("LEAVE_OF_ABSENCE")
+      return;
+        }
+    if (infoInputs.education === "수료") {
+      setEducation("COMPLETION")
+      return;
+        }
+    if (infoInputs.education === "중퇴") {
+      setEducation("DROPPED_OUT")
+      return;
+    }
+  }, [infoInputs.education])
+
+  const onStepper = async (index: number) => {
+    if (!token) {
+      return;
+    }
+    if (index === 1) {
+      const info = {
+        status: "PUBLIC",
+        name: infoInputs.name,
+        bornYear: Number(infoInputs.birth),
+        height: Number(infoInputs.height),
+        weight: Number(infoInputs.weight),
+        email: infoInputs.email,
+        contact: infoInputs.contact,
+        speciality: infoInputs.specialty,
+        instagramLink: infoInputs.instagram,
+        youtubeLink: infoInputs.youtube,
+        introduction: infoInputs.introduction,
+        education: [{
+          school: {
+            name: infoInputs.school,
+            schoolType: "",
+            schoolGubun: "",
+          },
+          major: infoInputs.major,
+          status: education
+        }]
+      }
+      try {
+        const updateInfo = await putInfo(userId, token, info);
+        setInfoData(updateInfo);
+      } catch (error) {
+        throw error;
+      }
+    }
+    setStepper(index);
+  }
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -117,7 +203,6 @@ const Profile = () => {
       setInfoActives({ ...infoActives, school: true});
     }
   }, [infoInputs.school])
-  
 
   //
   // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Photo ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -141,14 +226,30 @@ const Profile = () => {
     id: 0
   });
 
+  const [resultPhotoList, setResultPhotoList] = useState();
+  const [origin, setOrigin] = useState<any>();
+  const [defaultPhotoId, setDefaultPhotoId] = useState<string>("");
+
   // photoModal 저장
-  const onAddPhoto = () => {
-    cropImage
-      ? setPhotoList([...photoList, { photo: cropImage, id: photoId }])
-      : setPhotoList([...photoList, { photo: selectImage, id: photoId }]);
+  const onAddPhoto = async () => {
+    try {
+      if (cropImage) {
+        const res = await postPhoto(userId, origin, cropImage, token);
+        setPhotoList([...photoList, { photo: cropImage, id: photoId }])
+        setResultPhotoList(res);
+      } else {
+        const res = await postPhoto(userId, origin, origin, token);
+        setPhotoList([...photoList, { photo: selectImage, id: photoId }]);
+        setResultPhotoList(res);
+      }
+    } catch (error) {
+      throw error
+    }
     setPhotoModalActive(!photoModalActive);
     setSelectImage("");
+    setCropImage("");
     setPhotoId(photoId + 1);
+    setToastMessage("사진을 추가했어요.");
   };
 
   // photoModal 편집
@@ -226,6 +327,7 @@ const Profile = () => {
     const index = photoList.findIndex(
       (v: PhotoTypes) => v.id === photoRepresentativeActive.id
     );
+    setDefaultPhotoId(photoRepresentativeActive.id.toString());
     const list = [...photoList];
     if (photoRepresentativeActive.id) {
       list.splice(index, 1, {
@@ -241,6 +343,7 @@ const Profile = () => {
       ...photoRepresentativeActive,
       state: !photoRepresentativeActive.state
     });
+    patchPhotoDefault(userId, defaultPhotoId, token);
     setToastMessage("대표 사진을 설정했어요.");
   };
 
@@ -266,8 +369,10 @@ const Profile = () => {
       reader.addEventListener("load", () => {
         setCropImage(reader.result?.toString() || "");
         setSelectImage(reader.result?.toString() || "");
+        
       });
       reader.readAsDataURL(e.target.files[0]);
+      setOrigin(e.target.files[0])
     }
     e.currentTarget.value = "";
   };
@@ -541,7 +646,7 @@ const Profile = () => {
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
       {toastMessage && <Toast text={toastMessage} />}
-      <SideMenu stepper={stepper} setStepper={setStepper} />
+      <SideMenu stepper={stepper} onStepper={onStepper} />
       <div className="flex w-[65vw] flex-col gap-3">
         {stepper === 0 && (
           <>

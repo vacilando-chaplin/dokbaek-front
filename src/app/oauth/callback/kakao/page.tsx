@@ -1,12 +1,18 @@
 "use client";
 
 import { AuthLogin, postUser } from "@/api/api";
+import Loading from "@/components/atoms/loading";
+import { defaultId, jwt } from "@/data/atom";
 import { KakaoDataTypes, SignUpResponseTypes } from "@/types/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 const Kakao = () => {
   const router = useRouter();
+
+  const setId = useSetRecoilState(defaultId);
+  const setJWT = useSetRecoilState(jwt);
 
   const searchParams = useSearchParams();
   const authCode = searchParams?.get("code");
@@ -18,16 +24,14 @@ const Kakao = () => {
     deviceId: ""
   });
 
-  const [resData, setResData] = useState<SignUpResponseTypes>({
-    token: {
-      jwt: "",
-      refreshToken: ""
-    },
-    defaultProfileId: 0
-  });
+  const [resData, setResData] = useState<any>({});
+  
+  console.log(resData);
 
   const onClick = () => {
-    router.push("/profile");
+    setId(resData.defaultProfileId);
+    setJWT(resData.token.jwt);
+    router.push(`/profile`);
   };
 
   useEffect(() => {
@@ -58,8 +62,6 @@ const Kakao = () => {
       });
   }, [postData]);
 
-  console.log(resData);
-
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col items-center gap-2">
@@ -82,14 +84,13 @@ const Kakao = () => {
           <p>회원가입이 완료되었어요.</p>
         </div>
         <label className="items-center text-body2 font-medium leading-body2 tracking-body2 text-content-secondary-light">
-          이제 ""님만의 프로필을 만들어 보세요.
+          이제 나만의 프로필을 만들어 보세요.
         </label>
       </div>
       <button
         type="button"
         className="flex h-auto w-auto items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5"
-        onClick={onClick}
-      >
+        onClick={onClick}>
         <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">
           프로필 만들기
         </div>
@@ -100,7 +101,7 @@ const Kakao = () => {
 
 export default function KaKaoWrapper() {
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <Kakao />
     </Suspense>
   )

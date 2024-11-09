@@ -87,6 +87,7 @@ const myProfile = () => {
       <ProfileSub
         linear={linear}
         subRef={subRef}
+        mainPhotoData={mainPhotoData}
         photo={photoData}
         filmography={filmographyData}
         video={videoData}

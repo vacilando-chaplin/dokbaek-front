@@ -1,15 +1,15 @@
 "use client";
 
+import { stepList } from "@/data/data";
 import { StepperTypes } from "@/types/types";
 import MenuItem from "../atoms/menuItem";
-import { stepList } from "@/data/data";
 
 interface SideMenuProps {
   stepper: number;
-  setStepper: React.Dispatch<React.SetStateAction<number>>;
+  onStepper: (index: number) => void;
 }
 
-const SideMenu = ({ stepper, setStepper }: SideMenuProps) => {
+const SideMenu = ({ stepper, onStepper }: SideMenuProps) => {
   const steps = stepList;
 
   return (
@@ -20,7 +20,7 @@ const SideMenu = ({ stepper, setStepper }: SideMenuProps) => {
             key={step.id}
             name={step.name}
             active={stepper === index}
-            onClick={() => setStepper(index)}
+            onClick={() => onStepper(index)}
           />
         );
       })}

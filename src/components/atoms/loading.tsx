@@ -1,5 +1,13 @@
 const Loading = () => {
-  return <div>Loading</div>;
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-6 w-6 border-4 border-t-4 border-blue-500">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full object-cover">
+          <path d="M6.92241 2.5849C6.47064 2.05175 5.65722 2.00872 5.20957 2.54534C3.45655 4.64675 2.39999 7.36203 2.39999 10.3269C2.39999 16.9947 7.74356 22.4 14.3352 22.4C16.6178 22.4 18.7507 21.7518 20.5639 20.6275C21.1492 20.2646 21.2288 19.4685 20.7836 18.9431C20.3684 18.4531 19.6464 18.3805 19.0913 18.7037C17.691 19.519 16.0669 19.9854 14.3352 19.9854C9.06188 19.9854 4.78703 15.6611 4.78703 10.3269C4.78703 8.03231 5.57808 5.92458 6.89937 4.26756C7.2924 3.77467 7.32996 3.06586 6.92241 2.5849Z" fill="#212529"/>
+        </svg>
+      </div>
+    </div>
+  );
 };
 
 export default Loading;

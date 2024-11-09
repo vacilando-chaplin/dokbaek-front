@@ -25,6 +25,31 @@ export interface infoInputsTypes {
   education: string;
 }
 
+export interface InfoDataTypes {
+  status: string;
+  name: string;
+  bornYear: number;
+  height: number;
+  weight: number;
+  email: string;
+  contact: string;
+  speciality: string;
+  instagramLink: string;
+  youtubeLink: string;
+  introduction: string;
+  education: [
+    {
+      school: {
+        name: string;
+        schoolType: string;
+        schoolGubun: string;
+      },
+      major: string;
+      status: string;
+    }
+  ]
+}
+
 export interface infoActivesTypes {
   birth: boolean;
   school: boolean;

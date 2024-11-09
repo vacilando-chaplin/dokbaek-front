@@ -12,6 +12,7 @@ import ProfileBox from "../molecules/profileBox";
 interface PropfileSubProps {
   linear: string;
   subRef: any;
+  mainPhotoData: { photo: string, id: number }
   photo: any;
   filmography: filmoInputsTypes[];
   video: VideoTypes[];
@@ -24,6 +25,7 @@ interface PropfileSubProps {
 const ProfileSub = ({
   linear,
   subRef,
+  mainPhotoData,
   photo,
   filmography,
   video,
@@ -104,7 +106,7 @@ const ProfileSub = ({
             </div>
           )}
         </div>
-        {photo.length >= 1 ? (
+        {photo.length >= 1 && (photo.length === 1 && photo[0].id !== mainPhotoData.id) ? (
           <div className="relative overflow-hidden">
             <div
               className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
@@ -113,7 +115,7 @@ const ProfileSub = ({
               {photo.map((item: PhotoTypes) => {
                 return (
                 <>
-                  {
+                  {item.id !== mainPhotoData.id && 
                   <figure
                     key={`photo${item.id}`}
                     className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"

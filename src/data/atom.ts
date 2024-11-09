@@ -3,6 +3,18 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
+export const defaultId = atom({
+  key: "defaultId",
+  default: 0,
+  effects_UNSTABLE: [persistAtom]
+});
+
+export const jwt = atom({
+  key: "jwt",
+  default: "",
+  effects_UNSTABLE: [persistAtom]
+});
+
 export const stepperAtom = atom({
   key: "stepperAtom",
   default: 0
