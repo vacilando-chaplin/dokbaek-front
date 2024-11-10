@@ -3,14 +3,14 @@ import axios from "axios";
 import { headers } from "next/headers";
 
 const api = axios.create({
-  baseURL: "https://fillogram.my/api",
+  baseURL: "https://filogram.my/api",
   headers: {
     "Content-Type": "application/json"
   },
   withCredentials: true
 });
 
-const baseURL = "https://fillogram.my/api"
+const baseURL = "https://filogram.my/api"
 
 export const getSchoolName = async (search: string) => {
   const univ_res = await fetch(
