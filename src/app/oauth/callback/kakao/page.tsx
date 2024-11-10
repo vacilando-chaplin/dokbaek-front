@@ -47,11 +47,11 @@ const Kakao = () => {
     checkCode();
   }, [authCode]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (data) {
       setPostData({ ...postData, accessToken: data.data.access_token });
     }
-  }, [data]);
+  }, [data]);*/
 
   useEffect(() => {
     postUser(postData)
