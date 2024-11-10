@@ -31,7 +31,7 @@ export const getSchoolName = async (search: string) => {
 };
 
 export const AuthLogin = async (code: string | string[]) => {
-  const res = await axios.post(`/api/oauth/callback/kakao?code=${code}`);
+  const res = await axios.post(`/oauth/callback/kakao?code=${code}`);
   const data = res.data;
 
   return data;
