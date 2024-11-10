@@ -46,6 +46,7 @@ export const AuthLogin = async (code: string | string[]) => {
 };
 
 export const postUser = async (data: SignUpRequestTypes) => {
+  console.log(data)
   if (!data.accessToken) {
     return false;
   }
