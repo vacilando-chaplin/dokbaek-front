@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 const Login = () => {
-  const redirectUri = "http://localhost:3000/oauth/callback/kakao";
+  const redirectUri = "https://filogram.my/oauth/callback/kakao";
   const scope = ["profile_nickname", "account_email"].join(",");
 
   useEffect(() => {
