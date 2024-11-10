@@ -40,7 +40,7 @@ export const AuthLogin = async (code: string | string[]) => {
       headers: {
     "Content-Type": "application/x-www-form-urlencoded"
   }});
-  const data = res.data;
+  const data = res.data.accessToken;
 
   return data;
 };
