@@ -40,7 +40,7 @@ const Kakao = () => {
         return;
       }
       if (authCode) {
-        await AuthLogin(authCode).then((res) => setData(res));
+        await AuthLogin(authCode).then((res) => setPostData({ ...postData, accessToken: res.data.access_token }));
       }
     }
     checkCode();
