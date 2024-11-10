@@ -41,17 +41,17 @@ const Kakao = () => {
       }
       if (authCode) {
         //await AuthLogin(authCode).then((res) => setData(res));
-        setPostData({ ...postData, authCode });
+        setPostData({ ...postData, accessToken: authCode });
       }
     }
     checkCode();
   }, [authCode]);
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (data) {
       setPostData({ ...postData, accessToken: data.data.access_token });
     }
-  }, [data]);*/
+  }, [data]);
 
   useEffect(() => {
     postUser(postData)
