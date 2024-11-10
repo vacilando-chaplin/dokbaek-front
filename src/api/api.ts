@@ -32,7 +32,14 @@ export const getSchoolName = async (search: string) => {
 };
 
 export const AuthLogin = async (code: string | string[]) => {
-  const res = await axios.post(`/api/oauth/callback/kakao?code=${code}`);
+
+
+  const res = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI}&code=${code}`,
+  {
+    method: "POST",
+      headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }});
   const data = res.data;
 
   return data;
