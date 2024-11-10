@@ -24,13 +24,13 @@ const Login = () => {
     kakaoSDK.addEventListener("load", onLoadKakaoAPI);
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (window.Kakao) {
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
       }
     }
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     if (window.Kakao) {
