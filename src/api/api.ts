@@ -1,5 +1,6 @@
 import { SignUpRequestTypes } from "@/types/types";
 import axios from "axios";
+import { headers } from "next/headers";
 
 const api = axios.create({
   baseURL: "https://filmogram.my/api",
@@ -31,7 +32,10 @@ export const getSchoolName = async (search: string) => {
 };
 
 export const AuthLogin = async (code: string | string[]) => {
-  const res = await axios.post(`/api/oauth/callback/kakao?code=${code}`);
+  const res = await axios.post(`/api/oauth/callback/kakao?code=${code}`, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }});
   const data = res.data;
 
   return data;
