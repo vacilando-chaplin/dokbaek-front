@@ -2,14 +2,15 @@ import Button from "../atoms/button";
 
 interface BottomBarProps {
   disabled?: boolean;
+  onBack: React.MouseEventHandler<HTMLButtonElement>;
   onSave: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const BottomBar = ({ disabled, onSave }: BottomBarProps) => {
+const BottomBar = ({ disabled, onBack, onSave }: BottomBarProps) => {
   return (
     <section className="fixed bottom-0 z-50 flex h-auto w-full items-center justify-between border-t-[1px] bg-background-elevated-light px-6 py-3 shadow-footer">
       <div className="flex gap-4">
-        <Button icon="/icons/ArrowDirectionLeft.svg" text="돌아가기" />
+        <Button icon="/icons/ArrowDirectionLeft.svg" text="돌아가기" onClick={onBack} />
         <label className="flex items-center gap-1 text-caption1 font-medium leading-caption1 tracking-caption1 text-state-positive-light">
           <svg
             width="12"

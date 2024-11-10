@@ -11,7 +11,7 @@ interface FilmographyModalProps {
   onFilmoActiveClick: (name: string, state: boolean) => void;
   onFilmoDropdownClick: (name: string, item: string) => void;
   onSelectThumbnail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFilmoSaveClick: React.MouseEventHandler<HTMLButtonElement>;
+  onResultFilmographySave: any;
 }
 
 const FilmographyModal = ({
@@ -22,7 +22,7 @@ const FilmographyModal = ({
   onFilmoActiveClick,
   onFilmoDropdownClick,
   onSelectThumbnail,
-  onFilmoSaveClick
+  onResultFilmographySave
 }: FilmographyModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
@@ -43,7 +43,7 @@ const FilmographyModal = ({
             filmoInputs.title.length === 0
           }
           onCloseClick={onFilmoModalActive}
-          onSaveClick={onFilmoSaveClick}
+          onSaveClick={onResultFilmographySave}
         />
       </div>
     </section>

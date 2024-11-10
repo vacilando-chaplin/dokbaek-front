@@ -1,7 +1,7 @@
 import { filmoActivesTypes, filmoInputsTypes } from "@/types/types";
+import ModalBottom from "../molecules/modalBottom";
 import ModalTop from "../molecules/modalTop";
 import FilmographySub from "./filmographySub";
-import ModalBottom from "../molecules/modalBottom";
 
 interface FilmographyEditModalProps {
   filmoInputs: filmoInputsTypes;
@@ -11,7 +11,7 @@ interface FilmographyEditModalProps {
   onFilmoActiveClick: (name: string, state: boolean) => void;
   onFilmoDropdownClick: (name: string, item: string) => void;
   onSelectThumbnail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFilmoEditSaveClick: React.MouseEventHandler<HTMLButtonElement>;
+  onResultFilmographyEditSave: any;
 }
 
 const FilmographyEditModal = ({
@@ -22,7 +22,7 @@ const FilmographyEditModal = ({
   onFilmoActiveClick,
   onFilmoDropdownClick,
   onSelectThumbnail,
-  onFilmoEditSaveClick
+  onResultFilmographyEditSave
 }: FilmographyEditModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
@@ -44,7 +44,7 @@ const FilmographyEditModal = ({
               filmoInputs.title.length === 0
             }
             onCloseClick={onFilmoEditActive}
-            onSaveClick={onFilmoEditSaveClick}
+            onSaveClick={onResultFilmographyEditSave}
           />
         </div>
       </div>

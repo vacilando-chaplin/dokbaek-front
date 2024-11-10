@@ -1,11 +1,11 @@
 "use client";
 
-import { filmoInputsTypes } from "@/types/types";
+import { castList, classificationList } from "@/data/data";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface FilmoItemProps {
-  filmo: filmoInputsTypes;
+  filmo: any;
   filmoRepresentActive?: boolean;
   representativeCount?: number;
   canEdit: boolean;
@@ -28,19 +28,10 @@ const FilmoItem = ({
   onLink
 }: FilmoItemProps) => {
   const {
-    classification,
-    production,
-    title,
-    cast,
-    casting,
-    description,
-    link,
-    thumbnail,
-    representative,
-    id
+    representative, 
   } = filmo;
 
-  const checkYoutube = link.includes("youtube");
+  const checkYoutube = filmo.production.videoUrl && filmo.production.videoUrl.includes("youtube");
 
   const [disabled, setDisabled] = useState(false);
 
@@ -66,7 +57,7 @@ const FilmoItem = ({
             type="checkbox"
             disabled={disabled}
             className={`absolute h-[18px] w-[18px] appearance-none rounded focus:outline-none ${representative ? "" : "opacity-0"}`}
-            onChange={() => onCheck(id)}
+            onChange={() => onCheck(filmo.id)}
           />
           <div
             className={`flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded transition-all duration-100 ease-linear ${representative ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light bg-static-white"} ${disabled && "border-border-disabled-light bg-background-disabled-light"}`}
@@ -151,25 +142,25 @@ const FilmoItem = ({
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
             <label className="text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light">
-              {production
-                ? `${production + " | " + classification}`
-                : production
+              {filmo.production.productYear
+                ? `${filmo.production.productYear + " | " + classificationList[filmo.production.category.id + 1]}`
+                : filmo.production.productYear
               }
             </label>
             <label className="text-body1 font-semibold leading-body1 tracking-body1 text-content-primary-light">
-              {title}
+              {filmo.production.title }
             </label>
           </div>
           <div className="flex h-auto w-full flex-col gap-0.5 text-caption1 font-normal leading-caption1 tracking-caption1 text-content-secondary-light">
             <label>
-              {cast} {casting && `'${casting}'`}
+              {castList[filmo.role.id + 1]} {filmo.character && `'${filmo.character}'`}
             </label>
-            <label>{description}</label>
+            <label>{filmo.production.description}</label>
           </div>
         </div>
         {/* link */}
         {checkYoutube && (
-          <button type="button" className="w-fit" onClick={() => onLink(link)}>
+          <button type="button" className="w-fit" onClick={() => onLink(filmo.production.videoUrl)}>
             <svg
               width="16"
               height="16"
@@ -188,10 +179,10 @@ const FilmoItem = ({
         )}
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
-        {thumbnail ? (
+        {filmo.production.thumbnailUrl ? (
           <Image
-            src={thumbnail}
-            alt={title}
+            src={filmo.production.thumbnailUrl }
+            alt={filmo.production.title }
             width={76}
             height={114}
             className="h-[114px] w-[76px] rounded-lg bg-gray-100"

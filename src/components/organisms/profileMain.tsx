@@ -75,41 +75,6 @@ const ProfileMain = ({
         </div>
       )}
       <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-        {/* <button
-          type="button"
-          className="flex h-auto items-center w-auto justify-center gap-1.5 rounded-xl border border-border-default-light px-5 py-[11px] text-body3 font-medium leading-body3 tracking-body3 outline-none bg-background-surface-light text-content-primary-light"
-        >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.29289 11.7071C6.90237 11.3166 6.90237 10.6834 7.29289 10.2929C7.68342 9.90237 8.31658 9.90237 8.70711 10.2929L11 12.5858L11 3C11 2.44771 11.4477 2 12 2C12.5523 2 13 2.44771 13 3L13 12.5858L15.2929 10.2929C15.6834 9.90237 16.3166 9.90237 16.7071 10.2929C17.0976 10.6834 17.0976 11.3166 16.7071 11.7071L12 16.4142L7.29289 11.7071Z" fill="#212529"/>
-          <path d="M4 16C4 15.4477 3.55228 15 3 15C2.44772 15 2 15.4477 2 16V18C2 19.6569 3.34315 21 5 21H19C20.6569 21 22 19.6569 22 18V16C22 15.4477 21.5523 15 21 15C20.4477 15 20 15.4477 20 16V18C20 18.5523 19.5523 19 19 19H5C4.44772 19 4 18.5523 4 18V16Z" fill="#212529"/>
-        </svg>
-
-        PDF 다운로드
-      </button>
-      <button
-        type="button"
-        className="flex h-auto items-center w-auto justify-center gap-1.5 rounded-xl border border-border-default-light px-5 py-[11px] text-body3 font-medium leading-body3 tracking-body3 outline-none bg-background-surface-light text-content-primary-light"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 7C5 5.34315 6.34315 4 8 4H15C15.5523 4 16 3.55228 16 3C16 2.44772 15.5523 2 15 2H8C5.23858 2 3 4.23858 3 7V16C3 16.5523 3.44772 17 4 17C4.55228 17 5 16.5523 5 16V7Z" fill="#363644"/>
-          <path fillRule="evenodd" clipRule="evenodd" d="M6 8C6 6.34315 7.34315 5 9 5H17C18.6569 5 20 6.34315 20 8V19C20 20.6569 18.6569 22 17 22H9C7.34315 22 6 20.6569 6 19V8ZM9 7H17C17.5523 7 18 7.44772 18 8V19C18 19.5523 17.5523 20 17 20H9C8.44772 20 8 19.5523 8 19V8C8 7.44772 8.44771 7 9 7Z" fill="#363644"/>
-        </svg>
-        링크 복사
-      </button>
-      <button
-        type="button"
-          className="flex h-auto items-center w-auto justify-center gap-1.5 rounded-xl border border-border-default-light px-5 py-[11px] text-body3 font-medium leading-body3 tracking-body3 outline-none bg-background-surface-light text-content-primary-light"
-          onClick={() => {
-            router.push("/profile");
-            setStepper(0);
-          }}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fillRule="evenodd" clipRule="evenodd" d="M19.9142 1.99997C19.1332 1.21892 17.8668 1.21892 17.0858 1.99997L7.78167 11.3041C7.39841 11.6873 7.18712 12.2097 7.19616 12.7517L7.23096 14.8382C7.24895 15.9166 8.11887 16.7866 9.19733 16.8045L11.2838 16.8393C11.8258 16.8484 12.3482 16.6371 12.7314 16.2538L22.0355 6.94972C22.8166 6.16867 22.8166 4.90234 22.0355 4.12129L19.9142 1.99997ZM18.5 3.41418L20.6213 5.5355L11.3172 14.8396L9.23068 14.8048L9.19588 12.7183L18.5 3.41418Z" fill="#212529"/>
-          <path d="M4 4.99997C4 4.44769 4.44772 3.99997 5 3.99997H11C11.5523 3.99997 12 3.55226 12 2.99997C12 2.44769 11.5523 1.99997 11 1.99997H5C3.34315 1.99997 2 3.34312 2 4.99997V19C2 20.6568 3.34315 22 5 22H19C20.6569 22 22 20.6568 22 19V13C22 12.4477 21.5523 12 21 12C20.4477 12 20 12.4477 20 13V19C20 19.5523 19.5523 20 19 20H5C4.44772 20 4 19.5523 4 19V4.99997Z" fill="#212529"/>
-        </svg>
-        프로필 편집
-      </button> */}
         <Button text="PDF 다운로드" icon="/icons/Download.svg"/>
         <Button text="링크 복사" icon="/icons/Copy.svg"/>
         <Button

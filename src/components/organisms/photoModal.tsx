@@ -4,19 +4,15 @@ import ModalTop from "../molecules/modalTop";
 
 interface PhotoModalProps {
   selectImage: string;
-  photoEdit: { photo: string; id: number };
   onModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onAddPhoto: React.MouseEventHandler<HTMLButtonElement>;
-  onEditPhoto: React.MouseEventHandler<HTMLButtonElement>;
   setCropImage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const PhotoModal = ({
   selectImage,
-  photoEdit,
   onModalActive,
   onAddPhoto,
-  onEditPhoto,
   setCropImage
 }: PhotoModalProps) => {
   return (
@@ -33,7 +29,7 @@ const PhotoModal = ({
             text="추가"
             disabled={selectImage.length === 0}
             onCloseClick={onModalActive}
-            onSaveClick={photoEdit.photo ? onEditPhoto : onAddPhoto}
+            onSaveClick={onAddPhoto}
           />
         </div>
     </section>

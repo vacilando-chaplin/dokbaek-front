@@ -1,26 +1,27 @@
-import { VideoTypes } from "@/types/types";
 import CreateButton from "../atoms/createButton";
 import EmptyBox from "../atoms/emptyBox";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 
 interface VideoMainProps {
-  videoList: VideoTypes[];
+  resultVideoList: any;
   videoDeleteModalActive: boolean;
   onVideoModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onVideoEditModalActive: (link: string, id: number) => void;
-  onVideoDeleteModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onVideoDelete: (id: number) => void;
+  onResultVideoEditModalOpen: any;
+  onResultVideoDeleteModalOpen: any;
+  onResultVideoDeleteModalClose: any;
+  onResultVideoDeleteClick: any;
   onVideoLinkModalOpen: (link: string) => void;
 }
 
 const VideoMain = ({
-  videoList,
+  resultVideoList,
   videoDeleteModalActive,
   onVideoModalActive,
-  onVideoEditModalActive,
-  onVideoDeleteModalActive,
-  onVideoDelete,
+  onResultVideoEditModalOpen,
+  onResultVideoDeleteModalOpen,
+  onResultVideoDeleteModalClose,
+  onResultVideoDeleteClick,
   onVideoLinkModalOpen
 }: VideoMainProps) => {
   return (
@@ -30,10 +31,10 @@ const VideoMain = ({
         <CreateButton onClick={onVideoModalActive} />
       </div>
       <div className="flex h-auto w-full flex-wrap gap-2">
-        {videoList.length >= 1 ? (
+        {resultVideoList.length >= 1 ? (
           <div className="grid h-auto w-full grid-cols-3 gap-2">
-            {videoList.map((video: VideoTypes) => {
-              const videoId = video.link.slice(32, 43);
+            {resultVideoList.map((video: any) => {
+              const videoId = video.url.slice(32, 43);
               const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
               return (
@@ -43,7 +44,7 @@ const VideoMain = ({
                   style={{
                     backgroundImage: `url(${thumbnail})`
                   }}
-                  onClick={() => onVideoLinkModalOpen(video.link)}
+                  onClick={() => onVideoLinkModalOpen(video.url)}
                 >
                   <div className="pointer-events-auto absolute z-10 h-full w-full opacity-0 hover:opacity-100">
                     {/* edit */}
@@ -52,7 +53,7 @@ const VideoMain = ({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onVideoEditModalActive(video.link, video.id);
+                        onResultVideoEditModalOpen(video)
                       }}
                     >
                       <svg
@@ -80,7 +81,7 @@ const VideoMain = ({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onVideoDeleteModalActive(e);
+                        onResultVideoDeleteModalOpen(video);
                       }}
                     >
                       <svg
@@ -105,9 +106,9 @@ const VideoMain = ({
                         id={video.id}
                         onCancel={(e) => {
                           e.stopPropagation();
-                          onVideoDeleteModalActive(e);
+                          onResultVideoDeleteModalClose(e);
                         }}
-                        onDelete={() => onVideoDelete(video.id)}
+                        onDelete={onResultVideoDeleteClick}
                       />
                     )}
                   </div>

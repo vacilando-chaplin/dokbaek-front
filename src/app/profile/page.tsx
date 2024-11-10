@@ -1,6 +1,6 @@
 "use client";
 
-import { getSchoolName, patchPhotoDefault, postPhoto, putInfo } from "@/api/api";
+import { deleteFilmography, deletePhoto, deleteVideo, getSchoolName, postFilmography, postPhoto, postVideo, putFilmography, putInfo, putVideo } from "@/api/api";
 import Toast from "@/components/atoms/toast";
 import SideMenu from "@/components/molecules/sideMenu";
 import BottomBar from "@/components/organisms/bottomBar";
@@ -26,10 +26,11 @@ import {
   mainPhoto,
   photo,
   profile,
-  stepperAtom,
-  video
+  stepperAtom
 } from "@/data/atom";
 import {
+  castList,
+  classificationList,
   filmographyActiveInit,
   filmographyInputInit,
   infoActiveInit,
@@ -38,9 +39,7 @@ import {
 import { useDebounce } from "@/hooks/hooks";
 import {
   filmoInputsTypes,
-  PhotoTypes,
-  SchoolTypes,
-  VideoTypes
+  SchoolTypes
 } from "@/types/types";
 import { contactFormat, setOnlyNumber } from "@/utils/utils";
 import { useRouter } from "next/navigation";
@@ -111,18 +110,20 @@ const Profile = () => {
       return;
     }
     if (index !== 0) {
-      const info = {
+      const infoData = {
         status: "PUBLIC",
-        name: infoInputs.name,
-        bornYear: Number(infoInputs.birth),
-        height: Number(infoInputs.height),
-        weight: Number(infoInputs.weight),
-        email: infoInputs.email,
-        contact: infoInputs.contact,
-        speciality: infoInputs.specialty,
-        instagramLink: infoInputs.instagram,
-        youtubeLink: infoInputs.youtube,
-        introduction: infoInputs.introduction,
+        info: {
+          name: infoInputs.name,
+          bornYear: Number(infoInputs.birth),
+          height: Number(infoInputs.height),
+          weight: Number(infoInputs.weight),
+          email: infoInputs.email,
+          contact: infoInputs.contact,
+          speciality: infoInputs.specialty,
+          instagramLink: infoInputs.instagram,
+          youtubeLink: infoInputs.youtube,
+          introduction: infoInputs.introduction
+        },
         education: [{
           school: {
             name: infoInputs.school,
@@ -134,7 +135,7 @@ const Profile = () => {
         }]
       }
       try {
-        const updateInfo = await putInfo(userId, token, info);
+        const updateInfo = await putInfo(userId, infoData, token);
         setInfoData(updateInfo);
       } catch (error) {
         throw error;
@@ -218,33 +219,37 @@ const Profile = () => {
   const [photoModalActive, setPhotoModalActive] = useState(false);
   const [selectImage, setSelectImage] = useState("");
   const [cropImage, setCropImage] = useState("");
-  const [photoId, setPhotoId] = useState(1);
-  const [photoEdit, setPhotoEdit] = useState({
-    photo: "",
-    id: 0
-  });
   const [photoEditModalActive, setPhotoEditModalActive] = useState(false);
   const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
-  const [photoRepresentativeActive, setPhotoRepresentativeActive] = useState({
-    state: false,
-    id: 0
-  });
+  const [photoRepresentativeActive, setPhotoRepresentativeActive] = useState(false);
 
-  const [resultPhotoList, setResultPhotoList] = useState();
+  const [resultPhotoList, setResultPhotoList] = useState<any>([]);
   const [origin, setOrigin] = useState<any>();
   const [defaultPhotoId, setDefaultPhotoId] = useState<string>("");
+  const [repPhoto, setRepPhoto] = useState<any>();
+  const [editRepPhoto, setEditRepPhoto] = useState<any>();
 
   // photoModal 저장
   const onAddPhoto = async () => {
     try {
       if (cropImage) {
         const res = await postPhoto(userId, origin, cropImage, token);
-        setPhotoList([...photoList, { photo: cropImage, id: photoId }])
-        setResultPhotoList(res);
+        const data = res.data;
+
+        if (resultPhotoList.length === 0) {
+          data.isDefault = true
+          setRepPhoto(data);
+        }
+        setResultPhotoList([...resultPhotoList, data]);
       } else {
         const res = await postPhoto(userId, origin, origin, token);
-        setPhotoList([...photoList, { photo: selectImage, id: photoId }]);
-        setResultPhotoList(res);
+        const data = res.data;
+
+        if (resultPhotoList.length === 0) {
+          data.isDefault = true
+          setRepPhoto(data);
+        }
+        setResultPhotoList([...resultPhotoList, data]);
       }
     } catch (error) {
       throw error
@@ -252,36 +257,43 @@ const Profile = () => {
     setPhotoModalActive(!photoModalActive);
     setSelectImage("");
     setCropImage("");
-    setPhotoId(photoId + 1);
     setToastMessage("사진을 추가했어요.");
   };
 
-  // photoModal 편집
-  const onEditPhoto = () => {
-    const index = photoList.findIndex((v: PhotoTypes) => v.id === photoEdit.id);
-    const list = [...photoList];
-    if (cropImage) {
-      list.splice(index, 1, {
-        photo: cropImage,
-        id: photoEdit.id
-      });
-    } else {
-      list.splice(index, 1, {
-        photo: selectImage,
-        id: photoEdit.id
-      });
-    }
-    setPhotoList(list);
-    setPhotoEdit({ photo: "", id: 0 });
-    setPhotoEditModalActive(!photoEditModalActive);
-    setSelectImage("");
-  };
+  console.log()
 
-  const onDeletePhoto = (id: number) => {
-    const index = photoList.findIndex((v: PhotoTypes) => v.id === id);
-    const list = [...photoList];
-    list.splice(index, 1);
-    setPhotoList(list);
+  // photoModal 편집
+  // const onEditPhoto = () => {
+  //   try {
+
+  //   }
+
+  //   const index = photoList.findIndex((v: PhotoTypes) => v.id === photoEdit.id);
+  //   const list = [...photoList];
+  //   if (cropImage) {
+  //     list.splice(index, 1, {
+  //       photo: cropImage,
+  //       id: photoEdit.id
+  //     });
+  //   } else {
+  //     list.splice(index, 1, {
+  //       photo: selectImage,
+  //       id: photoEdit.id
+  //     });
+  //   }
+  //   setPhotoList(list);
+  //   setPhotoEdit({ photo: "", id: 0 });
+  //   setPhotoEditModalActive(!photoEditModalActive);
+  //   setSelectImage("");
+  // };
+
+  const onDeletePhoto = async (id: number) => {
+    try {
+      await deletePhoto(userId, id, token);
+      setResultPhotoList((prev: any) => prev.filter((photo: any) => photo.id !== id ));
+    } catch (error) {
+      throw error
+    }
     setPhotoDeleteActive(!photoDeleteActive);
     setToastMessage("사진을 삭제했어요.");
   };
@@ -294,77 +306,47 @@ const Profile = () => {
   // photoModal 액티브
   const onPhotoModalActive = () => {
     setPhotoModalActive(!photoModalActive);
-    setPhotoEdit({ photo: "", id: 0 });
-    setSelectImage("");
   };
 
   const onPhotoEditModalClose = () => {
     setPhotoEditModalActive(!photoEditModalActive);
-  };
-
-  // photoEditModal 액티브
-  const onEditPhotoModalActive = (photo: string, id: number) => {
-    setPhotoEditModalActive(!photoEditModalActive);
-    setPhotoEdit({ photo: photo, id: id });
     setSelectImage("");
+    setCropImage("");
   };
 
-  // photoRepresentative 액티브
   const onPhotoRepresentativeActive = () => {
-    if (photoRepresentative.id) {
-      setPhotoRepresentativeActive({
-        ...photoRepresentativeActive,
-        state: !photoRepresentativeActive.state,
-        id: photoRepresentative.id
-      });
-    } else {
-      setPhotoRepresentativeActive({
-        ...photoRepresentativeActive,
-        state: !photoRepresentativeActive.state,
-        id: 0
-      });
-    }
-  };
+    setEditRepPhoto(repPhoto);
+    setPhotoRepresentativeActive(!photoRepresentativeActive)
+  }
 
-  // photoRepresentative 완료
-  const onPhotoRepresentativeSave = () => {
-    const index = photoList.findIndex(
-      (v: PhotoTypes) => v.id === photoRepresentativeActive.id
-    );
-    setDefaultPhotoId(photoRepresentativeActive.id.toString());
-    const list = [...photoList];
-    if (photoRepresentativeActive.id) {
-      list.splice(index, 1, {
-        photo: photoList[index].photo,
-        id: photoList[index].id
-      });
-      setPhotoRepresentative(list[index]);
-    } else {
-      setPhotoRepresentative({ photo: "", id: 0 });
-    }
-    setPhotoList(list);
-    setPhotoRepresentativeActive({
-      ...photoRepresentativeActive,
-      state: !photoRepresentativeActive.state
-    });
-    patchPhotoDefault(userId, defaultPhotoId, token);
-    setToastMessage("대표 사진을 설정했어요.");
-  };
+  const onPhotoRepresentativeClose = () => {
+    setRepPhoto(editRepPhoto);
+    setEditRepPhoto({});
+    setPhotoRepresentativeActive(!photoRepresentativeActive)
+  }
 
-  // photoRepresentative 대표작 선택
-  const onPhotoRepresentativeSelect = (id: number) => {
-    if (photoRepresentativeActive.id === id) {
-      setPhotoRepresentativeActive({
-        ...photoRepresentativeActive,
-        id: 0
-      });
-    } else {
-      setPhotoRepresentativeActive({
-        ...photoRepresentativeActive,
-        id: id
-      });
-    }
-  };
+  const onPhotoRepCheck = (photo: any) => {
+    setRepPhoto(photo);
+  }
+
+  const onPhotoRepSave = async () => {
+    const index = resultPhotoList.findIndex((photo: any) => photo.id === repPhoto.id)
+    const updateList = [...resultPhotoList];
+
+    updateList[index].isDefault = true;
+    setResultPhotoList(updateList);
+    // try {
+    //   await patchPhotoDefault(userId, repPhoto.id, token);
+
+    //   const index = resultPhotoList.findIndex((photo: any) => photo.id === repPhoto.id)
+    //   const updateList = [...resultPhotoList];
+
+    //   updateList[index].isDefault = true;
+    //   setResultPhotoList(updateList);
+    // } catch (error) {
+    //   throw error;
+    // }
+  }
 
   // 모달에 크롭 할 이미지 선택
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -399,27 +381,95 @@ const Profile = () => {
   const [filmoLink, setFilmoLink] = useState("");
   const [linkModalActive, setLinkModalActive] = useState(false);
 
-  useEffect(() => {
-    setEditRepresentative([...filmoList]);
-  }, [filmoList]);
+  const [resultFilmoList, setResultFilmoList] = useState<any>([]);
+  const [resultFilmoEdit, setResultFilmoEdit] = useState<any>({});
 
-  // count 수정 필요 (불필요한 리렌더링)
-  useEffect(() => {
-    const count = editRepresentative.filter(
-      (v) => v.representative === true
-    ).length;
-    setRepresentativeCount(count);
-  }, [editRepresentative]);
+  const onResultFilmographySave = async () => {
+    try {
+      const roleId = castList.findIndex((cast: string) => cast === filmoInputs.cast);
+      const categoryId = classificationList.findIndex((category: string) => category === filmoInputs.classification);
+
+      const filmo = {
+        roleId: filmoInputs.cast ? roleId + 1 : 0,
+        customRole: filmoInputs.castInput,
+        character: filmoInputs.casting,
+        is_featured: false,
+        production: {
+          categoryId: categoryId + 1,
+          productionYear: Number(filmoInputs.production),
+          title: filmoInputs.title,
+          description: filmoInputs.description,
+          videoUrl: filmoInputs.link,
+          thumbnailUrl: filmoInputs.thumbnail
+        },
+        displayOrder: 0
+      } 
+      const res = await postFilmography(userId, filmo, token);
+      const data = res.data;
+      setResultFilmoList([data, ...resultFilmoList])
+    } catch (error) {
+      throw error;
+    }
+    setFilmoInputs(filmographyInputInit);
+    setFilmoModalActive(!filmoModalActive);
+    setToastMessage("작품 활동을 추가했어요.");
+  }
+
+  const onResultFilmographyEditSave = async () => {
+    const roleId = castList.findIndex((cast: string) => cast === filmoInputs.cast);
+    const categoryId = classificationList.findIndex((category: string) => category === filmoInputs.classification);
+
+    const editFilmo = {
+      roleId: filmoInputs.cast ? roleId + 1 : 0,
+      customRole: filmoInputs.castInput,
+      character: filmoInputs.casting,
+      is_featured: resultFilmoEdit.is_featured,
+      production: {
+        categoryId: categoryId + 1,
+        productionYear: Number(filmoInputs.production),
+        title: filmoInputs.title,
+        description: filmoInputs.description,
+        videoUrl: filmoInputs.link,
+        thumbnailUrl: filmoInputs.thumbnail
+      },
+      displayOrder: resultFilmoEdit.displayOrder
+    }
+
+    try {
+      const res = await putFilmography(userId, resultFilmoEdit.id, editFilmo, token);
+      const data = res.data;
+
+      const index = resultFilmoList.findIndex((filmo: any) => filmo.id === data.id)
+      const updateList = [...resultFilmoList];
+
+      updateList[index] = data;
+      setResultVideoList(updateList);
+    } catch (error) {
+      throw error;
+    }
+    setResultFilmoEdit({});
+    setFilmoEditModal(!filmoEditModal);
+    setToastMessage("작품 활동을 수정했어요.");
+  }
+
+  const onResultFilmographyDeleteClick = async () => {
+    try {
+      await deleteFilmography(userId, resultFilmoEdit.id, token);
+      setResultFilmoList((prev: any) => prev.filter((filmo: any) => filmo.id !== resultFilmoEdit.id ));
+    } catch (error) {
+      throw error
+    }
+    setResultFilmoEdit({});
+    setFilmoDeleteModal(!filmoDeleteModal);
+    setToastMessage("작품 활동을 삭제했어요.");
+  }
+
+  console.log(resultFilmoList);
 
   // filmographyMain
 
   const onRepresentativeActive = () => {
     setFilmoRepresentActive(!filmoRepresentActive);
-  };
-
-  const onCancelRepActive = () => {
-    setFilmoRepresentActive(!filmoRepresentActive);
-    setEditRepresentative([...filmoList]);
   };
 
   const onSaveRepActive = () => {
@@ -488,57 +538,10 @@ const Profile = () => {
     }
   };
 
-  const onFilmoSaveClick = () => {
-    const filmo = {
-      ...filmoInputs,
-      id: filmoInputs.title + filmoInputs.production
-    };
-    const updateFilmoList = [...filmoList, filmo];
-    const sortedFilmoList = updateFilmoList.sort(
-      (a, b) =>
-        Number(b.production) - Number(a.production) ||
-        a.title.localeCompare(b.title)
-    );
-    setFilmoList(sortedFilmoList);
-    setFilmoInputs(filmographyInputInit);
-    setFilmoModalActive(!filmoModalActive);
-    setToastMessage("작품 활동을 추가했어요.");
-  };
-
-  // filmographyEditModal
-
-  const onFilmoEditSaveClick = () => {
-    const filmo = {
-      ...filmoInputs,
-      id: filmoInputs.title + filmoInputs.production
-    };
-    const updateFilmoList = [...filmoList];
-    const index = updateFilmoList.findIndex((v) => v.id === selectFilmo.id);
-    updateFilmoList[index] = filmo;
-    const sortedFilmoList = updateFilmoList.sort(
-      (a, b) =>
-        Number(b.production) - Number(a.production) ||
-        a.title.localeCompare(b.title)
-    );
-    setFilmoList(sortedFilmoList);
-    setFilmoEditModal(!filmoEditModal);
-    setToastMessage("작품 활동을 수정했어요.");
-  };
-
   // filmographyDeleteModal
 
   const onFilmoDeleteModalActive = () => {
     setFilmoDeleteModal(!filmoDeleteModal);
-  };
-
-  const onFilmoDeleteClick = () => {
-    const filteredFilmo = filmoList.filter(
-      (filmo: filmoInputsTypes) => filmo.id !== selectFilmo.id
-    );
-    setFilmoList(filteredFilmo);
-    setFilmoDeleteModal(!filmoDeleteModal);
-    setSelectFilmo(filmographyInputInit);
-    setToastMessage("작품 활동을 삭제했어요.");
   };
 
   const onFilmoLink = (link: string) => {
@@ -552,16 +555,15 @@ const Profile = () => {
 
   // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Video ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-  const [videoList, setVideoList] = useRecoilState<any>(video);
-
-  const [videoId, setVideoId] = useState(0);
   const [videoInputs, setVideoInputs] = useState("");
   const [videoModalActive, setVideoModalActive] = useState(false);
   const [videoEditModalActive, setVideoEditModalActive] = useState(false);
-  const [videoEdit, setVideoEdit] = useState({ link: "", id: 0 });
   const [videoDeleteModalActive, setVideoDeleteModalActive] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [videoLinkModalActive, setVideoLinkModalActive] = useState(false);
+
+  const [resultVideoList, setResultVideoList] = useState<any>([]);
+  const [resultVideoEdit, setResultVideoEdit] = useState<any>({});
 
   const onVideoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVideoInputs(e.target.value);
@@ -572,59 +574,76 @@ const Profile = () => {
     setVideoModalActive(!videoModalActive);
   };
 
-  const onVideoEditModalClose = () => {
-    setVideoEditModalActive(!videoEditModalActive);
-  };
-
-  const onVideoModalSave = () => {
-    const updateVideoList = [...videoList, { link: videoInputs, id: videoId }];
+  const onResultVideoModalSave = async () => {
+    try {
+      const res = await postVideo(userId, videoInputs, token);
+      const data = res.data;
+      setResultVideoList([...resultVideoList, data])
+    } catch (error) {
+      throw error;
+    }
 
     setVideoModalActive(!videoModalActive);
-    setVideoList(updateVideoList);
-    setVideoId(videoId + 1);
     setVideoInputs("");
     setToastMessage("영상을 추가했어요.");
   };
 
-  const onVideoEditModalActive = (link: string, id: number) => {
+  const onResultVideoEditModalOpen = (video: any) => {
+    setVideoInputs(video.url);
     setVideoEditModalActive(!videoEditModalActive);
-    setVideoInputs(link);
-    setVideoEdit({ ...videoEdit, link: link, id: id });
+    setResultVideoEdit(video);
   };
 
-  const onVideoEditModalSave = () => {
-    const index = videoList.findIndex((v: VideoTypes) => v.id === videoEdit.id);
-    const list = [...videoList];
-    list.splice(index, 1, {
-      link: videoInputs,
-      id: videoEdit.id
-    });
-    setVideoList(list);
-    setVideoEdit({ link: "", id: 0 });
+  const onResultVideoEditModalClose = () => {
+    setVideoInputs("");
+    setVideoEditModalActive(!videoEditModalActive);
+    setResultVideoEdit({});
+  }
+
+  const onResultVideoEditModalSave = async () => {
+    try {
+      const data = await putVideo(userId, resultVideoEdit.id, videoInputs, token);
+      
+      const index = resultVideoList.findIndex((video: any) => video.id === data.data.id)
+      const updateList = [...resultVideoList];
+
+      updateList[index].url = data.data.url;
+      setResultVideoList(updateList);
+    } catch (error) {
+      throw error
+    }
     setVideoInputs("");
     setVideoEditModalActive(!videoEditModalActive);
     setToastMessage("영상을 수정했어요.");
-  };
+  }
 
-  const onVideoDeleteModalActive = () => {
-    setVideoDeleteModalActive(!videoDeleteModalActive);
-  };
+  const onResultVideoDeleteModalOpen = (video: any) => {
+    setVideoDeleteModalActive(!videoDeleteModalActive)
+    setResultVideoEdit(video);
+  }
 
-  const onVideoDelete = (id: number) => {
-    const index = videoList.findIndex((v: VideoTypes) => v.id === id);
-    const list = [...videoList];
-    list.splice(index, 1);
-    setVideoList(list);
-    setVideoDeleteModalActive(!videoDeleteModalActive);
+  const onResultVideoDeleteModalClose = () => {
+    setVideoDeleteModalActive(!videoDeleteModalActive)
+  }
+
+  const onResultVideoDeleteClick = async () => {
+    try {
+      await deleteVideo(userId, resultVideoEdit.id, token);
+      setResultVideoList((prev: any) => prev.filter((video: any) => video.id !== resultVideoEdit.id ));
+    } catch (error) {
+      throw error;
+    }
+    setResultVideoEdit({});
+    setVideoDeleteModalActive(!videoDeleteModalActive)
     setToastMessage("영상을 삭제했어요.");
-  };
+  }
 
   const onVideoLinkModalActive = () => {
     setVideoLinkModalActive(!videoLinkModalActive);
   };
 
-  const onVideoLinkModalOpen = (link: string) => {
-    setVideoLink(link);
+  const onVideoLinkModalOpen = (video: any) => {
+    setVideoLink(video.url);
     setVideoLinkModalActive(!videoLinkModalActive);
   };
 
@@ -639,13 +658,17 @@ const Profile = () => {
     info: infoInputs,
     photo: photoList,
     filmography: filmoList,
-    video: videoList
+    video: resultVideoList
   };
 
   const onSaveProfileClick = () => {
     setProfileData(profileData);
     router.push("myProfile");
   };
+
+  const onBackProfileClick = () => {
+    router.push("myProfile");
+  }
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
@@ -679,36 +702,33 @@ const Profile = () => {
         {stepper === 1 && (
           <>
             <PhotoMain
-              photoList={photoList}
+              repPhoto={repPhoto}
+              resultPhotoList={resultPhotoList}
               photoDeleteActive={photoDeleteActive}
               photoRepresentative={photoRepresentative}
               photoRepresentativeActive={photoRepresentativeActive}
               onSelectFile={onSelectFile}
               onPhotoModalActive={onPhotoModalActive}
-              onEditPhotoModalActive={onEditPhotoModalActive}
               onDeletePhoto={onDeletePhoto}
               onDeletePhotoActive={onDeletePhotoActive}
               onPhotoRepresentativeActive={onPhotoRepresentativeActive}
-              onPhotoRepresentativeSave={onPhotoRepresentativeSave}
-              onPhotoRepresentativeSelect={onPhotoRepresentativeSelect}
+              onPhotoRepSave={onPhotoRepSave}
+              onPhotoRepCheck={onPhotoRepCheck}
+              onPhotoRepresentativeClose={onPhotoRepresentativeClose}
             />
             {photoModalActive && (
               <PhotoModal
                 selectImage={selectImage}
-                photoEdit={photoEdit}
                 onModalActive={onPhotoModalActive}
                 onAddPhoto={onAddPhoto}
-                onEditPhoto={onEditPhoto}
                 setCropImage={setCropImage}
               />
             )}
             {photoEditModalActive && (
               <PhotoEditModal
                 selectImage={selectImage}
-                photoEdit={photoEdit}
                 onModalActive={onPhotoEditModalClose}
                 onAddPhoto={onAddPhoto}
-                onEditPhoto={onEditPhoto}
                 setCropImage={setCropImage}
               />
             )}
@@ -717,12 +737,11 @@ const Profile = () => {
         {stepper === 2 && (
           <>
             <FilmographyMain
-              filmoList={filmoList}
+              resultFilmoList={resultFilmoList}
               filmoRepresentActive={filmoRepresentActive}
               editRepresentative={editRepresentative}
               representativeCount={representativeCount}
               onRepresentativeActive={onRepresentativeActive}
-              onCancelRepActive={onCancelRepActive}
               onSaveRepActive={onSaveRepActive}
               onFilmoModalActive={onFilmoModalActive}
               onFilmoEditClick={onFilmoEditClick}
@@ -740,7 +759,7 @@ const Profile = () => {
                 onFilmoActiveClick={onFilmoActiveClick}
                 onFilmoDropdownClick={onFilmoDropdownClick}
                 onSelectThumbnail={onSelectThumbnail}
-                onFilmoSaveClick={onFilmoSaveClick}
+                onResultFilmographySave={onResultFilmographySave}
               />
             )}
             {filmoEditModal && (
@@ -752,13 +771,13 @@ const Profile = () => {
                 onFilmoActiveClick={onFilmoActiveClick}
                 onFilmoDropdownClick={onFilmoDropdownClick}
                 onSelectThumbnail={onSelectThumbnail}
-                onFilmoEditSaveClick={onFilmoEditSaveClick}
+                onResultFilmographyEditSave={onResultFilmographyEditSave}
               />
             )}
             {filmoDeleteModal && (
               <FilmographyDeleteModal
                 onCancel={onFilmoDeleteModalActive}
-                onDelete={onFilmoDeleteClick}
+                onDelete={onResultFilmographyDeleteClick}
               />
             )}
             {linkModalActive && (
@@ -772,12 +791,13 @@ const Profile = () => {
         {stepper === 3 && (
           <>
             <VideoMain
-              videoList={videoList}
+              resultVideoList={resultVideoList}
               videoDeleteModalActive={videoDeleteModalActive}
               onVideoModalActive={onVideoModalActive}
-              onVideoEditModalActive={onVideoEditModalActive}
-              onVideoDeleteModalActive={onVideoDeleteModalActive}
-              onVideoDelete={onVideoDelete}
+              onResultVideoEditModalOpen={onResultVideoEditModalOpen}
+              onResultVideoDeleteModalOpen={onResultVideoDeleteModalOpen}
+              onResultVideoDeleteModalClose={onResultVideoDeleteModalClose}
+              onResultVideoDeleteClick={onResultVideoDeleteClick}
               onVideoLinkModalOpen={onVideoLinkModalOpen}
             />
             {videoModalActive && (
@@ -785,15 +805,15 @@ const Profile = () => {
                 videoInputs={videoInputs}
                 onVideoInputChange={onVideoInputChange}
                 onVideoModalActive={onVideoModalActive}
-                onVideoModalSave={onVideoModalSave}
+                onResultVideoModalSave ={onResultVideoModalSave}
               />
             )}
             {videoEditModalActive && (
               <VideoEditModal
                 videoInputs={videoInputs}
                 onVideoInputChange={onVideoInputChange}
-                onVideoEditModalClose={onVideoEditModalClose}
-                onVideoEditModalSave={onVideoEditModalSave}
+                onResultVideoEditModalClose={onResultVideoEditModalClose}
+                onResultVideoEditModalSave={onResultVideoEditModalSave}
               />
             )}
             {videoLinkModalActive && (
@@ -811,6 +831,7 @@ const Profile = () => {
           infoInputs.birth.length === 0 ||
           infoInputs.contact.length === 0
         }
+        onBack={onBackProfileClick}
         onSave={onSaveProfileClick}
       />
     </div>

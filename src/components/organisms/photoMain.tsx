@@ -1,67 +1,65 @@
 import Image from "next/image";
-import Title from "../atoms/title";
-import RepresentativeButton from "../atoms/representiveButton";
 import EmptyBox from "../atoms/emptyBox";
-import { PhotoTypes } from "@/types/types";
+import RepresentativeButton from "../atoms/representiveButton";
+import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 
 interface PhotoMainProps {
-  photoList: any;
+  repPhoto: any;
+  resultPhotoList: any;
   photoDeleteActive: boolean;
   photoRepresentative: { photo: string; id: number };
-  photoRepresentativeActive: {
-    state: boolean;
-    id: number;
-  };
+  photoRepresentativeActive: boolean;
   onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPhotoModalActive: React.MouseEventHandler<HTMLInputElement>;
-  onEditPhotoModalActive: (photo: string, id: number) => void;
   onDeletePhoto: (id: number) => void;
   onDeletePhotoActive: React.MouseEventHandler<HTMLButtonElement>;
   onPhotoRepresentativeActive: React.MouseEventHandler<HTMLButtonElement>;
-  onPhotoRepresentativeSave: React.MouseEventHandler<HTMLButtonElement>;
-  onPhotoRepresentativeSelect: (id: number) => void;
+  onPhotoRepSave: any;
+  onPhotoRepCheck: any;
+  onPhotoRepresentativeClose: any;
 }
 
 const PhotoMain = ({
-  photoList,
+  repPhoto,
+  resultPhotoList,
   photoDeleteActive,
   photoRepresentative,
   photoRepresentativeActive,
   onSelectFile,
   onPhotoModalActive,
-  onEditPhotoModalActive,
   onDeletePhoto,
   onDeletePhotoActive,
   onPhotoRepresentativeActive,
-  onPhotoRepresentativeSave,
-  onPhotoRepresentativeSelect
+  onPhotoRepSave,
+  onPhotoRepCheck,
+  onPhotoRepresentativeClose
 }: PhotoMainProps) => {
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
       <div className="flex w-full flex-row justify-between">
         <Title name="사진" />
         <div className="flex flex-row items-center gap-4">
-          {photoRepresentativeActive.state && (
+          {photoRepresentativeActive && (
             <label className="text-body2 font-medium leading-body2 tracking-body2 text-accent-primary-light">
               대표 사진을 선택해주세요.
             </label>
           )}
-          {photoRepresentativeActive.state ? (
+          {photoRepresentativeActive ? (
             <div className="flex items-center gap-1">
               <RepresentativeButton
                 text="취소"
-                onActive={onPhotoRepresentativeActive}
+                onActive={onPhotoRepresentativeClose}
               />
               <RepresentativeButton
                 text="완료"
                 color="border border-accent-primary-light text-accent-primary-light"
-                onActive={onPhotoRepresentativeSave}
+                onActive={onPhotoRepSave}
               />
             </div>
           ) : (
             <div className="flex items-center gap-1">
-              {photoList.length >= 1 && (
+              {resultPhotoList.length >= 1 && (
                 <RepresentativeButton
                   icon={true}
                   text="대표 사진 설정"
@@ -97,44 +95,44 @@ const PhotoMain = ({
         </div>
       </div>
       <div className="flex h-auto w-full flex-wrap gap-2">
-        {photoList.length >= 1 ? (
+        {resultPhotoList.length >= 1 ? (
           <div className="grid grid-cols-4 gap-2">
-            {photoList.map((photoItem: PhotoTypes) => {
+            {resultPhotoList.map((photoItem: any) => {
               return (
                 <figure
                   key={photoItem.id}
                   className="relative flex h-full w-full rounded-lg"
                 >
                   <Image
-                    src={photoItem.photo}
-                    alt={photoItem.photo}
+                    src={photoItem.path}
+                    alt={photoItem.path}
                     width={300}
                     height={383}
                     priority
                     objectFit="cover"
                     className="rounded-lg"
                   />
-                  {photoRepresentativeActive.state === false &&
-                    photoItem.id === photoRepresentative.id && (
+                  {photoRepresentativeActive === false &&
+                    photoItem.id === repPhoto.id && (
                       <label className="absolute left-2 top-2 flex h-auto w-auto items-center justify-center rounded-full border border-border-default_inverse-light bg-accent-primary-light px-1.5 py-0.5 text-caption2 font-semibold leading-caption2 tracking-caption2 text-content-on_color-light">
                         대표
                       </label>
                     )}
-                  {photoRepresentativeActive.state && (
+                  {photoRepresentativeActive && (
                     <div className="absolute h-1/4 w-full rounded-lg bg-gradient-to-b from-static-black opacity-50"></div>
                   )}
-                  {photoRepresentativeActive.state ? (
+                  {photoRepresentativeActive ? (
                     <div className="absolute left-2 top-2 h-full w-full">
                       <div className="flex gap-2">
                         <input
                           type="checkbox"
                           className="absolute h-[18px] w-[18px] appearance-none rounded-md focus:outline-none"
-                          onClick={() =>
-                            onPhotoRepresentativeSelect(photoItem.id)
+                          onClick={
+                            onPhotoRepCheck(photoItem)
                           }
                         />
                         <div
-                          className={`flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded transition-all duration-100 ease-linear ${photoRepresentativeActive.id === photoItem.id ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                          className={`flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded transition-all duration-100 ease-linear ${photoItem.isDefault ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
                         >
                           <svg
                             className="pointer-events-none h-[14px] w-[14px]"
@@ -146,7 +144,7 @@ const PhotoMain = ({
                               fillRule="evenodd"
                               clipRule="evenodd"
                               d="M22.2236 5.3098C22.6048 5.70945 22.5898 6.34244 22.1902 6.72362L8.86639 19.432L1.75865 11.5802C1.388 11.1708 1.41946 10.5384 1.8289 10.1677C2.23835 9.79709 2.87073 9.82854 3.24137 10.238L8.97146 16.568L20.8098 5.27638C21.2095 4.8952 21.8424 4.91016 22.2236 5.3098Z"
-                              fill={`${photoRepresentativeActive.id === photoItem.id ? "#ffffff" : "none"}`}
+                              fill={`${photoItem.isDefault  ? "#ffffff" : "none"}`}
                             />
                           </svg>
                         </div>
@@ -164,12 +162,7 @@ const PhotoMain = ({
                           className="hidden"
                           type="file"
                           accept="image/*"
-                          onClick={() =>
-                            onEditPhotoModalActive(
-                              photoItem.photo,
-                              photoItem.id
-                            )
-                          }
+                          onClick={onPhotoModalActive}
                           onChange={onSelectFile}
                         />
                         <svg

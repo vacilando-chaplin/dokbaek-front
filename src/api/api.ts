@@ -62,21 +62,12 @@ const getAuthHeaders = (token: string) => {
   }
 };
 
-export const putInfo = async (id: number, token: string, data: any) => {
+export const putInfo = async (id: number, data: any, token: string) => {
   try {
     const res = await api.put(`/profile/${id}`, data, getAuthHeaders(token));
     return res.data;
-  } catch (error: any) {
-    if (error.response) {
-      console.error('Error response:', error.response);  // 서버에서 반환한 응답
-      throw new Error(`Error ${error.response.status}: ${error.response.data.message || 'Unknown error'}`);
-    } else if (error.request) {
-      console.error('Error request:', error.request);  // 요청이 서버로 전송되었으나 응답이 없을 경우
-      throw new Error('No response from server.');
-    } else {
-      console.error('Error message:', error.message);  // 요청 설정 중 발생한 오류
-      throw new Error('Error in setting up request: ' + error.message);
-    }
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -114,7 +105,15 @@ export const postPhoto = async (id: number, origin: any, preview: any, token: st
     });
     return res.data;
   } catch (error) {
-    console.log(error);
+    throw error;
+  }
+}
+
+export const deletePhoto = async (id: number, photoId: number, token: string) => {
+  try {
+    const res = await api.delete(`/profile/${id}/photo/${photoId}`, getAuthHeaders(token));
+    return res.data;
+  } catch (error) {
     throw error;
   }
 }
@@ -124,10 +123,63 @@ export const patchPhotoDefault = async (id: number, photoId: string, token: stri
     const res = await api.patch(`/profile/${id}/photo/${photoId}/default`, getAuthHeaders(token))
     return res.data;
   } catch (error) {
-    console.log(error);
     throw error
   }
 } 
+
+export const postFilmography = async (id: number, data: any, token: string) => {
+  try {
+    const res = await api.post(`/profile/${id}/filmo`, data, getAuthHeaders(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const putFilmography = async (id: number, filmoId: number, data: any, token: string) => {
+  try {
+    const res = await api.put(`/profile/${id}/filmo/${filmoId}}`, data, getAuthHeaders(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const deleteFilmography = async (id: number, filmoId: number, token: string) => {
+  try {
+    const res = await api.delete(`/profile/${id}/filmo/${filmoId}`, getAuthHeaders(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const postVideo = async (id: number, url: string, token: string) => {
+  try {
+    const res = await api.post(`/profile/${id}/video`, { url }, getAuthHeaders(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const putVideo = async (id: number, videoId: number, url: string, token: string) => {
+  try {
+    const res = await api.put(`/profile/${id}/video/${videoId}`, { url }, getAuthHeaders(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const deleteVideo = async (id: number, videoId: number, token: string) => {
+  try {
+    const res = await api.delete(`/profile/${id}/video/${videoId}`, getAuthHeaders(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const getProfile = async (id: number) => {
   try {
