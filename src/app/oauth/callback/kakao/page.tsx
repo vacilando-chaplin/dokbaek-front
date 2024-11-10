@@ -48,7 +48,7 @@ const Kakao = () => {
 
   useEffect(() => {
     if (data) {
-      setPostData({ ...postData, accessToken: data.data.access_token });
+      setPostData({ ...postData, accessToken: data.access_token });
     }
   }, [data]);
 
