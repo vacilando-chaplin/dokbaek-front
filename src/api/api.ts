@@ -2,14 +2,14 @@ import { SignUpRequestTypes } from "@/types/types";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://3.38.102.209:8080",
+  baseURL: "https://filmogram.my/api",
   headers: {
     "Content-Type": "application/json"
   },
   withCredentials: true
 });
 
-const baseURL = "http://3.38.102.209:8080"
+const baseURL = "https://filmogram.my/api"
 
 export const getSchoolName = async (search: string) => {
   const univ_res = await fetch(
