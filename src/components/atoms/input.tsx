@@ -63,7 +63,8 @@ const Input = ({
       )}
       {icon && value ? (
         <input
-          className={`w-full outline-none ${value.includes(`https://www.${icon}.com/`) === true ? "text-content-primary-light" : "text-state-negative-light"}`}
+          className="w-full text-content-primary-light outline-none"
+          // className={`w-full outline-none ${value.includes(`https://www.${icon}.com/`) === true ? "text-content-primary-light" : "text-state-negative-light"}`}
           type={type}
           placeholder={placeholder}
           maxLength={maxLength}
@@ -75,7 +76,7 @@ const Input = ({
         />
       ) : (
         <input
-          className="w-full outline-none"
+          className={`w-full outline-none ${readOnly && "cursor-pointer text-left"}`}
           type={type}
           placeholder={placeholder}
           maxLength={maxLength}

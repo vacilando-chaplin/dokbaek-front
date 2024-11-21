@@ -33,11 +33,11 @@ export const infoInitData = {
       status: "GRADUATED"
     }
   ]
-}
+};
 
 export const infoActiveInit = {
   birth: false,
-  school: true,
+  school: false,
   education: false
 };
 
@@ -70,6 +70,15 @@ export const educationList = [
   "중퇴"
 ];
 
+export const educationEngList = [
+  "GRADUATED",
+  "PENDING",
+  "ENROLLED",
+  "LEAVE_OF_ABSENCE",
+  "COMPLETION",
+  "DROPPED_OUT"
+];
+
 export const classificationList = [
   "장편상업영화",
   "장편독립영화",
@@ -83,12 +92,7 @@ export const classificationList = [
   "기타"
 ];
 
-export const castList = [
-  "주연",
-  "조연",
-  "단역",
-  "직접 입력"
-];
+export const castList = ["주연", "조연", "단역", "직접 입력"];
 
 export const year = new Date().getFullYear();
 export const yearList = Array.from(new Array(70), (v, index) =>

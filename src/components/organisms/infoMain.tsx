@@ -11,11 +11,10 @@ interface InfoMainProps {
   infoActives: infoActivesTypes;
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onNumberChange: React.ChangeEventHandler<HTMLInputElement>;
+  onBirthChange: React.ChangeEventHandler<HTMLInputElement>;
   onContactChange: React.ChangeEventHandler<HTMLInputElement>;
   onActiveClick: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
-  onInstagramChange: any;
-  onYoutubeChange: any;
 }
 
 const InfoMain = ({
@@ -23,11 +22,10 @@ const InfoMain = ({
   infoActives,
   onInputChange,
   onNumberChange,
+  onBirthChange,
   onContactChange,
   onActiveClick,
-  onItemClick,
-  onInstagramChange,
-  onYoutubeChange
+  onItemClick
 }: InfoMainProps) => {
   const {
     name,
@@ -67,7 +65,7 @@ const InfoMain = ({
               name="birth"
               value={birth}
               active={infoActives.birth}
-              onChange={onNumberChange}
+              onChange={onBirthChange}
               onActive={onActiveClick}
             />
             {infoActives.birth && (
@@ -130,7 +128,7 @@ const InfoMain = ({
             label="특기"
             type="text"
             placeholder="ex) 영어, 중국어, 피아노, 1종 면허, 사투리, 댄스"
-            maxLength={30}
+            maxLength={20}
             name="specialty"
             value={specialty}
             onChange={onInputChange}
@@ -146,7 +144,7 @@ const InfoMain = ({
               maxLength={300}
               name="instagram"
               value={instagram}
-              onChange={onInstagramChange}
+              onChange={onInputChange}
             />
             <Input
               type="link"
@@ -155,7 +153,7 @@ const InfoMain = ({
               maxLength={300}
               name="youtube"
               value={youtube}
-              onChange={onYoutubeChange}
+              onChange={onInputChange}
             />
           </div>
         </div>

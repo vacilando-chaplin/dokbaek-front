@@ -2,9 +2,9 @@ import RepresentativeButton from "../atoms/representiveButton";
 
 interface DeleteModalProps {
   text: string;
-  id: number;
+  id: string;
   onCancel: React.MouseEventHandler<HTMLButtonElement>;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }
 
 const DeleteModal = ({ text, id, onCancel, onDelete }: DeleteModalProps) => {

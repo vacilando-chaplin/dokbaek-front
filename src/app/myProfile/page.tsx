@@ -10,7 +10,7 @@ import {
   info,
   mainPhoto,
   photo,
-  stepperAtom,
+  stepperInit,
   video
 } from "@/data/atom";
 import { useEffect, useRef, useState } from "react";
@@ -23,7 +23,7 @@ const myProfile = () => {
   const filmographyData = useRecoilValue(filmography);
   const videoData = useRecoilValue(video);
 
-  const setStepper = useSetRecoilState(stepperAtom);
+  const setStepper = useSetRecoilState(stepperInit);
 
   const mainRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLDivElement>(null);

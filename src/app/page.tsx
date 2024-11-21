@@ -8,10 +8,8 @@ const Home = async () => {
 
   useEffect(() => {
     router.push("/login");
-  }, [router])
-  return <main className="">
-
-  </main>;
+  }, [router]);
+  return <main className=""></main>;
 };
 
 export default Home;

@@ -15,8 +15,8 @@ export const jwt = atom({
   effects_UNSTABLE: [persistAtom]
 });
 
-export const stepperAtom = atom({
-  key: "stepperAtom",
+export const stepperInit = atom({
+  key: "stepperInit",
   default: 0
 });
 

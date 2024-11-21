@@ -26,8 +26,6 @@ const Kakao = () => {
 
   const [resData, setResData] = useState<any>({});
 
-  console.log(resData.data);
-
   const onClick = () => {
     setId(resData.data.defaultProfileId);
     setJWT(resData.data.token.jwt);
@@ -42,7 +40,7 @@ const Kakao = () => {
       if (authCode) {
         await AuthLogin(authCode).then((res) => setData(res));
       }
-    }
+    };
     checkCode();
   }, [authCode]);
 
@@ -90,7 +88,8 @@ const Kakao = () => {
       <button
         type="button"
         className="flex h-auto w-auto items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5"
-        onClick={onClick}>
+        onClick={onClick}
+      >
         <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">
           프로필 만들기
         </div>
@@ -104,5 +103,5 @@ export default function KaKaoWrapper() {
     <Suspense fallback={<Loading />}>
       <Kakao />
     </Suspense>
-  )
+  );
 }

@@ -11,6 +11,7 @@ interface infoSubProps {
   infoActives: infoActivesTypes;
   schoolList: string[];
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSchoolChange: React.ChangeEventHandler<HTMLInputElement>;
   onActiveClick: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
 }
@@ -20,6 +21,7 @@ const InfoSub = ({
   infoActives,
   schoolList,
   onInputChange,
+  onSchoolChange,
   onActiveClick,
   onItemClick
 }: infoSubProps) => {
@@ -38,10 +40,10 @@ const InfoSub = ({
             name="school"
             value={school}
             active={infoActives.school}
-            onChange={onInputChange}
+            onChange={onSchoolChange}
             onActive={onActiveClick}
           />
-          {infoInputs.school && infoActives.school && (
+          {infoActives.school && (
             <div className="absolute top-[76px] z-40 w-full">
               {schoolList.length >= 1 ? (
                 <Dropdown
@@ -72,9 +74,12 @@ const InfoSub = ({
                 onChange={onInputChange}
               />
             </div>
-            <div className="relative flex w-full flex-[1_1_25%]">
+            <div
+              className="relative flex w-full flex-[1_1_25%]"
+              onClick={() => onActiveClick("education", infoActives.education)}
+            >
               <Input
-                type="text"
+                type="button"
                 dropdown={true}
                 maxLength={10}
                 name="education"

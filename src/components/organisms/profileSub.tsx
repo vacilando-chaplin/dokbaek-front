@@ -12,7 +12,7 @@ import ProfileBox from "../molecules/profileBox";
 interface PropfileSubProps {
   linear: string;
   subRef: any;
-  mainPhotoData: { photo: string, id: number }
+  mainPhotoData: { photo: string; id: number };
   photo: any;
   filmography: filmoInputsTypes[];
   video: VideoTypes[];
@@ -106,7 +106,9 @@ const ProfileSub = ({
             </div>
           )}
         </div>
-        {photo.length >= 1 && (photo.length === 1 && photo[0].id !== mainPhotoData.id) ? (
+        {photo.length >= 1 &&
+        photo.length === 1 &&
+        photo[0].id !== mainPhotoData.id ? (
           <div className="relative overflow-hidden">
             <div
               className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
@@ -114,46 +116,46 @@ const ProfileSub = ({
             >
               {photo.map((item: PhotoTypes) => {
                 return (
-                <>
-                  {item.id !== mainPhotoData.id && 
-                  <figure
-                    key={`photo${item.id}`}
-                    className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
-                    onClick={() => onPhotoModalActive(item.photo)}
-                  >
-                    <Image
-                      src={item.photo}
-                      alt={`photo${item.id}`}
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
-                    />
-                    <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                  <>
+                    {item.id !== mainPhotoData.id && (
+                      <figure
+                        key={`photo${item.id}`}
+                        className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
+                        onClick={() => onPhotoModalActive(item.photo)}
                       >
-                        <path
-                          d="M13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V11H8C7.44772 11 7 11.4477 7 12C7 12.5522 7.44772 13 8 13H11V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V13H16C16.5523 13 17 12.5522 17 12C17 11.4477 16.5523 11 16 11H13V8Z"
-                          fill="#ffffff"
+                        <Image
+                          src={item.photo}
+                          alt={`photo${item.id}`}
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
                         />
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-                          fill="#ffffff"
-                        />
-                      </svg>
-                      <span className="text-body2 font-semibold leading-body2 tracking-body2">
-                        크게 보기
-                      </span>
-                    </div>
-                  </figure>
-                  }
+                        <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V11H8C7.44772 11 7 11.4477 7 12C7 12.5522 7.44772 13 8 13H11V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V13H16C16.5523 13 17 12.5522 17 12C17 11.4477 16.5523 11 16 11H13V8Z"
+                              fill="#ffffff"
+                            />
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                              fill="#ffffff"
+                            />
+                          </svg>
+                          <span className="text-body2 font-semibold leading-body2 tracking-body2">
+                            크게 보기
+                          </span>
+                        </div>
+                      </figure>
+                    )}
                   </>
                 );
               })}
