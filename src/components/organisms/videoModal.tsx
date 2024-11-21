@@ -6,14 +6,14 @@ interface VideoModalProps {
   videoInputs: string;
   onVideoInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onVideoModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onResultVideoModalSave: any;
+  onVideoModalSave: any;
 }
 
 const VideoModal = ({
   videoInputs,
   onVideoInputChange,
   onVideoModalActive,
-  onResultVideoModalSave
+  onVideoModalSave
 }: VideoModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
@@ -31,7 +31,7 @@ const VideoModal = ({
               videoInputs.indexOf("https://www.youtube.com") === -1
             }
             onCloseClick={onVideoModalActive}
-            onSaveClick={onResultVideoModalSave}
+            onSaveClick={onVideoModalSave}
           />
         </div>
       </div>

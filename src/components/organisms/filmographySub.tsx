@@ -12,7 +12,8 @@ interface FilmographySubProps {
   filmoInputs: filmoInputsTypes;
   filmoActives: filmoActivesTypes;
   onFilmoInputChange: React.ChangeEventHandler<HTMLInputElement>;
-  onFilmoActiveClick: (name: string, state: boolean) => void;
+  onFilmoProductionChange: React.ChangeEventHandler<HTMLInputElement>;
+  onFilmoDropdownActive: (name: string, state: boolean) => void;
   onFilmoDropdownClick: (name: string, item: string) => void;
   onSelectThumbnail: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -21,7 +22,8 @@ const FilmographySub = ({
   filmoInputs,
   filmoActives,
   onFilmoInputChange,
-  onFilmoActiveClick,
+  onFilmoProductionChange,
+  onFilmoDropdownActive,
   onFilmoDropdownClick,
   onSelectThumbnail
 }: FilmographySubProps) => {
@@ -38,10 +40,18 @@ const FilmographySub = ({
   } = filmoInputs;
 
   return (
-    <div className="flex h-auto w-full gap-4 bg-background-surface-light p-6 overflow-auto">
+    <div className="no-scrollbar flex h-auto w-full gap-4 overflow-auto bg-background-surface-light p-6">
       <div className="flex h-auto w-full flex-col gap-4">
         <div className="flex h-auto w-full flex-row gap-4">
-          <div className="relative flex w-full">
+          <div
+            className="relative flex w-full"
+            onClick={() =>
+              onFilmoDropdownActive(
+                "classification",
+                filmoActives.classification
+              )
+            }
+          >
             <InputWithLabel
               label="분류"
               type="text"
@@ -53,7 +63,7 @@ const FilmographySub = ({
               value={classification}
               readOnly={true}
               active={filmoActives.classification}
-              onActive={onFilmoActiveClick}
+              onActive={onFilmoDropdownActive}
             />
             {filmoActives.classification && (
               <div className="absolute top-[72px] z-40 w-full">
@@ -63,7 +73,7 @@ const FilmographySub = ({
                   active={filmoActives.classification}
                   selected={classification}
                   onClick={onFilmoDropdownClick}
-                  onActive={onFilmoActiveClick}
+                  onActive={onFilmoDropdownActive}
                 />
               </div>
             )}
@@ -78,8 +88,8 @@ const FilmographySub = ({
               name="production"
               value={production}
               active={filmoActives.production}
-              onChange={onFilmoInputChange}
-              onActive={onFilmoActiveClick}
+              onChange={onFilmoProductionChange}
+              onActive={onFilmoDropdownActive}
             />
             {filmoActives.production && (
               <div className="absolute top-[72px] z-40 w-full">
@@ -89,7 +99,7 @@ const FilmographySub = ({
                   active={filmoActives.production}
                   selected={production}
                   onClick={onFilmoDropdownClick}
-                  onActive={onFilmoActiveClick}
+                  onActive={onFilmoDropdownActive}
                 />
               </div>
             )}
@@ -107,10 +117,13 @@ const FilmographySub = ({
           />
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <div className="relative flex w-full h-auto flex-col">
+          <div className="relative flex h-auto w-full flex-col">
             <Label label="출연 형태" />
-            <div className="flex gap-1 flex-row">
-              <div className="flex w-full">
+            <div className="flex flex-row gap-1">
+              <div
+                className="flex w-full"
+                onClick={() => onFilmoDropdownActive("cast", filmoActives.cast)}
+              >
                 <Input
                   type="text"
                   placeholder="선택해주세요."
@@ -120,7 +133,7 @@ const FilmographySub = ({
                   value={cast}
                   readOnly={true}
                   active={filmoActives.cast}
-                  onActive={onFilmoActiveClick}
+                  onActive={onFilmoDropdownActive}
                 />
               </div>
               {cast === "직접 입력" && (
@@ -141,7 +154,7 @@ const FilmographySub = ({
                   active={filmoActives.cast}
                   selected={cast}
                   onClick={onFilmoDropdownClick}
-                  onActive={onFilmoActiveClick}
+                  onActive={onFilmoDropdownActive}
                 />
               </div>
             )}
@@ -180,7 +193,7 @@ const FilmographySub = ({
             onChange={onFilmoInputChange}
           />
         </div>
-        <div className="flex h-auto w-full flex-col">
+        <div className="flex h-auto w-full flex-col pb-6">
           <Label label="썸네일 이미지" />
           {thumbnail ? (
             <Image

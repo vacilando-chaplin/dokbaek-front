@@ -7,32 +7,32 @@ import Title from "../atoms/title";
 import FilmoItem from "../molecules/filmoItem";
 
 interface FilmographyMainProps {
-  resultFilmoList: any;
+  filmoList: any;
+  categoryList: string[];
   filmoRepresentActive: boolean;
-  editRepresentative: filmoInputsTypes[];
   representativeCount: number;
-  onRepresentativeActive: React.MouseEventHandler<HTMLButtonElement>;
-  onSaveRepActive: React.MouseEventHandler<HTMLButtonElement>;
+  onFilmoRepActive: React.MouseEventHandler<HTMLButtonElement>;
+  onFilmoRepCancel: React.MouseEventHandler<HTMLButtonElement>;
+  onFilmoRepSave: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onFilmoEditClick: (filmo: filmoInputsTypes) => void;
-  onFilmoDeleteModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onFilmoSelectClick: (filmo: filmoInputsTypes) => void;
-  onRepresentativeCheck: (id: string) => void;
+  onFilmoEditModalOpen: (filmo: filmoInputsTypes) => void;
+  onFilmoDeleteModalOpen: (id: number) => void;
+  onFilmoRepCheck: (id: number) => void;
   onFilmoLink: (link: string) => void;
 }
 
 const FilmographyMain = ({
-  resultFilmoList,
+  filmoList,
+  categoryList,
   filmoRepresentActive,
-  editRepresentative,
   representativeCount,
-  onRepresentativeActive,
-  onSaveRepActive,
+  onFilmoRepActive,
+  onFilmoRepCancel,
+  onFilmoRepSave,
   onFilmoModalActive,
-  onFilmoEditClick,
-  onFilmoDeleteModalActive,
-  onFilmoSelectClick,
-  onRepresentativeCheck,
+  onFilmoEditModalOpen,
+  onFilmoDeleteModalOpen,
+  onFilmoRepCheck,
   onFilmoLink
 }: FilmographyMainProps) => {
   return (
@@ -46,23 +46,20 @@ const FilmographyMain = ({
             </label>
           )}
           <div className="flex items-center gap-1">
-            {resultFilmoList.length >= 1 &&
+            {filmoList.length >= 1 &&
               (filmoRepresentActive ? (
-                <RepresentativeButton
-                  text="취소"
-                  onActive={onRepresentativeActive}
-                />
+                <RepresentativeButton text="취소" onActive={onFilmoRepCancel} />
               ) : (
                 <RepresentativeButton
                   icon={true}
                   text="대표작 설정"
-                  onActive={onRepresentativeActive}
+                  onActive={onFilmoRepActive}
                 />
               ))}
             {filmoRepresentActive ? (
               <button
                 className="flex h-auto w-auto flex-row items-center gap-1 rounded-[10px] border border-accent-primary-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-accent-primary-light"
-                onClick={onSaveRepActive}
+                onClick={onFilmoRepSave}
               >
                 완료
               </button>
@@ -72,7 +69,7 @@ const FilmographyMain = ({
           </div>
         </div>
       </div>
-      { /* 대표작 */ }
+      {/* 대표작 */}
       {/* {resultFilmoList.findIndex((v: any) => v.is_featured === true) && (
         <div className="flex h-auto w-full flex-col gap-2">
           <label className="text-body2 font-semibold leading-body2 tracking-body2 text-accent-primary-light">
@@ -96,34 +93,36 @@ const FilmographyMain = ({
           })}
         </div>
       )} */}
-      {resultFilmoList.length >= 1 ? (
-        resultFilmoList.map((filmo: any, index: number) => {
+      {filmoList.length >= 1 ? (
+        categoryList.map((category: string, index: number) => {
+          const filteredFilmoList = filmoList.filter(
+            (item: any) => item.production.category.name === category
+          );
           return (
             <>
-`             <div
+              <div
                 className="flex h-auto w-full flex-col gap-2"
-                key={filmo.id}
+                key={category + index}
               >
-              <label className="text-body2 font-medium leading-body2 tracking-body2 text-content-secondary-light">
-                {classificationList[filmo.categoryId+1]}
-              </label>
-              {resultFilmoList.map((filmo: filmoInputsTypes) => {
-                return (
-                  <FilmoItem
-                    key={filmo.id}
-                    filmo={filmo}
-                    filmoRepresentActive={filmoRepresentActive}
-                    representativeCount={representativeCount}
-                    canEdit={true}
-                    onEdit={onFilmoEditClick}
-                    onDelete={onFilmoDeleteModalActive}
-                    onSelect={onFilmoSelectClick}
-                    onCheck={onRepresentativeCheck}
-                    onLink={onFilmoLink}
-                  />
-                );
-              })}
-            </div>
+                <label className="text-body2 font-medium leading-body2 tracking-body2 text-content-secondary-light">
+                  {category}
+                </label>
+                {filteredFilmoList.map((filmo: filmoInputsTypes) => {
+                  return (
+                    <FilmoItem
+                      key={filmo.id}
+                      filmo={filmo}
+                      filmoRepresentActive={filmoRepresentActive}
+                      representativeCount={representativeCount}
+                      canEdit={true}
+                      onEdit={onFilmoEditModalOpen}
+                      onDelete={onFilmoDeleteModalOpen}
+                      onCheck={onFilmoRepCheck}
+                      onLink={onFilmoLink}
+                    />
+                  );
+                })}
+              </div>
             </>
           );
         })

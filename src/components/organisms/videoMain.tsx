@@ -4,24 +4,24 @@ import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 
 interface VideoMainProps {
-  resultVideoList: any;
+  videoList: any;
   videoDeleteModalActive: boolean;
   onVideoModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onResultVideoEditModalOpen: any;
-  onResultVideoDeleteModalOpen: any;
-  onResultVideoDeleteModalClose: any;
-  onResultVideoDeleteClick: any;
+  onVideoEditModalOpen: any;
+  onVideoDeleteModalOpen: any;
+  onVideoDeleteModalClose: any;
+  onVideoDeleteClick: any;
   onVideoLinkModalOpen: (link: string) => void;
 }
 
 const VideoMain = ({
-  resultVideoList,
+  videoList,
   videoDeleteModalActive,
   onVideoModalActive,
-  onResultVideoEditModalOpen,
-  onResultVideoDeleteModalOpen,
-  onResultVideoDeleteModalClose,
-  onResultVideoDeleteClick,
+  onVideoEditModalOpen,
+  onVideoDeleteModalOpen,
+  onVideoDeleteModalClose,
+  onVideoDeleteClick,
   onVideoLinkModalOpen
 }: VideoMainProps) => {
   return (
@@ -31,9 +31,9 @@ const VideoMain = ({
         <CreateButton onClick={onVideoModalActive} />
       </div>
       <div className="flex h-auto w-full flex-wrap gap-2">
-        {resultVideoList.length >= 1 ? (
+        {videoList.length >= 1 ? (
           <div className="grid h-auto w-full grid-cols-3 gap-2">
-            {resultVideoList.map((video: any) => {
+            {videoList.map((video: any) => {
               const videoId = video.url.slice(32, 43);
               const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
@@ -53,7 +53,7 @@ const VideoMain = ({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onResultVideoEditModalOpen(video)
+                        onVideoEditModalOpen(video);
                       }}
                     >
                       <svg
@@ -81,7 +81,7 @@ const VideoMain = ({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onResultVideoDeleteModalOpen(video);
+                        onVideoDeleteModalOpen(video);
                       }}
                     >
                       <svg
@@ -106,9 +106,9 @@ const VideoMain = ({
                         id={video.id}
                         onCancel={(e) => {
                           e.stopPropagation();
-                          onResultVideoDeleteModalClose(e);
+                          onVideoDeleteModalClose(e);
                         }}
-                        onDelete={onResultVideoDeleteClick}
+                        onDelete={onVideoDeleteClick}
                       />
                     )}
                   </div>

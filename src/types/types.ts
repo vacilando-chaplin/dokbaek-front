@@ -43,11 +43,11 @@ export interface InfoDataTypes {
         name: string;
         schoolType: string;
         schoolGubun: string;
-      },
+      };
       major: string;
       status: string;
     }
-  ]
+  ];
 }
 
 export interface infoActivesTypes {
@@ -97,7 +97,8 @@ export interface filmoInputsTypes {
   link: string;
   thumbnail: string;
   representative: boolean;
-  id: string;
+  id: number;
+  displayOrder: number;
 }
 
 export interface filmoActivesTypes {
@@ -112,12 +113,12 @@ export interface VideoTypes {
 }
 
 export interface KakaoDataTypes {
-    access_token: string;
-    expires_in: number;
-    refresh_token: string;
-    refresh_token_expires_in: number;
-    scope: string;
-    token_type: string;
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  refresh_token_expires_in: number;
+  scope: string;
+  token_type: string;
 }
 
 export interface SignUpRequestTypes {

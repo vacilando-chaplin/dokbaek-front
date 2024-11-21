@@ -231,6 +231,28 @@ export const postFilmography = async (id: number, data: any, token: string) => {
   }
 };
 
+export const postFilmographyThumbnail = async (
+  thumbnail: string,
+  token: string
+) => {
+  const formData = new FormData();
+
+  const imageOrigin = base64ToBlob(thumbnail);
+  formData.append("origin", imageOrigin);
+
+  try {
+    const res = await axios.post(`${baseURL}/filmo/thumbnail`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const putFilmography = async (
   id: number,
   filmoId: number,
@@ -312,9 +334,9 @@ export const deleteVideo = async (
   }
 };
 
-export const getProfile = async (id: number) => {
+export const getProfile = async (id: number, token: string) => {
   try {
-    const res = await api.get(`/profile${id}`);
+    const res = await api.get(`/profile${id}`, getAuthHeaders(token));
     return res.data;
   } catch (error) {
     throw error;

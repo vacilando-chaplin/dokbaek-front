@@ -52,7 +52,8 @@ export const filmographyInputInit = {
   link: "",
   thumbnail: "",
   representative: false,
-  id: ""
+  id: 0,
+  displayOrder: 0
 };
 
 export const filmographyActiveInit = {

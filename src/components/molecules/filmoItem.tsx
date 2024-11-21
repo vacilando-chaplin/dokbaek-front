@@ -11,7 +11,6 @@ interface FilmoItemProps {
   canEdit: boolean;
   onEdit?: any;
   onDelete?: any;
-  onSelect?: any;
   onCheck?: any;
   onLink?: any;
 }
@@ -23,15 +22,13 @@ const FilmoItem = ({
   canEdit,
   onEdit,
   onDelete,
-  onSelect,
   onCheck,
   onLink
 }: FilmoItemProps) => {
-  const {
-    representative, 
-  } = filmo;
+  const { representative } = filmo;
 
-  const checkYoutube = filmo.production.videoUrl && filmo.production.videoUrl.includes("youtube");
+  const checkYoutube =
+    filmo.production.videoUrl && filmo.production.videoUrl.includes("youtube");
 
   const [disabled, setDisabled] = useState(false);
 
@@ -88,10 +85,7 @@ const FilmoItem = ({
           <button
             className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
             type="button"
-            onClick={() => {
-              onEdit(filmo);
-              onSelect(filmo);
-            }}
+            onClick={() => onEdit(filmo)}
           >
             <svg
               width="12"
@@ -116,10 +110,7 @@ const FilmoItem = ({
           <button
             className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
             type="button"
-            onClick={() => {
-              onDelete();
-              onSelect(filmo);
-            }}
+            onClick={() => onDelete(filmo.id)}
           >
             <svg
               width="12"
@@ -142,25 +133,30 @@ const FilmoItem = ({
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
             <label className="text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light">
-              {filmo.production.productYear
-                ? `${filmo.production.productYear + " | " + classificationList[filmo.production.category.id + 1]}`
-                : filmo.production.productYear
-              }
+              {filmo.production.productionYear >= 1 &&
+                `${filmo.production.productionYear + " | " + classificationList[filmo.production.category.id + 1]}`}
             </label>
             <label className="text-body1 font-semibold leading-body1 tracking-body1 text-content-primary-light">
-              {filmo.production.title }
+              {filmo.production.title}
             </label>
           </div>
           <div className="flex h-auto w-full flex-col gap-0.5 text-caption1 font-normal leading-caption1 tracking-caption1 text-content-secondary-light">
             <label>
-              {castList[filmo.role.id + 1]} {filmo.character && `'${filmo.character}'`}
+              {filmo.customRole && filmo.role.id === 4
+                ? filmo.customRole
+                : filmo.role.name}{" "}
+              {filmo.character && `'${filmo.character}'`}
             </label>
             <label>{filmo.production.description}</label>
           </div>
         </div>
         {/* link */}
         {checkYoutube && (
-          <button type="button" className="w-fit" onClick={() => onLink(filmo.production.videoUrl)}>
+          <button
+            type="button"
+            className="w-fit"
+            onClick={() => onLink(filmo.production.videoUrl)}
+          >
             <svg
               width="16"
               height="16"
@@ -181,8 +177,8 @@ const FilmoItem = ({
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
         {filmo.production.thumbnailUrl ? (
           <Image
-            src={filmo.production.thumbnailUrl }
-            alt={filmo.production.title }
+            src={filmo.production.thumbnailUrl}
+            alt={filmo.production.title}
             width={76}
             height={114}
             className="h-[114px] w-[76px] rounded-lg bg-gray-100"

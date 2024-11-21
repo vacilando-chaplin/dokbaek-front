@@ -1,13 +1,16 @@
 "use client";
 
+import { getProfile } from "@/api/api";
 import ProfileFilmographyModal from "@/components/organisms/profileFilmographyModal";
 import ProfileLinkModal from "@/components/organisms/profilelinkModal";
 import ProfileMain from "@/components/organisms/profileMain";
 import ProfilePhotoModal from "@/components/organisms/profilePhotoModal";
 import ProfileSub from "@/components/organisms/profileSub";
 import {
+  defaultId,
   filmography,
   info,
+  jwt,
   mainPhoto,
   photo,
   stepperInit,
@@ -17,11 +20,31 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const myProfile = () => {
+  const userId = useRecoilValue(defaultId);
+  const token = useRecoilValue(jwt);
+
   const mainPhotoData = useRecoilValue(mainPhoto);
   const infoData = useRecoilValue(info);
   const photoData = useRecoilValue(photo);
   const filmographyData = useRecoilValue(filmography);
   const videoData = useRecoilValue(video);
+
+  const [profileData, setProfileData] = useState<any>();
+
+  console.log(profileData);
+
+  useEffect(() => {
+    const getProfileData = async () => {
+      try {
+        const res = await getProfile(userId, token);
+        const data = res.data;
+        setProfileData(data);
+      } catch (error) {
+        throw error;
+      }
+    };
+    getProfileData();
+  }, []);
 
   const setStepper = useSetRecoilState(stepperInit);
 

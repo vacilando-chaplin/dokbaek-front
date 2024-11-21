@@ -5,21 +5,21 @@ import VideoModalSub from "./videoModalSub";
 interface VideoEditModalProps {
   videoInputs: string;
   onVideoInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onResultVideoEditModalClose: any;
-  onResultVideoEditModalSave: any;
+  onVideoEditModalClose: any;
+  onVideoEditModalSave: any;
 }
 
 const VideoEditModal = ({
   videoInputs,
   onVideoInputChange,
-  onResultVideoEditModalClose,
-  onResultVideoEditModalSave
+  onVideoEditModalClose,
+  onVideoEditModalSave
 }: VideoEditModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative max-h-full w-full max-w-[720px]">
         <div className="relative flex h-auto w-full animate-enter flex-col items-center justify-center rounded-2xl bg-static-white shadow-modal transition-all duration-100 ease-linear">
-          <ModalTop name="영상 수정" onClick={onResultVideoEditModalClose} />
+          <ModalTop name="영상 수정" onClick={onVideoEditModalClose} />
           <VideoModalSub
             videoInputs={videoInputs}
             onVideoInputChange={onVideoInputChange}
@@ -30,8 +30,8 @@ const VideoEditModal = ({
               videoInputs.length === 0 ||
               videoInputs.indexOf("https://www.youtube.com") === -1
             }
-            onCloseClick={onResultVideoEditModalClose}
-            onSaveClick={onResultVideoEditModalSave}
+            onCloseClick={onVideoEditModalClose}
+            onSaveClick={onVideoEditModalSave}
           />
         </div>
       </div>
