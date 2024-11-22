@@ -1,13 +1,13 @@
 import Image from "next/image";
 
 interface ProfilePhotoModalProps {
-  select: string;
-  onPhotoModalActive: (photo: string) => void;
+  selectedPhoto: string;
+  onPhotoModalClose: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const ProfilePhotoModal = ({
-  select,
-  onPhotoModalActive
+  selectedPhoto,
+  onPhotoModalClose
 }: ProfilePhotoModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-50 backdrop-blur-3xl md:inset-0">
@@ -15,7 +15,7 @@ const ProfilePhotoModal = ({
         <button
           type="button"
           className="rounded-full bg-static-black p-2"
-          onClick={() => onPhotoModalActive("")}
+          onClick={onPhotoModalClose}
         >
           <svg
             width="20"
@@ -33,7 +33,7 @@ const ProfilePhotoModal = ({
           </svg>
         </button>
         <Image
-          src={select}
+          src={selectedPhoto}
           alt="photo"
           width={0}
           height={0}

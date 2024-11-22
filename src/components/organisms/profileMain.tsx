@@ -7,12 +7,14 @@ import { useRouter } from "next/navigation";
 import Button from "../atoms/button";
 import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
+import { educationEngList, educationList } from "@/data/data";
 
 interface ProfileMainProps {
   linear: string;
   mainRef: any;
-  mainPhoto: PhotoTypes;
-  info: infoInputsTypes;
+  mainPhoto: string;
+  info: any;
+  education: any;
   setStepper: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -21,39 +23,42 @@ const ProfileMain = ({
   mainRef,
   mainPhoto,
   info,
+  education,
   setStepper
 }: ProfileMainProps) => {
   const router = useRouter();
 
   const {
     name,
-    birth,
+    bornYear,
     height,
     weight,
     contact,
-    school,
-    major,
-    education,
-    specialty,
+    speciality,
     email,
-    instagram,
-    youtube,
+    instagramLink,
+    youtubeLink,
     introduction
   } = info;
+
+  const statusIndex = educationEngList.findIndex(
+    (item: string) => item === education.status
+  );
 
   return (
     <section
       ref={mainRef}
       className={`flex h-full w-[41vw] flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
     >
-      {mainPhoto.photo ? (
+      {mainPhoto ? (
         <div className="flex h-[60vh] w-full">
           <Image
-            src={mainPhoto.photo}
+            src={mainPhoto}
             alt="대표 사진"
             width="0"
             height="0"
             sizes="100vw"
+            priority
             className="h-auto w-full rounded-2xl"
           />
         </div>
@@ -94,34 +99,38 @@ const ProfileMain = ({
           배우
         </label>
       </div>
-      {birth || contact ? (
+      {bornYear >= 1 || contact ? (
         <div className="flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
           <span>
-            {birth}년생{" "}
-            <label className="opacity-50">{(height || weight) && "· "}</label>
+            {bornYear}년생{" "}
+            <label className="opacity-50">
+              {(height >= 1 || weight >= 1) && "· "}
+            </label>
             {height && height + "cm "}
             {weight && weight + "kg"}
           </span>
           {contact && <span>{contact}</span>}
-          {school && (
+          {education.school.name && (
             <span>
-              {school} {major && major + "전공"} {education}
+              {education.school.name}{" "}
+              {education.major && education.major + "전공"}{" "}
+              {educationList[statusIndex]}
             </span>
           )}
-          {specialty && <span>{specialty && "특기: " + specialty}</span>}
+          {speciality && <span>{speciality && "특기: " + speciality}</span>}
           {email && <span>{email}</span>}
-          {instagram.length >= 27 && (
+          {instagramLink.length >= 27 && (
             <Link
-              href={instagram}
+              href={instagramLink}
               className="flex w-fit items-center gap-1"
               target="_blank"
             >
               <img src="/icons/instagram.svg" />
             </Link>
           )}
-          {youtube.length >= 26 && (
+          {youtubeLink.length >= 26 && (
             <Link
-              href={youtube}
+              href={youtubeLink}
               className="flex w-fit items-center gap-1"
               target="_blank"
             >

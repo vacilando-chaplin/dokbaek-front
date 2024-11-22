@@ -6,16 +6,7 @@ import ProfileLinkModal from "@/components/organisms/profilelinkModal";
 import ProfileMain from "@/components/organisms/profileMain";
 import ProfilePhotoModal from "@/components/organisms/profilePhotoModal";
 import ProfileSub from "@/components/organisms/profileSub";
-import {
-  defaultId,
-  filmography,
-  info,
-  jwt,
-  mainPhoto,
-  photo,
-  stepperInit,
-  video
-} from "@/data/atom";
+import { defaultId, jwt, stepperInit } from "@/data/atom";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -23,15 +14,13 @@ const myProfile = () => {
   const userId = useRecoilValue(defaultId);
   const token = useRecoilValue(jwt);
 
-  const mainPhotoData = useRecoilValue(mainPhoto);
-  const infoData = useRecoilValue(info);
-  const photoData = useRecoilValue(photo);
-  const filmographyData = useRecoilValue(filmography);
-  const videoData = useRecoilValue(video);
-
   const [profileData, setProfileData] = useState<any>();
 
   console.log(profileData);
+
+  const mainPhotoData = profileData.photos.find(
+    (photo: any) => photo.isDefault === true
+  );
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -53,38 +42,31 @@ const myProfile = () => {
 
   const [linear, setLinear] = useState("");
 
-  const [photoModalActive, setPhotoModalActive] = useState({
-    state: false,
-    select: ""
-  });
+  const [selectedPhoto, setSelectedPhoto] = useState<any>({});
+  const [photoModalActive, setPhotoModalActive] = useState(false);
   const [filmoModalActive, setFilmoModalActive] = useState(false);
   const [filmoLink, setFilmoLink] = useState("");
   const [linkModalActive, setLinkModalActive] = useState(false);
 
-  const onPhotoModalActive = (photo: string) => {
-    photo
-      ? setPhotoModalActive({
-          ...photoModalActive,
-          state: !photoModalActive.state,
-          select: photo
-        })
-      : setPhotoModalActive({
-          ...photoModalActive,
-          state: !photoModalActive.state,
-          select: ""
-        });
+  const onPhotoModalOpen = (photo: string) => {
+    setSelectedPhoto(photo);
+    setPhotoModalActive(!photoModalActive);
+  };
+
+  const onPhotoModalClose = () => {
+    setPhotoModalActive(!photoModalActive);
   };
 
   const onFilmoModalActive = () => {
     setFilmoModalActive(!filmoModalActive);
   };
 
-  const onFilmoLink = (link: string) => {
+  const onFilmoLinkModalOpen = (link: string) => {
     setFilmoLink(link);
     setLinkModalActive(!linkModalActive);
   };
 
-  const onLinkModalActive = () => {
+  const onFilmoLinkModalClose = () => {
     setLinkModalActive(!linkModalActive);
   };
 
@@ -103,39 +85,39 @@ const myProfile = () => {
       <ProfileMain
         linear={linear}
         mainRef={mainRef}
-        mainPhoto={mainPhotoData}
-        info={infoData}
+        mainPhoto={mainPhotoData.previewPath}
+        info={profileData.info}
+        education={profileData.education}
         setStepper={setStepper}
       />
       <ProfileSub
         linear={linear}
         subRef={subRef}
-        mainPhotoData={mainPhotoData}
-        photo={photoData}
-        filmography={filmographyData}
-        video={videoData}
+        photoList={profileData.photos}
+        filmographyList={profileData.filmos}
+        videoList={profileData.videos}
         setStepper={setStepper}
-        onPhotoModalActive={onPhotoModalActive}
+        onPhotoModalOpen={onPhotoModalOpen}
         onFilmoModalActive={onFilmoModalActive}
-        onFilmoLink={onFilmoLink}
+        onFilmoLinkModalOpen={onFilmoLinkModalOpen}
       />
-      {photoModalActive.state && (
+      {photoModalActive && (
         <ProfilePhotoModal
-          select={photoModalActive.select}
-          onPhotoModalActive={onPhotoModalActive}
+          selectedPhoto={selectedPhoto.path}
+          onPhotoModalClose={onPhotoModalClose}
         />
       )}
       {filmoModalActive && (
         <ProfileFilmographyModal
-          filmography={filmographyData}
+          filmographyList={profileData.filmos}
           onFilmoModalActive={onFilmoModalActive}
-          onFilmoLink={onFilmoLink}
+          onFilmoLinkModalOpen={onFilmoLinkModalOpen}
         />
       )}
       {linkModalActive && (
         <ProfileLinkModal
           filmoLink={filmoLink}
-          onLinkModalActive={onLinkModalActive}
+          onFilmoLinkModalClose={onFilmoLinkModalClose}
         />
       )}
     </div>

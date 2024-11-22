@@ -31,7 +31,7 @@ import ProfileLinkModal from "@/components/organisms/profilelinkModal";
 import VideoEditModal from "@/components/organisms/videoEditModal";
 import VideoMain from "@/components/organisms/videoMain";
 import VideoModal from "@/components/organisms/videoModal";
-import { defaultId, info, jwt, stepperInit } from "@/data/atom";
+import { categoryData, defaultId, info, jwt, stepperInit } from "@/data/atom";
 import {
   castList,
   classificationList,
@@ -359,7 +359,7 @@ const Profile = () => {
   const [filmoLink, setFilmoLink] = useState("");
   const [linkModalActive, setLinkModalActive] = useState(false);
   const [filmoDelete, setFilmoDelete] = useState<any>(0);
-  const [categoryList, setCategoryList] = useState<string[]>([]);
+  const [categoryList, setCategoryList] = useRecoilState<any>(categoryData);
   const [filmoRepEditList, setFilmoRepEditList] = useState([]);
 
   // 카테고리 리스트 카테고리 추가
@@ -849,7 +849,7 @@ const Profile = () => {
             {linkModalActive && (
               <ProfileLinkModal
                 filmoLink={filmoLink}
-                onLinkModalActive={onLinkModalActive}
+                onFilmoLinkModalClose={onLinkModalActive}
               />
             )}
           </>
@@ -885,7 +885,7 @@ const Profile = () => {
             {videoLinkModalActive && (
               <ProfileLinkModal
                 filmoLink={videoLink}
-                onLinkModalActive={onVideoLinkModalActive}
+                onFilmoLinkModalClose={onVideoLinkModalActive}
               />
             )}
           </>

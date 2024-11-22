@@ -20,6 +20,11 @@ export const stepperInit = atom({
   default: 0
 });
 
+export const categoryData = atom({
+  key: "categoryData",
+  default: []
+});
+
 export const info = atom({
   key: "info",
   default: {

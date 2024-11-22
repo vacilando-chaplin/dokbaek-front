@@ -2,12 +2,12 @@ import YoutubeVideo from "../atoms/youtubeVideo";
 
 interface ProfileLinkModalProps {
   filmoLink: string;
-  onLinkModalActive: React.MouseEventHandler<HTMLButtonElement>;
+  onFilmoLinkModalClose: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const ProfileLinkModal = ({
   filmoLink,
-  onLinkModalActive
+  onFilmoLinkModalClose
 }: ProfileLinkModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-50 backdrop-blur-3xl md:inset-0">
@@ -15,7 +15,7 @@ const ProfileLinkModal = ({
         <button
           type="button"
           className="rounded-full bg-static-black p-2"
-          onClick={onLinkModalActive}
+          onClick={onFilmoLinkModalClose}
         >
           <svg
             width="20"
