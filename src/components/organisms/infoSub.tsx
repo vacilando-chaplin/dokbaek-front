@@ -1,5 +1,5 @@
 import { educationList } from "@/data/data";
-import { infoActivesTypes, infoInputsTypes } from "@/types/types";
+import { InfoActiveType, InfoInputType } from "@/types/types";
 import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
@@ -7,12 +7,12 @@ import Dropdown from "../molecules/dropdown";
 import InputWithLabel from "../molecules/inputWithLabel";
 
 interface infoSubProps {
-  infoInputs: infoInputsTypes;
-  infoActives: infoActivesTypes;
+  infoInputs: InfoInputType;
+  infoActives: InfoActiveType;
   schoolList: string[];
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onSchoolChange: React.ChangeEventHandler<HTMLInputElement>;
-  onActiveClick: (name: string, state: boolean) => void;
+  onInfoDropdownActive: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
 }
 
@@ -22,7 +22,7 @@ const InfoSub = ({
   schoolList,
   onInputChange,
   onSchoolChange,
-  onActiveClick,
+  onInfoDropdownActive,
   onItemClick
 }: infoSubProps) => {
   const { school, major, education } = infoInputs;
@@ -41,7 +41,7 @@ const InfoSub = ({
             value={school}
             active={infoActives.school}
             onChange={onSchoolChange}
-            onActive={onActiveClick}
+            onActive={onInfoDropdownActive}
           />
           {infoActives.school && (
             <div className="absolute top-[76px] z-40 w-full">
@@ -52,7 +52,7 @@ const InfoSub = ({
                   active={infoActives.school}
                   selected={school}
                   onClick={onItemClick}
-                  onActive={onActiveClick}
+                  onActive={onInfoDropdownActive}
                 />
               ) : (
                 <div className="no-scrollbar max-h-40 w-full animate-enter list-none flex-col overflow-auto rounded-xl bg-background-elevated-light p-3 text-body3 font-normal leading-body3 tracking-body3 text-gray-300 shadow-low transition-all duration-100 ease-linear">
@@ -76,7 +76,9 @@ const InfoSub = ({
             </div>
             <div
               className="relative flex w-full flex-[1_1_25%]"
-              onClick={() => onActiveClick("education", infoActives.education)}
+              onClick={() =>
+                onInfoDropdownActive("education", infoActives.education)
+              }
             >
               <Input
                 type="button"
@@ -86,7 +88,7 @@ const InfoSub = ({
                 value={education}
                 readOnly={true}
                 active={infoActives.education}
-                onActive={onActiveClick}
+                onActive={onInfoDropdownActive}
               />
               {infoActives.education && (
                 <div className="absolute top-12 z-40 w-full">
@@ -96,7 +98,7 @@ const InfoSub = ({
                     active={infoActives.education}
                     selected={education}
                     onClick={onItemClick}
-                    onActive={onActiveClick}
+                    onActive={onInfoDropdownActive}
                   />
                 </div>
               )}

@@ -5,11 +5,13 @@ interface YoutubeVideoProps {
 }
 
 const YoutubeVideo = ({ link }: YoutubeVideoProps) => {
-  const videoId = link.slice(32, 43);
-
   return (
     <YouTube
-      videoId={videoId}
+      videoId={
+        link.includes("https://www.youtube.com")
+          ? link.slice(32, 43)
+          : link.slice(17, 48)
+      }
       iframeClassName="iframe-border iframe-video"
       className="iframe-wrap iframe-size"
     />

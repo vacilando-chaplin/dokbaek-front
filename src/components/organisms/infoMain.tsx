@@ -1,5 +1,5 @@
 import { yearList } from "@/data/data";
-import { infoActivesTypes, infoInputsTypes } from "@/types/types";
+import { infoActiveType, infoInputType } from "@/types/types";
 import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
@@ -7,13 +7,13 @@ import Dropdown from "../molecules/dropdown";
 import InputWithLabel from "../molecules/inputWithLabel";
 
 interface InfoMainProps {
-  infoInputs: infoInputsTypes;
-  infoActives: infoActivesTypes;
+  infoInputs: infoInputType;
+  infoActives: infoActiveType;
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onNumberChange: React.ChangeEventHandler<HTMLInputElement>;
   onBirthChange: React.ChangeEventHandler<HTMLInputElement>;
   onContactChange: React.ChangeEventHandler<HTMLInputElement>;
-  onActiveClick: (name: string, state: boolean) => void;
+  onInfoDropdownActive: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
 }
 
@@ -24,7 +24,7 @@ const InfoMain = ({
   onNumberChange,
   onBirthChange,
   onContactChange,
-  onActiveClick,
+  onInfoDropdownActive,
   onItemClick
 }: InfoMainProps) => {
   const {
@@ -66,7 +66,7 @@ const InfoMain = ({
               value={birth}
               active={infoActives.birth}
               onChange={onBirthChange}
-              onActive={onActiveClick}
+              onActive={onInfoDropdownActive}
             />
             {infoActives.birth && (
               <div className="absolute top-[72px] z-40 w-full">
@@ -76,7 +76,7 @@ const InfoMain = ({
                   active={infoActives.birth}
                   selected={birth}
                   onClick={onItemClick}
-                  onActive={onActiveClick}
+                  onActive={onInfoDropdownActive}
                 />
               </div>
             )}

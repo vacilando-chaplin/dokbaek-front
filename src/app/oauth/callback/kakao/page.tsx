@@ -1,64 +1,18 @@
 "use client";
 
-import { AuthLogin, postUser } from "@/api/api";
-import Loading from "@/components/atoms/loading";
-import { defaultId, jwt } from "@/data/atom";
-import { KakaoDataTypes, SignUpResponseTypes } from "@/types/types";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { defaultId, loginForm } from "@/data/atom";
+import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
 
 const Kakao = () => {
   const router = useRouter();
 
-  const setId = useSetRecoilState(defaultId);
-  const setJWT = useSetRecoilState(jwt);
-
-  const searchParams = useSearchParams();
-  const authCode = searchParams?.get("code");
-  const [data, setData] = useState<KakaoDataTypes | null>(null);
-
-  const [postData, setPostData] = useState({
-    domain: "KAKAO",
-    accessToken: "",
-    deviceId: ""
-  });
-
-  const [resData, setResData] = useState<any>({});
+  const userId = useRecoilValue(defaultId);
+  const form = useRecoilValue(loginForm);
 
   const onClick = () => {
-    setId(resData.data.defaultProfileId);
-    setJWT(resData.data.token.jwt);
-    router.push(`/profile`);
+    router.push(`/profile/${userId}/create/info`);
   };
-
-  useEffect(() => {
-    const checkCode = async () => {
-      if (!authCode) {
-        return;
-      }
-      if (authCode) {
-        await AuthLogin(authCode).then((res) => setData(res));
-      }
-    };
-    checkCode();
-  }, [authCode]);
-
-  useEffect(() => {
-    if (data) {
-      setPostData({ ...postData, accessToken: data.access_token });
-    }
-  }, [data]);
-
-  useEffect(() => {
-    postUser(postData)
-      .then((res: SignUpResponseTypes) => {
-        setResData(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [postData]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -78,7 +32,7 @@ const Kakao = () => {
           />
         </svg>
         <div className="flex flex-col items-center text-heading3 font-semibold leading-heading3 tracking-heading3 text-content-primary-light">
-          <p>{`{카카오}`} 계정으로</p>
+          <p>{form} 계정으로</p>
           <p>회원가입이 완료되었어요.</p>
         </div>
         <label className="items-center text-body2 font-medium leading-body2 tracking-body2 text-content-secondary-light">
@@ -98,10 +52,4 @@ const Kakao = () => {
   );
 };
 
-export default function KaKaoWrapper() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <Kakao />
-    </Suspense>
-  );
-}
+export default Kakao;

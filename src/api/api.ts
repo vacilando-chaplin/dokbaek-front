@@ -1,4 +1,8 @@
-import { SignUpRequestTypes } from "@/types/types";
+import {
+  APIResponse,
+  SignUpRequestType,
+  SignUpResponseType
+} from "@/types/types";
 import axios from "axios";
 
 // 배포
@@ -25,6 +29,48 @@ const api = axios.create({
 
 const baseURL = "http://3.38.102.209:8080";
 
+const base64ToBlob = (base64String: string) => {
+  const [metadata, base64Data] = base64String.split(";base64,");
+  const mimeType = metadata.split(":")[1];
+  const binaryData = atob(base64Data); // Base64 문자열을 바이너리로 디코딩
+
+  // Blob 객체 생성
+  const byteArrays = [];
+  for (let offset = 0; offset < binaryData.length; offset += 1024) {
+    const slice = binaryData.slice(offset, offset + 1024);
+    const byteArray = new Uint8Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteArray[i] = slice.charCodeAt(i);
+    }
+    byteArrays.push(byteArray);
+  }
+  return new Blob(byteArrays, { type: mimeType });
+};
+
+const getTokenHeader = (token: string) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+};
+
+export const kakaoAuthLogin = async (code: string | string[]) => {
+  const res = await axios.post(
+    `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI}&code=${code}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  );
+  const data = res.data;
+
+  return data;
+};
+
+// 커리어넷 학교 검색 api
 export const getSchoolName = async (search: string) => {
   const univ_res = await fetch(
     `https://www.career.go.kr/cnet/openapi/getOpenApi?apiKey=${process.env.NEXT_PUBLIC_CAREERNET_API_KEY}&svcType=api&svcCode=SCHOOL&contentType=json&gubun=univ_list&perPage=10&searchSchulNm=${search}`
@@ -44,22 +90,7 @@ export const getSchoolName = async (search: string) => {
   return await data;
 };
 
-export const AuthLogin = async (code: string | string[]) => {
-  const res = await axios.post(
-    `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI}&code=${code}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
-    }
-  );
-  const data = res.data;
-
-  return data;
-};
-
-export const postUser = async (data: SignUpRequestTypes) => {
+export const postUser = async (data: SignUpRequestType) => {
   if (!data.accessToken) {
     return false;
   }
@@ -76,40 +107,14 @@ export const postUser = async (data: SignUpRequestTypes) => {
   }
 };
 
-const getAuthHeaders = (token: string) => {
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
-};
-
 export const putInfo = async (id: number, data: any, token: string) => {
   try {
-    const res = await api.put(`/profile/${id}`, data, getAuthHeaders(token));
+    const res = await api.put(`/profile/${id}`, data, getTokenHeader(token));
     return res.data;
   } catch (error) {
     throw error;
   }
 };
-
-function base64ToBlob(base64String: string) {
-  const [metadata, base64Data] = base64String.split(";base64,");
-  const mimeType = metadata.split(":")[1];
-  const binaryData = atob(base64Data); // Base64 문자열을 바이너리로 디코딩
-
-  // Blob 객체 생성
-  const byteArrays = [];
-  for (let offset = 0; offset < binaryData.length; offset += 1024) {
-    const slice = binaryData.slice(offset, offset + 1024);
-    const byteArray = new Uint8Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteArray[i] = slice.charCodeAt(i);
-    }
-    byteArrays.push(byteArray);
-  }
-  return new Blob(byteArrays, { type: mimeType });
-}
 
 export const postPhoto = async (
   id: number,
@@ -194,7 +199,7 @@ export const deletePhoto = async (
   try {
     const res = await api.delete(
       `/profile/${id}/photo/${photoId}`,
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -210,7 +215,7 @@ export const patchPhotoDefault = async (
   try {
     const res = await api.patch(
       `/profile/${id}/photo/${photoId}/default`,
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -223,7 +228,7 @@ export const postFilmography = async (id: number, data: any, token: string) => {
     const res = await api.post(
       `/profile/${id}/filmo`,
       data,
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -263,7 +268,7 @@ export const putFilmography = async (
     const res = await api.put(
       `/profile/${id}/filmo/${filmoId}}`,
       data,
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -279,7 +284,7 @@ export const deleteFilmography = async (
   try {
     const res = await api.delete(
       `/profile/${id}/filmo/${filmoId}`,
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -292,7 +297,7 @@ export const postVideo = async (id: number, url: string, token: string) => {
     const res = await api.post(
       `/profile/${id}/video`,
       { url },
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -310,7 +315,7 @@ export const putVideo = async (
     const res = await api.put(
       `/profile/${id}/video/${videoId}`,
       { url },
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -326,7 +331,7 @@ export const deleteVideo = async (
   try {
     const res = await api.delete(
       `/profile/${id}/video/${videoId}`,
-      getAuthHeaders(token)
+      getTokenHeader(token)
     );
     return res.data;
   } catch (error) {
@@ -336,7 +341,7 @@ export const deleteVideo = async (
 
 export const getProfile = async (id: number, token: string) => {
   try {
-    const res = await api.get(`/profile${id}`, getAuthHeaders(token));
+    const res = await api.get(`/profile${id}`, getTokenHeader(token));
     return res.data;
   } catch (error) {
     throw error;

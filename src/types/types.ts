@@ -4,12 +4,25 @@ declare global {
   }
 }
 
-export interface StepperTypes {
+export interface StepperType {
   name: string;
   id: number;
+  path: string;
 }
 
-export interface infoInputsTypes {
+export interface infoRequiredType {
+  name: string;
+  birth: string;
+  contact: string;
+}
+
+export interface InfoActiveType {
+  birth: boolean;
+  school: boolean;
+  education: boolean;
+}
+
+export interface InfoInputType {
   name: string;
   birth: string;
   height: string;
@@ -25,7 +38,7 @@ export interface infoInputsTypes {
   education: string;
 }
 
-export interface InfoDataTypes {
+export interface InfoResponseType {
   status: string;
   name: string;
   bornYear: number;
@@ -50,18 +63,12 @@ export interface InfoDataTypes {
   ];
 }
 
-export interface infoActivesTypes {
-  birth: boolean;
-  school: boolean;
-  education: boolean;
-}
-
-export interface ParameterTypes {
+export interface ParameterType {
   height: string | number;
   weight: string | number;
 }
 
-export interface SchoolTypes {
+export interface SchoolType {
   campusName: string;
   collegeinfourl: string;
   schoolType: string;
@@ -75,18 +82,23 @@ export interface SchoolTypes {
   seq: string;
 }
 
-export interface ActiveTypes {
-  birth: boolean;
-  education: boolean;
-  school: boolean;
+export interface PhotoResponseType {
+  id: string;
+  userProfileId: number;
+  path: string;
+  previewPath: string;
+  displayOrder: number;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface PhotoTypes {
-  photo: string;
-  id: number;
+export interface OriginPhotoType {
+  originImage: string;
+  id: string;
 }
 
-export interface filmoInputsTypes {
+export interface FilmoInputType {
   classification: string;
   production: string;
   title: string;
@@ -101,18 +113,59 @@ export interface filmoInputsTypes {
   displayOrder: number;
 }
 
-export interface filmoActivesTypes {
+export interface FilmoActiveType {
   classification: boolean;
   production: boolean;
   cast: boolean;
 }
 
-export interface VideoTypes {
-  link: string;
-  id: number;
+export interface FilmoRequestType {
+  roleId: number;
+  customRole: string;
+  character: string;
+  is_featured: boolean;
+  production: {
+    categoryId: number;
+    productionYear: number;
+    title: string;
+    description: string;
+    videoUrl: string;
+    thumbnailUrl: string;
+  };
+  displayOrder: number;
 }
 
-export interface KakaoDataTypes {
+export interface FilmoResponseType {
+  id: number;
+  role: {
+    id: number;
+    name: string;
+  };
+  customRole: string;
+  character: string;
+  is_featured: boolean;
+  production: {
+    category: {
+      id: number;
+      name: string;
+    };
+    productionYear: number;
+    title: string;
+    description: string;
+    videoUrl: string;
+    thumbnailUrl: string;
+  };
+  displayOrder: number;
+}
+
+export interface VideoResponseType {
+  id: number;
+  userProfileId: number;
+  url: string;
+  displayOrder: number;
+}
+
+export interface KakaoDataType {
   access_token: string;
   expires_in: number;
   refresh_token: string;
@@ -121,13 +174,18 @@ export interface KakaoDataTypes {
   token_type: string;
 }
 
-export interface SignUpRequestTypes {
+export interface APIResponse<T> {
+  data: T;
+  status: string;
+}
+
+export interface SignUpRequestType {
   domain: string;
   accessToken: string;
   deviceId: string;
 }
 
-export interface SignUpResponseTypes {
+export interface SignUpResponseType {
   token: {
     jwt: string;
     refreshToken: string;

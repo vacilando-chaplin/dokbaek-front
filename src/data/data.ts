@@ -3,14 +3,14 @@ export const topBarList = [
   { name: "로그아웃", href: "/" }
 ];
 
-export const stepList = [
-  { name: "내 정보", id: 0 },
-  { name: "사진", id: 1 },
-  { name: "작품 활동", id: 2 },
-  { name: "영상", id: 3 }
+export const stepperList = [
+  { name: "내 정보", id: 0, path: "/info" },
+  { name: "사진", id: 1, path: "/photo" },
+  { name: "작품 활동", id: 2, path: "/filmo" },
+  { name: "영상", id: 3, path: "/video" }
 ];
 
-export const infoInitData = {
+export const infoResponseInit = {
   status: "PUBLIC",
   name: "",
   bornYear: 0,
@@ -35,10 +35,37 @@ export const infoInitData = {
   ]
 };
 
+export const infoInputInit = {
+  name: "",
+  birth: "",
+  height: "",
+  weight: "",
+  contact: "",
+  email: "",
+  specialty: "",
+  instagram: "https://www.instagram.com/",
+  youtube: "https://www.youtube.com/@",
+  introduction: "",
+  school: "",
+  major: "",
+  education: "졸업"
+};
+
 export const infoActiveInit = {
   birth: false,
   school: false,
   education: false
+};
+
+export const photoResponseInit = {
+  id: "",
+  userProfileId: 0,
+  path: "",
+  previewPath: "",
+  displayOrder: 0,
+  isDefault: false,
+  createdAt: "",
+  updatedAt: ""
 };
 
 export const filmographyInputInit = {
@@ -60,6 +87,13 @@ export const filmographyActiveInit = {
   classification: false,
   production: false,
   cast: false
+};
+
+export const videoResponseInit = {
+  id: 0,
+  userProfileId: 0,
+  url: "",
+  displayOrder: 0
 };
 
 export const educationList = [

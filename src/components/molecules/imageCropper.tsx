@@ -1,5 +1,6 @@
 "use client";
 
+import { photoDragEnd } from "@/data/atom";
 import { useEffect, useRef, useState } from "react";
 import {
   Coordinates,
@@ -8,16 +9,20 @@ import {
   debounce
 } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
+import { useSetRecoilState } from "recoil";
 
 const ImageCropper = ({ selectImage, setCropImage }: any) => {
   const cropperRef = useRef<CropperRef>(null);
 
-  const [coordinates, setCoordinates] = useState<Coordinates | null>(null); // cropper 좌표
+  // const [coordinates, setCoordinates] = useState<Coordinates | null>(null); // cropper 좌표
+  // setCoordinate(cropperRef.current.getCoordinates());
   const [isLoading, setIsLoading] = useState(false);
+
+  const setDragEnd = useSetRecoilState(photoDragEnd);
 
   const onCrop = () => {
     if (cropperRef.current) {
-      setCoordinates(cropperRef.current.getCoordinates());
+      setDragEnd(true);
       setCropImage(cropperRef.current.getCanvas()?.toDataURL());
     }
   };
@@ -32,6 +37,7 @@ const ImageCropper = ({ selectImage, setCropImage }: any) => {
         }, 1000);
       };
     }
+    return () => {};
   }, [selectImage]);
 
   return (
@@ -40,7 +46,8 @@ const ImageCropper = ({ selectImage, setCropImage }: any) => {
         <Cropper
           ref={cropperRef}
           src={selectImage}
-          onChange={debounce(onCrop, 2000)}
+          onChange={debounce(onCrop, 3000)}
+          onMove={() => setDragEnd(false)}
           stencilProps={{
             aspectRatio: 160 / 204
           }}

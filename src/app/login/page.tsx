@@ -1,52 +1,88 @@
 "use client";
 
-import { useEffect } from "react";
+import { postUser } from "@/api/api";
+import { defaultId, jwt, loginForm } from "@/data/atom";
+import { SignUpResponseType } from "@/types/types";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 const Login = () => {
-  const redirectUri = "http://localhost:3000/oauth/callback/kakao";
-  const scope = ["profile_nickname", "account_email"].join(",");
+  const router = useRouter();
 
-  useEffect(() => {
-    const kakaoSDK = document.createElement("script");
-    kakaoSDK.async = false;
-    kakaoSDK.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.3/kakao.min.js";
-    kakaoSDK.integrity =
-      "sha384-kLbo2SvoNtOFiniJ1EQ9o2iDA8i3xp+O6Cns+L5cd4RsOJfl+43z5pvieT2ayq3C";
-    kakaoSDK.crossOrigin = "anonymous";
-    document.head.appendChild(kakaoSDK);
+  // 카카오 로그인
+  const [kakaoUserData, setKakaoUserData] = useState({}); // 유저 카카오 회원 데이터
 
-    const onLoadKakaoAPI = () => {
-      if (!window.Kakao.isInitialized()) {
+  const setId = useSetRecoilState(defaultId);
+  const setJWT = useSetRecoilState(jwt);
+  const setLoginForm = useSetRecoilState(loginForm);
+
+  const loadKakaoSDK = () => {
+    if (window.Kakao) {
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    script.onload = () => {
+      if (window.Kakao) {
         window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
       }
     };
+    document.head.appendChild(script);
+  };
 
-    kakaoSDK.addEventListener("load", onLoadKakaoAPI);
+  useEffect(() => {
+    loadKakaoSDK();
   }, []);
 
   useEffect(() => {
-    if (window.Kakao) {
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-      }
-    }
-  }, []);
+    loadKakaoSDK();
+  }, [window.Kakao]);
 
-  /*useEffect(() => {
+  const fetchUserProfile = (accessToken: string) => {
     if (window.Kakao) {
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-      }
-    }
-  }, [window.Kakao]);*/
-
-  const onKakaoLogin = () => {
-    if (window.Kakao) {
-      window.Kakao.Auth.authorize({
-        redirectUri,
-        scope
+      window.Kakao.API.request({
+        url: "/v2/user/me",
+        success: (response: any) => {
+          setKakaoUserData(response);
+        },
+        fail: (error: any) => {
+          throw error;
+        }
       });
     }
+  };
+
+  const onKakaoLogin = () => {
+    if (!window.Kakao) {
+      return;
+    }
+    window.Kakao.Auth.login({
+      success: (authData: any) => {
+        postUser({
+          domain: "KAKAO",
+          accessToken: authData.access_token,
+          deviceId: ""
+        })
+          .then((res: any) => {
+            const data = res.data;
+
+            setId(data.defaultProfileId);
+            setJWT(data.token.jwt);
+            setLoginForm("카카오");
+          })
+          .catch((error) => {
+            throw error;
+          });
+        fetchUserProfile(authData.access_token);
+
+        router.push("/oauth/callback/kakao");
+      },
+      fail: (error: any) => {
+        throw error;
+      }
+    });
   };
 
   return (

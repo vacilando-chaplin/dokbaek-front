@@ -29,6 +29,7 @@ const Input = ({
   onChange,
   onActive
 }: InputProps) => {
+  const youtubeShortUrl = value.includes("https://youtu.be/");
   return (
     <div className="flex h-10 w-full items-center gap-2 rounded-xl border border-border-default-light bg-background-surface-light px-3 py-[11px] text-body3 font-normal leading-body3 tracking-body3 text-content-primary-light placeholder-content-alternative-light">
       {icon === "instagram" && (
@@ -63,8 +64,7 @@ const Input = ({
       )}
       {icon && value ? (
         <input
-          className="w-full text-content-primary-light outline-none"
-          // className={`w-full outline-none ${value.includes(`https://www.${icon}.com/`) === true ? "text-content-primary-light" : "text-state-negative-light"}`}
+          className={`w-full outline-none ${value.includes(`https://www.${icon}.com/`) || youtubeShortUrl ? "text-content-primary-light" : "text-state-negative-light"}`}
           type={type}
           placeholder={placeholder}
           maxLength={maxLength}

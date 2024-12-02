@@ -1,25 +1,28 @@
 "use client";
 
-import { stepList } from "@/data/data";
-import { StepperTypes } from "@/types/types";
+import { stepperList } from "@/data/data";
+import { StepperType } from "@/types/types";
 import MenuItem from "../atoms/menuItem";
+import { usePathname } from "next/navigation";
 
 interface SideMenuProps {
-  stepper: number;
   onStepper: (index: number) => void;
 }
 
-const SideMenu = ({ stepper, onStepper }: SideMenuProps) => {
-  const steps = stepList;
+const SideMenu = ({ onStepper }: SideMenuProps) => {
+  const steps = stepperList;
+
+  const pathName = usePathname();
+  const activePath = pathName?.split("/")[4];
 
   return (
     <aside className="sticky top-[104px] h-fit w-[200px] rounded-2xl bg-background-surface-light p-3">
-      {steps.map((step: StepperTypes, index: number) => {
+      {steps.map((step: StepperType, index: number) => {
         return (
           <MenuItem
             key={step.id}
             name={step.name}
-            active={stepper === index}
+            active={step.path === "/" + activePath}
             onClick={() => onStepper(index)}
           />
         );

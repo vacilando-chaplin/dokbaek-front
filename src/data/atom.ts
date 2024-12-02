@@ -1,89 +1,51 @@
+import { infoRequiredType } from "@/types/types";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
-export const defaultId = atom({
+export const defaultId = atom<number>({
   key: "defaultId",
   default: 0,
   effects_UNSTABLE: [persistAtom]
 });
 
-export const jwt = atom({
+export const jwt = atom<string>({
   key: "jwt",
   default: "",
   effects_UNSTABLE: [persistAtom]
 });
 
-export const stepperInit = atom({
+export const loginForm = atom<string>({
+  key: "loginForm",
+  default: ""
+});
+
+export const stepperInit = atom<number>({
   key: "stepperInit",
   default: 0
 });
 
-export const categoryData = atom({
-  key: "categoryData",
-  default: []
+export const toastMessage = atom<string>({
+  key: "toastMessage",
+  default: ""
 });
 
-export const info = atom({
-  key: "info",
+export const infoRequired = atom<infoRequiredType>({
+  key: "infoRequired",
   default: {
     name: "",
     birth: "",
-    height: "",
-    weight: "",
-    contact: "",
-    email: "",
-    specialty: "",
-    instagram: "https://www.instagram.com/",
-    youtube: "https://www.youtube.com/@",
-    introduction: "",
-    school: "",
-    major: "",
-    education: "졸업"
+    contact: ""
   }
 });
 
-export const photo = atom({
-  key: "photo",
+export const photoDragEnd = atom<boolean>({
+  key: "photoDragEnd",
+  default: false
+});
+
+export const categoryData = atom<string[]>({
+  key: "categoryData",
   default: []
-});
-
-export const filmography = atom({
-  key: "filmography",
-  default: []
-});
-
-export const mainPhoto = atom({
-  key: "mainPhoto",
-  default: { photo: "", id: 0 }
-});
-
-export const video = atom({
-  key: "video",
-  default: []
-});
-
-export const profile = atom({
-  key: "profile",
-  default: {
-    info: {
-      name: "",
-      birth: "",
-      height: "",
-      weight: "",
-      contact: "",
-      email: "",
-      specialty: "",
-      instagram: "",
-      youtube: "",
-      introduction: "",
-      school: "",
-      major: "",
-      education: "졸업"
-    },
-    photo: [],
-    filmography: []
-  },
-  effects_UNSTABLE: [persistAtom]
 });

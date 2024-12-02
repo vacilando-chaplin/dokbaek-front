@@ -14,7 +14,7 @@ export const useInputs = (init: any) => {
   return [text, onInputChange];
 };
 
-export const useDebounce = (value: string, delay: number) => {
+export const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {

@@ -9,9 +9,9 @@ interface VideoMainProps {
   onVideoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onVideoEditModalOpen: any;
   onVideoDeleteModalOpen: any;
-  onVideoDeleteModalClose: any;
+  onVideoDeleteModalClose: React.MouseEventHandler<HTMLButtonElement>;
   onVideoDeleteClick: any;
-  onVideoLinkModalOpen: (link: string) => void;
+  onVideoLinkModalOpen: (url: string) => void;
 }
 
 const VideoMain = ({
@@ -34,7 +34,9 @@ const VideoMain = ({
         {videoList.length >= 1 ? (
           <div className="grid h-auto w-full grid-cols-3 gap-2">
             {videoList.map((video: any) => {
-              const videoId = video.url.slice(32, 43);
+              const videoId = video.url.includes("https://www.youtube.com")
+                ? video.url.slice(32, 43)
+                : video.url.slice(17, 28);
               const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
               return (

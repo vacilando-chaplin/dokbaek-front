@@ -7,10 +7,11 @@ import ProfileMain from "@/components/organisms/profileMain";
 import ProfilePhotoModal from "@/components/organisms/profilePhotoModal";
 import ProfileSub from "@/components/organisms/profileSub";
 import { defaultId, jwt, stepperInit } from "@/data/atom";
+import { PhotoResponseType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-const myProfile = () => {
+const Profile = () => {
   const userId = useRecoilValue(defaultId);
   const token = useRecoilValue(jwt);
 
@@ -19,7 +20,7 @@ const myProfile = () => {
   console.log(profileData);
 
   const mainPhotoData = profileData.photos.find(
-    (photo: any) => photo.isDefault === true
+    (photo: PhotoResponseType) => photo.isDefault === true
   );
 
   useEffect(() => {
@@ -124,4 +125,4 @@ const myProfile = () => {
   );
 };
 
-export default myProfile;
+export default Profile;

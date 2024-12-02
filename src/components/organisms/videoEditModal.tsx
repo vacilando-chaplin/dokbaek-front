@@ -5,7 +5,7 @@ import VideoModalSub from "./videoModalSub";
 interface VideoEditModalProps {
   videoInputs: string;
   onVideoInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onVideoEditModalClose: any;
+  onVideoEditModalClose: React.MouseEventHandler<HTMLButtonElement>;
   onVideoEditModalSave: any;
 }
 
@@ -15,6 +15,9 @@ const VideoEditModal = ({
   onVideoEditModalClose,
   onVideoEditModalSave
 }: VideoEditModalProps) => {
+  const disabled =
+    videoInputs.includes("https://www.youtube.com") ||
+    videoInputs.includes("https://youtu.be");
   return (
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative max-h-full w-full max-w-[720px]">
@@ -26,10 +29,7 @@ const VideoEditModal = ({
           />
           <ModalBottom
             text="완료"
-            disabled={
-              videoInputs.length === 0 ||
-              videoInputs.indexOf("https://www.youtube.com") === -1
-            }
+            disabled={!disabled}
             onCloseClick={onVideoEditModalClose}
             onSaveClick={onVideoEditModalSave}
           />
