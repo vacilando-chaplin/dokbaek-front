@@ -2,7 +2,6 @@
 
 import { postUser } from "@/api/api";
 import { defaultId, jwt, loginForm } from "@/data/atom";
-import { SignUpResponseType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
@@ -40,7 +39,7 @@ const Login = () => {
     loadKakaoSDK();
   }, [window.Kakao]);
 
-  const fetchUserProfile = (accessToken: string) => {
+  const fetchUserProfile = () => {
     if (window.Kakao) {
       window.Kakao.API.request({
         url: "/v2/user/me",
@@ -75,7 +74,7 @@ const Login = () => {
           .catch((error) => {
             throw error;
           });
-        fetchUserProfile(authData.access_token);
+        fetchUserProfile();
 
         router.push("/oauth/callback/kakao");
       },

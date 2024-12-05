@@ -1,5 +1,5 @@
 import { yearList } from "@/data/data";
-import { infoActiveType, infoInputType } from "@/types/types";
+import { InfoActiveType, InfoInputType } from "@/types/types";
 import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
@@ -7,8 +7,8 @@ import Dropdown from "../molecules/dropdown";
 import InputWithLabel from "../molecules/inputWithLabel";
 
 interface InfoMainProps {
-  infoInputs: infoInputType;
-  infoActives: infoActiveType;
+  infoInputs: InfoInputType;
+  infoActives: InfoActiveType;
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onNumberChange: React.ChangeEventHandler<HTMLInputElement>;
   onBirthChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -34,7 +34,7 @@ const InfoMain = ({
     weight,
     contact,
     email,
-    specialty,
+    speciality,
     instagram,
     youtube
   } = infoInputs;
@@ -129,8 +129,8 @@ const InfoMain = ({
             type="text"
             placeholder="ex) 영어, 중국어, 피아노, 1종 면허, 사투리, 댄스"
             maxLength={20}
-            name="specialty"
-            value={specialty}
+            name="speciality"
+            value={speciality}
             onChange={onInputChange}
           />
         </div>

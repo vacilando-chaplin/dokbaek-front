@@ -2,6 +2,7 @@
 
 import {
   deletePhoto,
+  getProfile,
   patchPhotoDefault,
   postPhoto,
   postPhotoEdit
@@ -12,7 +13,7 @@ import PhotoModal from "@/components/organisms/photoModal";
 import { defaultId, jwt, toastMessage } from "@/data/atom";
 import { photoResponseInit } from "@/data/data";
 import { OriginPhotoType, PhotoResponseType } from "@/types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Photo = () => {
@@ -22,52 +23,59 @@ const Photo = () => {
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [photoList, setPhotoList] = useState<PhotoResponseType[]>([]);
-  const [originPhotoList, setOriginPhotoList] = useState<OriginPhotoType[]>([]);
+
+  // 이미지 크롭할 때 사진
   const [selectImage, setSelectImage] = useState("");
   const [cropImage, setCropImage] = useState("");
+
+  // 사진 원본(base64, id)
+  const [originPhotoList, setOriginPhotoList] = useState<OriginPhotoType[]>([]);
+
   const [photoModalActive, setPhotoModalActive] = useState(false);
   const [photoEditModalActive, setPhotoEditModalActive] = useState(false);
   const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
-  const [photoRepresentativeActive, setPhotoRepresentativeActive] =
-    useState(false);
+  const [photoRepActive, setPhotoRepActive] = useState(false);
+
   const [editPhoto, setEditPhoto] =
     useState<PhotoResponseType>(photoResponseInit);
+
+  // 대표작 설정
   const [repPhoto, setRepPhoto] =
     useState<PhotoResponseType>(photoResponseInit);
+
+  // 대표작 취소 시 대표작 원본
   const [editRepPhoto, setEditRepPhoto] =
     useState<PhotoResponseType>(photoResponseInit);
 
   // 사진 추가 모달 저장
   const onAddPhoto = async () => {
-    try {
-      if (cropImage) {
-        const res = await postPhoto(userId, selectImage, cropImage, token);
-        const data = res.data;
+    if (cropImage) {
+      const res = await postPhoto(userId, selectImage, cropImage, token);
+      const data = res.data;
 
-        const originPhoto = { originImage: selectImage, id: data.id };
-        setOriginPhotoList([...originPhotoList, originPhoto]);
+      const originPhoto = { originImage: selectImage, id: data.id };
+      setOriginPhotoList([...originPhotoList, originPhoto]);
 
-        if (photoList.length === 0) {
-          data.isDefault = true;
-          setRepPhoto(data);
-        }
-        setPhotoList([...photoList, data]);
-      } else {
-        const res = await postPhoto(userId, selectImage, selectImage, token);
-        const data = res.data;
-
-        const originPhoto = { originImage: selectImage, id: data.id };
-        setOriginPhotoList([...originPhotoList, originPhoto]);
-
-        if (photoList.length === 0) {
-          data.isDefault = true;
-          setRepPhoto(data);
-        }
-        setPhotoList([...photoList, data]);
+      if (photoList.length === 0) {
+        data.isDefault = true;
+        setRepPhoto(data);
       }
-    } catch (error) {
-      throw error;
+
+      setPhotoList([...photoList, data]);
+    } else {
+      const res = await postPhoto(userId, selectImage, selectImage, token);
+      const data = res.data;
+
+      const originPhoto = { originImage: selectImage, id: data.id };
+      setOriginPhotoList([...originPhotoList, originPhoto]);
+
+      if (photoList.length === 0) {
+        data.isDefault = true;
+        setRepPhoto(data);
+      }
+      setPhotoList([...photoList, data]);
     }
+
     setPhotoModalActive(!photoModalActive);
     setSelectImage("");
     setCropImage("");
@@ -76,19 +84,13 @@ const Photo = () => {
 
   // 사진 편집 모달 완료
   const onEditPhoto = async () => {
-    try {
-      const res = await postPhotoEdit(
-        userId,
-        selectImage,
-        cropImage,
-        token,
-        editPhoto.id
-      );
-      const data = res.data;
-      setPhotoList([...photoList, data]);
-    } catch (error) {
-      throw error;
-    }
+    await postPhotoEdit(userId, selectImage, cropImage, token, editPhoto.id);
+
+    const res = await getProfile(userId, token);
+    const data = await res.data;
+
+    setPhotoList(data.photos);
+
     setPhotoEditModalActive(!photoEditModalActive);
     setSelectImage("");
     setCropImage("");
@@ -98,14 +100,13 @@ const Photo = () => {
 
   // 사진 삭제 모달 삭제 버튼 클릭
   const onDeletePhoto = async (id: string) => {
-    try {
-      await deletePhoto(userId, id, token);
-      setPhotoList((prev: PhotoResponseType[]) =>
-        prev.filter((photo: PhotoResponseType) => photo.id !== id)
-      );
-    } catch (error) {
-      throw error;
-    }
+    await deletePhoto(userId, id, token);
+
+    const res = await getProfile(userId, token);
+    const data = await res.data;
+
+    setPhotoList(data.photos);
+
     setPhotoDeleteActive(!photoDeleteActive);
     setToastMessage("사진을 삭제했어요.");
   };
@@ -143,16 +144,16 @@ const Photo = () => {
   };
 
   // 사진 대표작 선택 액티브
-  const onPhotoRepresentativeActive = () => {
+  const onPhotoRepActive = () => {
     setEditRepPhoto(repPhoto);
-    setPhotoRepresentativeActive(!photoRepresentativeActive);
+    setPhotoRepActive(!photoRepActive);
   };
 
   // 사진 대표작 선택 취소
-  const onPhotoRepresentativeClose = () => {
+  const onPhotoRepClose = () => {
     setRepPhoto(editRepPhoto);
     setEditRepPhoto(photoResponseInit);
-    setPhotoRepresentativeActive(!photoRepresentativeActive);
+    setPhotoRepActive(!photoRepActive);
   };
 
   // 사진 대표작 체크
@@ -164,11 +165,13 @@ const Photo = () => {
 
   // 사진 대표작 설정 완료
   const onPhotoRepSave = async () => {
-    try {
-      await patchPhotoDefault(userId, repPhoto.id, token);
-    } catch (error) {
-      throw error;
-    }
+    await patchPhotoDefault(userId, repPhoto.id, token);
+
+    const res = await getProfile(userId, token);
+    const data = await res.data;
+
+    setPhotoList(data.photos);
+
     setRepPhoto(photoResponseInit);
   };
 
@@ -185,22 +188,38 @@ const Photo = () => {
     e.currentTarget.value = "";
   };
 
+  // 사진 리스트 업데이트
+  useEffect(() => {
+    const getProfileData = async () => {
+      const res = await getProfile(userId, token);
+      const data = await res.data;
+
+      const originPhotos = data.photos.map((photo: PhotoResponseType) => ({
+        originImage: photo.path,
+        id: photo.id
+      }));
+      setPhotoList(data.photos);
+      setOriginPhotoList(originPhotos);
+    };
+    getProfileData();
+  }, []);
+
   return (
     <div className="flex w-[65vw] flex-col gap-3">
       <PhotoMain
         photoList={photoList}
         photoDeleteActive={photoDeleteActive}
-        photoRepresentativeActive={photoRepresentativeActive}
+        photoRepActive={photoRepActive}
         repPhoto={repPhoto}
         onSelectFile={onSelectFile}
         onPhotoModalActive={onPhotoModalActive}
         onPhotoEditModalOpen={onPhotoEditModalOpen}
         onDeletePhoto={onDeletePhoto}
         onDeletePhotoActive={onDeletePhotoActive}
-        onPhotoRepresentativeActive={onPhotoRepresentativeActive}
+        onPhotoRepActive={onPhotoRepActive}
         onPhotoRepSave={onPhotoRepSave}
         onPhotoRepCheck={onPhotoRepCheck}
-        onPhotoRepresentativeClose={onPhotoRepresentativeClose}
+        onPhotoRepClose={onPhotoRepClose}
       />
       {photoModalActive && (
         <PhotoModal

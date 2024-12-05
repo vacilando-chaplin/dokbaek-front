@@ -1,6 +1,6 @@
 "use client";
 
-import { getSchoolName, putInfo } from "@/api/api";
+import { getProfile, getSchoolName, putInfo } from "@/api/api";
 import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import InfoThird from "@/components/organisms/infoThird";
@@ -12,10 +12,10 @@ import {
   infoInputInit
 } from "@/data/data";
 import { useDebounce } from "@/hooks/hooks";
-import { SchoolType } from "@/types/types";
+import { InfoActiveType, InfoInputType, SchoolType } from "@/types/types";
 import { contactFormat, setOnlyNumber } from "@/utils/utils";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
@@ -23,26 +23,29 @@ const Info = () => {
 
   const stepper = useRecoilValue(stepperInit);
 
-  const [infoInputs, setInfoInputs] = useState(infoInputInit);
-  const [infoActives, setInfoActives] = useState(infoActiveInit);
+  const [infoInputs, setInfoInputs] = useState<InfoInputType>(infoInputInit);
+  const [infoActives, setInfoActives] =
+    useState<InfoActiveType>(infoActiveInit);
+
+  // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
 
-  const [required, setRequired] = useRecoilState(infoRequired);
+  const setRequired = useSetRecoilState(infoRequired);
 
-  useEffect(() => {
-    setRequired({ ...required, name: infoInputs.name });
-  }, [infoInputs.name]);
+  // useEffect(() => {
+  //   setRequired({
+  //     name: infoInputs.name,
+  //     birth: infoInputs.birth,
+  //     contact: infoInputs.contact
+  //   });
+  // }, [infoInputs.name, infoInputs.birth, infoInputs.contact]);
 
-  useEffect(() => {
-    setRequired({ ...required, birth: infoInputs.birth });
-  }, [infoInputs.birth]);
-
-  useEffect(() => {
-    setRequired({ ...required, contact: infoInputs.contact });
-  }, [infoInputs.contact]);
-
-  // 내 정보 입력(숫자만 입력 가능한 인풋 제외)
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 내 정보 입력
+  const onInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setInfoInputs({
       ...infoInputs,
@@ -64,6 +67,8 @@ const Info = () => {
     setInfoInputs({ ...infoInputs, [name]: changeNumber });
     if (value && !infoActives.birth) {
       setInfoActives({ ...infoActives, [name]: true });
+    } else if (value.length === 4) {
+      setInfoActives({ ...infoActives, [name]: false });
     }
   };
 
@@ -96,8 +101,8 @@ const Info = () => {
     setInfoInputs({ ...infoInputs, [name]: item });
   };
 
-  // 학교검색 딜레이 적용(0.5초)
-  const debounceSearch = useDebounce(infoInputs.school, 500);
+  // 학교검색 딜레이 적용(0.3초)
+  const debounceSearch: any = useDebounce(infoInputs.school, 300);
 
   useEffect(() => {
     const getSearchSchool = async (name: string) => {
@@ -111,7 +116,6 @@ const Info = () => {
   }, [debounceSearch]);
 
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
-
   useEffect(() => {
     const onStepper = async () => {
       if (!token) {
@@ -130,7 +134,7 @@ const Info = () => {
             weight: Number(infoInputs.weight),
             email: infoInputs.email,
             contact: infoInputs.contact,
-            speciality: infoInputs.specialty,
+            speciality: infoInputs.speciality,
             instagramLink: infoInputs.instagram,
             youtubeLink: infoInputs.youtube,
             introduction: infoInputs.introduction
@@ -147,15 +151,40 @@ const Info = () => {
             }
           ]
         };
-        try {
-          await putInfo(userId, infoData, token);
-        } catch (error) {
-          throw error;
-        }
+        await putInfo(userId, infoData, token);
       }
     };
     onStepper();
   }, [stepper]);
+
+  // 내 정보 업데이트
+  useEffect(() => {
+    const getProfileData = async () => {
+      const res = await getProfile(userId, token);
+      const data = await res.data;
+
+      const findEducation = educationEngList.findIndex(
+        (education: string) => education === data.education[0].status
+      );
+
+      setInfoInputs({
+        name: data.info.name,
+        birth: data.info.bornYear,
+        height: data.info.height,
+        weight: data.info.weight,
+        contact: data.info.contact,
+        email: data.info.email,
+        speciality: data.info.speciality,
+        instagram: data.info.instagramLink,
+        youtube: data.info.youtubeLink,
+        introduction: data.info.introduction,
+        school: data.education[0].school.name,
+        major: data.education[0].major,
+        education: educationList[findEducation]
+      });
+    };
+    getProfileData();
+  }, []);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

@@ -10,7 +10,82 @@ export interface StepperType {
   path: string;
 }
 
-export interface infoRequiredType {
+export interface ProfileResponseType {
+  id: number;
+  userId: number;
+  status: string;
+  info: {
+    name: string;
+    bornYear: number;
+    height: number;
+    weight: number;
+    email: string;
+    contact: string;
+    speciality: string;
+    instagramLink: string;
+    youtubeLink: string;
+    introduction: string;
+  };
+  education: [
+    {
+      school: {
+        name: string;
+        schoolType: string;
+        schoolGubun: string;
+      };
+      major: string;
+      status: string;
+    }
+  ];
+  photos: [
+    {
+      id: string;
+      userProfileId: number;
+      path: string;
+      previewPath: string;
+      displayOrder: number;
+      isDefault: true;
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
+  filmos: [
+    {
+      id: number;
+      role: {
+        id: number;
+        name: string;
+      };
+      customRole: string;
+      character: string;
+      is_featured: true;
+      production: {
+        category: {
+          id: number;
+          name: string;
+        };
+        productionYear: number;
+        title: string;
+        description: string;
+        videoUrl: string;
+        thumbnailUrl: string;
+      };
+      displayOrder: number;
+    }
+  ];
+  videos: [
+    {
+      id: number;
+      userProfileId: number;
+      url: string;
+      displayOrder: number;
+    }
+  ];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InfoRequiredType {
   name: string;
   birth: string;
   contact: string;
@@ -29,7 +104,7 @@ export interface InfoInputType {
   weight: string;
   contact: string;
   email: string;
-  specialty: string;
+  speciality: string;
   instagram: string;
   youtube: string;
   introduction: string;
@@ -82,6 +157,16 @@ export interface SchoolType {
   seq: string;
 }
 
+export interface EducationType {
+  school: {
+    name: string;
+    schoolType: string;
+    schoolGubun: string;
+  };
+  major: string;
+  status: string;
+}
+
 export interface PhotoResponseType {
   id: string;
   userProfileId: number;
@@ -96,6 +181,16 @@ export interface PhotoResponseType {
 export interface OriginPhotoType {
   originImage: string;
   id: string;
+}
+
+export interface FilmoRoleType {
+  id: number;
+  name: string;
+}
+
+export interface FilmoCategoryType {
+  id: number;
+  name: string;
 }
 
 export interface FilmoInputType {

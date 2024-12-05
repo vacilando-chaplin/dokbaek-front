@@ -11,6 +11,7 @@ const Kakao = () => {
   const form = useRecoilValue(loginForm);
 
   const onClick = () => {
+    router.prefetch(`/profile/${userId}/create/info`);
     router.push(`/profile/${userId}/create/info`);
   };
 

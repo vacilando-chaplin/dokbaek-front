@@ -1,14 +1,15 @@
+import { VideoResponseType } from "@/types/types";
 import CreateButton from "../atoms/createButton";
 import EmptyBox from "../atoms/emptyBox";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 
 interface VideoMainProps {
-  videoList: any;
+  videoList: VideoResponseType[];
   videoDeleteModalActive: boolean;
   onVideoModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onVideoEditModalOpen: any;
-  onVideoDeleteModalOpen: any;
+  onVideoEditModalOpen: (video: VideoResponseType) => void;
+  onVideoDeleteModalOpen: (video: VideoResponseType) => void;
   onVideoDeleteModalClose: React.MouseEventHandler<HTMLButtonElement>;
   onVideoDeleteClick: any;
   onVideoLinkModalOpen: (url: string) => void;

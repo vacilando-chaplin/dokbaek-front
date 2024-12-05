@@ -29,7 +29,8 @@ const Input = ({
   onChange,
   onActive
 }: InputProps) => {
-  const youtubeShortUrl = value.includes("https://youtu.be/");
+  const youtubeShortUrl =
+    value.length >= 1 && value.includes("https://youtu.be/");
   return (
     <div className="flex h-10 w-full items-center gap-2 rounded-xl border border-border-default-light bg-background-surface-light px-3 py-[11px] text-body3 font-normal leading-body3 tracking-body3 text-content-primary-light placeholder-content-alternative-light">
       {icon === "instagram" && (

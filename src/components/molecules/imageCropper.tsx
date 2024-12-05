@@ -11,7 +11,12 @@ import {
 import "react-advanced-cropper/dist/style.css";
 import { useSetRecoilState } from "recoil";
 
-const ImageCropper = ({ selectImage, setCropImage }: any) => {
+interface ImageCropperProps {
+  selectImage: string;
+  setCropImage: any;
+}
+
+const ImageCropper = ({ selectImage, setCropImage }: ImageCropperProps) => {
   const cropperRef = useRef<CropperRef>(null);
 
   // const [coordinates, setCoordinates] = useState<Coordinates | null>(null); // cropper 좌표
@@ -46,8 +51,9 @@ const ImageCropper = ({ selectImage, setCropImage }: any) => {
         <Cropper
           ref={cropperRef}
           src={selectImage}
-          onChange={debounce(onCrop, 3000)}
-          onMove={() => setDragEnd(false)}
+          onChange={onCrop}
+          // onChange={debounce(onCrop, 3000)}
+          // onMove={() => setDragEnd(false)}
           stencilProps={{
             aspectRatio: 160 / 204
           }}

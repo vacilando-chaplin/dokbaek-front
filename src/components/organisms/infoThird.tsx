@@ -1,9 +1,9 @@
-import { infoInputsTypes } from "@/types/types";
+import { InfoInputType } from "@/types/types";
 import Title from "../atoms/title";
 
 interface InfoThirdProps {
-  infoInputs: infoInputsTypes;
-  onInputChange: any;
+  infoInputs: InfoInputType;
+  onInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 const InfoThird = ({ infoInputs, onInputChange }: InfoThirdProps) => {

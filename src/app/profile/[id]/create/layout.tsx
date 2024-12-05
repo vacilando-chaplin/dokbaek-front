@@ -1,5 +1,6 @@
 "use client";
 
+import { getFilmoRoles, getProfile } from "@/api/api";
 import Toast from "@/components/atoms/toast";
 import SideMenu from "@/components/molecules/sideMenu";
 import BottomBar from "@/components/organisms/bottomBar";
@@ -11,7 +12,7 @@ import {
 } from "@/data/atom";
 import { stepperList } from "@/data/data";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -20,14 +21,23 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const required = useRecoilValue(infoRequired);
-  const saveRequired =
-    required.name.length >= 1 &&
-    required.birth.length >= 1 &&
-    required.contact.length >= 1;
+
+  const [canSave, setCanSave] = useState(false);
+
+  // useEffect(() => {
+  //   setCanSave(
+  //     required.name.length == 0 &&
+  //       required.birth.length == 0 &&
+  //       required.contact.length == 0
+  //   );
+  //   console.log(required.name.length);
+  //   console.log(canSave);
+  // }, [required]);
 
   const setStepper = useSetRecoilState(stepperInit);
   const onStepper = (index: number) => {
     setStepper(index);
+    router.prefetch(`/profile/${userId}/create/${stepperList[index].path}`);
     router.push(`/profile/${userId}/create/${stepperList[index].path}`);
   };
 
@@ -40,6 +50,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }, [message]);
 
   const onSaveProfileClick = () => {
+    router.prefetch(`/profile/${userId}`);
     router.push(`/profile/${userId}`);
   };
 
@@ -55,7 +66,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <BottomBar
         onBack={onBackProfileClick}
         onSave={onSaveProfileClick}
-        disabled={!saveRequired}
+        // disabled={canSave}
       />
     </div>
   );

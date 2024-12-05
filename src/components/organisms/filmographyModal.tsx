@@ -1,11 +1,11 @@
-import { filmoActivesTypes, filmoInputsTypes } from "@/types/types";
+import { FilmoActiveType, FilmoInputType } from "@/types/types";
 import ModalBottom from "../molecules/modalBottom";
 import ModalTop from "../molecules/modalTop";
 import FilmographySub from "./filmographySub";
 
 interface FilmographyModalProps {
-  filmoInputs: filmoInputsTypes;
-  filmoActives: filmoActivesTypes;
+  filmoInputs: FilmoInputType;
+  filmoActives: FilmoActiveType;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoProductionChange: React.ChangeEventHandler<HTMLInputElement>;

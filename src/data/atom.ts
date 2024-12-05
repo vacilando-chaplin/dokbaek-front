@@ -1,4 +1,9 @@
-import { infoRequiredType } from "@/types/types";
+import {
+  FilmoCategoryType,
+  FilmoRoleType,
+  InfoRequiredType,
+  ProfileResponseType
+} from "@/types/types";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
@@ -31,7 +36,7 @@ export const toastMessage = atom<string>({
   default: ""
 });
 
-export const infoRequired = atom<infoRequiredType>({
+export const infoRequired = atom<InfoRequiredType>({
   key: "infoRequired",
   default: {
     name: "",
@@ -48,4 +53,22 @@ export const photoDragEnd = atom<boolean>({
 export const categoryData = atom<string[]>({
   key: "categoryData",
   default: []
+});
+
+export const filmoCategory = atom<FilmoCategoryType[]>({
+  key: "filmoCategory",
+  default: [],
+  effects_UNSTABLE: [persistAtom]
+});
+
+export const filmoRole = atom<FilmoRoleType[]>({
+  key: "filmoRole",
+  default: [],
+  effects_UNSTABLE: [persistAtom]
+});
+
+export const profileData = atom({
+  key: "profileData",
+  default: {},
+  effects_UNSTABLE: [persistAtom]
 });

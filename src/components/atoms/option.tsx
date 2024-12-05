@@ -1,6 +1,6 @@
 interface OptionProps {
   name: string;
-  item: any;
+  item: string;
   active: boolean;
   selected: string;
   onClick: (name: string, item: string) => void;

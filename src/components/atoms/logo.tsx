@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import LogoHorizontal from "../../../public/icons/LogoHorizontal.svg";
 import Link from "next/link";
@@ -12,7 +10,7 @@ interface LogoProps {
 const Logo = ({ name, href }: LogoProps) => {
   return (
     <Link href={href} className="outline-none">
-      <Image src={LogoHorizontal} alt={name} />
+      <Image src={LogoHorizontal} alt={name} priority />
     </Link>
   );
 };

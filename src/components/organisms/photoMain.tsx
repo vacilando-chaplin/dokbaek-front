@@ -3,54 +3,52 @@ import EmptyBox from "../atoms/emptyBox";
 import RepresentativeButton from "../atoms/representiveButton";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
+import { PhotoResponseType } from "@/types/types";
 
 interface PhotoMainProps {
-  photoList: any;
+  photoList: PhotoResponseType[];
   photoDeleteActive: boolean;
-  photoRepresentativeActive: boolean;
-  repPhoto: any;
+  photoRepActive: boolean;
+  repPhoto: PhotoResponseType;
   onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPhotoModalActive: React.MouseEventHandler<HTMLInputElement>;
   onPhotoEditModalOpen: (photo: any) => void;
   onDeletePhoto: (id: string) => void;
   onDeletePhotoActive: React.MouseEventHandler<HTMLButtonElement>;
-  onPhotoRepresentativeActive: React.MouseEventHandler<HTMLButtonElement>;
-  onPhotoRepSave: any;
-  onPhotoRepCheck: any;
-  onPhotoRepresentativeClose: any;
+  onPhotoRepActive: React.MouseEventHandler<HTMLButtonElement>;
+  onPhotoRepSave: React.MouseEventHandler<HTMLButtonElement>;
+  onPhotoRepCheck: (photo: PhotoResponseType) => void;
+  onPhotoRepClose: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const PhotoMain = ({
   photoList,
   photoDeleteActive,
-  photoRepresentativeActive,
+  photoRepActive,
   repPhoto,
   onSelectFile,
   onPhotoModalActive,
   onPhotoEditModalOpen,
   onDeletePhoto,
   onDeletePhotoActive,
-  onPhotoRepresentativeActive,
+  onPhotoRepActive,
   onPhotoRepSave,
   onPhotoRepCheck,
-  onPhotoRepresentativeClose
+  onPhotoRepClose
 }: PhotoMainProps) => {
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
       <div className="flex w-full flex-row justify-between">
         <Title name="사진" />
         <div className="flex flex-row items-center gap-4">
-          {photoRepresentativeActive && (
+          {photoRepActive && (
             <label className="text-body2 font-medium leading-body2 tracking-body2 text-accent-primary-light">
               대표 사진을 선택해주세요.
             </label>
           )}
-          {photoRepresentativeActive ? (
+          {photoRepActive ? (
             <div className="flex items-center gap-1">
-              <RepresentativeButton
-                text="취소"
-                onActive={onPhotoRepresentativeClose}
-              />
+              <RepresentativeButton text="취소" onActive={onPhotoRepClose} />
               <RepresentativeButton
                 text="완료"
                 color="border border-accent-primary-light text-accent-primary-light"
@@ -63,7 +61,7 @@ const PhotoMain = ({
                 <RepresentativeButton
                   icon={true}
                   text="대표 사진 설정"
-                  onActive={onPhotoRepresentativeActive}
+                  onActive={onPhotoRepActive}
                 />
               )}
               <label className="flex h-auto w-auto cursor-pointer flex-row items-center gap-1 rounded-[10px] border border-accent-primary-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-accent-primary-light">
@@ -96,7 +94,7 @@ const PhotoMain = ({
       </div>
       {photoList.length >= 1 ? (
         <div className="grid w-full grid-cols-4 gap-2">
-          {photoList.map((photoItem: any) => {
+          {photoList.map((photoItem: PhotoResponseType) => {
             return (
               <figure
                 key={photoItem.id}
@@ -110,22 +108,20 @@ const PhotoMain = ({
                   fill
                   className="rounded-lg"
                 />
-                {photoRepresentativeActive === false &&
-                  repPhoto.id === photoItem.id && (
-                    <label className="absolute left-2 top-2 flex h-auto w-auto items-center justify-center rounded-full border border-border-default_inverse-light bg-accent-primary-light px-1.5 py-0.5 text-caption2 font-semibold leading-caption2 tracking-caption2 text-content-on_color-light">
-                      대표
-                    </label>
-                  )}
-                {photoRepresentativeActive && (
-                  <div className="absolute h-1/4 w-full rounded-lg bg-gradient-to-b from-static-black opacity-50"></div>
+                {photoRepActive === false && repPhoto.id === photoItem.id && (
+                  <label className="absolute left-2 top-2 flex h-auto w-auto items-center justify-center rounded-full border border-border-default_inverse-light bg-accent-primary-light px-1.5 py-0.5 text-caption2 font-semibold leading-caption2 tracking-caption2 text-content-on_color-light">
+                    대표
+                  </label>
                 )}
-                {photoRepresentativeActive ? (
+                {photoRepActive && (
+                  <div className="absolute h-1/4 w-full rounded-lg bg-gradient-to-b from-static-black opacity-50" />
+                )}
+                {photoRepActive ? (
                   <div className="absolute left-2 top-2 h-full w-full">
                     <div className="flex gap-2">
                       <input
                         className="absolute h-[18px] w-[18px] appearance-none rounded-md focus:outline-none"
                         type="checkbox"
-                        value={photoItem}
                         onClick={() => onPhotoRepCheck(photoItem)}
                       />
                       <div

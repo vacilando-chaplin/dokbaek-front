@@ -1,11 +1,11 @@
 "use client";
 
-import { castList, classificationList } from "@/data/data";
+import { FilmoResponseType } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface FilmoItemProps {
-  filmo: any;
+  filmo: FilmoResponseType;
   filmoRepresentActive?: boolean;
   representativeCount?: number;
   canEdit: boolean;
@@ -25,19 +25,21 @@ const FilmoItem = ({
   onCheck,
   onLink
 }: FilmoItemProps) => {
-  const { representative } = filmo;
+  const { id, role, customRole, character, is_featured, production } = filmo;
 
   const checkYoutube =
-    filmo.production.videoUrl && filmo.production.videoUrl.includes("youtube");
+    (production.videoUrl &&
+      production.videoUrl.includes("https://www.youtube.com")) ||
+    production.videoUrl.includes("https://youtu.be/");
 
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     if (representativeCount && representativeCount >= 6) {
-      if (representative) {
+      if (is_featured) {
         setDisabled(false);
       }
-      if (representative === false) {
+      if (is_featured === false) {
         setDisabled(true);
       }
     } else {
@@ -53,14 +55,14 @@ const FilmoItem = ({
           <input
             type="checkbox"
             disabled={disabled}
-            className={`absolute h-[18px] w-[18px] appearance-none rounded focus:outline-none ${representative ? "" : "opacity-0"}`}
-            onChange={() => onCheck(filmo.id)}
+            className={`absolute h-[18px] w-[18px] appearance-none rounded focus:outline-none ${!is_featured && "opacity-0"}`}
+            onChange={() => onCheck(id)}
           />
           <div
-            className={`flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded transition-all duration-100 ease-linear ${representative ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light bg-static-white"} ${disabled && "border-border-disabled-light bg-background-disabled-light"}`}
+            className={`flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded transition-all duration-100 ease-linear ${is_featured ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light bg-static-white"} ${disabled && "border-border-disabled-light bg-background-disabled-light"}`}
           >
             <svg
-              className={`fill-current pointer-events-none h-[14px] w-[14px] ${representative ? "" : "hidden"}`}
+              className={`fill-current pointer-events-none h-[14px] w-[14px] ${!is_featured && "hidden"}`}
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +112,7 @@ const FilmoItem = ({
           <button
             className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
             type="button"
-            onClick={() => onDelete(filmo.id)}
+            onClick={() => onDelete(id)}
           >
             <svg
               width="12"
@@ -133,21 +135,20 @@ const FilmoItem = ({
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
             <label className="text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light">
-              {filmo.production.productionYear >= 1 &&
-                `${filmo.production.productionYear + " | " + classificationList[filmo.production.category.id + 1]}`}
+              {production.productionYear >= 1
+                ? `${production.productionYear + " | " + production.category.name}`
+                : production.category.name}
             </label>
             <label className="text-body1 font-semibold leading-body1 tracking-body1 text-content-primary-light">
-              {filmo.production.title}
+              {production.title}
             </label>
           </div>
           <div className="flex h-auto w-full flex-col gap-0.5 text-caption1 font-normal leading-caption1 tracking-caption1 text-content-secondary-light">
             <label>
-              {filmo.customRole && filmo.role.id === 4
-                ? filmo.customRole
-                : filmo.role.name}{" "}
-              {filmo.character && `'${filmo.character}'`}
+              {customRole && role.id === 4 ? customRole : role.name}{" "}
+              {character && `'${character}'`}
             </label>
-            <label>{filmo.production.description}</label>
+            <label>{production.description}</label>
           </div>
         </div>
         {/* link */}
@@ -155,7 +156,7 @@ const FilmoItem = ({
           <button
             type="button"
             className="w-fit"
-            onClick={() => onLink(filmo.production.videoUrl)}
+            onClick={() => onLink(production.videoUrl)}
           >
             <svg
               width="16"
@@ -175,10 +176,10 @@ const FilmoItem = ({
         )}
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
-        {filmo.production.thumbnailUrl ? (
+        {production.thumbnailUrl ? (
           <Image
-            src={filmo.production.thumbnailUrl}
-            alt={filmo.production.title}
+            src={production.thumbnailUrl}
+            alt={production.title}
             width={76}
             height={114}
             className="h-[114px] w-[76px] rounded-lg bg-gray-100"

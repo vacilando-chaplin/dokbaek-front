@@ -1,5 +1,5 @@
 import { castList, classificationList, yearList } from "@/data/data";
-import { filmoActivesTypes, filmoInputsTypes } from "@/types/types";
+import { FilmoActiveType, FilmoInputType } from "@/types/types";
 import Image from "next/image";
 import HelperText from "../atoms/helperText";
 import Input from "../atoms/input";
@@ -9,8 +9,8 @@ import InputWithLabel from "../molecules/inputWithLabel";
 import PhotoFrame from "../molecules/photoFrame";
 
 interface FilmographySubProps {
-  filmoInputs: filmoInputsTypes;
-  filmoActives: filmoActivesTypes;
+  filmoInputs: FilmoInputType;
+  filmoActives: FilmoActiveType;
   onFilmoInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoProductionChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoDropdownActive: (name: string, state: boolean) => void;

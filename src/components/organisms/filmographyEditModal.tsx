@@ -1,12 +1,12 @@
-import { filmoActivesTypes, filmoInputsTypes } from "@/types/types";
+import { FilmoActiveType, FilmoInputType } from "@/types/types";
 import ModalBottom from "../molecules/modalBottom";
 import ModalTop from "../molecules/modalTop";
 import FilmographySub from "./filmographySub";
 
 interface FilmographyEditModalProps {
-  filmoInputs: filmoInputsTypes;
-  filmoActives: filmoActivesTypes;
-  onFilmoEditModalActive: React.MouseEventHandler<HTMLButtonElement>;
+  filmoInputs: FilmoInputType;
+  filmoActives: FilmoActiveType;
+  onFilmoEditModalClose: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoProductionChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoDropdownActive: (name: string, state: boolean) => void;
@@ -18,7 +18,7 @@ interface FilmographyEditModalProps {
 const FilmographyEditModal = ({
   filmoInputs,
   filmoActives,
-  onFilmoEditModalActive,
+  onFilmoEditModalClose,
   onFilmoInputChange,
   onFilmoProductionChange,
   onFilmoDropdownActive,
@@ -30,7 +30,7 @@ const FilmographyEditModal = ({
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative max-h-full w-full max-w-[720px]">
         <div className="relative flex h-auto w-full animate-enter flex-col items-center justify-center rounded-2xl bg-static-white shadow-modal transition-all duration-100 ease-linear">
-          <ModalTop name="작품 활동 수정" onClick={onFilmoEditModalActive} />
+          <ModalTop name="작품 활동 수정" onClick={onFilmoEditModalClose} />
           <FilmographySub
             filmoInputs={filmoInputs}
             filmoActives={filmoActives}
@@ -42,11 +42,11 @@ const FilmographyEditModal = ({
           />
           <ModalBottom
             text="저장"
-            // disabled={
-            //   filmoInputs.classification.length === 0 ||
-            //   filmoInputs.title.length === 0
-            // }
-            onCloseClick={onFilmoEditModalActive}
+            disabled={
+              filmoInputs.classification.length === 0 ||
+              filmoInputs.title.length === 0
+            }
+            onCloseClick={onFilmoEditModalClose}
             onSaveClick={onFilmographyEditSave}
           />
         </div>

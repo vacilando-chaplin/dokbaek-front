@@ -1,31 +1,21 @@
-import { filmoInputsTypes } from "@/types/types";
+import { FilmoResponseType } from "@/types/types";
 import Title from "../atoms/title";
 import FilmoItem from "../molecules/filmoItem";
 import ModalTop from "../molecules/modalTop";
-import { useRecoilValue } from "recoil";
-import { categoryData } from "@/data/atom";
 
 interface ProfileFilmographyModalProps {
-  filmographyList: any;
+  filmoList: FilmoResponseType[];
+  categoryList: string[];
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoLinkModalOpen: (link: string) => void;
 }
 
 const ProfileFilmographyModal = ({
-  filmographyList,
+  filmoList,
+  categoryList,
   onFilmoModalActive,
   onFilmoLinkModalOpen
 }: ProfileFilmographyModalProps) => {
-  const categoryList = useRecoilValue(categoryData);
-
-  // const classificationList = Array.from(
-  //   new Set(
-  //     filmographyList.map((filmo: any) => {
-  //       return filmo.classification;
-  //     })
-  //   )
-  // );
-
   return (
     <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative w-full max-w-[1024px]">
@@ -33,8 +23,9 @@ const ProfileFilmographyModal = ({
           <ModalTop name="작품 활동" onClick={onFilmoModalActive} />
           <div className="flex h-full max-h-[74vh] w-full flex-col overflow-auto overscroll-contain rounded-3xl [&::-webkit-scrollbar-button:vertical:end:decrement]:block [&::-webkit-scrollbar-button:vertical:end:decrement]:w-5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-4 [&::-webkit-scrollbar-thumb]:bg-[#E7E7ED] [&::-webkit-scrollbar-thumb]:bg-clip-padding [&::-webkit-scrollbar-track]:bg-static-white [&::-webkit-scrollbar]:w-2.5">
             {categoryList.map((category: string) => {
-              const filmo = filmographyList.filter(
-                (filmo: any) => filmo.production.category.name === category
+              const filmo = filmoList.filter(
+                (filmo: FilmoResponseType) =>
+                  filmo.production.category.name === category
               );
               return (
                 <div
@@ -42,16 +33,16 @@ const ProfileFilmographyModal = ({
                   className="flex h-full w-full flex-col gap-6 bg-background-surface-light p-6"
                 >
                   <Title name={category} />
-                  <div className="flex h-auto w-full flex-row flex-wrap gap-2">
-                    {filmo.map((item: any) => {
+                  <div className="grid h-auto w-full grid-flow-row grid-cols-3 gap-2">
+                    {filmo.map((item: FilmoResponseType) => {
                       return (
-                        <div className="flex h-auto w-[320px] gap-2">
+                        <div className="flex h-auto w-full gap-2">
                           <FilmoItem
                             key={item.id}
                             filmo={item}
                             canEdit={false}
                             onLink={() =>
-                              onFilmoLinkModalOpen(filmo.production.videoUrl)
+                              onFilmoLinkModalOpen(item.production.videoUrl)
                             }
                           />
                         </div>

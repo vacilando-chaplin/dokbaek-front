@@ -4,8 +4,18 @@ const nextConfig = {
     ignoreBuildErrors: true
   },
   images: {
-    domains: ['filogram.s3.ap-northeast-2.amazonaws.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "filogram.s3.ap-northeast-2.amazonaws.com"
+      }
+    ]
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "20mb"
+    }
+  }
 };
 
 export default nextConfig;

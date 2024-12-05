@@ -6,7 +6,7 @@ interface VideoEditModalProps {
   videoInputs: string;
   onVideoInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onVideoEditModalClose: React.MouseEventHandler<HTMLButtonElement>;
-  onVideoEditModalSave: any;
+  onVideoEditModalSave: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const VideoEditModal = ({

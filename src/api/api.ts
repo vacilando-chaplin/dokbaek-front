@@ -1,5 +1,6 @@
 import {
   APIResponse,
+  FilmoRequestType,
   SignUpRequestType,
   SignUpResponseType
 } from "@/types/types";
@@ -29,7 +30,7 @@ const api = axios.create({
 
 const baseURL = "http://3.38.102.209:8080";
 
-const base64ToBlob = (base64String: string) => {
+export const base64ToBlob = (base64String: string) => {
   const [metadata, base64Data] = base64String.split(";base64,");
   const mimeType = metadata.split(":")[1];
   const binaryData = atob(base64Data); // Base64 문자열을 바이너리로 디코딩
@@ -102,6 +103,15 @@ export const postUser = async (data: SignUpRequestType) => {
     if (res.status === 201) {
       return res.data;
     }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getProfile = async (id: number, token: string) => {
+  try {
+    const res = await api.get(`/profile/${id}`, getTokenHeader(token));
+    return res.data;
   } catch (error) {
     throw error;
   }
@@ -223,6 +233,24 @@ export const patchPhotoDefault = async (
   }
 };
 
+export const getFilmoRoles = async (token: string) => {
+  try {
+    const res = await api.get("/filmo/roles", getTokenHeader(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFilmoCategories = async (token: string) => {
+  try {
+    const res = await api.get("/filmo/categories", getTokenHeader(token));
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const postFilmography = async (id: number, data: any, token: string) => {
   try {
     const res = await api.post(
@@ -243,7 +271,7 @@ export const postFilmographyThumbnail = async (
   const formData = new FormData();
 
   const imageOrigin = base64ToBlob(thumbnail);
-  formData.append("origin", imageOrigin);
+  formData.append("thumbnail", imageOrigin);
 
   try {
     const res = await axios.post(`${baseURL}/filmo/thumbnail`, formData, {
@@ -261,12 +289,12 @@ export const postFilmographyThumbnail = async (
 export const putFilmography = async (
   id: number,
   filmoId: number,
-  data: any,
+  data: FilmoRequestType,
   token: string
 ) => {
   try {
     const res = await api.put(
-      `/profile/${id}/filmo/${filmoId}}`,
+      `/profile/${id}/filmo/${filmoId}`,
       data,
       getTokenHeader(token)
     );
@@ -333,15 +361,6 @@ export const deleteVideo = async (
       `/profile/${id}/video/${videoId}`,
       getTokenHeader(token)
     );
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getProfile = async (id: number, token: string) => {
-  try {
-    const res = await api.get(`/profile${id}`, getTokenHeader(token));
     return res.data;
   } catch (error) {
     throw error;

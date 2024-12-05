@@ -42,7 +42,7 @@ export const infoInputInit = {
   weight: "",
   contact: "",
   email: "",
-  specialty: "",
+  speciality: "",
   instagram: "https://www.instagram.com/",
   youtube: "https://www.youtube.com/@",
   introduction: "",
@@ -128,6 +128,81 @@ export const classificationList = [
 ];
 
 export const castList = ["주연", "조연", "단역", "직접 입력"];
+
+export const profileInit = {
+  id: 0,
+  userId: 0,
+  status: "",
+  info: {
+    name: "",
+    bornYear: 0,
+    height: 0,
+    weight: 0,
+    email: "",
+    contact: "",
+    speciality: "",
+    instagramLink: "",
+    youtubeLink: "",
+    introduction: ""
+  },
+  education: [
+    {
+      school: {
+        name: "",
+        schoolType: "",
+        schoolGubun: ""
+      },
+      major: "",
+      status: ""
+    }
+  ],
+  photos: [
+    {
+      id: "",
+      userProfileId: 0,
+      path: "",
+      previewPath: "",
+      displayOrder: 0,
+      isDefault: false,
+      createdAt: "",
+      updatedAt: ""
+    }
+  ],
+  filmos: [
+    {
+      id: 0,
+      role: {
+        id: 0,
+        name: ""
+      },
+      customRole: "",
+      character: "",
+      is_featured: false,
+      production: {
+        category: {
+          id: 0,
+          name: ""
+        },
+        productionYear: 0,
+        title: "",
+        description: "",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      displayOrder: 0
+    }
+  ],
+  videos: [
+    {
+      id: 0,
+      userProfileId: 0,
+      url: "",
+      displayOrder: 0
+    }
+  ],
+  createdAt: "",
+  updatedAt: ""
+};
 
 export const year = new Date().getFullYear();
 export const yearList = Array.from(new Array(70), (v, index) =>
