@@ -2,16 +2,18 @@ import Image from "next/image";
 
 interface ProfilePhotoModalProps {
   selectedPhoto: string;
+  selectedPhotoBlur: string;
   onPhotoModalClose: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const ProfilePhotoModal = ({
   selectedPhoto,
+  selectedPhotoBlur,
   onPhotoModalClose
 }: ProfilePhotoModalProps) => {
   return (
-    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-50 backdrop-blur-3xl md:inset-0">
-      <div className="relative flex h-[80vh] w-full max-w-7xl flex-col items-center justify-center gap-6">
+    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-100 md:inset-0">
+      <div className="relative flex h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center gap-6">
         <button
           type="button"
           className="rounded-full bg-static-black p-2"
@@ -38,6 +40,8 @@ const ProfilePhotoModal = ({
           width={0}
           height={0}
           sizes="100vw"
+          placeholder="blur"
+          blurDataURL={selectedPhotoBlur}
           className="h-[80vh] w-[40%] rounded-2xl"
         />
       </div>

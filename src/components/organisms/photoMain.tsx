@@ -103,9 +103,9 @@ const PhotoMain = ({
                 <Image
                   src={photoItem.previewPath}
                   alt="사진 미리보기"
-                  loading="lazy"
                   sizes="(max-width: 768px) 100vw"
                   fill
+                  priority
                   className="rounded-lg"
                 />
                 {photoRepActive === false && repPhoto.id === photoItem.id && (

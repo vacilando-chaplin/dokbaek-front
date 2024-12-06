@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  convertImageToBase64,
   deletePhoto,
   getProfile,
   patchPhotoDefault,
@@ -12,7 +13,7 @@ import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
 import { defaultId, jwt, toastMessage } from "@/data/atom";
 import { photoResponseInit } from "@/data/data";
-import { OriginPhotoType, PhotoResponseType } from "@/types/types";
+import { PhotoResponseType } from "@/types/types";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -27,9 +28,6 @@ const Photo = () => {
   // 이미지 크롭할 때 사진
   const [selectImage, setSelectImage] = useState("");
   const [cropImage, setCropImage] = useState("");
-
-  // 사진 원본(base64, id)
-  const [originPhotoList, setOriginPhotoList] = useState<OriginPhotoType[]>([]);
 
   const [photoModalActive, setPhotoModalActive] = useState(false);
   const [photoEditModalActive, setPhotoEditModalActive] = useState(false);
@@ -53,9 +51,6 @@ const Photo = () => {
       const res = await postPhoto(userId, selectImage, cropImage, token);
       const data = res.data;
 
-      const originPhoto = { originImage: selectImage, id: data.id };
-      setOriginPhotoList([...originPhotoList, originPhoto]);
-
       if (photoList.length === 0) {
         data.isDefault = true;
         setRepPhoto(data);
@@ -65,9 +60,6 @@ const Photo = () => {
     } else {
       const res = await postPhoto(userId, selectImage, selectImage, token);
       const data = res.data;
-
-      const originPhoto = { originImage: selectImage, id: data.id };
-      setOriginPhotoList([...originPhotoList, originPhoto]);
 
       if (photoList.length === 0) {
         data.isDefault = true;
@@ -90,7 +82,6 @@ const Photo = () => {
     const data = await res.data;
 
     setPhotoList(data.photos);
-
     setPhotoEditModalActive(!photoEditModalActive);
     setSelectImage("");
     setCropImage("");
@@ -98,7 +89,7 @@ const Photo = () => {
     setToastMessage("사진을 수정했어요.");
   };
 
-  // 사진 삭제 모달 삭제 버튼 클릭
+  // 사진 삭제 모달 버튼 클릭
   const onDeletePhoto = async (id: string) => {
     await deletePhoto(userId, id, token);
 
@@ -106,7 +97,6 @@ const Photo = () => {
     const data = await res.data;
 
     setPhotoList(data.photos);
-
     setPhotoDeleteActive(!photoDeleteActive);
     setToastMessage("사진을 삭제했어요.");
   };
@@ -124,14 +114,12 @@ const Photo = () => {
   };
 
   // 사진 편집 모달 오픈
-  const onPhotoEditModalOpen = (photo: PhotoResponseType) => {
-    const index = originPhotoList.findIndex(
-      (origin: OriginPhotoType) => origin.id === photo.id
-    );
+  const onPhotoEditModalOpen = async (photo: PhotoResponseType) => {
+    const originPhoto = await convertImageToBase64(photo.path);
 
     setEditPhoto(photo);
-    setCropImage(originPhotoList[index].originImage);
-    setSelectImage(originPhotoList[index].originImage);
+    setCropImage(originPhoto);
+    setSelectImage(originPhoto);
     setPhotoEditModalActive(!photoEditModalActive);
   };
 
@@ -194,12 +182,7 @@ const Photo = () => {
       const res = await getProfile(userId, token);
       const data = await res.data;
 
-      const originPhotos = data.photos.map((photo: PhotoResponseType) => ({
-        originImage: photo.path,
-        id: photo.id
-      }));
       setPhotoList(data.photos);
-      setOriginPhotoList(originPhotos);
     };
     getProfileData();
   }, []);

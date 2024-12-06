@@ -130,7 +130,7 @@ const ProfileSub = ({
                       >
                         <Image
                           src={photo.previewPath}
-                          alt={`photo${photo.id}`}
+                          alt={photo.id}
                           width={0}
                           height={0}
                           sizes="100vw"

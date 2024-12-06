@@ -10,7 +10,7 @@ const ProfileLinkModal = ({
   onFilmoLinkModalClose
 }: ProfileLinkModalProps) => {
   return (
-    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-50 backdrop-blur-3xl md:inset-0">
+    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-100 md:inset-0">
       <div className="relative flex w-[60vw] animate-enter flex-col items-center justify-center gap-6">
         <button
           type="button"

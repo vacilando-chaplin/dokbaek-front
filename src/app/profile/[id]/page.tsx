@@ -1,6 +1,11 @@
 "use client";
 
-import { getFilmoCategories, getFilmoRoles, getProfile } from "@/api/api";
+import {
+  convertImageToBase64,
+  getFilmoCategories,
+  getFilmoRoles,
+  getProfile
+} from "@/api/api";
 import ProfileFilmographyModal from "@/components/organisms/profileFilmographyModal";
 import ProfileLinkModal from "@/components/organisms/profilelinkModal";
 import ProfileMain from "@/components/organisms/profileMain";
@@ -41,9 +46,10 @@ const Profile = () => {
   const mainRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLDivElement>(null);
 
-  const [linear, setLinear] = useState("");
+  const [linear, setLinear] = useState("sub");
 
   const [selectedPhoto, setSelectedPhoto] = useState("");
+  const [selectedPhotoBlur, setSelectedPhotoBlur] = useState("");
   const [photoModalActive, setPhotoModalActive] = useState(false);
   const [filmoModalActive, setFilmoModalActive] = useState(false);
   const [filmoLink, setFilmoLink] = useState("");
@@ -59,7 +65,10 @@ const Profile = () => {
     }
   };
 
-  const onPhotoModalOpen = (photo: string) => {
+  const onPhotoModalOpen = async (photo: string) => {
+    const blurPhoto = await convertImageToBase64(photo);
+
+    setSelectedPhotoBlur(blurPhoto);
     setSelectedPhoto(photo);
     setPhotoModalActive(!photoModalActive);
   };
@@ -88,9 +97,7 @@ const Profile = () => {
 
       mainHeight >= subHeight ? setLinear("main") : setLinear("sub");
     }
-  }, []);
 
-  useEffect(() => {
     const getProfileData = async () => {
       const res = await getProfile(userId, token);
       const data = await res.data;
@@ -133,6 +140,7 @@ const Profile = () => {
     );
     setCategoryList(resultCategoryList);
   }, [profileData]);
+
   return (
     <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden">
       <ProfileMain
@@ -160,6 +168,7 @@ const Profile = () => {
       {photoModalActive && (
         <ProfilePhotoModal
           selectedPhoto={selectedPhoto}
+          selectedPhotoBlur={selectedPhotoBlur}
           onPhotoModalClose={onPhotoModalClose}
         />
       )}

@@ -5,6 +5,14 @@ interface YoutubeVideoProps {
 }
 
 const YoutubeVideo = ({ link }: YoutubeVideoProps) => {
+  const opts = {
+    playerVars: {
+      modestbranding: 1,
+      rel: 0,
+      showinfo: 0
+    }
+  };
+
   return (
     <YouTube
       videoId={
@@ -14,6 +22,7 @@ const YoutubeVideo = ({ link }: YoutubeVideoProps) => {
       }
       iframeClassName="iframe-border iframe-video"
       className="iframe-wrap iframe-size"
+      opts={opts}
     />
   );
 };

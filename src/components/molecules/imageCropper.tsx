@@ -20,7 +20,7 @@ const ImageCropper = ({ selectImage, setCropImage }: ImageCropperProps) => {
   const cropperRef = useRef<CropperRef>(null);
 
   // const [coordinates, setCoordinates] = useState<Coordinates | null>(null); // cropper 좌표
-  // setCoordinate(cropperRef.current.getCoordinates());
+  // setCoordinates(cropperRef.current.getCoordinates());
   const [isLoading, setIsLoading] = useState(false);
 
   const setDragEnd = useSetRecoilState(photoDragEnd);

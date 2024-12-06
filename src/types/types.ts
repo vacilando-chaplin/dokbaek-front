@@ -178,11 +178,6 @@ export interface PhotoResponseType {
   updatedAt: string;
 }
 
-export interface OriginPhotoType {
-  originImage: string;
-  id: string;
-}
-
 export interface FilmoRoleType {
   id: number;
   name: string;

@@ -1,6 +1,7 @@
 import {
   APIResponse,
   FilmoRequestType,
+  InfoResponseType,
   SignUpRequestType,
   SignUpResponseType
 } from "@/types/types";
@@ -54,6 +55,27 @@ const getTokenHeader = (token: string) => {
       Authorization: `Bearer ${token}`
     }
   };
+};
+
+export const convertImageToBase64 = async (imageUrl: string) => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: imageUrl,
+      responseType: "blob"
+    });
+    const base64Image: any = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onloadend = () => resolve(reader.result); // Base64로 변환된 결과 반환
+      reader.onerror = reject; // 에러 처리
+      reader.readAsDataURL(res.data); // Base64로 변환 시작
+    });
+
+    return base64Image;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const kakaoAuthLogin = async (code: string | string[]) => {
@@ -117,7 +139,11 @@ export const getProfile = async (id: number, token: string) => {
   }
 };
 
-export const putInfo = async (id: number, data: any, token: string) => {
+export const putInfo = async (
+  id: number,
+  data: InfoResponseType,
+  token: string
+) => {
   try {
     const res = await api.put(`/profile/${id}`, data, getTokenHeader(token));
     return res.data;
@@ -128,8 +154,8 @@ export const putInfo = async (id: number, data: any, token: string) => {
 
 export const postPhoto = async (
   id: number,
-  origin: any,
-  preview: any,
+  origin: string,
+  preview: string,
   token: string
 ) => {
   const formData = new FormData();
@@ -163,8 +189,8 @@ export const postPhoto = async (
 
 export const postPhotoEdit = async (
   id: number,
-  origin: any,
-  preview: any,
+  origin: string,
+  preview: string,
   token: string,
   photoId: string
 ) => {
@@ -251,7 +277,11 @@ export const getFilmoCategories = async (token: string) => {
   }
 };
 
-export const postFilmography = async (id: number, data: any, token: string) => {
+export const postFilmography = async (
+  id: number,
+  data: FilmoRequestType,
+  token: string
+) => {
   try {
     const res = await api.post(
       `/profile/${id}/filmo`,
