@@ -13,7 +13,7 @@ import FilmographyDeleteModal from "@/components/organisms/filmographyDeleteModa
 import FilmographyEditModal from "@/components/organisms/filmographyEditModal";
 import FilmographyMain from "@/components/organisms/filmographyMain";
 import FilmographyModal from "@/components/organisms/filmographyModal";
-import ProfileLinkModal from "@/components/organisms/profilelinkModal";
+import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
   defaultId,
@@ -258,7 +258,7 @@ const Filmography = () => {
   };
 
   // 필모그래피 링크 모달 닫기
-  const onLinkModalActive = () => {
+  const onLinkModalClose = () => {
     setFilmoLinkModalActive(!filmoLinkModalActive);
   };
 
@@ -428,10 +428,7 @@ const Filmography = () => {
         />
       )}
       {filmoLinkModalActive && (
-        <ProfileLinkModal
-          filmoLink={filmoLink}
-          onFilmoLinkModalClose={onLinkModalActive}
-        />
+        <LinkModal link={filmoLink} onLinkModalClose={onLinkModalClose} />
       )}
     </div>
   );

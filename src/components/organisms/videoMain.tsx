@@ -7,7 +7,7 @@ import DeleteModal from "../molecules/deleteModal";
 interface VideoMainProps {
   videoList: VideoResponseType[];
   videoDeleteModalActive: boolean;
-  onVideoModalActive: React.MouseEventHandler<HTMLButtonElement>;
+  onVideoModalOpen: React.MouseEventHandler<HTMLButtonElement>;
   onVideoEditModalOpen: (video: VideoResponseType) => void;
   onVideoDeleteModalOpen: (video: VideoResponseType) => void;
   onVideoDeleteModalClose: React.MouseEventHandler<HTMLButtonElement>;
@@ -18,7 +18,7 @@ interface VideoMainProps {
 const VideoMain = ({
   videoList,
   videoDeleteModalActive,
-  onVideoModalActive,
+  onVideoModalOpen,
   onVideoEditModalOpen,
   onVideoDeleteModalOpen,
   onVideoDeleteModalClose,
@@ -29,7 +29,7 @@ const VideoMain = ({
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
       <div className="flex w-full flex-row justify-between">
         <Title name="영상" />
-        <CreateButton onClick={onVideoModalActive} />
+        <CreateButton onClick={onVideoModalOpen} />
       </div>
       <div className="flex h-auto w-full flex-wrap gap-2">
         {videoList.length >= 1 ? (

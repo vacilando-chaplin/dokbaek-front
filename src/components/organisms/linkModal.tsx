@@ -1,21 +1,18 @@
 import YoutubeVideo from "../atoms/youtubeVideo";
 
-interface ProfileLinkModalProps {
-  filmoLink: string;
-  onFilmoLinkModalClose: React.MouseEventHandler<HTMLButtonElement>;
+interface LinkModalProps {
+  link: string;
+  onLinkModalClose: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const ProfileLinkModal = ({
-  filmoLink,
-  onFilmoLinkModalClose
-}: ProfileLinkModalProps) => {
+const LinkModal = ({ link, onLinkModalClose }: LinkModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-100 md:inset-0">
       <div className="relative flex w-[60vw] animate-enter flex-col items-center justify-center gap-6">
         <button
           type="button"
           className="rounded-full bg-static-black p-2"
-          onClick={onFilmoLinkModalClose}
+          onClick={onLinkModalClose}
         >
           <svg
             width="20"
@@ -32,10 +29,10 @@ const ProfileLinkModal = ({
             />
           </svg>
         </button>
-        <YoutubeVideo link={filmoLink} />
+        <YoutubeVideo link={link} />
       </div>
     </section>
   );
 };
 
-export default ProfileLinkModal;
+export default LinkModal;

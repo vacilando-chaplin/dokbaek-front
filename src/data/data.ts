@@ -104,6 +104,19 @@ export const videoResponseInit = {
   displayOrder: 0
 };
 
+export const videoModalInit = {
+  id: 0,
+  state: "",
+  active: false,
+  topText: "",
+  bottomText: ""
+};
+
+export const videoLinkInit = {
+  url: "",
+  active: false
+};
+
 export const educationList = [
   "졸업",
   "졸업 예정",

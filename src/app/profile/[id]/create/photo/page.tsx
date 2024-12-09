@@ -213,20 +213,12 @@ const Photo = () => {
         onPhotoRepCheck={onPhotoRepCheck}
         onPhotoRepClose={onPhotoRepClose}
       />
-      {photoModal.state === "add" && photoModal.active && (
+      {photoModal.active && (
         <PhotoModal
           selectImage={selectImage}
           photoModal={photoModal}
           onModalActive={onPhotoModalClose}
           onAddPhoto={onAddPhoto}
-          setCropImage={setCropImage}
-        />
-      )}
-      {photoModal.state === "edit" && photoModal.active && (
-        <PhotoModal
-          selectImage={selectImage}
-          photoModal={photoModal}
-          onModalActive={onPhotoEditModalClose}
           onEditPhoto={onEditPhoto}
           setCropImage={setCropImage}
         />

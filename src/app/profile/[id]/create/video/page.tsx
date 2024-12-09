@@ -1,13 +1,16 @@
 "use client";
 
 import { deleteVideo, getProfile, postVideo, putVideo } from "@/api/api";
-import ProfileLinkModal from "@/components/organisms/profilelinkModal";
-import VideoEditModal from "@/components/organisms/videoEditModal";
+import LinkModal from "@/components/organisms/linkModal";
 import VideoMain from "@/components/organisms/videoMain";
 import VideoModal from "@/components/organisms/videoModal";
 import { defaultId, jwt, toastMessage } from "@/data/atom";
-import { videoResponseInit } from "@/data/data";
-import { VideoResponseType } from "@/types/types";
+import { videoLinkInit, videoModalInit } from "@/data/data";
+import {
+  VideoLinkType,
+  VideoModalType,
+  VideoResponseType
+} from "@/types/types";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -19,24 +22,32 @@ const Video = () => {
 
   const [videoList, setVideoList] = useState<VideoResponseType[]>([]);
   const [videoInputs, setVideoInputs] = useState("");
-  const [videoLink, setVideoLink] = useState("");
-  const [videoEdit, setVideoEdit] =
-    useState<VideoResponseType>(videoResponseInit);
 
-  const [videoModalActive, setVideoModalActive] = useState(false);
-  const [videoEditModalActive, setVideoEditModalActive] = useState(false);
+  const [videoLink, setVideoLink] = useState<VideoLinkType>(videoLinkInit);
+  const [videoModal, setVideoModal] = useState<VideoModalType>(videoModalInit);
+
   const [videoDeleteModalActive, setVideoDeleteModalActive] = useState(false);
-  const [videoLinkModalActive, setVideoLinkModalActive] = useState(false);
 
   // 비디오 링크 입력
   const onVideoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVideoInputs(e.target.value);
   };
 
-  // 비디오 모달 액티브
-  const onVideoModalActive = () => {
+  // 비디오 모달 오픈
+  const onVideoModalOpen = () => {
+    setVideoModal({
+      ...videoModal,
+      state: "add",
+      active: true,
+      topText: "영상 추가",
+      bottomText: "추가"
+    });
+  };
+
+  // 비디오 모달 닫기
+  const onVideoModalClose = () => {
     setVideoInputs("");
-    setVideoModalActive(!videoModalActive);
+    setVideoModal(videoModalInit);
   };
 
   // 비디오 모달 저장 버튼 클릭
@@ -47,7 +58,7 @@ const Video = () => {
     const data = await res.data;
 
     setVideoList(data.videos);
-    setVideoModalActive(!videoModalActive);
+    setVideoModal({ ...videoModal, active: false });
     setVideoInputs("");
     setToastMessage("영상을 추가했어요.");
   };
@@ -55,34 +66,32 @@ const Video = () => {
   // 비디오 편집 모달 오픈
   const onVideoEditModalOpen = (video: VideoResponseType) => {
     setVideoInputs(video.url);
-    setVideoEditModalActive(!videoEditModalActive);
-    setVideoEdit(video);
-  };
-
-  // 비디오 편집 모달 닫기
-  const onVideoEditModalClose = () => {
-    setVideoInputs("");
-    setVideoEditModalActive(!videoEditModalActive);
-    setVideoEdit(videoResponseInit);
+    setVideoModal({
+      id: video.id,
+      state: "edit",
+      active: true,
+      topText: "영상 수정",
+      bottomText: "완료"
+    });
   };
 
   // 비디오 편집 모달 편집 완료
-  const onVideoEditModalSave = async () => {
-    await putVideo(userId, videoEdit.id, videoInputs, token);
+  const onVideoModalEdit = async () => {
+    await putVideo(userId, videoModal.id, videoInputs, token);
 
     const res = await getProfile(userId, token);
     const data = await res.data;
 
     setVideoList(data.videos);
     setVideoInputs("");
-    setVideoEditModalActive(!videoEditModalActive);
+    setVideoModal({ ...videoModal, active: false });
     setToastMessage("영상을 수정했어요.");
   };
 
   // 비디오 삭제 모달 오픈
   const onVideoDeleteModalOpen = (video: VideoResponseType) => {
     setVideoDeleteModalActive(!videoDeleteModalActive);
-    setVideoEdit(video);
+    setVideoModal({ ...videoModal, id: video.id, active: false });
   };
 
   // 비디오 삭제 모달 닫기
@@ -92,26 +101,24 @@ const Video = () => {
 
   // 비디오 삭제 버튼 클릭
   const onVideoDeleteClick = async () => {
-    await deleteVideo(userId, videoEdit.id, token);
+    await deleteVideo(userId, videoModal.id, token);
 
     const res = await getProfile(userId, token);
     const data = await res.data;
 
     setVideoList(data.videos);
-    setVideoEdit(videoResponseInit);
     setVideoDeleteModalActive(!videoDeleteModalActive);
     setToastMessage("영상을 삭제했어요.");
   };
 
-  // 비디오 링크 모달 닫기
-  const onVideoLinkModalActive = () => {
-    setVideoLinkModalActive(!videoLinkModalActive);
-  };
-
   // 비디오 링크 모달 오픈
   const onVideoLinkModalOpen = (url: string) => {
-    setVideoLink(url);
-    setVideoLinkModalActive(!videoLinkModalActive);
+    setVideoLink({ url: url, active: true });
+  };
+
+  // 비디오 링크 모달 닫기
+  const onVideoLinkModalClose = () => {
+    setVideoLink({ ...videoLink, active: false });
   };
 
   // 비디오 리스트 업데이트
@@ -129,33 +136,27 @@ const Video = () => {
       <VideoMain
         videoList={videoList}
         videoDeleteModalActive={videoDeleteModalActive}
-        onVideoModalActive={onVideoModalActive}
+        onVideoModalOpen={onVideoModalOpen}
         onVideoEditModalOpen={onVideoEditModalOpen}
         onVideoDeleteModalOpen={onVideoDeleteModalOpen}
         onVideoDeleteModalClose={onVideoDeleteModalClose}
         onVideoDeleteClick={onVideoDeleteClick}
         onVideoLinkModalOpen={onVideoLinkModalOpen}
       />
-      {videoModalActive && (
+      {videoModal.active && (
         <VideoModal
           videoInputs={videoInputs}
+          videoModal={videoModal}
           onVideoInputChange={onVideoInputChange}
-          onVideoModalActive={onVideoModalActive}
+          onVideoModalClose={onVideoModalClose}
           onVideoModalSave={onVideoModalSave}
+          onVideoModalEdit={onVideoModalEdit}
         />
       )}
-      {videoEditModalActive && (
-        <VideoEditModal
-          videoInputs={videoInputs}
-          onVideoInputChange={onVideoInputChange}
-          onVideoEditModalClose={onVideoEditModalClose}
-          onVideoEditModalSave={onVideoEditModalSave}
-        />
-      )}
-      {videoLinkModalActive && (
-        <ProfileLinkModal
-          filmoLink={videoLink}
-          onFilmoLinkModalClose={onVideoLinkModalActive}
+      {videoLink.active && (
+        <LinkModal
+          link={videoLink.url}
+          onLinkModalClose={onVideoLinkModalClose}
         />
       )}
     </div>

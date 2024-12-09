@@ -7,7 +7,7 @@ import {
   getProfile
 } from "@/api/api";
 import ProfileFilmographyModal from "@/components/organisms/profileFilmographyModal";
-import ProfileLinkModal from "@/components/organisms/profilelinkModal";
+import LinkModal from "@/components/organisms/linkModal";
 import ProfileMain from "@/components/organisms/profileMain";
 import ProfilePhotoModal from "@/components/organisms/profilePhotoModal";
 import ProfileSub from "@/components/organisms/profileSub";
@@ -52,7 +52,7 @@ const Profile = () => {
   const [selectedPhotoBlur, setSelectedPhotoBlur] = useState("");
   const [photoModalActive, setPhotoModalActive] = useState(false);
   const [filmoModalActive, setFilmoModalActive] = useState(false);
-  const [filmoLink, setFilmoLink] = useState("");
+  const [videoLink, setVideoLink] = useState("");
   const [linkModalActive, setLinkModalActive] = useState(false);
 
   const onCopyUrl = async () => {
@@ -82,11 +82,11 @@ const Profile = () => {
   };
 
   const onFilmoLinkModalOpen = (link: string) => {
-    setFilmoLink(link);
+    setVideoLink(link);
     setLinkModalActive(!linkModalActive);
   };
 
-  const onFilmoLinkModalClose = () => {
+  const onLinkModalClose = () => {
     setLinkModalActive(!linkModalActive);
   };
 
@@ -181,10 +181,7 @@ const Profile = () => {
         />
       )}
       {linkModalActive && (
-        <ProfileLinkModal
-          filmoLink={filmoLink}
-          onFilmoLinkModalClose={onFilmoLinkModalClose}
-        />
+        <LinkModal link={videoLink} onLinkModalClose={onLinkModalClose} />
       )}
     </div>
   );

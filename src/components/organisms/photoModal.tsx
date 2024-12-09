@@ -7,8 +7,8 @@ interface PhotoModalProps {
   selectImage: string;
   photoModal: PhotoModalType;
   onModalActive: React.MouseEventHandler<HTMLButtonElement>;
-  onAddPhoto?: React.MouseEventHandler<HTMLButtonElement>;
-  onEditPhoto?: React.MouseEventHandler<HTMLButtonElement>;
+  onAddPhoto: React.MouseEventHandler<HTMLButtonElement>;
+  onEditPhoto: React.MouseEventHandler<HTMLButtonElement>;
   setCropImage: React.Dispatch<React.SetStateAction<string>>;
 }
 

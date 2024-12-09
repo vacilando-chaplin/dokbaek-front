@@ -290,6 +290,19 @@ export interface VideoResponseType {
   displayOrder: number;
 }
 
+export interface VideoModalType {
+  id: number;
+  state: string;
+  active: boolean;
+  topText: string;
+  bottomText: string;
+}
+
+export interface VideoLinkType {
+  url: string;
+  active: boolean;
+}
+
 export interface KakaoDataType {
   access_token: string;
   expires_in: number;
