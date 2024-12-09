@@ -51,3 +51,21 @@ export const setCanvasPreview = (
 
   context.restore();
 };
+
+export const base64ToBlob = (base64String: string) => {
+  const [metadata, base64Data] = base64String.split(";base64,");
+  const mimeType = metadata.split(":")[1];
+  const binaryData = atob(base64Data); // Base64 문자열을 바이너리로 디코딩
+
+  // Blob 객체 생성
+  const byteArrays = [];
+  for (let offset = 0; offset < binaryData.length; offset += 1024) {
+    const slice = binaryData.slice(offset, offset + 1024);
+    const byteArray = new Uint8Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteArray[i] = slice.charCodeAt(i);
+    }
+    byteArrays.push(byteArray);
+  }
+  return new Blob(byteArrays, { type: mimeType });
+};

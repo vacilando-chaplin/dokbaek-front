@@ -4,7 +4,7 @@ import { getProfile, getSchoolName, putInfo } from "@/api/api";
 import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import InfoThird from "@/components/organisms/infoThird";
-import { defaultId, infoRequired, jwt, stepperInit } from "@/data/atom";
+import { defaultId, jwt, stepperInit } from "@/data/atom";
 import {
   educationEngList,
   educationList,
@@ -14,8 +14,8 @@ import {
 import { useDebounce } from "@/hooks/hooks";
 import { InfoActiveType, InfoInputType, SchoolType } from "@/types/types";
 import { contactFormat, setOnlyNumber } from "@/utils/utils";
-import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
@@ -29,16 +29,6 @@ const Info = () => {
 
   // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
-
-  const setRequired = useSetRecoilState(infoRequired);
-
-  // useEffect(() => {
-  //   setRequired({
-  //     name: infoInputs.name,
-  //     birth: infoInputs.birth,
-  //     contact: infoInputs.contact
-  //   });
-  // }, [infoInputs.name, infoInputs.birth, infoInputs.contact]);
 
   // 내 정보 입력
   const onInputChange = (
@@ -67,7 +57,10 @@ const Info = () => {
     setInfoInputs({ ...infoInputs, [name]: changeNumber });
     if (value && !infoActives.birth) {
       setInfoActives({ ...infoActives, [name]: true });
-    } else if (value.length === 4) {
+    } else if (
+      value.length === 4 ||
+      (value.length === 0 && infoActives.birth)
+    ) {
       setInfoActives({ ...infoActives, [name]: false });
     }
   };

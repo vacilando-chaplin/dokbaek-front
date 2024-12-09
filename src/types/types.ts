@@ -113,6 +113,33 @@ export interface InfoInputType {
   education: string;
 }
 
+export interface InfoRequestType {
+  status: string;
+  info: {
+    name: string;
+    bornYear: number;
+    height: number;
+    weight: number;
+    email: string;
+    contact: string;
+    speciality: string;
+    instagramLink: string;
+    youtubeLink: string;
+    introduction: string;
+  };
+  education: [
+    {
+      school: {
+        name: string;
+        schoolType: string;
+        schoolGubun: string;
+      };
+      major: string;
+      status: string;
+    }
+  ];
+}
+
 export interface InfoResponseType {
   status: string;
   name: string;

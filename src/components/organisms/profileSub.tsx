@@ -40,6 +40,10 @@ const ProfileSub = ({
 }: PropfileSubProps) => {
   const router = useRouter();
 
+  const repFilmoList = filmographyList.filter(
+    (filmo: FilmoResponseType) => filmo.is_featured === true
+  );
+
   const [photoSlider, setPhotoSlider] = useState(0);
 
   const onSliderPrev = () => {
@@ -51,10 +55,6 @@ const ProfileSub = ({
       prev <= Math.floor(slides / 5) - 1 ? prev + 1 : prev
     );
   };
-
-  const repFilmoList = filmographyList.filter(
-    (filmo: FilmoResponseType) => filmo.is_featured === true
-  );
 
   return (
     <section

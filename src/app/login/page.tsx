@@ -9,12 +9,12 @@ import { useSetRecoilState } from "recoil";
 const Login = () => {
   const router = useRouter();
 
-  // 카카오 로그인
-  const [kakaoUserData, setKakaoUserData] = useState({}); // 유저 카카오 회원 데이터
-
   const setId = useSetRecoilState(defaultId);
   const setJWT = useSetRecoilState(jwt);
   const setLoginForm = useSetRecoilState(loginForm);
+
+  // 카카오 로그인
+  const [kakaoUserData, setKakaoUserData] = useState({}); // 유저 카카오 회원 데이터
 
   const loadKakaoSDK = () => {
     if (window.Kakao) {

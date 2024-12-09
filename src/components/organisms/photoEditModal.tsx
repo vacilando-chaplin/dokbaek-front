@@ -1,8 +1,6 @@
-import { useRecoilValue } from "recoil";
 import ImageCropper from "../molecules/imageCropper";
 import ModalBottom from "../molecules/modalBottom";
 import ModalTop from "../molecules/modalTop";
-import { photoDragEnd } from "@/data/atom";
 
 interface PhotoEditModalProps {
   selectImage: string;
@@ -17,8 +15,6 @@ const PhotoEditModal = ({
   onEditPhoto,
   setCropImage
 }: PhotoEditModalProps) => {
-  const dragEnd = useRecoilValue(photoDragEnd);
-
   return (
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative flex max-h-full w-full max-w-[720px] items-center justify-center">
@@ -32,7 +28,7 @@ const PhotoEditModal = ({
           </div>
           <ModalBottom
             text="완료"
-            disabled={selectImage.length === 0 || !dragEnd}
+            disabled={selectImage.length === 0}
             onCloseClick={onModalActive}
             onSaveClick={onEditPhoto}
           />

@@ -1,10 +1,14 @@
+"use server";
+
 import {
   APIResponse,
   FilmoRequestType,
+  InfoRequestType,
   InfoResponseType,
   SignUpRequestType,
   SignUpResponseType
 } from "@/types/types";
+import { base64ToBlob } from "@/utils/utils";
 import axios from "axios";
 
 // 배포
@@ -30,24 +34,6 @@ const api = axios.create({
 });
 
 const baseURL = "http://3.38.102.209:8080";
-
-export const base64ToBlob = (base64String: string) => {
-  const [metadata, base64Data] = base64String.split(";base64,");
-  const mimeType = metadata.split(":")[1];
-  const binaryData = atob(base64Data); // Base64 문자열을 바이너리로 디코딩
-
-  // Blob 객체 생성
-  const byteArrays = [];
-  for (let offset = 0; offset < binaryData.length; offset += 1024) {
-    const slice = binaryData.slice(offset, offset + 1024);
-    const byteArray = new Uint8Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteArray[i] = slice.charCodeAt(i);
-    }
-    byteArrays.push(byteArray);
-  }
-  return new Blob(byteArrays, { type: mimeType });
-};
 
 const getTokenHeader = (token: string) => {
   return {
@@ -139,11 +125,7 @@ export const getProfile = async (id: number, token: string) => {
   }
 };
 
-export const putInfo = async (
-  id: number,
-  data: InfoResponseType,
-  token: string
-) => {
+export const putInfo = async (id: number, data: any, token: string) => {
   try {
     const res = await api.put(`/profile/${id}`, data, getTokenHeader(token));
     return res.data;

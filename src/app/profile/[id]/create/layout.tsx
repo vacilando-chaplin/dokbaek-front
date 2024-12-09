@@ -7,6 +7,7 @@ import BottomBar from "@/components/organisms/bottomBar";
 import {
   defaultId,
   infoRequired,
+  jwt,
   stepperInit,
   toastMessage
 } from "@/data/atom";
@@ -17,22 +18,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const userId = useRecoilValue(defaultId);
+  const token = useRecoilValue(jwt);
 
   const router = useRouter();
-
-  const required = useRecoilValue(infoRequired);
-
-  const [canSave, setCanSave] = useState(false);
-
-  // useEffect(() => {
-  //   setCanSave(
-  //     required.name.length == 0 &&
-  //       required.birth.length == 0 &&
-  //       required.contact.length == 0
-  //   );
-  //   console.log(required.name.length);
-  //   console.log(canSave);
-  // }, [required]);
 
   const setStepper = useSetRecoilState(stepperInit);
   const onStepper = (index: number) => {
@@ -57,6 +45,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const onBackProfileClick = () => {
     router.push(`/profile/${userId}`);
   };
+
+  // token값 없을 시 로그인 페이지로 이동
+  useEffect(() => {
+    if (!token) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
