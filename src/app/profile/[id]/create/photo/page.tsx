@@ -101,8 +101,8 @@ const Photo = () => {
       ...photoModal,
       state: "add",
       active: true,
-      topText: "사진 추가",
-      bottomText: "추가"
+      name: "사진 추가",
+      buttonText: "추가"
     });
   };
 
@@ -128,8 +128,8 @@ const Photo = () => {
       id: photo.id,
       state: "edit",
       active: true,
-      topText: "사진 편집",
-      bottomText: "완료"
+      name: "사진 편집",
+      buttonText: "완료"
     });
   };
 

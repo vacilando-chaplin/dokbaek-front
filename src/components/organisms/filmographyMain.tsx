@@ -18,7 +18,7 @@ interface FilmographyMainProps {
   onFilmoEditModalOpen: (filmo: FilmoResponseType) => void;
   onFilmoDeleteModalOpen: (id: number) => void;
   onFilmoRepCheck: (id: number) => void;
-  onFilmoLink: (link: string) => void;
+  onLinkModalOpen: (link: string) => void;
 }
 
 const FilmographyMain = ({
@@ -34,7 +34,7 @@ const FilmographyMain = ({
   onFilmoEditModalOpen,
   onFilmoDeleteModalOpen,
   onFilmoRepCheck,
-  onFilmoLink
+  onLinkModalOpen
 }: FilmographyMainProps) => {
   const repFilmoList = filmoList.filter(
     (filmo: FilmoResponseType) => filmo.is_featured === true
@@ -93,7 +93,7 @@ const FilmographyMain = ({
                 onEdit={onFilmoEditModalOpen}
                 onDelete={onFilmoDeleteModalOpen}
                 onCheck={onFilmoRepCheck}
-                onLink={onFilmoLink}
+                onLink={onLinkModalOpen}
               />
             );
           })}
@@ -126,10 +126,8 @@ const FilmographyMain = ({
                         filmoRepresentActive={filmoRepresentActive}
                         representativeCount={representativeCount}
                         canEdit={true}
-                        // onEdit={onFilmoEditModalOpen}
-                        // onDelete={onFilmoDeleteModalOpen}
                         onCheck={onFilmoRepCheck}
-                        onLink={onFilmoLink}
+                        onLink={onLinkModalOpen}
                       />
                     );
                   })
@@ -143,8 +141,7 @@ const FilmographyMain = ({
                         canEdit={true}
                         onEdit={onFilmoEditModalOpen}
                         onDelete={onFilmoDeleteModalOpen}
-                        // onCheck={onFilmoRepCheck}
-                        onLink={onFilmoLink}
+                        onLink={onLinkModalOpen}
                       />
                     );
                   })}

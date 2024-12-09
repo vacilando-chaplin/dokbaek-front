@@ -72,8 +72,8 @@ export const photoModalInit = {
   id: "",
   state: "",
   active: false,
-  topText: "",
-  bottomText: ""
+  name: "",
+  buttonText: ""
 };
 
 export const filmographyInputInit = {
@@ -97,6 +97,18 @@ export const filmographyActiveInit = {
   cast: false
 };
 
+export const filmoModalInit = {
+  state: "",
+  active: false,
+  name: "",
+  buttonText: ""
+};
+
+export const filmoDeleteInit = {
+  id: 0,
+  active: false
+};
+
 export const videoResponseInit = {
   id: 0,
   userProfileId: 0,
@@ -108,8 +120,8 @@ export const videoModalInit = {
   id: 0,
   state: "",
   active: false,
-  topText: "",
-  bottomText: ""
+  name: "",
+  buttonText: ""
 };
 
 export const videoLinkInit = {

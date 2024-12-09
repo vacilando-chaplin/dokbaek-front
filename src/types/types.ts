@@ -209,8 +209,8 @@ export interface PhotoModalType {
   id: string;
   state: string;
   active: boolean;
-  topText: string;
-  bottomText: string;
+  name: string;
+  buttonText: string;
 }
 
 export interface FilmoRoleType {
@@ -242,6 +242,18 @@ export interface FilmoActiveType {
   classification: boolean;
   production: boolean;
   cast: boolean;
+}
+
+export interface FilmoModalType {
+  state: string;
+  active: boolean;
+  name: string;
+  buttonText: string;
+}
+
+export interface FilmoDeleteType {
+  id: number;
+  active: boolean;
 }
 
 export interface FilmoRequestType {
@@ -294,8 +306,8 @@ export interface VideoModalType {
   id: number;
   state: string;
   active: boolean;
-  topText: string;
-  bottomText: string;
+  name: string;
+  buttonText: string;
 }
 
 export interface VideoLinkType {

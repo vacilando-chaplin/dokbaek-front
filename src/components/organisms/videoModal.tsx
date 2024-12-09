@@ -26,13 +26,13 @@ const VideoModal = ({
   return (
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative flex h-auto w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-static-white shadow-modal transition-all duration-100 ease-linear">
-        <ModalTop name={videoModal.topText} onClick={onVideoModalClose} />
+        <ModalTop name={videoModal.name} onClick={onVideoModalClose} />
         <VideoModalSub
           videoInputs={videoInputs}
           onVideoInputChange={onVideoInputChange}
         />
         <ModalBottom
-          text={videoModal.bottomText}
+          text={videoModal.buttonText}
           disabled={!disabled}
           onCloseClick={onVideoModalClose}
           onSaveClick={

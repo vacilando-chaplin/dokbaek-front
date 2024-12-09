@@ -39,8 +39,8 @@ const Video = () => {
       ...videoModal,
       state: "add",
       active: true,
-      topText: "영상 추가",
-      bottomText: "추가"
+      name: "영상 추가",
+      buttonText: "추가"
     });
   };
 
@@ -70,8 +70,8 @@ const Video = () => {
       id: video.id,
       state: "edit",
       active: true,
-      topText: "영상 수정",
-      bottomText: "완료"
+      name: "영상 수정",
+      buttonText: "완료"
     });
   };
 

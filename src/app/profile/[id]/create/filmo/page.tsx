@@ -10,7 +10,6 @@ import {
   putFilmography
 } from "@/api/api";
 import FilmographyDeleteModal from "@/components/organisms/filmographyDeleteModal";
-import FilmographyEditModal from "@/components/organisms/filmographyEditModal";
 import FilmographyMain from "@/components/organisms/filmographyMain";
 import FilmographyModal from "@/components/organisms/filmographyModal";
 import LinkModal from "@/components/organisms/linkModal";
@@ -22,11 +21,19 @@ import {
   jwt,
   toastMessage
 } from "@/data/atom";
-import { filmographyActiveInit, filmographyInputInit } from "@/data/data";
+import {
+  filmoDeleteInit,
+  filmographyActiveInit,
+  filmographyInputInit,
+  filmoModalInit,
+  videoLinkInit
+} from "@/data/data";
 import {
   FilmoCategoryType,
+  FilmoDeleteType,
   FilmoResponseType,
-  FilmoRoleType
+  FilmoRoleType,
+  VideoLinkType
 } from "@/types/types";
 import { setOnlyNumber } from "@/utils/utils";
 import { useEffect, useState } from "react";
@@ -47,12 +54,16 @@ const Filmography = () => {
   const [filmoList, setFilmoList] = useState<FilmoResponseType[]>([]);
   const [filmoInputs, setFilmoInputs] = useState(filmographyInputInit);
   const [filmoActives, setFilmoActives] = useState(filmographyActiveInit);
-  const [filmoModalActive, setFilmoModalActive] = useState(false);
-  const [filmoEditModalActive, setFilmoEditModalActive] = useState(false);
+
+  // 모달
+  const [filmoModal, setFilmoModal] = useState(filmoModalInit);
+
+  // 삭제
+  const [filmoDelete, setFilmoDelete] =
+    useState<FilmoDeleteType>(filmoDeleteInit);
 
   // 영상 링크
-  const [filmoLink, setFilmoLink] = useState("");
-  const [filmoLinkModalActive, setFilmoLinkModalActive] = useState(false);
+  const [linkModal, setLinkModal] = useState<VideoLinkType>(videoLinkInit);
 
   // 대표작
   const [filmoRepEditList, setFilmoRepEditList] = useState<FilmoResponseType[]>(
@@ -60,10 +71,6 @@ const Filmography = () => {
   );
   const [filmoRepresentActive, setFilmoRepresentActive] = useState(false);
   const [representativeCount, setRepresentativeCount] = useState(0);
-
-  // 삭제
-  const [filmoDelete, setFilmoDelete] = useState(0);
-  const [filmoDeleteModalActive, setFilmoDeleteModalActive] = useState(false);
 
   // 필모그래피 분류, 출연 형태 GET
   useEffect(() => {
@@ -113,12 +120,12 @@ const Filmography = () => {
 
     setFilmoList(data.filmos);
     setFilmoInputs(filmographyInputInit);
-    setFilmoModalActive(!filmoModalActive);
+    setFilmoModal({ ...filmoModal, active: false });
     setToastMessage("작품 활동을 추가했어요.");
   };
 
   // 필모그래피 편집 모달 필모그래피 저장
-  const onFilmographyEditSave = async () => {
+  const onFilmographyEdit = async () => {
     const roleId = filmoRoleList.findIndex(
       (cast: FilmoRoleType) => cast.name === filmoInputs.cast
     );
@@ -150,7 +157,7 @@ const Filmography = () => {
 
     setFilmoList(data.filmos);
     setFilmoInputs(filmographyInputInit);
-    setFilmoEditModalActive(!filmoEditModalActive);
+    setFilmoModal({ ...filmoModal, active: false });
     setToastMessage("작품 활동을 수정했어요.");
   };
 
@@ -213,7 +220,12 @@ const Filmography = () => {
 
   // 필모그래피 모달 액티브
   const onFilmoModalActive = () => {
-    setFilmoModalActive(!filmoModalActive);
+    setFilmoModal({
+      state: "add",
+      active: true,
+      name: "작품 활동 추가",
+      buttonText: "추가"
+    });
     setFilmoInputs(filmographyInputInit);
     setFilmoActives(filmographyActiveInit);
   };
@@ -252,14 +264,13 @@ const Filmography = () => {
   };
 
   // 필모그래피 링크 모달 오픈
-  const onFilmoLink = (link: string) => {
-    setFilmoLink(link);
-    setFilmoLinkModalActive(!filmoLinkModalActive);
+  const onLinkModalOpen = (link: string) => {
+    setLinkModal({ url: link, active: true });
   };
 
   // 필모그래피 링크 모달 닫기
   const onLinkModalClose = () => {
-    setFilmoLinkModalActive(!filmoLinkModalActive);
+    setLinkModal({ ...linkModal, active: false });
   };
 
   // 썸네일 이미지 업로드
@@ -280,8 +291,6 @@ const Filmography = () => {
       e.currentTarget.value = "";
     }
   };
-
-  // filmographyEditModal
 
   // 필모그래피 편집 모달 오픈
   const onFilmoEditModalOpen = (filmo: FilmoResponseType) => {
@@ -305,40 +314,36 @@ const Filmography = () => {
       id: filmo.id,
       displayOrder: filmo.displayOrder
     });
-    setFilmoEditModalActive(!filmoEditModalActive);
-  };
-
-  // 필모그래피 편집 모달 닫기
-  const onFilmoEditModalClose = () => {
-    setFilmoEditModalActive(!filmoEditModalActive);
-    setFilmoInputs(filmographyInputInit);
-    setFilmoActives(filmographyActiveInit);
+    setFilmoModal({
+      state: "edit",
+      active: true,
+      name: "작품 활동 수정",
+      buttonText: "저장"
+    });
   };
 
   // filmographyDeleteModal
 
   // 필모그래피 삭제 모달 오픈
   const onFilmoDeleteModalOpen = (id: number) => {
-    setFilmoDelete(id);
-    setFilmoDeleteModalActive(!filmoDeleteModalActive);
+    setFilmoDelete({ id: id, active: true });
   };
 
   // 필모그래피 삭제 모달 닫기
   const onFilmoDeleteModalClose = () => {
-    setFilmoDeleteModalActive(!filmoDeleteModalActive);
+    setFilmoDelete({ ...filmoDelete, active: false });
   };
 
   // 필모그래피 삭제 모달 삭제 버튼 클릭
   const onFilmoDeleteClick = async () => {
-    await deleteFilmography(userId, filmoDelete, token);
+    await deleteFilmography(userId, filmoDelete.id, token);
 
     const res = await getProfile(userId, token);
     const data = await res.data;
 
     setFilmoList(data.filmos);
 
-    setFilmoDelete(0);
-    setFilmoDeleteModalActive(!filmoDeleteModalActive);
+    setFilmoDelete(filmoDeleteInit);
     setToastMessage("작품 활동을 삭제했어요.");
   };
 
@@ -393,12 +398,13 @@ const Filmography = () => {
         onFilmoEditModalOpen={onFilmoEditModalOpen}
         onFilmoDeleteModalOpen={onFilmoDeleteModalOpen}
         onFilmoRepCheck={onFilmoRepCheck}
-        onFilmoLink={onFilmoLink}
+        onLinkModalOpen={onLinkModalOpen}
       />
-      {filmoModalActive && (
+      {filmoModal.active && (
         <FilmographyModal
           filmoInputs={filmoInputs}
           filmoActives={filmoActives}
+          filmoModal={filmoModal}
           onFilmoModalActive={onFilmoModalActive}
           onFilmoInputChange={onFilmoInputChange}
           onFilmoProductionChange={onFilmoProductionChange}
@@ -406,29 +412,17 @@ const Filmography = () => {
           onFilmoDropdownClick={onFilmoDropdownClick}
           onSelectThumbnail={onSelectThumbnail}
           onFilmographySave={onFilmographySave}
+          onFilmographyEdit={onFilmographyEdit}
         />
       )}
-      {filmoEditModalActive && (
-        <FilmographyEditModal
-          filmoInputs={filmoInputs}
-          filmoActives={filmoActives}
-          onFilmoEditModalClose={onFilmoEditModalClose}
-          onFilmoInputChange={onFilmoInputChange}
-          onFilmoProductionChange={onFilmoProductionChange}
-          onFilmoDropdownActive={onFilmoDropdownActive}
-          onFilmoDropdownClick={onFilmoDropdownClick}
-          onSelectThumbnail={onSelectThumbnail}
-          onFilmographyEditSave={onFilmographyEditSave}
-        />
-      )}
-      {filmoDeleteModalActive && (
+      {filmoDelete.active && (
         <FilmographyDeleteModal
           onCancel={onFilmoDeleteModalClose}
           onDelete={onFilmoDeleteClick}
         />
       )}
-      {filmoLinkModalActive && (
-        <LinkModal link={filmoLink} onLinkModalClose={onLinkModalClose} />
+      {linkModal.active && (
+        <LinkModal link={linkModal.url} onLinkModalClose={onLinkModalClose} />
       )}
     </div>
   );
