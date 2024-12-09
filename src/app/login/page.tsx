@@ -32,26 +32,24 @@ const Login = () => {
   };
 
   useEffect(() => {
-    loadKakaoSDK();
+    if (typeof window !== "undefined") {
+      loadKakaoSDK();
+    }
   }, []);
 
-  useEffect(() => {
-    loadKakaoSDK();
-  }, [window.Kakao]);
-
-  const fetchUserProfile = () => {
-    if (window.Kakao) {
-      window.Kakao.API.request({
-        url: "/v2/user/me",
-        success: (response: any) => {
-          setKakaoUserData(response);
-        },
-        fail: (error: any) => {
-          throw error;
-        }
-      });
-    }
-  };
+  // const fetchUserProfile = () => {
+  //   if (window.Kakao) {
+  //     window.Kakao.API.request({
+  //       url: "/v2/user/me",
+  //       success: (response: any) => {
+  //         setKakaoUserData(response);
+  //       },
+  //       fail: (error: any) => {
+  //         throw error;
+  //       }
+  //     });
+  //   }
+  // };
 
   const onKakaoLogin = () => {
     if (!window.Kakao) {
@@ -74,7 +72,7 @@ const Login = () => {
           .catch((error) => {
             throw error;
           });
-        fetchUserProfile();
+        // fetchUserProfile();
 
         router.push("/oauth/callback/kakao");
       },
