@@ -11,7 +11,7 @@ interface PhotoMainProps {
   photoRepActive: boolean;
   repPhoto: PhotoResponseType;
   onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onPhotoModalActive: React.MouseEventHandler<HTMLInputElement>;
+  onPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
   onPhotoEditModalOpen: (photo: any) => void;
   onDeletePhoto: (id: string) => void;
   onDeletePhotoActive: React.MouseEventHandler<HTMLButtonElement>;
@@ -27,7 +27,7 @@ const PhotoMain = ({
   photoRepActive,
   repPhoto,
   onSelectFile,
-  onPhotoModalActive,
+  onPhotoModalOpen,
   onPhotoEditModalOpen,
   onDeletePhoto,
   onDeletePhotoActive,
@@ -69,7 +69,7 @@ const PhotoMain = ({
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onClick={onPhotoModalActive}
+                  onClick={onPhotoModalOpen}
                   onChange={onSelectFile}
                 />
                 <svg
@@ -108,7 +108,7 @@ const PhotoMain = ({
                   priority
                   className="rounded-lg"
                 />
-                {photoRepActive === false && repPhoto.id === photoItem.id && (
+                {photoRepActive === false && photoItem.isDefault && (
                   <label className="absolute left-2 top-2 flex h-auto w-auto items-center justify-center rounded-full border border-border-default_inverse-light bg-accent-primary-light px-1.5 py-0.5 text-caption2 font-semibold leading-caption2 tracking-caption2 text-content-on_color-light">
                     대표
                   </label>

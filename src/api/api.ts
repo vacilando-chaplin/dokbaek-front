@@ -48,17 +48,23 @@ export const convertImageToBase64 = async (imageUrl: string) => {
     const res = await axios({
       method: "get",
       url: imageUrl,
-      responseType: "blob"
+      responseType: "arraybuffer"
     });
-    const base64Image: any = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => resolve(reader.result); // Base64로 변환된 결과 반환
-      reader.onerror = reject; // 에러 처리
-      reader.readAsDataURL(res.data); // Base64로 변환 시작
-    });
-
-    return base64Image;
+    if (typeof window !== "undefined") {
+      // 브라우저 환경에서는 FileReader를 사용
+      const base64Image = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        const blob = new Blob([res.data]);
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+      return base64Image;
+    } else {
+      // Node.js 환경에서는 Buffer를 사용
+      const base64Image = Buffer.from(res.data, "binary").toString("base64");
+      return `data:image/jpeg;base64,${base64Image}`;
+    }
   } catch (error) {
     throw error;
   }
@@ -142,19 +148,11 @@ export const postPhoto = async (
 ) => {
   const formData = new FormData();
 
-  if (typeof origin === "object") {
-    formData.append("origin", origin);
-  } else {
-    const imageOrigin = base64ToBlob(origin);
-    formData.append("origin", imageOrigin);
-  }
+  const imageOrigin = base64ToBlob(origin);
+  const imagePreview = base64ToBlob(preview);
 
-  if (typeof preview === "object") {
-    formData.append("preview", preview);
-  } else {
-    const imagePreview = base64ToBlob(preview);
-    formData.append("preview", imagePreview);
-  }
+  formData.append("origin", imageOrigin);
+  formData.append("preview", imagePreview);
 
   try {
     const res = await axios.post(`${baseURL}/profile/${id}/photo`, formData, {
@@ -178,19 +176,11 @@ export const postPhotoEdit = async (
 ) => {
   const formData = new FormData();
 
-  if (typeof origin === "object") {
-    formData.append("origin", origin);
-  } else {
-    const imageOrigin = base64ToBlob(origin);
-    formData.append("origin", imageOrigin);
-  }
+  const imageOrigin = base64ToBlob(origin);
+  const imagePreview = base64ToBlob(preview);
 
-  if (typeof preview === "object") {
-    formData.append("preview", preview);
-  } else {
-    const imagePreview = base64ToBlob(preview);
-    formData.append("preview", imagePreview);
-  }
+  formData.append("origin", imageOrigin);
+  formData.append("preview", imagePreview);
 
   try {
     const res = await axios.post(

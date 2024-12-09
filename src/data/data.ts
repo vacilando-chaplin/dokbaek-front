@@ -68,6 +68,14 @@ export const photoResponseInit = {
   updatedAt: ""
 };
 
+export const photoModalInit = {
+  id: "",
+  state: "",
+  active: false,
+  topText: "",
+  bottomText: ""
+};
+
 export const filmographyInputInit = {
   classification: "",
   production: "",

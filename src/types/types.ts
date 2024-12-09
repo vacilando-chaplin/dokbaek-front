@@ -205,6 +205,14 @@ export interface PhotoResponseType {
   updatedAt: string;
 }
 
+export interface PhotoModalType {
+  id: string;
+  state: string;
+  active: boolean;
+  topText: string;
+  bottomText: string;
+}
+
 export interface FilmoRoleType {
   id: number;
   name: string;

@@ -8,12 +8,11 @@ import {
   postPhoto,
   postPhotoEdit
 } from "@/api/api";
-import PhotoEditModal from "@/components/organisms/photoEditModal";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
 import { defaultId, jwt, toastMessage } from "@/data/atom";
-import { photoResponseInit } from "@/data/data";
-import { PhotoResponseType } from "@/types/types";
+import { photoModalInit, photoResponseInit } from "@/data/data";
+import { PhotoModalType, PhotoResponseType } from "@/types/types";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -29,13 +28,10 @@ const Photo = () => {
   const [selectImage, setSelectImage] = useState("");
   const [cropImage, setCropImage] = useState("");
 
-  const [photoModalActive, setPhotoModalActive] = useState(false);
-  const [photoEditModalActive, setPhotoEditModalActive] = useState(false);
+  const [photoModal, setPhotoModal] = useState<PhotoModalType>(photoModalInit);
+
   const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
   const [photoRepActive, setPhotoRepActive] = useState(false);
-
-  const [editPhoto, setEditPhoto] =
-    useState<PhotoResponseType>(photoResponseInit);
 
   // 대표작 설정
   const [repPhoto, setRepPhoto] =
@@ -68,7 +64,7 @@ const Photo = () => {
       setPhotoList([...photoList, data]);
     }
 
-    setPhotoModalActive(!photoModalActive);
+    setPhotoModal(photoModalInit);
     setSelectImage("");
     setCropImage("");
     setToastMessage("사진을 추가했어요.");
@@ -76,16 +72,15 @@ const Photo = () => {
 
   // 사진 편집 모달 완료
   const onEditPhoto = async () => {
-    await postPhotoEdit(userId, selectImage, cropImage, token, editPhoto.id);
+    await postPhotoEdit(userId, selectImage, cropImage, token, photoModal.id);
 
     const res = await getProfile(userId, token);
     const data = await res.data;
 
     setPhotoList(data.photos);
-    setPhotoEditModalActive(!photoEditModalActive);
+    setPhotoModal(photoModalInit);
     setSelectImage("");
     setCropImage("");
-    setEditPhoto(photoResponseInit);
     setToastMessage("사진을 수정했어요.");
   };
 
@@ -101,11 +96,21 @@ const Photo = () => {
     setToastMessage("사진을 삭제했어요.");
   };
 
-  // 사진 추가 모달 액티브
-  const onPhotoModalActive = () => {
+  const onPhotoModalOpen = () => {
+    setPhotoModal({
+      ...photoModal,
+      state: "add",
+      active: true,
+      topText: "사진 추가",
+      bottomText: "추가"
+    });
+  };
+
+  // 사진 추가 모달 닫기
+  const onPhotoModalClose = () => {
     setCropImage("");
     setSelectImage("");
-    setPhotoModalActive(!photoModalActive);
+    setPhotoModal({ ...photoModal, active: false });
   };
 
   // 사진 삭제 모달 액티브
@@ -117,18 +122,22 @@ const Photo = () => {
   const onPhotoEditModalOpen = async (photo: PhotoResponseType) => {
     const originPhoto = await convertImageToBase64(photo.path);
 
-    setEditPhoto(photo);
     setCropImage(originPhoto);
     setSelectImage(originPhoto);
-    setPhotoEditModalActive(!photoEditModalActive);
+    setPhotoModal({
+      id: photo.id,
+      state: "edit",
+      active: true,
+      topText: "사진 편집",
+      bottomText: "완료"
+    });
   };
 
   // 사진 편집 모달 닫기(취소)
   const onPhotoEditModalClose = () => {
     setCropImage("");
     setSelectImage("");
-    setEditPhoto(photoResponseInit);
-    setPhotoEditModalActive(!photoEditModalActive);
+    setPhotoModal(photoModalInit);
   };
 
   // 사진 대표작 선택 액티브
@@ -195,7 +204,7 @@ const Photo = () => {
         photoRepActive={photoRepActive}
         repPhoto={repPhoto}
         onSelectFile={onSelectFile}
-        onPhotoModalActive={onPhotoModalActive}
+        onPhotoModalOpen={onPhotoModalOpen}
         onPhotoEditModalOpen={onPhotoEditModalOpen}
         onDeletePhoto={onDeletePhoto}
         onDeletePhotoActive={onDeletePhotoActive}
@@ -204,17 +213,19 @@ const Photo = () => {
         onPhotoRepCheck={onPhotoRepCheck}
         onPhotoRepClose={onPhotoRepClose}
       />
-      {photoModalActive && (
+      {photoModal.state === "add" && photoModal.active && (
         <PhotoModal
           selectImage={selectImage}
-          onModalActive={onPhotoModalActive}
+          photoModal={photoModal}
+          onModalActive={onPhotoModalClose}
           onAddPhoto={onAddPhoto}
           setCropImage={setCropImage}
         />
       )}
-      {photoEditModalActive && (
-        <PhotoEditModal
-          selectImage={editPhoto.path}
+      {photoModal.state === "edit" && photoModal.active && (
+        <PhotoModal
+          selectImage={selectImage}
+          photoModal={photoModal}
           onModalActive={onPhotoEditModalClose}
           onEditPhoto={onEditPhoto}
           setCropImage={setCropImage}
