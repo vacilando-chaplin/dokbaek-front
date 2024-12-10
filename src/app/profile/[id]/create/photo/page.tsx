@@ -7,7 +7,7 @@ import {
   patchPhotoDefault,
   postPhoto,
   postPhotoEdit
-} from "@/api/api";
+} from "@/app/api/route";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
 import { defaultId, jwt, toastMessage } from "@/data/atom";

@@ -1,6 +1,6 @@
 "use client";
 
-import { postUser } from "@/api/api";
+import { postUser } from "@/app/api/route";
 import { defaultId, jwt, loginForm } from "@/data/atom";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

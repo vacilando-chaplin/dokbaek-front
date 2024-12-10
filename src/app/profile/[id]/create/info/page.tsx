@@ -1,6 +1,6 @@
 "use client";
 
-import { getProfile, getSchoolName, putInfo } from "@/api/api";
+import { getProfile, getSchoolName, putInfo } from "@/app/api/route";
 import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import InfoThird from "@/components/organisms/infoThird";

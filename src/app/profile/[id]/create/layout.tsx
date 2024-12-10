@@ -1,6 +1,6 @@
 "use client";
 
-import { getFilmoRoles, getProfile } from "@/api/api";
+import { getFilmoRoles, getProfile } from "@/app/api/route";
 import Toast from "@/components/atoms/toast";
 import SideMenu from "@/components/molecules/sideMenu";
 import BottomBar from "@/components/organisms/bottomBar";

@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteVideo, getProfile, postVideo, putVideo } from "@/api/api";
+import { deleteVideo, getProfile, postVideo, putVideo } from "@/app/api/route";
 import LinkModal from "@/components/organisms/linkModal";
 import VideoMain from "@/components/organisms/videoMain";
 import VideoModal from "@/components/organisms/videoModal";

@@ -5,7 +5,7 @@ import {
   getFilmoCategories,
   getFilmoRoles,
   getProfile
-} from "@/api/api";
+} from "@/app/api/route";
 import ProfileFilmographyModal from "@/components/organisms/profileFilmographyModal";
 import LinkModal from "@/components/organisms/linkModal";
 import ProfileMain from "@/components/organisms/profileMain";

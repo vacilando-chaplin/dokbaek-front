@@ -8,7 +8,7 @@ import {
   postFilmography,
   postFilmographyThumbnail,
   putFilmography
-} from "@/api/api";
+} from "@/app/api/route";
 import FilmographyDeleteModal from "@/components/organisms/filmographyDeleteModal";
 import FilmographyMain from "@/components/organisms/filmographyMain";
 import FilmographyModal from "@/components/organisms/filmographyModal";
