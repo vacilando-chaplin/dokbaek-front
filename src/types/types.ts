@@ -315,6 +315,16 @@ export interface VideoLinkType {
   active: boolean;
 }
 
+export interface ProfileModalType {
+  state: string;
+  active: boolean;
+}
+
+export interface SelectedPhotoType {
+  origin: string;
+  blur: string;
+}
+
 export interface KakaoDataType {
   access_token: string;
   expires_in: number;

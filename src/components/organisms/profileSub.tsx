@@ -16,7 +16,6 @@ import {
 interface PropfileSubProps {
   linear: string;
   userId: number;
-  subRef: RefObject<HTMLDivElement>;
   photoList: PhotoResponseType[];
   filmographyList: FilmoResponseType[];
   videoList: VideoResponseType[];
@@ -29,7 +28,6 @@ interface PropfileSubProps {
 const ProfileSub = ({
   linear,
   userId,
-  subRef,
   photoList,
   filmographyList,
   videoList,
@@ -58,7 +56,6 @@ const ProfileSub = ({
 
   return (
     <section
-      ref={subRef}
       className={`flex h-full w-full flex-col gap-10 p-8 ${linear === "sub" && "border-l-[1px] border-border-default-light"}`}
     >
       {/* photo */}
@@ -118,7 +115,9 @@ const ProfileSub = ({
           <div className="relative overflow-hidden">
             <div
               className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
-              style={{ transform: `translateX(-${photoSlider * 100}%)` }}
+              style={{
+                transform: `translateX(-${photoSlider * 100}%)`
+              }}
             >
               {photoList.map((photo: PhotoResponseType) => {
                 return (

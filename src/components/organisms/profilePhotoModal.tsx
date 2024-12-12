@@ -1,14 +1,13 @@
+import { SelectedPhotoType } from "@/types/types";
 import Image from "next/image";
 
 interface ProfilePhotoModalProps {
-  selectedPhoto: string;
-  selectedPhotoBlur: string;
+  selectedPhoto: SelectedPhotoType;
   onPhotoModalClose: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const ProfilePhotoModal = ({
   selectedPhoto,
-  selectedPhotoBlur,
   onPhotoModalClose
 }: ProfilePhotoModalProps) => {
   return (
@@ -35,13 +34,13 @@ const ProfilePhotoModal = ({
           </svg>
         </button>
         <Image
-          src={selectedPhoto}
+          src={selectedPhoto.origin}
           alt="photo"
           width={0}
           height={0}
           sizes="100vw"
           placeholder="blur"
-          blurDataURL={selectedPhotoBlur}
+          blurDataURL={selectedPhoto.blur}
           className="h-[80vh] w-[40%] rounded-2xl"
         />
       </div>

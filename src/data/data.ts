@@ -237,6 +237,16 @@ export const profileInit = {
   updatedAt: ""
 };
 
+export const selectedPhotoInit = {
+  origin: "",
+  blur: ""
+};
+
+export const profileModalInit = {
+  state: "",
+  active: false
+};
+
 export const year = new Date().getFullYear();
 export const yearList = Array.from(new Array(70), (v, index) =>
   (year - index).toString()

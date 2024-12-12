@@ -19,7 +19,12 @@ import {
   jwt,
   stepperInit
 } from "@/data/atom";
-import { profileInit } from "@/data/data";
+import {
+  profileInit,
+  profileModalInit,
+  selectedPhotoInit,
+  videoLinkInit
+} from "@/data/data";
 import {
   FilmoCategoryType,
   FilmoResponseType,
@@ -33,61 +38,43 @@ const Profile = () => {
   const token = useRecoilValue(jwt);
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
-
   const [filmoCategoryList, setFilmoCategoryList] =
     useRecoilState(filmoCategory);
   const setFilmoRoleList = useSetRecoilState(filmoRole);
+  const setStepper = useSetRecoilState(stepperInit);
+
+  // main, sub 구분선
+  const mainRef = useRef<HTMLDivElement>(null);
+  const subRef = useRef<HTMLDivElement>(null);
+  const [linear, setLinear] = useState("sub");
 
   const [profileData, setProfileData] = useState<any>(profileInit);
   const [mainPhoto, setMainPhoto] = useState("");
-
-  const setStepper = useSetRecoilState(stepperInit);
-
-  const mainRef = useRef<HTMLDivElement>(null);
-  const subRef = useRef<HTMLDivElement>(null);
-
-  const [linear, setLinear] = useState("sub");
-
-  const [selectedPhoto, setSelectedPhoto] = useState("");
-  const [selectedPhotoBlur, setSelectedPhotoBlur] = useState("");
-  const [photoModalActive, setPhotoModalActive] = useState(false);
-  const [filmoModalActive, setFilmoModalActive] = useState(false);
-  const [videoLink, setVideoLink] = useState("");
-  const [linkModalActive, setLinkModalActive] = useState(false);
-
-  const onCopyUrl = async () => {
-    const copyUrl = window.location.href;
-    try {
-      alert("링크를 복사 했어요");
-      await navigator.clipboard.writeText(copyUrl);
-    } catch (error) {
-      throw error;
-    }
-  };
+  const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
+  const [profileModal, setProfileModal] = useState(profileModalInit);
+  const [videoLink, setVideoLink] = useState(videoLinkInit);
 
   const onPhotoModalOpen = async (photo: string) => {
     const blurPhoto = await convertImageToBase64(photo);
 
-    setSelectedPhotoBlur(blurPhoto);
-    setSelectedPhoto(photo);
-    setPhotoModalActive(!photoModalActive);
+    setSelectedPhoto({ origin: photo, blur: blurPhoto });
+    setProfileModal({ state: "photo", active: true });
   };
 
   const onPhotoModalClose = () => {
-    setPhotoModalActive(!photoModalActive);
+    setProfileModal(profileModalInit);
   };
 
   const onFilmoModalActive = () => {
-    setFilmoModalActive(!filmoModalActive);
+    setProfileModal({ state: "filmo", active: !profileModal.active });
   };
 
   const onFilmoLinkModalOpen = (link: string) => {
-    setVideoLink(link);
-    setLinkModalActive(!linkModalActive);
+    setVideoLink({ url: link, active: true });
   };
 
   const onLinkModalClose = () => {
-    setLinkModalActive(!linkModalActive);
+    setVideoLink(videoLinkInit);
   };
 
   useEffect(() => {
@@ -143,36 +130,36 @@ const Profile = () => {
 
   return (
     <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden">
-      <ProfileMain
-        linear={linear}
-        userId={userId}
-        mainRef={mainRef}
-        mainPhoto={mainPhoto}
-        info={profileData?.info}
-        education={profileData?.education[0]}
-        setStepper={setStepper}
-        onCopyUrl={onCopyUrl}
-      />
-      <ProfileSub
-        linear={linear}
-        userId={userId}
-        subRef={subRef}
-        photoList={profileData?.photos}
-        filmographyList={profileData?.filmos}
-        videoList={profileData?.videos}
-        setStepper={setStepper}
-        onPhotoModalOpen={onPhotoModalOpen}
-        onFilmoModalActive={onFilmoModalActive}
-        onFilmoLinkModalOpen={onFilmoLinkModalOpen}
-      />
-      {photoModalActive && (
+      <div ref={mainRef} className="flex-[1_1_30%]">
+        <ProfileMain
+          linear={linear}
+          userId={userId}
+          mainPhoto={mainPhoto}
+          info={profileData?.info}
+          education={profileData?.education[0]}
+          setStepper={setStepper}
+        />
+      </div>
+      <div ref={subRef} className="flex-[1_1_70%]">
+        <ProfileSub
+          linear={linear}
+          userId={userId}
+          photoList={profileData?.photos}
+          filmographyList={profileData?.filmos}
+          videoList={profileData?.videos}
+          setStepper={setStepper}
+          onPhotoModalOpen={onPhotoModalOpen}
+          onFilmoModalActive={onFilmoModalActive}
+          onFilmoLinkModalOpen={onFilmoLinkModalOpen}
+        />
+      </div>
+      {profileModal.state === "photo" && profileModal.active && (
         <ProfilePhotoModal
           selectedPhoto={selectedPhoto}
-          selectedPhotoBlur={selectedPhotoBlur}
           onPhotoModalClose={onPhotoModalClose}
         />
       )}
-      {filmoModalActive && (
+      {profileModal.state === "filmo" && profileModal.active && (
         <ProfileFilmographyModal
           filmoList={profileData?.filmos}
           categoryList={categoryList}
@@ -180,8 +167,8 @@ const Profile = () => {
           onFilmoLinkModalOpen={onFilmoLinkModalOpen}
         />
       )}
-      {linkModalActive && (
-        <LinkModal link={videoLink} onLinkModalClose={onLinkModalClose} />
+      {videoLink.active && (
+        <LinkModal link={videoLink.url} onLinkModalClose={onLinkModalClose} />
       )}
     </div>
   );

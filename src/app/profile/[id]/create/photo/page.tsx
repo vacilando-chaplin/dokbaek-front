@@ -133,13 +133,6 @@ const Photo = () => {
     });
   };
 
-  // 사진 편집 모달 닫기(취소)
-  const onPhotoEditModalClose = () => {
-    setCropImage("");
-    setSelectImage("");
-    setPhotoModal(photoModalInit);
-  };
-
   // 사진 대표작 선택 액티브
   const onPhotoRepActive = () => {
     setEditRepPhoto(repPhoto);
@@ -176,10 +169,10 @@ const Photo = () => {
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener("load", () => {
+      reader.onload = () => {
         setCropImage(reader.result?.toString() || "");
         setSelectImage(reader.result?.toString() || "");
-      });
+      };
       reader.readAsDataURL(e.target.files[0]);
     }
     e.currentTarget.value = "";

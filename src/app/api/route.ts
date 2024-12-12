@@ -1,13 +1,4 @@
-"use server";
-
-import {
-  APIResponse,
-  FilmoRequestType,
-  InfoRequestType,
-  InfoResponseType,
-  SignUpRequestType,
-  SignUpResponseType
-} from "@/types/types";
+import { FilmoRequestType, SignUpRequestType } from "@/types/types";
 import { base64ToBlob } from "@/utils/utils";
 import axios from "axios";
 
@@ -72,7 +63,7 @@ export const convertImageToBase64 = async (imageUrl: string) => {
 
 export const kakaoAuthLogin = async (code: string | string[]) => {
   const res = await axios.post(
-    `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI}&code=${code}`,
+    `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_OAUTH_LOGIN_REDIRECT_URI}&code=${code}`,
     {
       method: "POST",
       headers: {

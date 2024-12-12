@@ -9,7 +9,6 @@ import {
   debounce
 } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
-import { useSetRecoilState } from "recoil";
 
 interface ImageCropperProps {
   selectImage: string;
@@ -23,11 +22,8 @@ const ImageCropper = ({ selectImage, setCropImage }: ImageCropperProps) => {
   // setCoordinates(cropperRef.current.getCoordinates());
   const [isLoading, setIsLoading] = useState(false);
 
-  const setDragEnd = useSetRecoilState(photoDragEnd);
-
   const onCrop = () => {
     if (cropperRef.current) {
-      setDragEnd(true);
       setCropImage(cropperRef.current.getCanvas()?.toDataURL());
     }
   };

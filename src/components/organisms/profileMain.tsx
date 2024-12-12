@@ -9,29 +9,29 @@ import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
 import { educationEngList, educationList } from "@/data/data";
 import { RefObject } from "react";
+import { useSetRecoilState } from "recoil";
+import { toastMessage } from "@/data/atom";
 
 interface ProfileMainProps {
   linear: string;
   userId: number;
-  mainRef: RefObject<HTMLDivElement>;
   mainPhoto: string;
   info: InfoResponseType;
   education: EducationType;
   setStepper: React.Dispatch<React.SetStateAction<number>>;
-  onCopyUrl: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const ProfileMain = ({
   linear,
   userId,
-  mainRef,
   mainPhoto,
   info,
   education,
-  setStepper,
-  onCopyUrl
+  setStepper
 }: ProfileMainProps) => {
   const router = useRouter();
+
+  const setToast = useSetRecoilState(toastMessage);
 
   const {
     name,
@@ -50,10 +50,19 @@ const ProfileMain = ({
     (item: string) => item === education.status
   );
 
+  const onCopyUrl = async () => {
+    const copyUrl = window.location.href;
+    try {
+      setToast("프로필 링크를 복사 했어요.");
+      await navigator.clipboard.writeText(copyUrl);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
     <section
-      ref={mainRef}
-      className={`flex h-full w-[41vw] flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
+      className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
     >
       {mainPhoto ? (
         <div className="flex h-[60vh] w-full">

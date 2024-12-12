@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
   display: "swap",
-  weight: "45 920",
+  weight: "100 900",
   variable: "--font-pretendard"
 });
 
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
-      <body className={pretendard.className}>
+      <body className={`${pretendard.className} bg-background-base-light`}>
         <RecoilRootProvider>
           <main>{children}</main>
         </RecoilRootProvider>

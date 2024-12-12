@@ -16,6 +16,20 @@ const Login = () => {
   // 카카오 로그인
   const [kakaoUserData, setKakaoUserData] = useState({}); // 유저 카카오 회원 데이터
 
+  // const fetchUserProfile = () => {
+  //   if (window.Kakao) {
+  //     window.Kakao.API.request({
+  //       url: "/v2/user/me",
+  //       success: (response: any) => {
+  //         setKakaoUserData(response);
+  //       },
+  //       fail: (error: any) => {
+  //         throw error;
+  //       }
+  //     });
+  //   }
+  // };
+
   const loadKakaoSDK = () => {
     if (window.Kakao) {
       return;
@@ -36,20 +50,6 @@ const Login = () => {
       loadKakaoSDK();
     }
   }, []);
-
-  // const fetchUserProfile = () => {
-  //   if (window.Kakao) {
-  //     window.Kakao.API.request({
-  //       url: "/v2/user/me",
-  //       success: (response: any) => {
-  //         setKakaoUserData(response);
-  //       },
-  //       fail: (error: any) => {
-  //         throw error;
-  //       }
-  //     });
-  //   }
-  // };
 
   const onKakaoLogin = () => {
     if (!window.Kakao) {
@@ -74,7 +74,8 @@ const Login = () => {
           });
         // fetchUserProfile();
 
-        router.push("/oauth/callback/kakao");
+        // router.push("/oauth/callback/kakao");
+        router.push("/oauth/callback");
       },
       fail: (error: any) => {
         throw error;
