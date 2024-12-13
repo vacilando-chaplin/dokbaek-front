@@ -4,7 +4,7 @@ import { defaultId, loginForm } from "@/data/atom";
 import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
-const Kakao = () => {
+const Callback = () => {
   const router = useRouter();
 
   const userId = useRecoilValue(defaultId);
@@ -53,4 +53,4 @@ const Kakao = () => {
   );
 };
 
-export default Kakao;
+export default Callback;

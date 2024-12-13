@@ -74,7 +74,6 @@ const Login = () => {
           });
         // fetchUserProfile();
 
-        // router.push("/oauth/callback/kakao");
         router.push("/oauth/callback");
       },
       fail: (error: any) => {
