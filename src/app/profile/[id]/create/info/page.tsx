@@ -14,7 +14,7 @@ import {
 import { useDebounce } from "@/hooks/hooks";
 import { InfoActiveType, InfoInputType, SchoolType } from "@/types/types";
 import { contactFormat, setOnlyNumber } from "@/utils/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 const Info = () => {

@@ -1,19 +1,77 @@
 "use client";
 
-import { defaultId, loginForm } from "@/data/atom";
+import { kakaoAuthLogin, naverAuthLogin, postUser } from "@/app/api/route";
+import { defaultId, jwt, loginForm } from "@/data/atom";
+import { NaverDataType } from "@/types/types";
 import { useRouter } from "next/navigation";
-import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const Callback = () => {
   const router = useRouter();
 
-  const userId = useRecoilValue(defaultId);
-  const form = useRecoilValue(loginForm);
+  const [userId, setUserId] = useRecoilState(defaultId);
+  const [form, setForm] = useRecoilState(loginForm);
+  const setJWT = useSetRecoilState(jwt);
+
+  const [naverToken, setNaverToken] = useState<NaverDataType>();
+  const [kakaoToken, setKakaoToken] = useState<any>();
 
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
     router.push(`/profile/${userId}/create/info`);
   };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    const state = urlParams.get("state");
+
+    if (code && state?.includes("naver_login")) {
+      const getNaverAccessToken = async () => {
+        const res = await naverAuthLogin(code);
+        setNaverToken(res);
+      };
+      getNaverAccessToken();
+    } else if (code && state?.includes("kakao_login")) {
+      const getKakaoAccessToken = async () => {
+        const res = await kakaoAuthLogin(code);
+        setKakaoToken(res);
+      };
+      getKakaoAccessToken();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (naverToken) {
+      const getNaverUserData = async () => {
+        const res = await postUser({
+          domain: "NAVER",
+          accessToken: naverToken.access_token,
+          deviceId: ""
+        });
+        const data = await res.data;
+
+        setUserId(data.defaultProfileId);
+        setJWT(data.token.jwt);
+        setForm("네이버");
+      };
+      getNaverUserData();
+    } else if (kakaoToken) {
+      const getKakaoUserData = async () => {
+        const res = await postUser({
+          domain: "KAKAO",
+          accessToken: kakaoToken.access_token,
+          deviceId: ""
+        });
+        const data = await res.data;
+        setUserId(data.defaultProfileId);
+        setJWT(data.token.jwt);
+        setForm("카카오");
+      };
+      getKakaoUserData();
+    }
+  }, [naverToken, kakaoToken]);
 
   return (
     <div className="flex flex-col gap-10">

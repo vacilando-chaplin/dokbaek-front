@@ -1,35 +1,10 @@
 "use client";
 
-import { postUser } from "@/app/api/route";
-import { defaultId, jwt, loginForm } from "@/data/atom";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import KakaoLogin from "@/components/molecules/kakaoLogin";
+import NaverLogin from "@/components/molecules/naverLogin";
+import { useEffect } from "react";
 
 const Login = () => {
-  const router = useRouter();
-
-  const setId = useSetRecoilState(defaultId);
-  const setJWT = useSetRecoilState(jwt);
-  const setLoginForm = useSetRecoilState(loginForm);
-
-  // 카카오 로그인
-  const [kakaoUserData, setKakaoUserData] = useState({}); // 유저 카카오 회원 데이터
-
-  // const fetchUserProfile = () => {
-  //   if (window.Kakao) {
-  //     window.Kakao.API.request({
-  //       url: "/v2/user/me",
-  //       success: (response: any) => {
-  //         setKakaoUserData(response);
-  //       },
-  //       fail: (error: any) => {
-  //         throw error;
-  //       }
-  //     });
-  //   }
-  // };
-
   const loadKakaoSDK = () => {
     if (window.Kakao) {
       return;
@@ -50,37 +25,6 @@ const Login = () => {
       loadKakaoSDK();
     }
   }, []);
-
-  const onKakaoLogin = () => {
-    if (!window.Kakao) {
-      return;
-    }
-    window.Kakao.Auth.login({
-      success: (authData: any) => {
-        postUser({
-          domain: "KAKAO",
-          accessToken: authData.access_token,
-          deviceId: ""
-        })
-          .then((res: any) => {
-            const data = res.data;
-
-            setId(data.defaultProfileId);
-            setJWT(data.token.jwt);
-            setLoginForm("카카오");
-          })
-          .catch((error) => {
-            throw error;
-          });
-        // fetchUserProfile();
-
-        router.push("/oauth/callback");
-      },
-      fail: (error: any) => {
-        throw error;
-      }
-    });
-  };
 
   return (
     <main className="flex h-auto w-auto flex-col gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20">
@@ -153,49 +97,8 @@ const Login = () => {
         </label>
       </div>
       <div className="flex h-auto w-full flex-col gap-2">
-        <button
-          type="button"
-          className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-[#FAE64D] px-6 py-3"
-          onClick={onKakaoLogin}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="absolute left-4"
-          >
-            <path
-              d="M8.49984 1.33333C4.08213 1.33333 0.5 4.14084 0.5 7.60612C0.5 9.83199 1.98366 11.7863 4.21178 12.9018L3.45798 15.6948C3.42913 15.7805 3.45306 15.8713 3.51567 15.9331C3.55878 15.9762 3.61631 16 3.67876 16C3.72695 16 3.77481 15.981 3.81808 15.9476L7.05928 13.774C7.53002 13.8407 8.01025 13.8788 8.49984 13.8788C12.9175 13.8788 16.5 11.0714 16.5 7.60612C16.5 4.14084 12.9175 1.33333 8.49984 1.33333Z"
-              fill="#3C1E1E"
-            />
-          </svg>
-          <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-black">
-            카카오로 시작하기
-          </div>
-        </button>
-        <button
-          type="button"
-          className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-[#5FC53A] px-6 py-3"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="absolute left-4"
-          >
-            <path
-              d="M10.5667 15L6.37224 7.75345V15H2V1H6.43326L10.6278 8.24654V1H15V15H10.5667Z"
-              fill="white"
-            />
-          </svg>
-          <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">
-            네이버로 시작하기
-          </div>
-        </button>
+        <KakaoLogin />
+        <NaverLogin />
       </div>
     </main>
   );

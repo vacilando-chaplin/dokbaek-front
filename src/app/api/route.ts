@@ -5,14 +5,14 @@ import axios from "axios";
 // 배포
 
 // const api = axios.create({
-//   baseURL: "https://filogram.my/api",
+//   baseURL: "https://filogram.my/app/api",
 //   headers: {
 //     "Content-Type": "application/json"
 //   },
 //   withCredentials: true
 // });
 
-// const baseURL = "https://filogram.my/api";
+// const baseURL = "https://filogram.my/app/api";
 
 // 개발
 
@@ -62,18 +62,41 @@ export const convertImageToBase64 = async (imageUrl: string) => {
 };
 
 export const kakaoAuthLogin = async (code: string | string[]) => {
-  const res = await axios.post(
-    `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_OAUTH_LOGIN_REDIRECT_URI}&code=${code}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+  try {
+    const res = await axios.post(
+      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_OAUTH_LOGIN_REDIRECT_URI}&code=${code}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
       }
-    }
-  );
-  const data = res.data;
+    );
+    const data = res.data;
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const naverAuthLogin = async (code: string) => {
+  try {
+    const res = await axios.post("https://nid.naver.com/oauth2.0/token", null, {
+      params: {
+        client_id: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
+        client_secret: process.env.NEXT_PUBLIC_NAVER_CLIENT_SECRET,
+        code: code,
+        redirect_uri: "http://localhost:3000/auth/callback",
+        grant_type: "authorization_code"
+      }
+    });
+    const data = res.data;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 // 커리어넷 학교 검색 api

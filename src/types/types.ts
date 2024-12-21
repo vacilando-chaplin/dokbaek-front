@@ -334,6 +334,13 @@ export interface KakaoDataType {
   token_type: string;
 }
 
+export interface NaverDataType {
+  access_token: string;
+  expires_in: string;
+  refresh_token: string;
+  token_type: string;
+}
+
 export interface APIResponse<T> {
   data: T;
   status: string;
