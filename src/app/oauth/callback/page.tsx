@@ -1,8 +1,8 @@
 "use client";
 
-import { kakaoAuthLogin, naverAuthLogin, postUser } from "@/app/api/route";
+import { kakaoAuthLogin, naverAuthLogin, postSignUp } from "@/app/api/route";
 import { defaultId, jwt, loginForm } from "@/data/atom";
-import { NaverDataType } from "@/types/types";
+import { KakaoDataType, NaverDataType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -15,11 +15,16 @@ const Callback = () => {
   const setJWT = useSetRecoilState(jwt);
 
   const [naverToken, setNaverToken] = useState<NaverDataType>();
-  const [kakaoToken, setKakaoToken] = useState<any>();
+  const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
 
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
     router.push(`/profile/${userId}/create/info`);
+  };
+
+  const onAddRefreshToken = (refreshToken: string) => {
+    document.cookie = `refresh_token=${refreshToken}; path=/; max-age=604800; sameSite=Strict;`;
+    // 배포환경에서는 secure; 추가
   };
 
   useEffect(() => {
@@ -45,7 +50,7 @@ const Callback = () => {
   useEffect(() => {
     if (naverToken) {
       const getNaverUserData = async () => {
-        const res = await postUser({
+        const res = await postSignUp({
           domain: "NAVER",
           accessToken: naverToken.access_token,
           deviceId: ""
@@ -54,19 +59,22 @@ const Callback = () => {
 
         setUserId(data.defaultProfileId);
         setJWT(data.token.jwt);
+        onAddRefreshToken(data.token.refreshToken);
         setForm("네이버");
       };
       getNaverUserData();
     } else if (kakaoToken) {
       const getKakaoUserData = async () => {
-        const res = await postUser({
+        const res = await postSignUp({
           domain: "KAKAO",
           accessToken: kakaoToken.access_token,
           deviceId: ""
         });
         const data = await res.data;
+
         setUserId(data.defaultProfileId);
         setJWT(data.token.jwt);
+        onAddRefreshToken(data.token.refreshToken);
         setForm("카카오");
       };
       getKakaoUserData();

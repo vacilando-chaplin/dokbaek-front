@@ -126,3 +126,14 @@ export const useGetWindowSize = () => {
   }, []);
   return windowSize;
 };
+
+export const useGetRefreshToken = () => {
+  const cookies = document.cookie.split(";");
+  for (let cookie of cookies) {
+    const [name, value] = cookie.trim().split("=");
+    if (name === "refresh_token") {
+      return value;
+    }
+  }
+  return null;
+};

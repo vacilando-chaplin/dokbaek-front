@@ -1,4 +1,8 @@
-import { FilmoRequestType, SignUpRequestType } from "@/types/types";
+import {
+  FilmoRequestType,
+  SignOutRequestType,
+  SignUpRequestType
+} from "@/types/types";
 import { base64ToBlob } from "@/utils/utils";
 import axios from "axios";
 
@@ -119,7 +123,7 @@ export const getSchoolName = async (search: string) => {
   return await data;
 };
 
-export const postUser = async (data: SignUpRequestType) => {
+export const postSignUp = async (data: SignUpRequestType) => {
   if (!data.accessToken) {
     return false;
   }
@@ -131,6 +135,15 @@ export const postUser = async (data: SignUpRequestType) => {
     if (res.status === 201) {
       return res.data;
     }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postSignOut = async (data: SignOutRequestType) => {
+  try {
+    const res = await api.post("/auth/signout", data);
+    return res.data;
   } catch (error) {
     throw error;
   }

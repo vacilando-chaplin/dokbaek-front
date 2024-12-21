@@ -341,6 +341,16 @@ export interface NaverDataType {
   token_type: string;
 }
 
+export interface KakaoDataType {
+  access_token: string;
+  expires_in: number;
+  id_token: string;
+  refresh_token: string;
+  refresh_token_expires_in: number;
+  scope: string;
+  token_type: string;
+}
+
 export interface APIResponse<T> {
   data: T;
   status: string;
@@ -358,4 +368,9 @@ export interface SignUpResponseType {
     refreshToken: string;
   };
   defaultProfileId: number;
+}
+
+export interface SignOutRequestType {
+  refreshToken: string;
+  deviceId: string;
 }

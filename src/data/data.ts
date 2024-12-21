@@ -1,8 +1,3 @@
-export const topBarList = [
-  { name: "로고", href: "/" },
-  { name: "로그아웃", href: "/" }
-];
-
 export const stepperList = [
   { name: "내 정보", id: 0, path: "/info" },
   { name: "사진", id: 1, path: "/photo" },
