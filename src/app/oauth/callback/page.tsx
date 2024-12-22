@@ -1,18 +1,23 @@
 "use client";
 
-import { kakaoAuthLogin, naverAuthLogin, postSignUp } from "@/app/api/route";
-import { defaultId, jwt, loginForm } from "@/data/atom";
+import {
+  getUser,
+  kakaoAuthLogin,
+  naverAuthLogin,
+  postSignUp
+} from "@/app/api/route";
+import { defaultId, loginForm } from "@/data/atom";
 import { KakaoDataType, NaverDataType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
+import { useSetToken } from "@/hooks/hooks";
 
 const Callback = () => {
   const router = useRouter();
 
   const [userId, setUserId] = useRecoilState(defaultId);
   const [form, setForm] = useRecoilState(loginForm);
-  const setJWT = useSetRecoilState(jwt);
 
   const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
@@ -20,11 +25,6 @@ const Callback = () => {
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
     router.push(`/profile/${userId}/create/info`);
-  };
-
-  const onAddRefreshToken = (refreshToken: string) => {
-    document.cookie = `refresh_token=${refreshToken}; path=/; max-age=604800; sameSite=Strict;`;
-    // 배포환경에서는 secure; 추가
   };
 
   useEffect(() => {
@@ -58,8 +58,8 @@ const Callback = () => {
         const data = await res.data;
 
         setUserId(data.defaultProfileId);
-        setJWT(data.token.jwt);
-        onAddRefreshToken(data.token.refreshToken);
+        useSetToken("jwt", data.token.jwt);
+        useSetToken("refresh_token", data.token.refreshToken);
         setForm("네이버");
       };
       getNaverUserData();
@@ -73,8 +73,8 @@ const Callback = () => {
         const data = await res.data;
 
         setUserId(data.defaultProfileId);
-        setJWT(data.token.jwt);
-        onAddRefreshToken(data.token.refreshToken);
+        useSetToken("jwt", data.token.jwt);
+        useSetToken("refresh_token", data.token.refreshToken);
         setForm("카카오");
       };
       getKakaoUserData();

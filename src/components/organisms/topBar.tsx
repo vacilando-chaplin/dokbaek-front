@@ -1,21 +1,21 @@
 "use client";
 
 import Logo from "../atoms/logo";
-import { useGetRefreshToken } from "@/hooks/hooks";
 import { useRouter } from "next/navigation";
 import { postSignOut } from "@/app/api/route";
 import NavButton from "../atoms/navButton";
+import Cookies from "js-cookie";
 
 const TopBar = () => {
   const router = useRouter();
 
   const onLogOut = async () => {
-    const refreshToken = useGetRefreshToken();
+    const refreshToken = Cookies.get("refresh_token");
 
     if (refreshToken) {
       await postSignOut({ refreshToken: refreshToken, deviceId: "" });
-      document.cookie = "refresh_token=; path=/; max-age=0; sameSite=Strict;";
-      // 배포 시 secure; 추가
+      Cookies.remove("jwt", { path: "/" });
+      Cookies.remove("refresh_token", { path: "/" });
       router.prefetch("/");
       router.push("/");
     }

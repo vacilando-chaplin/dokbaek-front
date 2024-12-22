@@ -18,7 +18,6 @@ import {
   defaultId,
   filmoCategory,
   filmoRole,
-  jwt,
   toastMessage
 } from "@/data/atom";
 import {
@@ -41,8 +40,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Filmography = () => {
   const userId = useRecoilValue(defaultId);
-  const token = useRecoilValue(jwt);
-
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [filmoRoleList, setFilmoRoleList] =
@@ -75,12 +72,12 @@ const Filmography = () => {
   // 필모그래피 분류, 출연 형태 GET
   useEffect(() => {
     const getFilmoCategoryList = async () => {
-      const res = await getFilmoCategories(token);
+      const res = await getFilmoCategories();
       const data = await res.data;
       setFilmoCategoryList(data);
     };
     const getFilmoRoleList = async () => {
-      const res = await getFilmoRoles(token);
+      const res = await getFilmoRoles();
       const data = await res.data;
       setFilmoRoleList(data);
     };
@@ -113,9 +110,9 @@ const Filmography = () => {
       displayOrder: 0
     };
 
-    await postFilmography(userId, filmo, token);
+    await postFilmography(userId, filmo);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -150,9 +147,9 @@ const Filmography = () => {
       displayOrder: filmoInputs.displayOrder
     };
 
-    await putFilmography(userId, filmoInputs.id, editFilmo, token);
+    await putFilmography(userId, filmoInputs.id, editFilmo);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -181,28 +178,23 @@ const Filmography = () => {
     filmoRepEditList.map(
       async (filmo: FilmoResponseType) =>
         filmo.is_featured === true &&
-        (await putFilmography(
-          userId,
-          filmo.id,
-          {
-            roleId: filmo.role.id,
-            customRole: filmo.customRole,
-            character: filmo.character,
-            is_featured: true,
-            production: {
-              categoryId: filmo.production.category.id,
-              productionYear: filmo.production.productionYear,
-              title: filmo.production.title,
-              description: filmo.production.description,
-              videoUrl: filmo.production.videoUrl,
-              thumbnailUrl: filmo.production.thumbnailUrl
-            },
-            displayOrder: filmo.displayOrder
+        (await putFilmography(userId, filmo.id, {
+          roleId: filmo.role.id,
+          customRole: filmo.customRole,
+          character: filmo.character,
+          is_featured: true,
+          production: {
+            categoryId: filmo.production.category.id,
+            productionYear: filmo.production.productionYear,
+            title: filmo.production.title,
+            description: filmo.production.description,
+            videoUrl: filmo.production.videoUrl,
+            thumbnailUrl: filmo.production.thumbnailUrl
           },
-          token
-        ))
+          displayOrder: filmo.displayOrder
+        }))
     );
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -282,7 +274,7 @@ const Filmography = () => {
         const imageUrl = reader.result?.toString() || "";
         imageElement.src = imageUrl;
 
-        const res = await postFilmographyThumbnail(imageUrl, token);
+        const res = await postFilmographyThumbnail(imageUrl);
         const data = await res.data;
         setFilmoInputs({ ...filmoInputs, thumbnail: data });
       });
@@ -336,9 +328,9 @@ const Filmography = () => {
 
   // 필모그래피 삭제 모달 삭제 버튼 클릭
   const onFilmoDeleteClick = async () => {
-    await deleteFilmography(userId, filmoDelete.id, token);
+    await deleteFilmography(userId, filmoDelete.id);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -376,7 +368,7 @@ const Filmography = () => {
   // 필모그래피 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId, token);
+      const res = await getProfile(userId);
       const data = await res.data;
       setFilmoList(data.filmos);
     };

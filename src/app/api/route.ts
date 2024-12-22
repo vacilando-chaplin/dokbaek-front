@@ -5,13 +5,17 @@ import {
 } from "@/types/types";
 import { base64ToBlob } from "@/utils/utils";
 import axios from "axios";
+import Cookies from "js-cookie";
+
+const token = Cookies.get("jwt");
 
 // 배포
 
 // const api = axios.create({
 //   baseURL: "https://filogram.my/app/api",
 //   headers: {
-//     "Content-Type": "application/json"
+//     "Content-Type": "application/json",
+//     Authorization: `Bearer ${token}`
 //   },
 //   withCredentials: true
 // });
@@ -20,23 +24,29 @@ import axios from "axios";
 
 // 개발
 
+const baseURL = "http://3.38.102.209:8080";
+
 const api = axios.create({
   baseURL: "http://3.38.102.209:8080",
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`
   },
   withCredentials: true
 });
 
-const baseURL = "http://3.38.102.209:8080";
-
-const getTokenHeader = (token: string) => {
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`
+api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("jwt");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
-  };
-};
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const convertImageToBase64 = async (imageUrl: string) => {
   try {
@@ -65,12 +75,29 @@ export const convertImageToBase64 = async (imageUrl: string) => {
   }
 };
 
+export const getUser = async () => {
+  try {
+    const res = await api.get("/user");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteUser = async () => {
+  try {
+    const res = await api.delete("/user");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const kakaoAuthLogin = async (code: string | string[]) => {
   try {
     const res = await axios.post(
       `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_OAUTH_LOGIN_REDIRECT_URI}&code=${code}`,
       {
-        method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
@@ -142,25 +169,29 @@ export const postSignUp = async (data: SignUpRequestType) => {
 
 export const postSignOut = async (data: SignOutRequestType) => {
   try {
-    const res = await api.post("/auth/signout", data);
+    const res = await axios.post(`${baseURL}/auth/signout`, data, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const getProfile = async (id: number, token: string) => {
+export const getProfile = async (id: number) => {
   try {
-    const res = await api.get(`/profile/${id}`, getTokenHeader(token));
+    const res = await api.get(`/profile/${id}`);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const putInfo = async (id: number, data: any, token: string) => {
+export const putInfo = async (id: number, data: any) => {
   try {
-    const res = await api.put(`/profile/${id}`, data, getTokenHeader(token));
+    const res = await api.put(`/profile/${id}`, data);
     return res.data;
   } catch (error) {
     throw error;
@@ -170,8 +201,7 @@ export const putInfo = async (id: number, data: any, token: string) => {
 export const postPhoto = async (
   id: number,
   origin: string,
-  preview: string,
-  token: string
+  preview: string
 ) => {
   const formData = new FormData();
 
@@ -198,7 +228,6 @@ export const postPhotoEdit = async (
   id: number,
   origin: string,
   preview: string,
-  token: string,
   photoId: string
 ) => {
   const formData = new FormData();
@@ -226,77 +255,52 @@ export const postPhotoEdit = async (
   }
 };
 
-export const deletePhoto = async (
-  id: number,
-  photoId: string,
-  token: string
-) => {
+export const deletePhoto = async (id: number, photoId: string) => {
   try {
-    const res = await api.delete(
-      `/profile/${id}/photo/${photoId}`,
-      getTokenHeader(token)
-    );
+    const res = await api.delete(`/profile/${id}/photo/${photoId}`);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const patchPhotoDefault = async (
-  id: number,
-  photoId: string,
-  token: string
-) => {
+export const patchPhotoDefault = async (id: number, photoId: string) => {
   try {
-    const res = await api.patch(
-      `/profile/${id}/photo/${photoId}/default`,
-      getTokenHeader(token)
-    );
+    const res = await api.patch(`/profile/${id}/photo/${photoId}/default`);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const getFilmoRoles = async (token: string) => {
+export const getFilmoRoles = async () => {
   try {
-    const res = await api.get("/filmo/roles", getTokenHeader(token));
+    const res = await api.get("/filmo/roles");
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const getFilmoCategories = async (token: string) => {
+export const getFilmoCategories = async () => {
   try {
-    const res = await api.get("/filmo/categories", getTokenHeader(token));
+    const res = await api.get("/filmo/categories");
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const postFilmography = async (
-  id: number,
-  data: FilmoRequestType,
-  token: string
-) => {
+export const postFilmography = async (id: number, data: FilmoRequestType) => {
   try {
-    const res = await api.post(
-      `/profile/${id}/filmo`,
-      data,
-      getTokenHeader(token)
-    );
+    const res = await api.post(`/profile/${id}/filmo`, data);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const postFilmographyThumbnail = async (
-  thumbnail: string,
-  token: string
-) => {
+export const postFilmographyThumbnail = async (thumbnail: string) => {
   const formData = new FormData();
 
   const imageOrigin = base64ToBlob(thumbnail);
@@ -318,78 +322,46 @@ export const postFilmographyThumbnail = async (
 export const putFilmography = async (
   id: number,
   filmoId: number,
-  data: FilmoRequestType,
-  token: string
+  data: FilmoRequestType
 ) => {
   try {
-    const res = await api.put(
-      `/profile/${id}/filmo/${filmoId}`,
-      data,
-      getTokenHeader(token)
-    );
+    const res = await api.put(`/profile/${id}/filmo/${filmoId}`, data);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteFilmography = async (
-  id: number,
-  filmoId: number,
-  token: string
-) => {
+export const deleteFilmography = async (id: number, filmoId: number) => {
   try {
-    const res = await api.delete(
-      `/profile/${id}/filmo/${filmoId}`,
-      getTokenHeader(token)
-    );
+    const res = await api.delete(`/profile/${id}/filmo/${filmoId}`);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const postVideo = async (id: number, url: string, token: string) => {
+export const postVideo = async (id: number, url: string) => {
   try {
-    const res = await api.post(
-      `/profile/${id}/video`,
-      { url },
-      getTokenHeader(token)
-    );
+    const res = await api.post(`/profile/${id}/video`, { url });
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const putVideo = async (
-  id: number,
-  videoId: number,
-  url: string,
-  token: string
-) => {
+export const putVideo = async (id: number, videoId: number, url: string) => {
   try {
-    const res = await api.put(
-      `/profile/${id}/video/${videoId}`,
-      { url },
-      getTokenHeader(token)
-    );
+    const res = await api.put(`/profile/${id}/video/${videoId}`, { url });
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteVideo = async (
-  id: number,
-  videoId: number,
-  token: string
-) => {
+export const deleteVideo = async (id: number, videoId: number) => {
   try {
-    const res = await api.delete(
-      `/profile/${id}/video/${videoId}`,
-      getTokenHeader(token)
-    );
+    const res = await api.delete(`/profile/${id}/video/${videoId}`);
     return res.data;
   } catch (error) {
     throw error;

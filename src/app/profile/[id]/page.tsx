@@ -16,7 +16,6 @@ import {
   defaultId,
   filmoCategory,
   filmoRole,
-  jwt,
   stepperInit
 } from "@/data/atom";
 import {
@@ -35,8 +34,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Profile = () => {
   const userId = useRecoilValue(defaultId);
-  const token = useRecoilValue(jwt);
-
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const [filmoCategoryList, setFilmoCategoryList] =
     useRecoilState(filmoCategory);
@@ -86,7 +83,7 @@ const Profile = () => {
     }
 
     const getProfileData = async () => {
-      const res = await getProfile(userId, token);
+      const res = await getProfile(userId);
       const data = await res.data;
 
       setProfileData(data);
@@ -98,13 +95,13 @@ const Profile = () => {
     };
 
     const getFilmoCategoryList = async () => {
-      const res = await getFilmoCategories(token);
+      const res = await getFilmoCategories();
       const data = await res.data;
       setFilmoCategoryList(data);
     };
 
     const getFilmoRoleList = async () => {
-      const res = await getFilmoRoles(token);
+      const res = await getFilmoRoles();
       const data = await res.data;
       setFilmoRoleList(data);
     };

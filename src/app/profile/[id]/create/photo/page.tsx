@@ -10,7 +10,7 @@ import {
 } from "@/app/api/route";
 import PhotoMain from "@/components/organisms/photoMain";
 import PhotoModal from "@/components/organisms/photoModal";
-import { defaultId, jwt, toastMessage } from "@/data/atom";
+import { defaultId, toastMessage } from "@/data/atom";
 import { photoModalInit, photoResponseInit } from "@/data/data";
 import { PhotoModalType, PhotoResponseType } from "@/types/types";
 import { useEffect, useState } from "react";
@@ -18,8 +18,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
-  const token = useRecoilValue(jwt);
-
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [photoList, setPhotoList] = useState<PhotoResponseType[]>([]);
@@ -44,7 +42,7 @@ const Photo = () => {
   // 사진 추가 모달 저장
   const onAddPhoto = async () => {
     if (cropImage) {
-      const res = await postPhoto(userId, selectImage, cropImage, token);
+      const res = await postPhoto(userId, selectImage, cropImage);
       const data = res.data;
 
       if (photoList.length === 0) {
@@ -54,7 +52,7 @@ const Photo = () => {
 
       setPhotoList([...photoList, data]);
     } else {
-      const res = await postPhoto(userId, selectImage, selectImage, token);
+      const res = await postPhoto(userId, selectImage, selectImage);
       const data = res.data;
 
       if (photoList.length === 0) {
@@ -72,9 +70,9 @@ const Photo = () => {
 
   // 사진 편집 모달 완료
   const onEditPhoto = async () => {
-    await postPhotoEdit(userId, selectImage, cropImage, token, photoModal.id);
+    await postPhotoEdit(userId, selectImage, cropImage, photoModal.id);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setPhotoList(data.photos);
@@ -86,9 +84,9 @@ const Photo = () => {
 
   // 사진 삭제 모달 버튼 클릭
   const onDeletePhoto = async (id: string) => {
-    await deletePhoto(userId, id, token);
+    await deletePhoto(userId, id);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setPhotoList(data.photos);
@@ -155,9 +153,9 @@ const Photo = () => {
 
   // 사진 대표작 설정 완료
   const onPhotoRepSave = async () => {
-    await patchPhotoDefault(userId, repPhoto.id, token);
+    await patchPhotoDefault(userId, repPhoto.id);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setPhotoList(data.photos);
@@ -181,7 +179,7 @@ const Photo = () => {
   // 사진 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId, token);
+      const res = await getProfile(userId);
       const data = await res.data;
 
       setPhotoList(data.photos);

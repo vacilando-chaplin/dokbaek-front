@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import Cookies from "js-cookie";
 
 export const useInputs = (init: any) => {
   const [text, setText] = useState(init);
@@ -127,13 +128,10 @@ export const useGetWindowSize = () => {
   return windowSize;
 };
 
-export const useGetRefreshToken = () => {
-  const cookies = document.cookie.split(";");
-  for (let cookie of cookies) {
-    const [name, value] = cookie.trim().split("=");
-    if (name === "refresh_token") {
-      return value;
-    }
-  }
-  return null;
+export const useSetToken = (name: string, token: string) => {
+  Cookies.set(name, token, {
+    expires: 1,
+    path: "/",
+    sameSite: "Strict"
+  });
 };

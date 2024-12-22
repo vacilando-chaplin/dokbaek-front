@@ -4,7 +4,7 @@ import { deleteVideo, getProfile, postVideo, putVideo } from "@/app/api/route";
 import LinkModal from "@/components/organisms/linkModal";
 import VideoMain from "@/components/organisms/videoMain";
 import VideoModal from "@/components/organisms/videoModal";
-import { defaultId, jwt, toastMessage } from "@/data/atom";
+import { defaultId, toastMessage } from "@/data/atom";
 import { videoLinkInit, videoModalInit } from "@/data/data";
 import {
   VideoLinkType,
@@ -16,8 +16,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Video = () => {
   const userId = useRecoilValue(defaultId);
-  const token = useRecoilValue(jwt);
-
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [videoList, setVideoList] = useState<VideoResponseType[]>([]);
@@ -52,9 +50,9 @@ const Video = () => {
 
   // 비디오 모달 저장 버튼 클릭
   const onVideoModalSave = async () => {
-    await postVideo(userId, videoInputs, token);
+    await postVideo(userId, videoInputs);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setVideoList(data.videos);
@@ -77,9 +75,9 @@ const Video = () => {
 
   // 비디오 편집 모달 편집 완료
   const onVideoModalEdit = async () => {
-    await putVideo(userId, videoModal.id, videoInputs, token);
+    await putVideo(userId, videoModal.id, videoInputs);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setVideoList(data.videos);
@@ -101,9 +99,9 @@ const Video = () => {
 
   // 비디오 삭제 버튼 클릭
   const onVideoDeleteClick = async () => {
-    await deleteVideo(userId, videoModal.id, token);
+    await deleteVideo(userId, videoModal.id);
 
-    const res = await getProfile(userId, token);
+    const res = await getProfile(userId);
     const data = await res.data;
 
     setVideoList(data.videos);
@@ -124,7 +122,7 @@ const Video = () => {
   // 비디오 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId, token);
+      const res = await getProfile(userId);
       const data = await res.data;
       setVideoList(data.videos);
     };

@@ -1,8 +1,7 @@
 import {
   FilmoCategoryType,
   FilmoRoleType,
-  InfoRequiredType,
-  ProfileResponseType
+  InfoRequiredType
 } from "@/types/types";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
@@ -12,12 +11,6 @@ const { persistAtom } = recoilPersist();
 export const defaultId = atom<number>({
   key: "defaultId",
   default: 0,
-  effects_UNSTABLE: [persistAtom]
-});
-
-export const jwt = atom<string>({
-  key: "jwt",
-  default: "",
   effects_UNSTABLE: [persistAtom]
 });
 

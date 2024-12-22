@@ -4,7 +4,7 @@ import { getProfile, getSchoolName, putInfo } from "@/app/api/route";
 import InfoMain from "@/components/organisms/infoMain";
 import InfoSub from "@/components/organisms/infoSub";
 import InfoThird from "@/components/organisms/infoThird";
-import { defaultId, jwt, stepperInit } from "@/data/atom";
+import { defaultId, stepperInit } from "@/data/atom";
 import {
   educationEngList,
   educationList,
@@ -19,8 +19,6 @@ import { useRecoilValue } from "recoil";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
-  const token = useRecoilValue(jwt);
-
   const stepper = useRecoilValue(stepperInit);
 
   const [infoInputs, setInfoInputs] = useState<InfoInputType>(infoInputInit);
@@ -111,9 +109,6 @@ const Info = () => {
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
   useEffect(() => {
     const onStepper = async () => {
-      if (!token) {
-        return;
-      }
       if (stepper !== 0) {
         const educationIndex = educationList.indexOf(infoInputs.education);
         const educationStatus = educationEngList[educationIndex];
@@ -144,7 +139,7 @@ const Info = () => {
             }
           ]
         };
-        await putInfo(userId, infoData, token);
+        await putInfo(userId, infoData);
       }
     };
     onStepper();
@@ -153,7 +148,7 @@ const Info = () => {
   // 내 정보 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId, token);
+      const res = await getProfile(userId);
       const data = await res.data;
 
       const findEducation = educationEngList.findIndex(
