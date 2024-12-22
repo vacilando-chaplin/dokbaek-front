@@ -85,6 +85,8 @@ const Filmography = () => {
     getFilmoRoleList();
   }, []);
 
+  console.log(filmoModal);
+
   // 필모그래피 모달 필모그래피 추가
   const onFilmographySave = async () => {
     const roleId = filmoRoleList.findIndex(
@@ -211,13 +213,19 @@ const Filmography = () => {
   };
 
   // 필모그래피 모달 액티브
-  const onFilmoModalActive = () => {
+  const onFilmoModalOpen = () => {
     setFilmoModal({
       state: "add",
       active: true,
       name: "작품 활동 추가",
       buttonText: "추가"
     });
+    setFilmoInputs(filmographyInputInit);
+    setFilmoActives(filmographyActiveInit);
+  };
+
+  const onFilmoModalClose = () => {
+    setFilmoModal(filmoModalInit);
     setFilmoInputs(filmographyInputInit);
     setFilmoActives(filmographyActiveInit);
   };
@@ -386,7 +394,7 @@ const Filmography = () => {
         onFilmoRepActive={onFilmoRepActive}
         onFilmoRepCancel={onFilmoRepCancel}
         onFilmoRepSave={onFilmoRepSave}
-        onFilmoModalActive={onFilmoModalActive}
+        onFilmoModalOpen={onFilmoModalOpen}
         onFilmoEditModalOpen={onFilmoEditModalOpen}
         onFilmoDeleteModalOpen={onFilmoDeleteModalOpen}
         onFilmoRepCheck={onFilmoRepCheck}
@@ -397,7 +405,7 @@ const Filmography = () => {
           filmoInputs={filmoInputs}
           filmoActives={filmoActives}
           filmoModal={filmoModal}
-          onFilmoModalActive={onFilmoModalActive}
+          onFilmoModalClose={onFilmoModalClose}
           onFilmoInputChange={onFilmoInputChange}
           onFilmoProductionChange={onFilmoProductionChange}
           onFilmoDropdownActive={onFilmoDropdownActive}

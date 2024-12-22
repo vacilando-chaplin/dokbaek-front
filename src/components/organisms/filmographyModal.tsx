@@ -7,7 +7,7 @@ interface FilmographyModalProps {
   filmoInputs: FilmoInputType;
   filmoActives: FilmoActiveType;
   filmoModal: FilmoModalType;
-  onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
+  onFilmoModalClose: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoProductionChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilmoDropdownActive: (name: string, state: boolean) => void;
@@ -21,7 +21,7 @@ const FilmographyModal = ({
   filmoInputs,
   filmoActives,
   filmoModal,
-  onFilmoModalActive,
+  onFilmoModalClose,
   onFilmoInputChange,
   onFilmoProductionChange,
   onFilmoDropdownActive,
@@ -33,7 +33,7 @@ const FilmographyModal = ({
   return (
     <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative flex max-h-[80vh] w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-static-white shadow-modal transition-all duration-100 ease-linear">
-        <ModalTop name={filmoModal.name} onClick={onFilmoModalActive} />
+        <ModalTop name={filmoModal.name} onClick={onFilmoModalClose} />
         <FilmographySub
           filmoInputs={filmoInputs}
           filmoActives={filmoActives}
@@ -49,7 +49,7 @@ const FilmographyModal = ({
             filmoInputs.classification.length === 0 ||
             filmoInputs.title.length === 0
           }
-          onCloseClick={onFilmoModalActive}
+          onCloseClick={onFilmoModalClose}
           onSaveClick={
             filmoModal.state === "add" ? onFilmographySave : onFilmographyEdit
           }

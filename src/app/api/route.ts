@@ -35,7 +35,29 @@ const api = axios.create({
   withCredentials: true
 });
 
+const multipartAPI = axios.create({
+  baseURL: "http://3.38.102.209:8080",
+  headers: {
+    "Content-Type": "multipart/form-data",
+    Authorization: `Bearer ${token}`
+  },
+  withCredentials: true
+});
+
 api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("jwt");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+multipartAPI.interceptors.request.use(
   (config) => {
     const token = Cookies.get("jwt");
     if (token) {
@@ -212,12 +234,7 @@ export const postPhoto = async (
   formData.append("preview", imagePreview);
 
   try {
-    const res = await axios.post(`${baseURL}/profile/${id}/photo`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const res = await multipartAPI.post(`/profile/${id}/photo`, formData);
     return res.data;
   } catch (error) {
     throw error;
@@ -239,15 +256,9 @@ export const postPhotoEdit = async (
   formData.append("preview", imagePreview);
 
   try {
-    const res = await axios.post(
-      `${baseURL}/profile/${id}/photo/${photoId}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`
-        }
-      }
+    const res = await multipartAPI.post(
+      `/profile/${id}/photo/${photoId}`,
+      formData
     );
     return res.data;
   } catch (error) {
@@ -307,12 +318,7 @@ export const postFilmographyThumbnail = async (thumbnail: string) => {
   formData.append("thumbnail", imageOrigin);
 
   try {
-    const res = await axios.post(`${baseURL}/filmo/thumbnail`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const res = await multipartAPI.post(`/filmo/thumbnail`, formData);
     return res.data;
   } catch (error) {
     throw error;

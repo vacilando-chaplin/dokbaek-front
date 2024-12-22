@@ -14,7 +14,7 @@ interface FilmographyMainProps {
   onFilmoRepActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoRepCancel: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoRepSave: React.MouseEventHandler<HTMLButtonElement>;
-  onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
+  onFilmoModalOpen: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoEditModalOpen: (filmo: FilmoResponseType) => void;
   onFilmoDeleteModalOpen: (id: number) => void;
   onFilmoRepCheck: (id: number) => void;
@@ -30,7 +30,7 @@ const FilmographyMain = ({
   onFilmoRepActive,
   onFilmoRepCancel,
   onFilmoRepSave,
-  onFilmoModalActive,
+  onFilmoModalOpen,
   onFilmoEditModalOpen,
   onFilmoDeleteModalOpen,
   onFilmoRepCheck,
@@ -69,7 +69,7 @@ const FilmographyMain = ({
                 완료
               </button>
             ) : (
-              <CreateButton onClick={onFilmoModalActive} />
+              <CreateButton onClick={onFilmoModalOpen} />
             )}
           </div>
         </div>
