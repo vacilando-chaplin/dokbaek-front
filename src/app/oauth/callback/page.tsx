@@ -4,10 +4,11 @@ import {
   getUser,
   kakaoAuthLogin,
   naverAuthLogin,
+  googleAuthLogin,
   postSignUp
 } from "@/app/api/route";
 import { defaultId, loginForm } from "@/data/atom";
-import { KakaoDataType, NaverDataType } from "@/types/types";
+import { KakaoDataType, NaverDataType, GoogleDataType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -21,6 +22,7 @@ const Callback = () => {
 
   const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
+  const [googleToken, setGoogleToken] = useState<GoogleDataType>();
 
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
@@ -44,6 +46,12 @@ const Callback = () => {
         setKakaoToken(res);
       };
       getKakaoAccessToken();
+    } else if (code && state?.includes("google_login")) {
+      const getGoogleAccessToken = async () => {
+        const res = await googleAuthLogin(code);
+        setGoogleToken(res);
+      };
+      getGoogleAccessToken();
     }
   }, []);
 
@@ -78,8 +86,23 @@ const Callback = () => {
         setForm("카카오");
       };
       getKakaoUserData();
+    } else if (googleToken) {
+      const getGoogleUserData = async () => {
+        const res = await postSignUp({
+          domain: "GOOGLE",
+          accessToken: googleToken.access_token,
+          deviceId: ""
+        });
+        const data = await res.data;
+
+        setUserId(data.defaultProfileId);
+        useSetToken("jwt", data.token.jwt);
+        useSetToken("refresh_token", data.token.refreshToken);
+        setForm("구글");
+      };
+      getGoogleUserData();
     }
-  }, [naverToken, kakaoToken]);
+  }, [naverToken, kakaoToken, googleToken]);
 
   return (
     <div className="flex flex-col gap-10">
