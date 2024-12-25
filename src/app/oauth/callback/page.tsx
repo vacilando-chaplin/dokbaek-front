@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useSetToken } from "@/hooks/hooks";
+import { v4 as uuidv4 } from 'uuid';
 
 const Callback = () => {
   const router = useRouter();
@@ -23,6 +24,20 @@ const Callback = () => {
   const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
   const [googleToken, setGoogleToken] = useState<GoogleDataType>();
+  
+  const generateDeviceId = (): string => {
+    return uuidv4()
+  }
+  const setDeviceIdInCookie = (deviceId: string): void => {
+    const expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+    const expires = `expires=${expirationDate.toUTCString()}`;
+    
+    document.cookie = `deviceId=${deviceId}; ${expires}; path=/; Secure; HttpOnly; SameSite=Strict`;
+  }
+  
+  const deviceId = generateDeviceId()
+  setDeviceIdInCookie(deviceId)
 
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
@@ -61,7 +76,7 @@ const Callback = () => {
         const res = await postSignUp({
           domain: "NAVER",
           accessToken: naverToken.access_token,
-          deviceId: ""
+          deviceId: deviceId
         });
         const data = await res.data;
 
@@ -76,7 +91,7 @@ const Callback = () => {
         const res = await postSignUp({
           domain: "KAKAO",
           accessToken: kakaoToken.access_token,
-          deviceId: ""
+          deviceId: deviceId
         });
         const data = await res.data;
 
@@ -91,7 +106,7 @@ const Callback = () => {
         const res = await postSignUp({
           domain: "GOOGLE",
           accessToken: googleToken.access_token,
-          deviceId: ""
+          deviceId: deviceId
         });
         const data = await res.data;
 
