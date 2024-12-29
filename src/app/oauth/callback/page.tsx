@@ -28,16 +28,17 @@ const Callback = () => {
   const generateDeviceId = (): string => {
     return uuidv4()
   }
-  const setDeviceIdInCookie = (deviceId: string): void => {
-    const expirationDate = new Date();
-    expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-    const expires = `expires=${expirationDate.toUTCString()}`;
-    
-    document.cookie = `deviceId=${deviceId}; ${expires}; path=/; Secure; HttpOnly; SameSite=Strict`;
-  }
   
-  const deviceId = generateDeviceId()
-  setDeviceIdInCookie(deviceId)
+  const deviceId = generateDeviceId();
+  
+  const setDeviceIdInCookie = () => {
+    if (typeof window !== "undefined") {
+      const expirationDate = new Date();
+      expirationDate.setFullYear(expirationDate.getFullYear() + 1); // 1년 후 만료
+      const expires = `expires=${expirationDate.toUTCString()}`;
+      document.cookie = `deviceId=${deviceId}; ${expires}; path=/; Secure; SameSite=Strict`;
+    }
+  };
 
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
@@ -45,6 +46,8 @@ const Callback = () => {
   };
 
   useEffect(() => {
+    setDeviceIdInCookie();
+
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const state = urlParams.get("state");
