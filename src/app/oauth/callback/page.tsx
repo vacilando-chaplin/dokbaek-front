@@ -5,15 +5,17 @@ import {
   kakaoAuthLogin,
   naverAuthLogin,
   googleAuthLogin,
+  appleAuthLogin,
   postSignUp
 } from "@/app/api/route";
 import { defaultId, loginForm } from "@/data/atom";
-import { KakaoDataType, NaverDataType, GoogleDataType } from "@/types/types";
+import { KakaoDataType, NaverDataType, GoogleDataType, AppleDataType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useSetToken } from "@/hooks/hooks";
 import { v4 as uuidv4 } from 'uuid';
+import { generateAppleClientSecret } from "@/utils/auth";
 
 const Callback = () => {
   const router = useRouter();
@@ -24,7 +26,8 @@ const Callback = () => {
   const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
   const [googleToken, setGoogleToken] = useState<GoogleDataType>();
-  
+  const [appleToken, setAppleToken] = useState<AppleDataType>();
+
   const generateDeviceId = (): string => {
     return uuidv4()
   }
@@ -70,6 +73,12 @@ const Callback = () => {
         setGoogleToken(res);
       };
       getGoogleAccessToken();
+    } else if (code && state?.includes("apple_login")) {
+      const getAppleAccessToken = async () => {
+        const res = await appleAuthLogin(code, generateAppleClientSecret());
+        setAppleToken(res);
+      };
+      getAppleAccessToken();
     }
   }, []);
 
@@ -119,8 +128,23 @@ const Callback = () => {
         setForm("구글");
       };
       getGoogleUserData();
+    } else if (appleToken) {
+      const getAppleUserData = async () => {
+        const res = await postSignUp({
+          domain: "APPLE",
+          accessToken: appleToken.access_token,
+          deviceId: deviceId
+        });
+        const data = await res.data;
+
+        setUserId(data.defaultProfileId);
+        useSetToken("jwt", data.token.jwt);
+        useSetToken("refresh_token", data.token.refreshToken);
+        setForm("애플");
+      };
+      getAppleUserData();
     }
-  }, [naverToken, kakaoToken, googleToken]);
+  }, [naverToken, kakaoToken, appleToken]);
 
   return (
     <div className="flex flex-col gap-10">

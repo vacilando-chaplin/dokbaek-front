@@ -3,6 +3,7 @@
 import KakaoLogin from "@/components/molecules/kakaoLogin";
 import NaverLogin from "@/components/molecules/naverLogin";
 import GoogleLogin from "@/components/molecules/googleLogin";
+import AppleLogin from "@/components/molecules/appleLogin";
 import { useEffect } from "react";
 
 const Login = () => {
@@ -101,6 +102,7 @@ const Login = () => {
         <KakaoLogin />
         <NaverLogin />
         <GoogleLogin />
+        <AppleLogin />
       </div>
     </main>
   );

@@ -348,6 +348,13 @@ export interface GoogleDataType {
   token_type: string;
 }
 
+export interface AppleDataType {
+  access_token: string;
+  expires_in: string;
+  refresh_token: string;
+  token_type: string;
+}
+
 export interface KakaoDataType {
   access_token: string;
   expires_in: number;
