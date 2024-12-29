@@ -24,7 +24,7 @@ const TopBar = () => {
   return (
     <section className="fixed top-0 z-50 flex h-12 w-full items-center bg-background-elevated-light px-6 shadow-header">
       <nav className="flex w-full items-center justify-between">
-        <Logo name="로고" href="/" />
+        <Logo href="/" />
         <NavButton name="로그아웃" onClick={onLogOut} />
       </nav>
     </section>

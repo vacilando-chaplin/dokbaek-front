@@ -8,7 +8,6 @@ import Button from "../atoms/button";
 import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
 import { educationEngList, educationList } from "@/data/data";
-import { RefObject } from "react";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/data/atom";
 
@@ -141,7 +140,12 @@ const ProfileMain = ({
               className="flex w-fit items-center gap-1"
               target="_blank"
             >
-              <img src="/icons/instagram.svg" />
+              <Image
+                src="/icons/instagram.svg"
+                alt="instagram"
+                width={24}
+                height={24}
+              />
             </Link>
           )}
           {youtubeLink.length >= 26 && (
@@ -150,7 +154,12 @@ const ProfileMain = ({
               className="flex w-fit items-center gap-1"
               target="_blank"
             >
-              <img src="/icons/youtube.svg" />
+              <Image
+                src="/icons/youtube.svg"
+                alt="youtube"
+                width={24}
+                height={24}
+              />
             </Link>
           )}
         </div>

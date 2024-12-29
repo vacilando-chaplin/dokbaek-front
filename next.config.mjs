@@ -16,6 +16,13 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: "20mb"
     }
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"]
+    });
+    return config;
   }
 };
 

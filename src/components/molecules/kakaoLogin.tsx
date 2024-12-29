@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import KaKao from "../../../public/icons/Kakao.svg";
 
 const KakaoLogin = () => {
   const router = useRouter();
@@ -18,19 +19,12 @@ const KakaoLogin = () => {
       className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-[#FAE64D] px-6 py-3"
       onClick={onKakaoLogin}
     >
-      <svg
+      <KaKao
         width="16"
         height="16"
-        viewBox="0 0 17 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+        fill="#3C1E1E"
         className="absolute left-4"
-      >
-        <path
-          d="M8.49984 1.33333C4.08213 1.33333 0.5 4.14084 0.5 7.60612C0.5 9.83199 1.98366 11.7863 4.21178 12.9018L3.45798 15.6948C3.42913 15.7805 3.45306 15.8713 3.51567 15.9331C3.55878 15.9762 3.61631 16 3.67876 16C3.72695 16 3.77481 15.981 3.81808 15.9476L7.05928 13.774C7.53002 13.8407 8.01025 13.8788 8.49984 13.8788C12.9175 13.8788 16.5 11.0714 16.5 7.60612C16.5 4.14084 12.9175 1.33333 8.49984 1.33333Z"
-          fill="#3C1E1E"
-        />
-      </svg>
+      />
       <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-black">
         카카오로 시작하기
       </div>
