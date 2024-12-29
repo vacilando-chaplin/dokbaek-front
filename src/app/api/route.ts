@@ -1,7 +1,8 @@
 import {
   FilmoRequestType,
   SignOutRequestType,
-  SignUpRequestType
+  SignUpRequestType,
+  RefreshRequestType
 } from "@/types/types";
 import { base64ToBlob } from "@/utils/utils";
 import axios from "axios";
@@ -220,6 +221,19 @@ export const postSignOut = async (data: SignOutRequestType) => {
     throw error;
   }
 };
+
+export const postRefresh = async (data: RefreshRequestType) => {
+  try {
+    const res = await axios.post(`${baseURL}/auth/refresh`, data, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const getProfile = async (id: number) => {
   try {

@@ -381,3 +381,7 @@ export interface SignOutRequestType {
   refreshToken: string;
   deviceId: string;
 }
+export interface RefreshRequestType {
+  refreshToken: string;
+  deviceId: string;
+}
