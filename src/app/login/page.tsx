@@ -2,6 +2,7 @@
 
 import KakaoLogin from "@/components/molecules/kakaoLogin";
 import NaverLogin from "@/components/molecules/naverLogin";
+import GoogleLogin from "@/components/molecules/googleLogin";
 import { useEffect } from "react";
 import LogoVertical from "../../../public/icons/LogoVertical.svg";
 
@@ -38,6 +39,7 @@ const Login = () => {
       <div className="flex h-auto w-full flex-col gap-2">
         <KakaoLogin />
         <NaverLogin />
+        <GoogleLogin />
       </div>
     </main>
   );
