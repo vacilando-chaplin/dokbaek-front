@@ -4,14 +4,16 @@ import {
   getUser,
   kakaoAuthLogin,
   naverAuthLogin,
+  googleAuthLogin,
   postSignUp
 } from "@/app/api/route";
 import { defaultId, loginForm } from "@/data/atom";
-import { KakaoDataType, NaverDataType } from "@/types/types";
+import { KakaoDataType, NaverDataType, GoogleDataType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useSetToken } from "@/hooks/hooks";
+import { v4 as uuidv4 } from 'uuid';
 
 const Callback = () => {
   const router = useRouter();
@@ -21,6 +23,22 @@ const Callback = () => {
 
   const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
+  const [googleToken, setGoogleToken] = useState<GoogleDataType>();
+  
+  const generateDeviceId = (): string => {
+    return uuidv4()
+  }
+  
+  const deviceId = generateDeviceId();
+  
+  const setDeviceIdInCookie = () => {
+    if (typeof window !== "undefined") {
+      const expirationDate = new Date();
+      expirationDate.setFullYear(expirationDate.getFullYear() + 1); // 1년 후 만료
+      const expires = `expires=${expirationDate.toUTCString()}`;
+      document.cookie = `deviceId=${deviceId}; ${expires}; path=/; Secure; SameSite=Strict`;
+    }
+  };
 
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
@@ -28,6 +46,8 @@ const Callback = () => {
   };
 
   useEffect(() => {
+    setDeviceIdInCookie();
+
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const state = urlParams.get("state");
@@ -44,6 +64,12 @@ const Callback = () => {
         setKakaoToken(res);
       };
       getKakaoAccessToken();
+    } else if (code && state?.includes("google_login")) {
+      const getGoogleAccessToken = async () => {
+        const res = await googleAuthLogin(code);
+        setGoogleToken(res);
+      };
+      getGoogleAccessToken();
     }
   }, []);
 
@@ -53,7 +79,7 @@ const Callback = () => {
         const res = await postSignUp({
           domain: "NAVER",
           accessToken: naverToken.access_token,
-          deviceId: ""
+          deviceId: deviceId
         });
         const data = await res.data;
 
@@ -68,7 +94,7 @@ const Callback = () => {
         const res = await postSignUp({
           domain: "KAKAO",
           accessToken: kakaoToken.access_token,
-          deviceId: ""
+          deviceId: deviceId
         });
         const data = await res.data;
 
@@ -78,8 +104,23 @@ const Callback = () => {
         setForm("카카오");
       };
       getKakaoUserData();
+    } else if (googleToken) {
+      const getGoogleUserData = async () => {
+        const res = await postSignUp({
+          domain: "GOOGLE",
+          accessToken: googleToken.access_token,
+          deviceId: deviceId
+        });
+        const data = await res.data;
+
+        setUserId(data.defaultProfileId);
+        useSetToken("jwt", data.token.jwt);
+        useSetToken("refresh_token", data.token.refreshToken);
+        setForm("구글");
+      };
+      getGoogleUserData();
     }
-  }, [naverToken, kakaoToken]);
+  }, [naverToken, kakaoToken, googleToken]);
 
   return (
     <div className="flex flex-col gap-10">

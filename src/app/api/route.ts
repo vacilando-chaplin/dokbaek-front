@@ -152,6 +152,25 @@ export const naverAuthLogin = async (code: string) => {
   }
 };
 
+export const googleAuthLogin = async (code: string) => {
+  try {
+    const res = await axios.post("https://oauth2.googleapis.com/token", null, {
+      params: {
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        client_secret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+        code: code,
+        redirect_uri: process.env.NEXT_PUBLIC_OAUTH_LOGIN_REDIRECT_URI,
+        grant_type: "authorization_code"
+      }
+    });
+    const data = res.data;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 커리어넷 학교 검색 api
 export const getSchoolName = async (search: string) => {
   const univ_res = await fetch(
