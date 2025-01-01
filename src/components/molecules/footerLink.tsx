@@ -1,33 +1,34 @@
-import React from 'react';
+import React from "react";
 import Link from "next/link";
 
 const FooterLink = () => {
-  const businessInfo = '/business-info'
-  const termsServices = '/terms-services'
-  const privacyPolicy = '/privacy-policy'
+  const businessInfo = "/business-info";
+  const termsServices = "/terms-services";
+  const privacyPolicy = "/privacy-policy";
   return (
     <div>
       <ul className="flex">
         <li>
-          <Link 
+          <Link
             href={businessInfo}
             className="text-caption1 font-regular text-gray-500"
           >
             사업자정보 확인
           </Link>
+          p
         </li>
-        <div className='text-gray-400 mx-1'>·</div>
+        <div className="mx-1 text-gray-400">·</div>
         <li>
-          <Link 
+          <Link
             href={termsServices}
             className="text-caption1 font-regular text-gray-500"
           >
             서비스 이용약관
           </Link>
         </li>
-        <div className='text-gray-400 mx-1'>·</div>
+        <div className="mx-1 text-gray-400">·</div>
         <li>
-          <Link 
+          <Link
             href={privacyPolicy}
             className="text-caption1 font-medium text-static-black"
           >
@@ -37,6 +38,6 @@ const FooterLink = () => {
       </ul>
     </div>
   );
-}
+};
 
 export default FooterLink;
