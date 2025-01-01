@@ -2,13 +2,21 @@ import Image from "next/image";
 
 interface ButtonProps {
   icon?: string;
+  rightIcon?: string;
   text: string;
   color?: string;
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ icon, text, color, disabled, onClick }: ButtonProps) => {
+const Button = ({
+  icon,
+  rightIcon,
+  text,
+  color,
+  disabled,
+  onClick
+}: ButtonProps) => {
   return (
     <button
       type="button"
@@ -18,6 +26,9 @@ const Button = ({ icon, text, color, disabled, onClick }: ButtonProps) => {
     >
       {icon && <Image src={icon} alt="Button Icon" width={14} height={14} />}
       {text}
+      {rightIcon && (
+        <Image src={rightIcon} alt="Button Icon" width={14} height={14} />
+      )}
     </button>
   );
 };
