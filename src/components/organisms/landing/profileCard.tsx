@@ -1,10 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import Profile from "../../../../public/images/samples/profile.png";
-import { recentProfile } from "@/lib/types";
+import { ProfileShowcaseResponseType } from "@/app/landing/types";
 
 interface ProfileCardProps {
-  profile: recentProfile;
+  profile: ProfileShowcaseResponseType;
 }
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
