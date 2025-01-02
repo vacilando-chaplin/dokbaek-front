@@ -1,10 +1,15 @@
-import React from 'react';
+"use client";
+
+import LandingMain from "@/components/organisms/landing/landingMain";
+import LandingSub from "@/components/organisms/landing/landingSub";
 
 const Page = () => {
   return (
-    <div>
+    <div className="m-[auto] mt-12 flex w-[70%] flex-col sm:w-full">
+      <LandingSub />
+      <LandingMain />
     </div>
   );
-}
+};
 
 export default Page;

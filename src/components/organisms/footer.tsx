@@ -6,15 +6,17 @@ import FooterCopyright from "../molecules/footerCopyright";
 
 const Footer = () => {
   return (
-    <section className="fixed bottom-0 z-50 w-full bg-background-base-light py-[80px] px-[220px]">
-      <FooterCompany />
-      <div className="mt-5">
-        <FooterLink />
-      </div>
-      <div className="mt-5">
-        <FooterCopyright />
-      </div>
-    </section>
+    <div className="mt-16 flex flex-col bg-background-base-light py-[80px] sm:w-full">
+      <section className="mx-[auto] w-[100%] max-w-[1000px]">
+        <FooterCompany />
+        <div className="mt-5">
+          <FooterLink />
+        </div>
+        <div className="mt-5">
+          <FooterCopyright />
+        </div>
+      </section>
+    </div>
   );
 };
 
