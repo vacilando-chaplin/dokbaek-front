@@ -1,6 +1,6 @@
 import React from "react";
 import TextButton from "../../atoms/textButton";
-import ProfileCard from "../../organisms/landing/profileCard";
+import ProfileCard from "../../molecules/landing/profileCard";
 import { recentProfile } from "@/types/types";
 
 const profiles: recentProfile[] = [
