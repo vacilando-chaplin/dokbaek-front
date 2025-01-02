@@ -30,11 +30,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           <span className="mx-1">·</span>
           {profile.weight}kg
           <span className="mx-1">·</span>
-          {profile.bornYear && (
-            <span>
-              {profile.bornYear}년생({calculateKoreanAge()}세)
-            </span>
-          )}
+          {profile.bornYear}년생({calculateKoreanAge()}세)
         </div>
       </div>
     </div>
