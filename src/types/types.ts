@@ -381,3 +381,11 @@ export interface SignOutRequestType {
   refreshToken: string;
   deviceId: string;
 }
+
+export interface recentProfile {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  bornYear: number;
+}

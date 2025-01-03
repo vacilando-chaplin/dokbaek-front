@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
-      <body className={`${pretendard.className} bg-background-base-light`}>
+      <body className={`${pretendard.className}`}>
         <RecoilRootProvider>
           <main>{children}</main>
         </RecoilRootProvider>
