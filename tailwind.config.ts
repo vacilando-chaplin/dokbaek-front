@@ -101,6 +101,18 @@ const config: Config = {
         white: "#ffffff",
         black: "#000000"
       },
+      hover: {
+        primary: "#405EDE",
+        primaryOutlined: "rgba(71, 105, 247, 0.05)",
+        secondaryOutlined: "#F5F5F5",
+        negative: "#DB3F36"
+      },
+      pressed: {
+        primary: "#3853C4",
+        primaryOutlined: "rgba(71, 105, 247, 0.1)",
+        secondaryOutlined: "#EBEBEB",
+        negative: "#C23830"
+      },
       gray: {
         50: "#F8F9FA",
         100: "#F1F3F5",

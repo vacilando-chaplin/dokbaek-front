@@ -1,6 +1,5 @@
 import Image from "next/image";
 import EmptyBox from "../atoms/emptyBox";
-import RepresentativeButton from "../atoms/representiveButton";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 import { PhotoResponseType } from "@/types/types";
@@ -44,43 +43,18 @@ const PhotoMain = ({
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
       <div className="flex w-full flex-row justify-between">
         <Title name="사진" />
-        <div className="flex flex-row items-center gap-4">
-          {photoRepActive && (
-            <label className="text-body2 font-medium leading-body2 tracking-body2 text-accent-primary-light">
-              대표 사진을 선택해주세요.
-            </label>
-          )}
-          {photoRepActive ? (
-            <div className="flex items-center gap-1">
-              <RepresentativeButton text="취소" onActive={onPhotoRepClose} />
-              <RepresentativeButton
-                text="완료"
-                color="border border-accent-primary-light text-accent-primary-light"
-                onActive={onPhotoRepSave}
-              />
-            </div>
-          ) : (
-            <div className="flex items-center gap-1">
-              {photoList.length >= 1 && (
-                <RepresentativeButton
-                  icon={true}
-                  text="대표 사진 설정"
-                  onActive={onPhotoRepActive}
-                />
-              )}
-              <label className="flex h-auto w-auto cursor-pointer flex-row items-center gap-1 rounded-[10px] border border-accent-primary-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-accent-primary-light">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onClick={onPhotoModalOpen}
-                  onChange={onSelectFile}
-                />
-                <Plus width="12" height="12" fill="#1E85EF" />
-                추가
-              </label>
-            </div>
-          )}
+        <div className="flex items-center gap-1">
+          <label className="flex h-auto w-auto cursor-pointer flex-row items-center gap-1 rounded-[10px] border border-accent-primary-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-accent-primary-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined">
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onClick={onPhotoModalOpen}
+              onChange={onSelectFile}
+            />
+            <Plus width="12" height="12" fill="#1E85EF" />
+            추가
+          </label>
         </div>
       </div>
       {photoList.length >= 1 ? (

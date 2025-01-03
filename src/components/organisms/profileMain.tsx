@@ -4,12 +4,15 @@ import { EducationType, InfoResponseType } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Button from "../atoms/button";
-import ProfileButton from "../atoms/profileButton";
 import ProfileEmpty from "../atoms/profileEmpty";
 import { educationEngList, educationList } from "@/data/data";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/data/atom";
+import BoxButton from "../atoms/boxButton";
+import Plus from "../../../public/icons/Plus.svg";
+import Download from "../../../public/icons/Download.svg";
+import Copy from "../../../public/icons/Copy.svg";
+import Edit from "../../../public/icons/Edit.svg";
 
 interface ProfileMainProps {
   linear: string;
@@ -83,28 +86,41 @@ const ProfileMain = ({
             width={40}
             height={40}
           />
-          <ProfileButton
-            text="메인 사진 추가"
+          <BoxButton
+            type="secondaryOutlined"
+            size="medium"
             onClick={() => {
               router.prefetch(`/profile/${userId}/create/photo`);
               router.push(`/profile/${userId}/create/photo`);
               setStepper(1);
             }}
-          />
+          >
+            <Plus width="14" height="14" fill="#212529" />
+            대표 사진 추가
+          </BoxButton>
         </div>
       )}
       <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-        <Button text="PDF 다운로드" icon="/icons/Download.svg" />
-        <Button text="링크 복사" icon="/icons/Copy.svg" onClick={onCopyUrl} />
-        <Button
-          text="프로필 편집"
-          icon="/icons/Edit.svg"
+        <BoxButton type="secondaryOutlined" size="medium">
+          <Download width="14" height="14" fill="#212529" />
+          PDF 다운로드
+        </BoxButton>
+        <BoxButton type="secondaryOutlined" size="medium" onClick={onCopyUrl}>
+          <Copy width="14" height="14" fill="#212529" />
+          링크 복사
+        </BoxButton>
+        <BoxButton
+          type="secondaryOutlined"
+          size="medium"
           onClick={() => {
             router.prefetch(`/profile/${userId}/create/info`);
             router.push(`/profile/${userId}/create/info`);
             setStepper(0);
           }}
-        />
+        >
+          <Edit width="14" height="14" fill="#212529" />
+          프로필 편집
+        </BoxButton>
       </div>
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
         <label className="text-body1 font-semibold leading-body1 tracking-body1">

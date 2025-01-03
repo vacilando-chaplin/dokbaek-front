@@ -1,5 +1,5 @@
-import RepresentativeButton from "../atoms/representiveButton";
 import ArrowTriangleUp from "../../../public/icons/ArrowTriangleUp.svg";
+import BoxButton from "../atoms/boxButton";
 
 interface DeleteModalProps {
   text: string;
@@ -22,15 +22,19 @@ const DeleteModal = ({ text, id, onCancel, onDelete }: DeleteModalProps) => {
           {text}
         </label>
         <div className="flex flex-row items-center justify-end gap-1">
-          <RepresentativeButton text="취소" onActive={onCancel} />
-          <RepresentativeButton
-            text="삭제"
-            color="text-static-white bg-state-negative-light"
-            onActive={(e) => {
+          <BoxButton type="secondaryOutlined" size="small" onClick={onCancel}>
+            취소
+          </BoxButton>
+          <BoxButton
+            type="negative"
+            size="small"
+            onClick={(e) => {
               e.stopPropagation();
               onDelete(id);
             }}
-          />
+          >
+            삭제
+          </BoxButton>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import Button from "../atoms/button";
+import BoxButton from "../atoms/boxButton";
 
 interface FilmographyDeleteModalProps {
   onCancel: React.MouseEventHandler<HTMLButtonElement>;
@@ -17,12 +17,16 @@ const FilmographyDeleteModal = ({
             작품 활동을 삭제할까요?
           </label>
           <div className="flex h-auto w-full flex-row justify-end gap-2">
-            <Button text="취소" onClick={onCancel} />
-            <Button
-              text="삭제"
-              color="bg-state-negative-light text-static-white"
-              onClick={onDelete}
-            />
+            <BoxButton
+              type="secondaryOutlined"
+              size="medium"
+              onClick={onCancel}
+            >
+              취소
+            </BoxButton>
+            <BoxButton type="negative" size="medium" onClick={onDelete}>
+              삭제
+            </BoxButton>
           </div>
         </div>
       </div>

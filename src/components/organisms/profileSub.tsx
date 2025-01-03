@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Fragment, RefObject, useState } from "react";
+import { Fragment, useState } from "react";
 import Title from "../atoms/title";
 import YoutubeVideo from "../atoms/youtubeVideo";
 import FilmoItem from "../molecules/filmoItem";
