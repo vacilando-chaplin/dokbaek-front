@@ -22,7 +22,7 @@ const TopBar = () => {
   };
 
   return (
-    <section className="fixed top-0 z-50 flex h-12 w-full items-center bg-background-elevated-light px-6 shadow-header">
+    <section className="shadow-drop fixed top-0 z-50 flex h-12 w-full items-center bg-background-elevated-light px-6">
       <nav className="flex w-full items-center justify-between">
         <Logo href="/" />
         <BoxButton type="black" size="small" onClick={onLogOut}>

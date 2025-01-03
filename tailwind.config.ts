@@ -44,9 +44,9 @@ const config: Config = {
       // shadow
       boxShadow: {
         low: "0 4px 16px 0 rgba(0, 0, 0, 0.1)",
-        modal: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
-        header: "0 0 8px 0 rgba(0, 0, 0, 0.1)",
-        footer: "0 4px 16px 0 rgba(0, 0, 0, 0.1)"
+        medium: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
+        high: "0 12px 40px 0 rgba(0, 0, 0, 0.2)",
+        drop: "0 0 8px 0 rgba(0, 0, 0, 0.1)"
       },
       // Pretendard font 추가
       fontFamily: {
@@ -78,6 +78,7 @@ const config: Config = {
         caption2: "-0.01em"
       },
       fontWeight: {
+        bold: "700",
         semibold: "600",
         medium: "500",
         regular: "400"
@@ -201,8 +202,8 @@ const config: Config = {
           dark: "#F8F9FA"
         },
         scrim: {
-          light: "#00000066",
-          dark: "#000000CC"
+          light: "rgba(0, 0, 0, 0.4)",
+          dark: "rgba(0, 0, 0, 0.8)"
         }
       },
       border: {
