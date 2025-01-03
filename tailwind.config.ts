@@ -106,13 +106,15 @@ const config: Config = {
         primary: "#405EDE",
         primaryOutlined: "rgba(71, 105, 247, 0.05)",
         secondaryOutlined: "#F5F5F5",
-        negative: "#DB3F36"
+        negative: "#DB3F36",
+        chip: "#F2F2F2"
       },
       pressed: {
         primary: "#3853C4",
         primaryOutlined: "rgba(71, 105, 247, 0.1)",
         secondaryOutlined: "#EBEBEB",
-        negative: "#C23830"
+        negative: "#C23830",
+        chip: "#E6E6E6"
       },
       gray: {
         50: "#F8F9FA",
