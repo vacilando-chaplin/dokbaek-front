@@ -210,6 +210,7 @@ const config: Config = {
         900: "#BB5500"
       },
       background: {
+      
         base: {
           light: "#F8F9FA",
           dark: "#171719"
