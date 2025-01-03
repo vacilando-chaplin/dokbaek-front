@@ -14,12 +14,18 @@ const LandingSub = () => {
       >
         <div className="">
           <div className="absolute top-[80px]">
-            <p className="lineHeight-caption2 text-display font-bold text-accent-primary-light">
+            <p
+              style={{ lineHeight: "40px" }}
+              className="text-display font-bold text-accent-primary-light"
+            >
               프로필은
             </p>
           </div>
           <div className="absolute left-[169px] top-[120px]">
-            <p className="lineHeight-caption2 text-display font-bold text-accent-primary-light">
+            <p
+              style={{ lineHeight: "40px" }}
+              className="text-display font-bold text-accent-primary-light"
+            >
               필로그램
             </p>
           </div>
@@ -27,6 +33,7 @@ const LandingSub = () => {
         <div className="absolute right-[100px] top-[95px]">
           <Button
             text="프로필 만들기"
+            size="l"
             color="bg-accent-primary-light text-static-white"
             rightIcon="/icons/ArrowDirectionRightWhite.svg"
           />

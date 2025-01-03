@@ -9,15 +9,12 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   return (
-    <div
-      className="rounded-[16px] border border-border-default-light bg-background-base-light p-4"
-      style={{ width: `calc(25% - 8px)` }}
-    >
+    <div className="rounded-[16px] border border-gray-100 bg-background-base-light p-4 sm:w-[calc(50%-6px)] md:w-[calc(33.33%-6px)] lg:w-[calc(25%-6px)]">
       <Image
         src={Profile}
         alt="photo"
         height={311}
-        className="rounded-[16px]"
+        className="w-[100%] rounded-[16px]"
       />
       <div className="mt-3">
         <p className="mb-1 text-body2 font-semibold text-content-primary-light">

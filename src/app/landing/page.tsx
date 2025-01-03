@@ -5,7 +5,7 @@ import LandingSub from "@/components/organisms/landing/landingSub";
 
 const Page = () => {
   return (
-    <div className="m-[auto] mt-12 flex w-[70%] flex-col sm:w-full">
+    <div className="m-[auto] mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[80%] lg:w-[70%]">
       <LandingSub />
       <LandingMain />
     </div>
