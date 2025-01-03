@@ -36,7 +36,7 @@ const TextButton = ({
     primary:
       "text-accent-primary-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined",
     secondary:
-      "text-content-primary-light hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined"
+      "text-content-tertiary-light hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined"
   };
 
   return (
