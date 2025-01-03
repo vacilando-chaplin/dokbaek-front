@@ -8,8 +8,15 @@ interface CheckboxProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+interface checkboxSizeType {
+  large: string;
+  medium: string;
+  small: string;
+  [key: string]: string;
+}
+
 const Checkbox = ({ type, size, disabled, onChange }: CheckboxProps) => {
-  const checkIconSize: sizeStyleType = {
+  const checkIconSize: checkboxSizeType = {
     large: "22",
     medium: "18",
     small: "16"
