@@ -36,17 +36,17 @@ body {
   }
 
   /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
+  /* scrollbar */
   .scrollbar {
-    overflow: scroll;
+    overflow: auto;
   }
   .scrollbar::-webkit-scrollbar {
     width: 4px;
@@ -57,14 +57,14 @@ body {
   }
   .scrollbar::-webkit-scrollbar-thumb {
     border-radius: 100px;
-    background-color: #e7e7ed;
+    background-color: #d9d9d9;
     background-clip: padding-box;
-    margin: 4px;
   }
   .scrollbar::-webkit-scrollbar-track {
     background-color: #ffffff;
   }
 
+  /* youtube */
   .iframe-border {
     border-radius: 16px;
   }
