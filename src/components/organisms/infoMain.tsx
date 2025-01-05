@@ -3,8 +3,8 @@ import { InfoActiveType, InfoInputType } from "@/types/types";
 import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
-import Dropdown from "../molecules/dropdown";
 import InputWithLabel from "../molecules/inputWithLabel";
+import SearchDropdown from "../molecules/searchDropdown";
 
 interface InfoMainProps {
   infoInputs: InfoInputType;
@@ -54,32 +54,20 @@ const InfoMain = ({
             value={name}
             onChange={onInputChange}
           />
-          <div className="relative flex w-full">
-            <InputWithLabel
-              label="출생연도"
-              type="text"
-              required={true}
-              placeholder="출생연도를 선택해주세요."
-              dropdown={true}
-              maxLength={4}
+          <div className="flex w-full flex-col">
+            <Label label="출생연도" required />
+            <SearchDropdown
+              size="medium"
               name="birth"
+              list={yearList}
               value={birth}
               active={infoActives.birth}
-              onChange={onBirthChange}
+              selected={birth}
+              maxLength={4}
+              onClick={onItemClick}
               onActive={onInfoDropdownActive}
+              onChange={onBirthChange}
             />
-            {infoActives.birth && (
-              <div className="absolute top-[72px] z-40 w-full">
-                <Dropdown
-                  name="birth"
-                  content={yearList}
-                  active={infoActives.birth}
-                  selected={birth}
-                  onClick={onItemClick}
-                  onActive={onInfoDropdownActive}
-                />
-              </div>
-            )}
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">

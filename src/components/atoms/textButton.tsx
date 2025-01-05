@@ -1,16 +1,11 @@
+import { sizeStyleType } from "@/types/types";
+
 interface TextButtonProps {
   children: React.ReactNode;
   type: string;
   size: string;
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-interface sizeStyleType {
-  large: string;
-  medium: string;
-  small: string;
-  [key: string]: string;
 }
 
 interface typeStyleType {

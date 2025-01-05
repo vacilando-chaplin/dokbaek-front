@@ -1,0 +1,89 @@
+import { sizeStyleType } from "@/types/types";
+import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
+import Option from "../atoms/option";
+
+interface SelectDropdownProps {
+  size: string;
+  name: string;
+  list: string[];
+  value: string;
+  active: boolean;
+  selected: string;
+  maxLength?: number;
+  placeholder?: string;
+  helperText?: string;
+  onClick: (name: string, item: string) => void;
+  onActive: (name: string, state: boolean) => void;
+}
+
+const SelectDropdown = ({
+  size,
+  name,
+  list,
+  value,
+  active,
+  selected,
+  maxLength,
+  placeholder,
+  helperText,
+  onClick,
+  onActive
+}: SelectDropdownProps) => {
+  const sizeStyle: sizeStyleType = {
+    large: "rounded-[14px]",
+    medium: "rounded-xl",
+    small: ""
+  };
+
+  return (
+    <div className="relative flex w-full flex-col gap-1 font-normal">
+      <div
+        className={`${sizeStyle[size]} flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] hover:border-border-active-light ${active && "border-border-active-light"}`}
+        onClick={() => onActive(name, active)}
+      >
+        <input
+          className={`w-full cursor-pointer text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}
+          type="text"
+          placeholder={placeholder}
+          maxLength={maxLength}
+          autoComplete="off"
+          value={value}
+          readOnly={true}
+        />
+        <button
+          type="button"
+          className={`ml-auto flex transition-all duration-100 ease-linear ${active && "rotate-180 transform"}`}
+        >
+          <ArrowTriangleDown width="16" height="16" fill="#212529" />
+        </button>
+      </div>
+      {helperText && (
+        <span className="text-caption1 leading-caption1 tracking-caption1 text-content-tertiary-light">
+          {helperText}
+        </span>
+      )}
+      {active && (
+        <ul
+          className={`scrollbar absolute top-10 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto ${sizeStyle[size]} bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear`}
+        >
+          {list.map((item: string, index: number) => {
+            return (
+              <Option
+                key={`${item}${index}`}
+                name={name}
+                item={item}
+                size={size}
+                active={active}
+                selected={selected}
+                onClick={onClick}
+                onActive={onActive}
+              />
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default SelectDropdown;
