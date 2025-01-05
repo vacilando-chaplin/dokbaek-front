@@ -129,7 +129,7 @@ const FilmographySub = ({
               limit={true}
               onChange={onFilmoInputChange}
             />
-            <HelperText text="20자 이내로 작성해주세요." />
+            <HelperText type="info" text="20자 이내로 작성해주세요." />
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
