@@ -17,6 +17,13 @@ export interface sizeStyleType {
   [key: string]: string;
 }
 
+export interface sizeStyleType {
+  large: string;
+  medium: string;
+  small: string;
+  [key: string]: string;
+}
+
 export interface ProfileResponseType {
   id: number;
   userId: number;

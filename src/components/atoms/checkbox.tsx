@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { sizeStyleType } from "@/lib/types";
+=======
+import { sizeStyleType } from "@/types/types";
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
 import Check from "../../../public/icons/Check.svg";
 
 interface CheckboxProps {
@@ -8,15 +12,8 @@ interface CheckboxProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-interface checkboxSizeType {
-  large: string;
-  medium: string;
-  small: string;
-  [key: string]: string;
-}
-
 const Checkbox = ({ type, size, disabled, onChange }: CheckboxProps) => {
-  const checkIconSize: checkboxSizeType = {
+  const checkIconSize: sizeStyleType = {
     large: "22",
     medium: "18",
     small: "16"

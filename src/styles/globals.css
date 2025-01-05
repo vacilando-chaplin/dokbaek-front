@@ -97,6 +97,7 @@ body {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+<<<<<<< HEAD
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -104,6 +105,11 @@ body {
   /* scrollbar */
   .scrollbar {
     overflow: auto;
+=======
+
+  .scrollbar {
+    overflow: scroll;
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
   }
   .scrollbar::-webkit-scrollbar {
     width: 4px;
@@ -114,14 +120,23 @@ body {
   }
   .scrollbar::-webkit-scrollbar-thumb {
     border-radius: 100px;
+<<<<<<< HEAD
     background-color: #d9d9d9;
     background-clip: padding-box;
+=======
+    background-color: #e7e7ed;
+    background-clip: padding-box;
+    margin: 4px;
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
   }
   .scrollbar::-webkit-scrollbar-track {
     background-color: #ffffff;
   }
 
+<<<<<<< HEAD
   /* youtube */
+=======
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
   .iframe-border {
     border-radius: 16px;
   }

@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import { sizeStyleType } from "@/lib/types";
 import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
 import Option from "../atoms/option";
 import HelperText from "../atoms/helperText";
+=======
+import { sizeStyleType } from "@/types/types";
+import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
+import Option from "../atoms/option";
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
 
 interface SearchDropdownProps {
   size: string;
@@ -43,10 +49,17 @@ const SearchDropdown = ({
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
+<<<<<<< HEAD
         className={`${sizeStyle[size]} interaction-default flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light`}
       >
         <input
           className={`typography-body3 w-full text-content-primary-light outline-none placeholder:text-content-alternative-light`}
+=======
+        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] hover:border-border-active-light ${active && "border-border-active-light"}`}
+      >
+        <input
+          className={`w-full text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
           type="text"
           name={name}
           placeholder={placeholder}
@@ -57,21 +70,40 @@ const SearchDropdown = ({
         />
         <button
           type="button"
+<<<<<<< HEAD
           className={`interaction-default ml-auto flex ${active && "rotate-180 transform"}`}
+=======
+          className={`ml-auto flex transition-all duration-100 ease-linear ${active && "rotate-180 transform"}`}
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
           onClick={() => onActive(name, active)}
         >
           <ArrowTriangleDown width="16" height="16" fill="#212529" />
         </button>
       </div>
+<<<<<<< HEAD
       {helperText && <HelperText type="info" text={helperText} />}
       {active &&
         (isEmpty ? (
           <div className="interaction-default typography-body3 absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 font-normal text-gray-300 shadow-low">
+=======
+      {helperText && (
+        <span className="text-caption1 leading-caption1 tracking-caption1 text-content-tertiary-light">
+          {helperText}
+        </span>
+      )}
+      {active &&
+        (isEmpty ? (
+          <div className="absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 text-body3 font-normal leading-body3 tracking-body3 text-gray-300 shadow-low transition-all duration-100 ease-linear">
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
             <label>일치하는 항목이 없습니다.</label>
           </div>
         ) : (
           <ul
+<<<<<<< HEAD
             className={`scrollbar interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low ${sizeStyle[size]}`}
+=======
+            className={`scrollbar absolute top-10 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear ${sizeStyle[size]}`}
+>>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
           >
             {list.map((item: string, index: number) => {
               return (
