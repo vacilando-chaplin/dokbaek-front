@@ -18,7 +18,13 @@ const HelperText = ({ type, text }: HelperTextProps) => {
   };
 
   return (
+<<<<<<< HEAD
     <label className={`typography-caption1 font-regular ${typeStyle[type]}`}>
+=======
+    <label
+      className={`text-caption1 font-regular leading-caption1 tracking-caption1 ${typeStyle[type]}`}
+    >
+>>>>>>> c911aa7 (helperText type 속성 추가)
       {text}
     </label>
   );
