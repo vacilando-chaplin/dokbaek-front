@@ -100,10 +100,14 @@ const SearchDropdown = ({
         ) : (
           <ul
 <<<<<<< HEAD
+<<<<<<< HEAD
             className={`scrollbar interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low ${sizeStyle[size]}`}
 =======
             className={`scrollbar absolute top-10 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear ${sizeStyle[size]}`}
 >>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
+=======
+            className={`scrollbar absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear ${sizeStyle[size]}`}
+>>>>>>> bed1c0d (dropdown spacing 추가)
           >
             {list.map((item: string, index: number) => {
               return (

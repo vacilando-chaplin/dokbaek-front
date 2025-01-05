@@ -89,8 +89,12 @@ const SelectDropdown = ({
       )}
       {active && (
         <ul
+<<<<<<< HEAD
           className={`scrollbar absolute top-10 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto ${sizeStyle[size]} bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear`}
 >>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
+=======
+          className={`scrollbar absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto ${sizeStyle[size]} bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear`}
+>>>>>>> bed1c0d (dropdown spacing 추가)
         >
           {list.map((item: string, index: number) => {
             return (
