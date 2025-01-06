@@ -7,7 +7,11 @@ import HelperText from "../atoms/helperText";
 import { sizeStyleType } from "@/types/types";
 import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
 import Option from "../atoms/option";
+<<<<<<< HEAD
 >>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
+=======
+import HelperText from "../atoms/helperText";
+>>>>>>> 80163c6 (textInput 작업 중)
 
 interface SearchDropdownProps {
   size: string;
@@ -50,12 +54,16 @@ const SearchDropdown = ({
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
 <<<<<<< HEAD
+<<<<<<< HEAD
         className={`${sizeStyle[size]} interaction-default flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light`}
       >
         <input
           className={`typography-body3 w-full text-content-primary-light outline-none placeholder:text-content-alternative-light`}
 =======
         className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] hover:border-border-active-light ${active && "border-border-active-light"}`}
+=======
+        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear hover:border-border-active-light ${active && "border-border-active-light"}`}
+>>>>>>> 80163c6 (textInput 작업 중)
       >
         <input
           className={`w-full text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}
@@ -81,6 +89,7 @@ const SearchDropdown = ({
         </button>
       </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
       {helperText && <HelperText type="info" text={helperText} />}
       {active &&
         (isEmpty ? (
@@ -91,6 +100,9 @@ const SearchDropdown = ({
           {helperText}
         </span>
       )}
+=======
+      {helperText && <HelperText type="info" text={helperText} />}
+>>>>>>> 80163c6 (textInput 작업 중)
       {active &&
         (isEmpty ? (
           <div className="absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 text-body3 font-normal leading-body3 tracking-body3 text-gray-300 shadow-low transition-all duration-100 ease-linear">
