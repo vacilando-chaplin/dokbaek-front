@@ -1,4 +1,4 @@
-import ProfileButton from "../atoms/profileButton";
+import BoxButton from "../atoms/boxButton";
 import ProfileEmpty from "../atoms/profileEmpty";
 
 interface ProfileBoxProps {
@@ -12,7 +12,9 @@ const ProfileBox = ({ text, buttonText, onClick }: ProfileBoxProps) => {
     <div className="h-auto w-full rounded-lg border border-border-default-light py-16">
       <div className="flex flex-col items-center justify-center gap-4">
         <ProfileEmpty text={text} />
-        <ProfileButton text={buttonText} onClick={onClick} />
+        <BoxButton type="secondaryOutlined" size="medium" onClick={onClick}>
+          {buttonText}
+        </BoxButton>
       </div>
     </div>
   );

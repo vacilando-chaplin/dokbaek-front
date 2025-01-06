@@ -1,5 +1,6 @@
-import Button from "@/components/atoms/button";
+import BoxButton from "@/components/atoms/boxButton";
 import React from "react";
+import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 
 const LandingSub = () => {
   return (
@@ -31,12 +32,10 @@ const LandingSub = () => {
           </div>
         </div>
         <div className="absolute right-[100px] top-[95px]">
-          <Button
-            text="프로필 만들기"
-            size="l"
-            color="bg-accent-primary-light text-static-white"
-            rightIcon="/icons/ArrowDirectionRightWhite.svg"
-          />
+          <BoxButton type="primary" size="large">
+            프로필 만들기
+            <ArrowDirectionRight width="16" height="16" fill="#ffffff" />
+          </BoxButton>
         </div>
       </div>
     </div>

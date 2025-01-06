@@ -1,10 +1,11 @@
 import { VideoResponseType } from "@/types/types";
-import CreateButton from "../atoms/createButton";
 import EmptyBox from "../atoms/emptyBox";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 import Edit from "../../../public/icons/Edit.svg";
 import X from "../../../public/icons/X.svg";
+import Plus from "../../../public/icons/Plus.svg";
+import BoxButton from "../atoms/boxButton";
 
 interface VideoMainProps {
   videoList: VideoResponseType[];
@@ -31,7 +32,14 @@ const VideoMain = ({
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
       <div className="flex w-full flex-row justify-between">
         <Title name="영상" />
-        <CreateButton onClick={onVideoModalOpen} />
+        <BoxButton
+          type="primaryOutlined"
+          size="small"
+          onClick={onVideoModalOpen}
+        >
+          <Plus width="12" height="12" fill="#1E85EF" />
+          추가
+        </BoxButton>
       </div>
       <div className="flex h-auto w-full flex-wrap gap-2">
         {videoList.length >= 1 ? (

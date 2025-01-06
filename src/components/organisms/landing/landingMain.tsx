@@ -2,6 +2,7 @@ import React from "react";
 import TextButton from "../../atoms/textButton";
 import ProfileCard from "../../molecules/landing/profileCard";
 import { recentProfile } from "@/types/types";
+import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 
 const profiles: recentProfile[] = [
   {
@@ -71,11 +72,10 @@ const LandingMain = () => {
           <p className="text-heading2 font-semibold text-content-primary-light">
             새로 올라온 프로필
           </p>
-          <TextButton
-            color="text-gray-500"
-            text="더 많은 프로필 보기"
-            rightIcon="/icons/ArrowDirectionRightGray.svg"
-          />
+          <TextButton type="secondary" size="large">
+            더 많은 프로필 보기
+            <ArrowDirectionRight width="16" height="16" fill="#868E96" />
+          </TextButton>
         </div>
         <div className="flex flex-wrap justify-start gap-2">
           {profiles.map((profile, index) => (

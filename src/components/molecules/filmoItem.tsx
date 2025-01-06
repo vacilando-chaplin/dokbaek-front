@@ -8,6 +8,7 @@ import Edit from "../../../public/icons/Edit.svg";
 import X from "../../../public/icons/X.svg";
 import PlayCircle from "../../../public/icons/PlayCircle.svg";
 import LogoHorizontalSmall from "../../../public/icons/LogoHorizontalSmall.svg";
+import Checkbox from "../atoms/checkbox";
 
 interface FilmoItemProps {
   filmo: FilmoResponseType;
@@ -55,29 +56,11 @@ const FilmoItem = ({
   return (
     <div className="flex h-[154px] w-full animate-enter gap-4 rounded-2xl border border-border-default-light p-5">
       {filmoRepresentActive && (
-        <div className="flex gap-2">
-          {/* checkbox */}
-          <input
-            type="checkbox"
-            disabled={disabled}
-            className={`absolute h-[18px] w-[18px] appearance-none rounded focus:outline-none ${!is_featured && "opacity-0"}`}
-            onChange={() => onCheck(id)}
-          />
-          <div
-            className={`flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded transition-all duration-100 ease-linear ${is_featured ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light bg-static-white"} ${disabled && "border-border-disabled-light bg-background-disabled-light"}`}
-          >
-            <Check
-              width="14"
-              height="14"
-              fill="#ffffff"
-              className={!is_featured && "hidden"}
-            />
-          </div>
-          <label
-            htmlFor="custom-checkbox"
-            className={`select-none text-body2 font-regular leading-body2 tracking-body2 ${disabled ? "text-content-disabled-light" : "text-content-primary-light"}`}
-          />
-        </div>
+        <Checkbox
+          type="checkboxInput"
+          size="medium"
+          onChange={() => onCheck(id)}
+        />
       )}
       {!filmoRepresentActive && canEdit && (
         <div className="flex flex-col gap-1">

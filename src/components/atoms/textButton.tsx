@@ -1,60 +1,49 @@
-import Image from "next/image";
+import { sizeStyleType } from "@/types/types";
 
-interface ButtonProps {
-  leftIcon?: string;
-  rightIcon?: string;
-  size?: "s" | "m" | "l";
-  text: string;
-  color?: string;
+interface TextButtonProps {
+  children: React.ReactNode;
+  type: string;
+  size: string;
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const textButton = ({
-  leftIcon,
-  rightIcon,
-  size = "m",
-  text,
-  color,
+interface typeStyleType {
+  primary: string;
+  secondary: string;
+  [key: string]: string;
+}
+
+const TextButton = ({
+  children,
+  type,
+  size,
   disabled,
   onClick
-}: ButtonProps) => {
-  const sizeClasses = {
-    s: "text-body3 h-[32px]",
-    m: "text-body3 h-[40px]",
-    l: "text-body2 h-[49px]"
+}: TextButtonProps) => {
+  const sizeStyle: sizeStyleType = {
+    large: "py-3 px-6 gap-2 text-body2 leading-body2 tracking-body2",
+    medium: "py-3 px-5 gap-1 text-body3 leading-body3 tracking-body3",
+    small: "py-[5px] px-3 gap-1 text-body3 leading-body3 tracking-body3"
   };
-  const iconSize = {
-    s: 14,
-    m: 16,
-    l: 20
+
+  const typeStyle: typeStyleType = {
+    primary:
+      "text-accent-primary-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined",
+    secondary:
+      "text-content-tertiary-light hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined"
   };
+
   return (
     <button
       type="button"
-      className={`${sizeClasses[size]} flex w-auto items-center justify-center gap-1.5 rounded-xl px-5 font-medium leading-body3 tracking-body3 outline-none ${color ? color : "bg-background-surface-light text-content-primary-light"} ${disabled && "opacity-40"}`}
+      className={`flex h-auto w-auto items-center justify-center rounded-lg font-medium outline-none transition-all duration-100 ease-linear ${sizeStyle[size]} ${typeStyle[type]} ${disabled && "opacity-40"}`}
       disabled={disabled}
       onClick={onClick}
     >
-      {leftIcon && (
-        <Image
-          src={leftIcon}
-          alt="Button Icon"
-          width={iconSize[size]}
-          height={iconSize[size]}
-        />
-      )}
-      {text}
-      {rightIcon && (
-        <Image
-          src={rightIcon}
-          alt="Button Icon"
-          width={iconSize[size]}
-          height={iconSize[size]}
-        />
-      )}
+      {children}
     </button>
   );
 };
 
-export default textButton;
+export default TextButton;

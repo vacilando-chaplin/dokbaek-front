@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  getUser,
   kakaoAuthLogin,
   naverAuthLogin,
   googleAuthLogin,
@@ -124,7 +123,7 @@ const Callback = () => {
   }, [naverToken, kakaoToken, googleToken]);
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col items-center justify-center gap-10">
       <div className="flex flex-col items-center gap-2">
         <Check width="40" height="40" fill="#01C043" />
         <div className="flex flex-col items-center text-heading3 font-semibold leading-heading3 tracking-heading3 text-content-primary-light">
@@ -137,7 +136,7 @@ const Callback = () => {
       </div>
       <button
         type="button"
-        className="flex h-auto w-auto items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5"
+        className="flex h-auto w-[134px] items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5 transition-all duration-100 ease-linear hover:bg-hover-primary active:bg-pressed-primary"
         onClick={onClick}
       >
         <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">

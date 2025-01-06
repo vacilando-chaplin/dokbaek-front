@@ -2,11 +2,11 @@ import { castList, classificationList, yearList } from "@/data/data";
 import { FilmoActiveType, FilmoInputType } from "@/types/types";
 import Image from "next/image";
 import HelperText from "../atoms/helperText";
-import Input from "../atoms/input";
 import Label from "../atoms/label";
-import Dropdown from "../molecules/dropdown";
-import InputWithLabel from "../molecules/inputWithLabel";
 import PhotoFrame from "../molecules/photoFrame";
+import SelectDropdown from "../molecules/selectDropdown";
+import SearchDropdown from "../molecules/searchDropdown";
+import TextInput from "../atoms/textInput";
 
 interface FilmographySubProps {
   filmoInputs: FilmoInputType;
@@ -42,156 +42,115 @@ const FilmographySub = ({
   return (
     <div className="no-scrollbar flex h-auto w-full gap-4 overflow-auto bg-background-surface-light p-6">
       <div className="flex h-auto w-full flex-col gap-4">
-        <div className="flex h-auto w-full flex-row gap-4">
-          <div
-            className="relative flex w-full"
-            onClick={() =>
-              onFilmoDropdownActive(
-                "classification",
-                filmoActives.classification
-              )
-            }
-          >
-            <InputWithLabel
-              label="분류"
-              type="text"
-              required={true}
-              placeholder="선택해주세요."
-              dropdown={true}
-              maxLength={10}
+        <div className="flex w-full flex-col">
+          <Label label="분류" required />
+          <div className="flex flex-row gap-4">
+            <SelectDropdown
               name="classification"
-              value={classification}
-              readOnly={true}
+              list={classificationList}
+              size="medium"
+              value={filmoInputs.classification}
               active={filmoActives.classification}
+              selected={classification}
+              onClick={onFilmoDropdownClick}
               onActive={onFilmoDropdownActive}
             />
-            {filmoActives.classification && (
-              <div className="absolute top-[72px] z-40 w-full">
-                <Dropdown
-                  name="classification"
-                  content={classificationList}
-                  active={filmoActives.classification}
-                  selected={classification}
-                  onClick={onFilmoDropdownClick}
-                  onActive={onFilmoDropdownActive}
-                />
-              </div>
-            )}
-          </div>
-          <div className="relative flex w-full">
-            <InputWithLabel
-              label="제작연도"
-              type="text"
-              placeholder="선택해주세요."
-              dropdown={true}
-              maxLength={4}
+            <SearchDropdown
+              size="medium"
               name="production"
+              list={yearList}
               value={production}
               active={filmoActives.production}
-              onChange={onFilmoProductionChange}
+              selected={production}
+              maxLength={4}
+              onClick={onFilmoDropdownClick}
               onActive={onFilmoDropdownActive}
+              onChange={onFilmoProductionChange}
             />
-            {filmoActives.production && (
-              <div className="absolute top-[72px] z-40 w-full">
-                <Dropdown
-                  name="production"
-                  content={yearList}
-                  active={filmoActives.production}
-                  selected={production}
-                  onClick={onFilmoDropdownClick}
-                  onActive={onFilmoDropdownActive}
-                />
-              </div>
-            )}
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <InputWithLabel
-            label="작품명"
-            type="text"
-            required={true}
-            maxLength={30}
-            name="title"
-            value={title}
-            onChange={onFilmoInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="작품명" required />
+            <TextInput
+              type="text"
+              size="medium"
+              name="title"
+              value={title}
+              maxLength={30}
+              onChange={onFilmoInputChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <div className="relative flex h-auto w-full flex-col">
+          <div className="flex h-auto w-full flex-col">
             <Label label="출연 형태" />
             <div className="flex flex-row gap-1">
-              <div
-                className="flex w-full"
-                onClick={() => onFilmoDropdownActive("cast", filmoActives.cast)}
-              >
-                <Input
-                  type="text"
-                  placeholder="선택해주세요."
-                  dropdown={true}
-                  maxLength={10}
-                  name="cast"
-                  value={cast}
-                  readOnly={true}
-                  active={filmoActives.cast}
-                  onActive={onFilmoDropdownActive}
-                />
-              </div>
+              <SelectDropdown
+                name="cast"
+                list={castList}
+                size="medium"
+                value={filmoInputs.cast}
+                active={filmoActives.cast}
+                selected={cast}
+                maxLength={10}
+                onClick={onFilmoDropdownClick}
+                onActive={() =>
+                  onFilmoDropdownActive("cast", filmoActives.cast)
+                }
+              />
               {cast === "직접 입력" && (
-                <Input
+                <TextInput
                   type="text"
-                  maxLength={10}
+                  size="medium"
                   name="castInput"
                   value={castInput}
+                  maxLength={10}
                   onChange={onFilmoInputChange}
                 />
               )}
             </div>
-            {filmoActives.cast && (
-              <div className="absolute top-[72px] z-40 w-full">
-                <Dropdown
-                  name="cast"
-                  content={castList}
-                  active={filmoActives.cast}
-                  selected={cast}
-                  onClick={onFilmoDropdownClick}
-                  onActive={onFilmoDropdownActive}
-                />
-              </div>
-            )}
           </div>
-          <InputWithLabel
-            label="배역"
-            type="text"
-            maxLength={10}
-            name="casting"
-            value={casting}
-            onChange={onFilmoInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="배역" />
+            <TextInput
+              type="text"
+              size="medium"
+              name="casting"
+              value={casting}
+              maxLength={20}
+              onChange={onFilmoInputChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-col">
           <Label label="부가 설명 (수상 등)" />
           <div className="flex flex-col gap-1">
-            <Input
+            <TextInput
               type="text"
-              maxLength={20}
+              size="medium"
               name="description"
               value={description}
-              limit={true}
+              limit
+              maxLength={20}
               onChange={onFilmoInputChange}
             />
-            <HelperText text="20자 이내로 작성해주세요." />
+            <HelperText type="info" text="20자 이내로 작성해주세요." />
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <InputWithLabel
-            label="영상 링크"
-            type="link"
-            maxLength={300}
-            name="link"
-            value={link}
-            icon="youtube"
-            onChange={onFilmoInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="영상 링크" />
+            <TextInput
+              type="link"
+              size="medium"
+              name="link"
+              value={link}
+              icon="youtube"
+              maxLength={300}
+              onChange={onFilmoInputChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-col pb-6">
           <Label label="썸네일 이미지" />
