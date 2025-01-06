@@ -43,7 +43,7 @@ const SearchDropdown = ({
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
-        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear hover:border-border-active-light ${active && "border-border-active-light"}`}
+        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light`}
       >
         <input
           className={`w-full text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}

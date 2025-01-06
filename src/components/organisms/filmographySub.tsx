@@ -2,12 +2,11 @@ import { castList, classificationList, yearList } from "@/data/data";
 import { FilmoActiveType, FilmoInputType } from "@/types/types";
 import Image from "next/image";
 import HelperText from "../atoms/helperText";
-import Input from "../atoms/input";
 import Label from "../atoms/label";
-import InputWithLabel from "../molecules/inputWithLabel";
 import PhotoFrame from "../molecules/photoFrame";
 import SelectDropdown from "../molecules/selectDropdown";
 import SearchDropdown from "../molecules/searchDropdown";
+import TextInput from "../atoms/textInput";
 
 interface FilmographySubProps {
   filmoInputs: FilmoInputType;
@@ -71,15 +70,17 @@ const FilmographySub = ({
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <InputWithLabel
-            label="작품명"
-            type="text"
-            required={true}
-            maxLength={30}
-            name="title"
-            value={title}
-            onChange={onFilmoInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="작품명" required />
+            <TextInput
+              type="text"
+              size="medium"
+              name="title"
+              value={title}
+              maxLength={30}
+              onChange={onFilmoInputChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
           <div className="flex h-auto w-full flex-col">
@@ -99,49 +100,57 @@ const FilmographySub = ({
                 }
               />
               {cast === "직접 입력" && (
-                <Input
+                <TextInput
                   type="text"
-                  maxLength={10}
+                  size="medium"
                   name="castInput"
                   value={castInput}
+                  maxLength={10}
                   onChange={onFilmoInputChange}
                 />
               )}
             </div>
           </div>
-          <InputWithLabel
-            label="배역"
-            type="text"
-            maxLength={10}
-            name="casting"
-            value={casting}
-            onChange={onFilmoInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="배역" />
+            <TextInput
+              type="text"
+              size="medium"
+              name="casting"
+              value={casting}
+              maxLength={20}
+              onChange={onFilmoInputChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-col">
           <Label label="부가 설명 (수상 등)" />
           <div className="flex flex-col gap-1">
-            <Input
+            <TextInput
               type="text"
-              maxLength={20}
+              size="medium"
               name="description"
               value={description}
-              limit={true}
+              limit
+              maxLength={20}
               onChange={onFilmoInputChange}
             />
             <HelperText type="info" text="20자 이내로 작성해주세요." />
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <InputWithLabel
-            label="영상 링크"
-            type="link"
-            maxLength={300}
-            name="link"
-            value={link}
-            icon="youtube"
-            onChange={onFilmoInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="영상 링크" />
+            <TextInput
+              type="link"
+              size="medium"
+              name="link"
+              value={link}
+              icon="youtube"
+              maxLength={300}
+              onChange={onFilmoInputChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-col pb-6">
           <Label label="썸네일 이미지" />

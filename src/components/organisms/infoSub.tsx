@@ -1,10 +1,10 @@
 import { educationList } from "@/data/data";
 import { InfoActiveType, InfoInputType } from "@/types/types";
-import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
 import SelectDropdown from "../molecules/selectDropdown";
 import SearchDropdown from "../molecules/searchDropdown";
+import TextInput from "../atoms/textInput";
 
 interface infoSubProps {
   infoInputs: InfoInputType;
@@ -49,12 +49,13 @@ const InfoSub = ({
         <div className="flex h-auto w-full flex-col">
           <Label label="전공" />
           <div className="flex h-auto w-full flex-row gap-4">
-            <div className="flex flex-[1_1_75%]">
-              <Input
+            <div className="flex w-full flex-[1_1_75%]">
+              <TextInput
                 type="text"
-                maxLength={20}
+                size="medium"
                 name="major"
                 value={major}
+                maxLength={20}
                 onChange={onInputChange}
               />
             </div>

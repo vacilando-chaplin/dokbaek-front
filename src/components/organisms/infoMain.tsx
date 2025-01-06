@@ -1,9 +1,7 @@
 import { yearList } from "@/data/data";
 import { InfoActiveType, InfoInputType } from "@/types/types";
-import Input from "../atoms/input";
 import Label from "../atoms/label";
 import Title from "../atoms/title";
-import InputWithLabel from "../molecules/inputWithLabel";
 import SearchDropdown from "../molecules/searchDropdown";
 import TextInput from "../atoms/textInput";
 
@@ -134,22 +132,24 @@ const InfoMain = ({
         <div className="flex h-auto w-full flex-col">
           <Label label="링크" />
           <div className="flex h-auto w-full flex-col gap-1">
-            <Input
+            <TextInput
               type="link"
-              placeholder="인스타그램 링크를 입력해주세요."
-              icon="instagram"
-              maxLength={300}
+              size="medium"
               name="instagram"
+              icon="instagram"
               value={instagram}
+              maxLength={300}
+              placeholder="https://"
               onChange={onInputChange}
             />
-            <Input
+            <TextInput
               type="link"
-              placeholder="유튜브 채널 링크를 입력해주세요."
-              icon="youtube"
-              maxLength={300}
+              size="medium"
               name="youtube"
+              icon="youtube"
               value={youtube}
+              maxLength={300}
+              placeholder="https://"
               onChange={onInputChange}
             />
           </div>

@@ -1,10 +1,14 @@
 import { sizeStyleType } from "@/types/types";
+import Youtube from "../../../public/icons/YouTube.svg";
+import Instagram from "../../../public/icons/Instagram.svg";
 
 interface TextInputProps {
   type: string;
   size: string;
   name: string;
-  value: string | number;
+  value: string;
+  icon?: string;
+  limit?: boolean;
   disabled?: boolean;
   parameter?: string;
   maxLength?: number;
@@ -17,6 +21,8 @@ const TextInput = ({
   size,
   name,
   value,
+  icon,
+  limit,
   disabled,
   parameter,
   maxLength,
@@ -33,8 +39,12 @@ const TextInput = ({
 
   return (
     <div
-      className={`flex border border-border-default-light font-regular transition-all duration-100 ease-linear focus-within:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
+      className={`flex w-full border border-border-default-light font-regular transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
     >
+      {icon === "youtube" && <Youtube width="16" height="16" fill="#ADB5BD" />}
+      {icon === "instagram" && (
+        <Instagram width="16" height="16" fill="#ADB5BD" />
+      )}
       <input
         type={type}
         name={name}
@@ -48,6 +58,11 @@ const TextInput = ({
       />
       {parameter && (
         <div className="text-content-secondary-light">{parameter}</div>
+      )}
+      {limit && (
+        <label className="text-[12px] text-[#787887]">
+          {value.length}/{maxLength}
+        </label>
       )}
     </div>
   );
