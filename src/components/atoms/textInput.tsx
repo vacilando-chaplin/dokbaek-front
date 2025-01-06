@@ -4,12 +4,18 @@ import Youtube from "../../../public/icons/YouTube.svg";
 import Instagram from "../../../public/icons/Instagram.svg";
 =======
 import { sizeStyleType } from "@/types/types";
+<<<<<<< HEAD
 >>>>>>> 80163c6 (textInput 작업 중)
+=======
+import Youtube from "../../../public/icons/YouTube.svg";
+import Instagram from "../../../public/icons/Instagram.svg";
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제)
 
 interface TextInputProps {
   type: string;
   size: string;
   name: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
   value: string;
   icon?: string;
@@ -17,6 +23,11 @@ interface TextInputProps {
 =======
   value: string | number;
 >>>>>>> 80163c6 (textInput 작업 중)
+=======
+  value: string;
+  icon?: string;
+  limit?: boolean;
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제)
   disabled?: boolean;
   parameter?: string;
   maxLength?: number;
@@ -30,10 +41,15 @@ const TextInput = ({
   name,
   value,
 <<<<<<< HEAD
+<<<<<<< HEAD
   icon,
   limit,
 =======
 >>>>>>> 80163c6 (textInput 작업 중)
+=======
+  icon,
+  limit,
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제)
   disabled,
   parameter,
   maxLength,
@@ -57,6 +73,7 @@ const TextInput = ({
   return (
     <div
 <<<<<<< HEAD
+<<<<<<< HEAD
       className={`interaction-default flex w-full border border-border-default-light font-regular focus-within:border-border-active-light hover:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
     >
       {icon === "youtube" && <Youtube width="16" height="16" fill="#ADB5BD" />}
@@ -67,6 +84,14 @@ const TextInput = ({
       className={`flex border border-border-default-light font-regular transition-all duration-100 ease-linear focus-within:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
     >
 >>>>>>> 80163c6 (textInput 작업 중)
+=======
+      className={`flex w-full border border-border-default-light font-regular transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
+    >
+      {icon === "youtube" && <Youtube width="16" height="16" fill="#ADB5BD" />}
+      {icon === "instagram" && (
+        <Instagram width="16" height="16" fill="#ADB5BD" />
+      )}
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제)
       <input
         type={type}
         name={name}
@@ -82,6 +107,7 @@ const TextInput = ({
         <div className="text-content-secondary-light">{parameter}</div>
       )}
 <<<<<<< HEAD
+<<<<<<< HEAD
       {limit && (
         <label className="text-caption1 text-[#787887]">
           {value.length}/{maxLength}
@@ -89,6 +115,13 @@ const TextInput = ({
       )}
 =======
 >>>>>>> 80163c6 (textInput 작업 중)
+=======
+      {limit && (
+        <label className="text-[12px] text-[#787887]">
+          {value.length}/{maxLength}
+        </label>
+      )}
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제)
     </div>
   );
 };

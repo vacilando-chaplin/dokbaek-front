@@ -55,6 +55,7 @@ const SearchDropdown = ({
       <div
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         className={`${sizeStyle[size]} interaction-default flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light`}
       >
         <input
@@ -64,6 +65,9 @@ const SearchDropdown = ({
 =======
         className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear hover:border-border-active-light ${active && "border-border-active-light"}`}
 >>>>>>> 80163c6 (textInput 작업 중)
+=======
+        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light`}
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제)
       >
         <input
           className={`w-full text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}

@@ -6,7 +6,16 @@ import SelectDropdown from "@/components/molecules/selectDropdown";
 import ThumbnailFrame from "./thumbnailFrame";
 import { castList, classificationList, yearList } from "@/lib/data";
 import Image from "next/image";
+<<<<<<< HEAD:src/app/profile/[id]/create/filmo/components/filmoModalContents.tsx
 import { FilmoActiveType, FilmoInputType } from "../types";
+=======
+import HelperText from "../atoms/helperText";
+import Label from "../atoms/label";
+import PhotoFrame from "../molecules/photoFrame";
+import SelectDropdown from "../molecules/selectDropdown";
+import SearchDropdown from "../molecules/searchDropdown";
+import TextInput from "../atoms/textInput";
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제):src/components/organisms/filmographySub.tsx
 
 interface FilmoModalContentsProps {
   filmoInputs: FilmoInputType;

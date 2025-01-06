@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/app/profile/[id]/create/info/components/infoSub.tsx
 import Label from "@/components/atoms/label";
 import TextInput from "@/components/atoms/textInput";
 import Title from "@/components/atoms/title";
@@ -5,6 +6,15 @@ import SearchDropdown from "@/components/molecules/searchDropdown";
 import SelectDropdown from "@/components/molecules/selectDropdown";
 import { educationList } from "@/lib/data";
 import { InfoActiveType, InfoInputType } from "../types";
+=======
+import { educationList } from "@/data/data";
+import { InfoActiveType, InfoInputType } from "@/types/types";
+import Label from "../atoms/label";
+import Title from "../atoms/title";
+import SelectDropdown from "../molecules/selectDropdown";
+import SearchDropdown from "../molecules/searchDropdown";
+import TextInput from "../atoms/textInput";
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제):src/components/organisms/infoSub.tsx
 
 interface infoSubProps {
   infoInputs: InfoInputType;

@@ -51,6 +51,7 @@ const SelectDropdown = ({
       <div
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         className={`${sizeStyle[size]} interaction-default flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light ${active && "focus-within:border-border-active-light"}`}
         onClick={() => onActive(name, active)}
       >
@@ -61,6 +62,9 @@ const SelectDropdown = ({
 =======
         className={`${sizeStyle[size]} flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear hover:border-border-active-light ${active && "border-border-active-light"}`}
 >>>>>>> 80163c6 (textInput 작업 중)
+=======
+        className={`${sizeStyle[size]} flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light ${active && "focus-within:border-border-active-light"}`}
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제)
         onClick={() => onActive(name, active)}
       >
         <input

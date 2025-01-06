@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/app/profile/[id]/create/video/components/videoModalContents.tsx
 import TextInput from "@/components/atoms/textInput";
+=======
+import TextInput from "../atoms/textInput";
+>>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제):src/components/organisms/videoModalSub.tsx
 
 interface VideoModalContentsProps {
   videoInputs: string;
