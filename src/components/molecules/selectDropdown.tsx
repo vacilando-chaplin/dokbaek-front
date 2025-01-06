@@ -1,6 +1,7 @@
 import { sizeStyleType } from "@/types/types";
 import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
 import Option from "../atoms/option";
+import HelperText from "../atoms/helperText";
 
 interface SelectDropdownProps {
   size: string;
@@ -38,7 +39,7 @@ const SelectDropdown = ({
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
-        className={`${sizeStyle[size]} flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] hover:border-border-active-light ${active && "border-border-active-light"}`}
+        className={`${sizeStyle[size]} flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear hover:border-border-active-light ${active && "border-border-active-light"}`}
         onClick={() => onActive(name, active)}
       >
         <input
@@ -57,11 +58,7 @@ const SelectDropdown = ({
           <ArrowTriangleDown width="16" height="16" fill="#212529" />
         </button>
       </div>
-      {helperText && (
-        <span className="text-caption1 leading-caption1 tracking-caption1 text-content-tertiary-light">
-          {helperText}
-        </span>
-      )}
+      {helperText && <HelperText type="info" text={helperText} />}
       {active && (
         <ul
           className={`scrollbar absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto ${sizeStyle[size]} bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear`}

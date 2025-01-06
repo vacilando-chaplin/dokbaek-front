@@ -5,6 +5,7 @@ import Label from "../atoms/label";
 import Title from "../atoms/title";
 import InputWithLabel from "../molecules/inputWithLabel";
 import SearchDropdown from "../molecules/searchDropdown";
+import TextInput from "../atoms/textInput";
 
 interface InfoMainProps {
   infoInputs: InfoInputType;
@@ -44,16 +45,18 @@ const InfoMain = ({
       <Title name="기본 정보" />
       <div className="flex h-auto w-full flex-col gap-4">
         <div className="flex h-auto w-full flex-row gap-4">
-          <InputWithLabel
-            label="이름"
-            type="text"
-            required={true}
-            placeholder="이름을 입력해주세요."
-            maxLength={10}
-            name="name"
-            value={name}
-            onChange={onInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="이름" required />
+            <TextInput
+              type="text"
+              size="medium"
+              name="name"
+              value={name}
+              maxLength={10}
+              placeholder="이름을 입력해주세요."
+              onChange={onInputChange}
+            />
+          </div>
           <div className="flex w-full flex-col">
             <Label label="출생연도" required />
             <SearchDropdown
@@ -64,6 +67,7 @@ const InfoMain = ({
               active={infoActives.birth}
               selected={birth}
               maxLength={4}
+              placeholder="출생연도를 선택해주세요."
               onClick={onItemClick}
               onActive={onInfoDropdownActive}
               onChange={onBirthChange}
@@ -71,56 +75,61 @@ const InfoMain = ({
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <InputWithLabel
-            label="키"
-            type="text"
-            placeholder="0"
-            parameter="cm"
-            maxLength={3}
-            name="height"
-            value={height}
-            onChange={onNumberChange}
-          />
-          <InputWithLabel
-            label="몸무게"
-            type="text"
-            placeholder="0"
-            parameter="kg"
-            maxLength={3}
-            name="weight"
-            value={weight}
-            onChange={onNumberChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="키" />
+            <TextInput
+              type="text"
+              size="medium"
+              name="height"
+              value={height}
+              parameter="cm"
+              maxLength={3}
+              placeholder="0"
+              onChange={onNumberChange}
+            />
+          </div>
+          <div className="flex w-full flex-col">
+            <Label label="몸무게" />
+            <TextInput
+              type="text"
+              size="medium"
+              name="weight"
+              value={weight}
+              parameter="kg"
+              maxLength={3}
+              placeholder="0"
+              onChange={onNumberChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
-          <InputWithLabel
-            label="전화번호"
-            type="tel"
-            required={true}
-            maxLength={13}
-            name="contact"
-            value={contact}
-            onChange={onContactChange}
-          />
-          <InputWithLabel
-            label="이메일"
-            type="email"
-            maxLength={40}
-            name="email"
-            value={email}
-            onChange={onInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="전화번호" required />
+            <TextInput
+              type="tel"
+              size="medium"
+              name="contact"
+              value={contact}
+              maxLength={13}
+              onChange={onContactChange}
+            />
+          </div>
+          <div className="flex w-full flex-col">
+            <Label label="이메일" />
+            <TextInput
+              type="email"
+              size="medium"
+              name="email"
+              value={email}
+              maxLength={40}
+              onChange={onInputChange}
+            />
+          </div>
         </div>
         <div className="flex h-auto w-full">
-          <InputWithLabel
-            label="특기"
-            type="text"
-            placeholder="ex) 영어, 중국어, 피아노, 1종 면허, 사투리, 댄스"
-            maxLength={20}
-            name="speciality"
-            value={speciality}
-            onChange={onInputChange}
-          />
+          <div className="flex w-full flex-col">
+            <Label label="특기" />
+          </div>
         </div>
         <div className="flex h-auto w-full flex-col">
           <Label label="링크" />

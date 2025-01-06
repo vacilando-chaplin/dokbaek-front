@@ -1,6 +1,7 @@
 import { sizeStyleType } from "@/types/types";
 import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
 import Option from "../atoms/option";
+import HelperText from "../atoms/helperText";
 
 interface SearchDropdownProps {
   size: string;
@@ -42,7 +43,7 @@ const SearchDropdown = ({
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
-        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] hover:border-border-active-light ${active && "border-border-active-light"}`}
+        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear hover:border-border-active-light ${active && "border-border-active-light"}`}
       >
         <input
           className={`w-full text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}
@@ -62,11 +63,7 @@ const SearchDropdown = ({
           <ArrowTriangleDown width="16" height="16" fill="#212529" />
         </button>
       </div>
-      {helperText && (
-        <span className="text-caption1 leading-caption1 tracking-caption1 text-content-tertiary-light">
-          {helperText}
-        </span>
-      )}
+      {helperText && <HelperText type="info" text={helperText} />}
       {active &&
         (isEmpty ? (
           <div className="absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 text-body3 font-normal leading-body3 tracking-body3 text-gray-300 shadow-low transition-all duration-100 ease-linear">
