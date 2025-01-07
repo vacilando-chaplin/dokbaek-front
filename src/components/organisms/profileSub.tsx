@@ -114,7 +114,7 @@ const ProfileSub = ({
                         />
                         <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                           <PlusCircle width="20" height="20" fill="#ffffff" />
-                          <span className="text-body2 font-semibold leading-body2 tracking-body2">
+                          <span className="typography-body2 font-semibold">
                             크게 보기
                           </span>
                         </div>
@@ -147,7 +147,7 @@ const ProfileSub = ({
               className="flex gap-1 rounded"
               onClick={onFilmoModalActive}
             >
-              <span className="text-body2 font-medium leading-body2 tracking-body2 text-content-tertiary-light">
+              <span className="typography-body2 font-medium text-content-tertiary-light">
                 모두 보기
               </span>
             </button>

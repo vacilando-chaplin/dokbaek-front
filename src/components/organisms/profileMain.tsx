@@ -123,15 +123,11 @@ const ProfileMain = ({
         </BoxButton>
       </div>
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
-        <label className="text-body1 font-semibold leading-body1 tracking-body1">
-          {name}
-        </label>
-        <label className="text-body2 font-medium leading-body2 tracking-body2">
-          배우
-        </label>
+        <label className="typography-body1 font-semibold">{name}</label>
+        <label className="typography-body2 font-medium">배우</label>
       </div>
       {bornYear >= 1 || contact ? (
-        <div className="flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
+        <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
           <span>
             {bornYear}년생{" "}
             <label className="opacity-50">
@@ -185,7 +181,7 @@ const ProfileMain = ({
         </div>
       )}
       {introduction && (
-        <p className="flex h-full w-full gap-2 whitespace-pre break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 text-body2 font-normal leading-body2 tracking-body2 text-content-primary-light">
+        <p className="typography-body2 flex h-full w-full gap-2 whitespace-pre break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
           {introduction}
         </p>
       )}

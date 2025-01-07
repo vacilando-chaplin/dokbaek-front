@@ -32,10 +32,10 @@ const TextArea = ({
         placeholder={placeholder}
         autoComplete="off"
         onChange={onChange}
-        className={`scrollbar h-full w-full resize-none items-start gap-1 border border-border-default-light bg-background-surface-light text-body3 font-normal leading-body3 tracking-body3 text-content-primary-light placeholder-content-tertiary-light outline-none transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light ${sizeStyle[size]}`}
+        className={`scrollbar interaction-default typography-body3 h-full w-full resize-none items-start gap-1 border border-border-default-light bg-background-surface-light font-normal text-content-primary-light placeholder-content-tertiary-light outline-none focus-within:border-border-active-light hover:border-border-active-light ${sizeStyle[size]}`}
       />
       {limit && (
-        <label className="flex h-fit w-full justify-end gap-1 text-caption1 font-normal leading-caption1 tracking-caption1 text-content-secondary-light">
+        <label className="typography-caption1 flex h-fit w-full justify-end gap-1 font-normal text-content-secondary-light">
           {value.length}/500
         </label>
       )}

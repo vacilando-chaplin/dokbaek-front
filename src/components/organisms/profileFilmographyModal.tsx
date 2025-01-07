@@ -19,7 +19,7 @@ const ProfileFilmographyModal = ({
   return (
     <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="relative w-full max-w-[1024px]">
-        <div className="shadow-medium relative flex h-auto w-full animate-enter flex-col items-center justify-center rounded-3xl bg-static-white transition-all duration-100 ease-linear">
+        <div className="interaction-default relative flex h-auto w-full animate-enter flex-col items-center justify-center rounded-3xl bg-static-white shadow-medium">
           <ModalTop name="작품 활동" onClick={onFilmoModalActive} />
           <div className="flex h-full max-h-[74vh] w-full flex-col overflow-auto overscroll-contain rounded-3xl [&::-webkit-scrollbar-button:vertical:end:decrement]:block [&::-webkit-scrollbar-button:vertical:end:decrement]:w-5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-4 [&::-webkit-scrollbar-thumb]:bg-[#E7E7ED] [&::-webkit-scrollbar-thumb]:bg-clip-padding [&::-webkit-scrollbar-track]:bg-static-white [&::-webkit-scrollbar]:w-2.5">
             {categoryList.map((category: string) => {

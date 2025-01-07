@@ -35,7 +35,7 @@ const Option = ({
     >
       <button
         type="button"
-        className={`flex w-full text-body3 font-medium leading-body3 tracking-body3 ${selected === item ? "font-semibold text-accent-primary-light" : "text-content-primary-light"}`}
+        className={`typography-body3 flex w-full font-medium ${selected === item ? "font-semibold text-accent-primary-light" : "text-content-primary-light"}`}
       >
         {item}
       </button>

@@ -18,7 +18,7 @@ const GoogleLogin = () => {
       className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-[#c0c0c0] px-6 py-3"
       onClick={onGoogleLogin}
     >
-      <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">
+      <div className="typography-body2 font-medium text-static-white">
         구글로 시작하기
       </div>
     </button>

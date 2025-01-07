@@ -35,6 +35,63 @@ body {
     text-wrap: balance;
   }
 
+  /* typography */
+  .typography-display {
+    font-size: 40px;
+    line-height: 130%;
+    letter-spacing: -0.01em;
+  }
+  .typography-heading1 {
+    font-size: 32px;
+    line-height: 125%;
+    letter-spacing: -0.01em;
+  }
+  .typography-heading2 {
+    font-size: 24px;
+    line-height: 130%;
+    letter-spacing: -0.01em;
+  }
+  .typography-heading3 {
+    font-size: 22px;
+    line-height: 130%;
+    letter-spacing: -0.01em;
+  }
+  .typography-heading4 {
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: -0.01em;
+  }
+  .typography-body1 {
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: -0.01em;
+  }
+  .typography-body2 {
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: -0.01em;
+  }
+  .typography-body3 {
+    font-size: 13px;
+    line-height: 140%;
+    letter-spacing: -0.01em;
+  }
+  .typography-caption1 {
+    font-size: 12px;
+    line-height: 135%;
+    letter-spacing: -0.01em;
+  }
+  .typography-caption2 {
+    font-size: 11px;
+    line-height: 130%;
+    letter-spacing: -0.01em;
+  }
+
+  /* interaction */
+  .interaction-default {
+    transition: all 100ms linear;
+  }
+
   /* Chrome, Safari and Opera */
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */

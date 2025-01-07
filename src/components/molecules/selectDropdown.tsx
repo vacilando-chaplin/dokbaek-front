@@ -39,11 +39,11 @@ const SelectDropdown = ({
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
-        className={`${sizeStyle[size]} flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light ${active && "focus-within:border-border-active-light"}`}
+        className={`${sizeStyle[size]} interaction-default flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light ${active && "focus-within:border-border-active-light"}`}
         onClick={() => onActive(name, active)}
       >
         <input
-          className={`w-full cursor-pointer text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}
+          className={`typography-body3 w-full cursor-pointer text-content-primary-light outline-none placeholder:text-content-alternative-light`}
           type="text"
           placeholder={placeholder}
           maxLength={maxLength}
@@ -53,7 +53,7 @@ const SelectDropdown = ({
         />
         <button
           type="button"
-          className={`ml-auto flex transition-all duration-100 ease-linear ${active && "rotate-180 transform"}`}
+          className={`interaction-default ml-auto flex ${active && "rotate-180 transform"}`}
         >
           <ArrowTriangleDown width="16" height="16" fill="#212529" />
         </button>
@@ -61,7 +61,7 @@ const SelectDropdown = ({
       {helperText && <HelperText type="info" text={helperText} />}
       {active && (
         <ul
-          className={`scrollbar absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto ${sizeStyle[size]} bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear`}
+          className={`scrollbar interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low ${sizeStyle[size]}`}
         >
           {list.map((item: string, index: number) => {
             return (

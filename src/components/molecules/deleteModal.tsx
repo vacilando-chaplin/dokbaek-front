@@ -18,7 +18,7 @@ const DeleteModal = ({ text, id, onCancel, onDelete }: DeleteModalProps) => {
         className="absolute -top-3.5 right-3.5"
       />
       <div className="flex h-auto w-60 flex-col gap-4 rounded-2xl bg-background-elevated-light p-4">
-        <label className="text-body2 font-semibold leading-body2 tracking-body2 text-content-primary-light">
+        <label className="typography-body2 font-semibold text-content-primary-light">
           {text}
         </label>
         <div className="flex flex-row items-center justify-end gap-1">
