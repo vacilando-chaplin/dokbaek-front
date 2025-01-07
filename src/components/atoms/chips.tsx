@@ -11,15 +11,14 @@ interface ChipsProps {
 
 const Chips = ({ size, text, icon, disabled, onClick }: ChipsProps) => {
   const sizeStyle: sizeStyleType = {
-    large: "py-1.5 px-3 gap-1 text-body2 leading-body2 tracking-body2",
-    medium: "py-[5px] px-2 gap-0.5 text-body3 leading-body3 tracking-body3",
+    large: "py-1.5 px-3 gap-1 typography-body2",
+    medium: "py-[5px] px-2 gap-0.5 typography-body3",
     small: ""
   };
 
   const sizeStyleWithIcon: sizeStyleType = {
-    large: "py-1.5 pr-2 pl-3 gap-1 text-body2 leading-body2 tracking-body2",
-    medium:
-      "py-[5px] pr-1 pl-2 gap-0.5 text-body3 leading-body3 tracking-body3",
+    large: "py-1.5 pr-2 pl-3 gap-1 typography-body2",
+    medium: "py-[5px] pr-1 pl-2 gap-0.5 typography-body3",
     small: ""
   };
 

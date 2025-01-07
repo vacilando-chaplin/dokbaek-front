@@ -47,7 +47,7 @@ const FilmographyMain = ({
         <Title name="작품 활동" />
         <div className="flex flex-row items-center gap-4">
           {filmoRepresentActive && (
-            <label className="text-body2 font-medium leading-body2 tracking-body2 text-accent-primary-light">
+            <label className="typography-body2 font-medium text-accent-primary-light">
               프로필 메인에 표시할 대표작을 선택해주세요. (최대6개)
             </label>
           )}
@@ -97,7 +97,7 @@ const FilmographyMain = ({
         (filmo: FilmoResponseType) => filmo.is_featured === true
       ) >= 1 && (
         <div className="flex h-auto w-full flex-col gap-2">
-          <label className="text-body2 font-semibold leading-body2 tracking-body2 text-accent-primary-light">
+          <label className="typography-body2 font-semibold text-accent-primary-light">
             대표작
           </label>
           {repFilmoList.map((filmo: FilmoResponseType) => {
@@ -132,7 +132,7 @@ const FilmographyMain = ({
               className="flex h-auto w-full flex-col gap-2"
               key={category + index}
             >
-              <label className="text-body2 font-medium leading-body2 tracking-body2 text-content-secondary-light">
+              <label className="typography-body2 font-medium text-content-secondary-light">
                 {category}
               </label>
               {filmoRepresentActive

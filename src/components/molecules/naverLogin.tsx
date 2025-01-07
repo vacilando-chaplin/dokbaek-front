@@ -25,7 +25,7 @@ const NaverLogin = () => {
         fill="#ffffff"
         className="absolute left-4"
       />
-      <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">
+      <div className="typography-body2 font-medium text-static-white">
         네이버로 시작하기
       </div>
     </button>

@@ -18,9 +18,7 @@ const HelperText = ({ type, text }: HelperTextProps) => {
   };
 
   return (
-    <label
-      className={`text-caption1 font-regular leading-caption1 tracking-caption1 ${typeStyle[type]}`}
-    >
+    <label className={`typography-caption1 font-regular ${typeStyle[type]}`}>
       {text}
     </label>
   );

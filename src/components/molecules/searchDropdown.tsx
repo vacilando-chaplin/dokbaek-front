@@ -43,10 +43,10 @@ const SearchDropdown = ({
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
-        className={`${sizeStyle[size]} flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light`}
+        className={`${sizeStyle[size]} interaction-default flex h-10 w-full flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light`}
       >
         <input
-          className={`w-full text-body3 leading-body3 tracking-body3 text-content-primary-light outline-none placeholder:text-content-alternative-light`}
+          className={`typography-body3 w-full text-content-primary-light outline-none placeholder:text-content-alternative-light`}
           type="text"
           name={name}
           placeholder={placeholder}
@@ -57,7 +57,7 @@ const SearchDropdown = ({
         />
         <button
           type="button"
-          className={`ml-auto flex transition-all duration-100 ease-linear ${active && "rotate-180 transform"}`}
+          className={`interaction-default ml-auto flex ${active && "rotate-180 transform"}`}
           onClick={() => onActive(name, active)}
         >
           <ArrowTriangleDown width="16" height="16" fill="#212529" />
@@ -66,12 +66,12 @@ const SearchDropdown = ({
       {helperText && <HelperText type="info" text={helperText} />}
       {active &&
         (isEmpty ? (
-          <div className="absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 text-body3 font-normal leading-body3 tracking-body3 text-gray-300 shadow-low transition-all duration-100 ease-linear">
+          <div className="interaction-default typography-body3 absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 font-normal text-gray-300 shadow-low">
             <label>일치하는 항목이 없습니다.</label>
           </div>
         ) : (
           <ul
-            className={`scrollbar absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low transition-all duration-100 ease-linear ${sizeStyle[size]}`}
+            className={`scrollbar interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low ${sizeStyle[size]}`}
           >
             {list.map((item: string, index: number) => {
               return (

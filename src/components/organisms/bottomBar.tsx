@@ -16,7 +16,7 @@ const BottomBar = ({ disabled, onBack, onSave }: BottomBarProps) => {
           <ArrowDirectionLeft width="14" height="14" fill="#212529" />
           돌아가기
         </BoxButton>
-        <label className="flex items-center gap-1 text-caption1 font-medium leading-caption1 tracking-caption1 text-state-positive-light">
+        <label className="typography-caption1 flex items-center gap-1 font-medium text-state-positive-light">
           <Check width="12" height="12" fill="#01C043" />
           저장되었어요.
         </label>

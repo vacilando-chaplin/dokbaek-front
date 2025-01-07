@@ -9,7 +9,7 @@ interface PhotoFrameProps {
 const PhotoFrame = ({ style, onClick, onChange }: PhotoFrameProps) => {
   return (
     <label
-      className={`flex ${style} cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-default-light bg-gray-50 text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light`}
+      className={`flex ${style} typography-caption1 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-default-light bg-gray-50 font-medium text-content-tertiary-light`}
     >
       <input
         id="upload"

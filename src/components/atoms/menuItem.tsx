@@ -7,7 +7,7 @@ interface MenuItemProps {
 const MenuItem = ({ name, active, onClick }: MenuItemProps) => {
   return (
     <button
-      className={`flex h-auto w-full rounded-lg px-3 py-4 text-body2 leading-[21px] tracking-body2 outline-none ${active ? "bg-accent-light-light font-semibold text-accent-primary-light" : "font-normal text-content-secondary-light"}`}
+      className={`typography-body2 flex h-auto w-full rounded-lg px-3 py-4 outline-none ${active ? "bg-accent-light-light font-semibold text-accent-primary-light" : "font-normal text-content-secondary-light"}`}
       type="button"
       onClick={onClick}
     >
