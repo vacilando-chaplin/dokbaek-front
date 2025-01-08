@@ -1,4 +1,4 @@
-import InputWithLabel from "../molecules/inputWithLabel";
+import TextInput from "../atoms/textInput";
 
 interface VideoModalSubProps {
   videoInputs: string;
@@ -12,14 +12,14 @@ const VideoModalSub = ({
   return (
     <div className="flex h-auto w-full gap-4 bg-background-surface-light p-6">
       <div className="flex h-auto w-full flex-row gap-4">
-        <InputWithLabel
-          label="영상 링크"
+        <TextInput
           type="link"
-          maxLength={300}
+          size="medium"
           name="link"
-          placeholder="유튜브 링크를 입력해주세요."
-          value={videoInputs}
           icon="youtube"
+          value={videoInputs}
+          maxLength={300}
+          placeholder="유튜브 링크를 입력해주세요."
           onChange={onVideoInputChange}
         />
       </div>

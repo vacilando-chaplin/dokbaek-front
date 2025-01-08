@@ -14,6 +14,11 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))"
       },
+      screens: {
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+      },
       // toast enter and leave animation
       animation: {
         enter: "enter 300ms ease-out",
@@ -44,9 +49,9 @@ const config: Config = {
       // shadow
       boxShadow: {
         low: "0 4px 16px 0 rgba(0, 0, 0, 0.1)",
-        modal: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
-        header: "0 0 8px 0 rgba(0, 0, 0, 0.1)",
-        footer: "0 4px 16px 0 rgba(0, 0, 0, 0.1)"
+        medium: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
+        high: "0 12px 40px 0 rgba(0, 0, 0, 0.2)",
+        drop: "0 0 8px 0 rgba(0, 0, 0, 0.1)"
       },
       // Pretendard font 추가
       fontFamily: {
@@ -78,6 +83,7 @@ const config: Config = {
         caption2: "-0.01em"
       },
       fontWeight: {
+        bold: "700",
         semibold: "600",
         medium: "500",
         regular: "400"
@@ -100,6 +106,20 @@ const config: Config = {
       static: {
         white: "#ffffff",
         black: "#000000"
+      },
+      hover: {
+        primary: "#405EDE",
+        primaryOutlined: "rgba(71, 105, 247, 0.05)",
+        secondaryOutlined: "#F5F5F5",
+        negative: "#DB3F36",
+        chip: "#F2F2F2"
+      },
+      pressed: {
+        primary: "#3853C4",
+        primaryOutlined: "rgba(71, 105, 247, 0.1)",
+        secondaryOutlined: "#EBEBEB",
+        negative: "#C23830",
+        chip: "#E6E6E6"
       },
       gray: {
         50: "#F8F9FA",
@@ -168,6 +188,7 @@ const config: Config = {
         900: "#BB5500"
       },
       background: {
+      
         base: {
           light: "#F8F9FA",
           dark: "#171719"
@@ -189,8 +210,8 @@ const config: Config = {
           dark: "#F8F9FA"
         },
         scrim: {
-          light: "#00000066",
-          dark: "#000000CC"
+          light: "rgba(0, 0, 0, 0.4)",
+          dark: "rgba(0, 0, 0, 0.8)"
         }
       },
       border: {

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  getUser,
   kakaoAuthLogin,
   naverAuthLogin,
   googleAuthLogin,
@@ -13,7 +12,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useSetToken } from "@/hooks/hooks";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import Check from "../../../../public/icons/Check.svg";
 
 const Callback = () => {
   const router = useRouter();
@@ -24,13 +24,13 @@ const Callback = () => {
   const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
   const [googleToken, setGoogleToken] = useState<GoogleDataType>();
-  
+
   const generateDeviceId = (): string => {
-    return uuidv4()
-  }
-  
+    return uuidv4();
+  };
+
   const deviceId = generateDeviceId();
-  
+
   const setDeviceIdInCookie = () => {
     if (typeof window !== "undefined") {
       const expirationDate = new Date();
@@ -123,22 +123,9 @@ const Callback = () => {
   }, [naverToken, kakaoToken, googleToken]);
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col items-center justify-center gap-10">
       <div className="flex flex-col items-center gap-2">
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M22.2236 5.3098C22.6048 5.70945 22.5898 6.34244 22.1902 6.72362L8.86639 19.432L1.75865 11.5802C1.388 11.1708 1.41946 10.5384 1.8289 10.1677C2.23835 9.79709 2.87073 9.82854 3.24137 10.238L8.97146 16.568L20.8098 5.27638C21.2095 4.8952 21.8424 4.91016 22.2236 5.3098Z"
-            fill="#01C043"
-          />
-        </svg>
+        <Check width="40" height="40" fill="#01C043" />
         <div className="flex flex-col items-center text-heading3 font-semibold leading-heading3 tracking-heading3 text-content-primary-light">
           <p>{form} 계정으로</p>
           <p>회원가입이 완료되었어요.</p>
@@ -149,7 +136,7 @@ const Callback = () => {
       </div>
       <button
         type="button"
-        className="flex h-auto w-auto items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5"
+        className="flex h-auto w-[134px] items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5 transition-all duration-100 ease-linear hover:bg-hover-primary active:bg-pressed-primary"
         onClick={onClick}
       >
         <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">

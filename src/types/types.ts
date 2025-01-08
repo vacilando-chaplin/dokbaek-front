@@ -10,6 +10,13 @@ export interface StepperType {
   path: string;
 }
 
+export interface sizeStyleType {
+  large: string;
+  medium: string;
+  small: string;
+  [key: string]: string;
+}
+
 export interface ProfileResponseType {
   id: number;
   userId: number;
@@ -384,4 +391,11 @@ export interface SignOutRequestType {
 export interface RefreshRequestType {
   refreshToken: string;
   deviceId: string;
+}
+export interface recentProfile {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  bornYear: number;
 }

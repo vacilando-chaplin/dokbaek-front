@@ -1,9 +1,10 @@
 import { FilmoResponseType } from "@/types/types";
-import CreateButton from "../atoms/createButton";
 import EmptyBox from "../atoms/emptyBox";
-import RepresentativeButton from "../atoms/representiveButton";
 import Title from "../atoms/title";
 import FilmoItem from "../molecules/filmoItem";
+import BoxButton from "../atoms/boxButton";
+import InfoCircle from "../../../public/icons/InfoCircle.svg";
+import Plus from "../../../public/icons/Plus.svg";
 
 interface FilmographyMainProps {
   filmoList: FilmoResponseType[];
@@ -53,23 +54,40 @@ const FilmographyMain = ({
           <div className="flex items-center gap-1">
             {filmoList.length >= 1 &&
               (filmoRepresentActive ? (
-                <RepresentativeButton text="취소" onActive={onFilmoRepCancel} />
+                <BoxButton
+                  type="secondaryOutlined"
+                  size="small"
+                  onClick={onFilmoRepCancel}
+                >
+                  취소
+                </BoxButton>
               ) : (
-                <RepresentativeButton
-                  icon={true}
-                  text="대표작 설정"
-                  onActive={onFilmoRepActive}
-                />
+                <BoxButton
+                  type="secondaryOutlined"
+                  size="small"
+                  onClick={onFilmoRepActive}
+                >
+                  대표작 설정
+                  <InfoCircle width="12" height="12" fill="#868E96" />
+                </BoxButton>
               ))}
             {filmoRepresentActive ? (
-              <button
-                className="flex h-auto w-auto flex-row items-center gap-1 rounded-[10px] border border-accent-primary-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-accent-primary-light"
+              <BoxButton
+                type="primaryOutlined"
+                size="small"
                 onClick={onFilmoRepSave}
               >
                 완료
-              </button>
+              </BoxButton>
             ) : (
-              <CreateButton onClick={onFilmoModalOpen} />
+              <BoxButton
+                type="primaryOutlined"
+                size="small"
+                onClick={onFilmoModalOpen}
+              >
+                <Plus width="12" height="12" fill="#1E85EF" />
+                추가
+              </BoxButton>
             )}
           </div>
         </div>

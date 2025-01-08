@@ -1,16 +1,14 @@
-import Image from "next/image";
 import LogoHorizontal from "../../../public/icons/LogoHorizontal.svg";
 import Link from "next/link";
 
 interface LogoProps {
-  name: string;
   href: string;
 }
 
-const Logo = ({ name, href }: LogoProps) => {
+const Logo = ({ href }: LogoProps) => {
   return (
     <Link href={href} className="outline-none">
-      <Image src={LogoHorizontal} alt={name} priority />
+      <LogoHorizontal width="96" height="20" />
     </Link>
   );
 };
