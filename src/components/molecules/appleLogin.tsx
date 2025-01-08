@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Apple from "../../../public/icons/Apple.svg";
 
 const appleLogin = () => {
   const router = useRouter();
@@ -21,11 +22,17 @@ const appleLogin = () => {
   return (
     <button
       type="button"
-      className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-[#c0c0c0] px-6 py-3"
+      className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-content-primary-light px-6 py-3"
       onClick={onappleLogin}
     >
+      <Apple
+        width="16"
+        height="16"
+        fill="#ffffff"
+        className="absolute left-4"
+      />
       <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-white">
-        애플로 시작하기
+        Apple로 시작하기
       </div>
     </button>
   );

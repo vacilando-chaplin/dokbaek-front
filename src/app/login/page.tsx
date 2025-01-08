@@ -40,8 +40,8 @@ const Login = () => {
       <div className="flex h-auto w-full flex-col gap-2">
         <KakaoLogin />
         <NaverLogin />
-        <GoogleLogin />
         <AppleLogin />
+        <GoogleLogin />
       </div>
     </main>
   );
