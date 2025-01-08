@@ -85,8 +85,6 @@ const Filmography = () => {
     getFilmoRoleList();
   }, []);
 
-  console.log(filmoModal);
-
   // 필모그래피 모달 필모그래피 추가
   const onFilmographySave = async () => {
     const roleId = filmoRoleList.findIndex(

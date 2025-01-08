@@ -36,14 +36,35 @@ body {
   }
 
   /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* scrollbar */
+  .scrollbar {
+    overflow: auto;
+  }
+  .scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollbar::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    width: 20px;
+  }
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background-color: #d9d9d9;
+    background-clip: padding-box;
+  }
+  .scrollbar::-webkit-scrollbar-track {
+    background-color: #ffffff;
+  }
+
+  /* youtube */
   .iframe-border {
     border-radius: 16px;
   }
