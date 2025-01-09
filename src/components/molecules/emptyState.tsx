@@ -4,14 +4,16 @@ import Plus from "../../../public/icons/Plus.svg";
 
 interface EmptyStateProps {
   text: string;
+  button?: boolean;
   buttonText: string;
   buttonType: string;
   icon?: boolean;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const EmptyState = ({
   text,
+  button,
   buttonText,
   buttonType,
   icon,
@@ -26,10 +28,12 @@ const EmptyState = ({
             {text}
           </label>
         </div>
-        <BoxButton type={buttonType} size="medium" onClick={onClick}>
-          <Plus width="12" height="12" fill="#212529" />
-          {buttonText}
-        </BoxButton>
+        {button && (
+          <BoxButton type={buttonType} size="medium" onClick={onClick}>
+            <Plus width="12" height="12" fill="#212529" />
+            {buttonText}
+          </BoxButton>
+        )}
       </div>
     </div>
   );
