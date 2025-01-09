@@ -1,7 +1,7 @@
 import { VideoModalType } from "@/types/types";
-import ModalBottom from "../molecules/modalBottom";
-import ModalTop from "../molecules/modalTop";
-import VideoModalSub from "./videoModalSub";
+import ModalHeader from "../molecules/modalHeader";
+import ModalFooter from "../molecules/modalFooter";
+import VideoModalContents from "../molecules/videoModalContents";
 
 interface VideoModalProps {
   videoInputs: string;
@@ -26,12 +26,12 @@ const VideoModal = ({
   return (
     <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
       <div className="interaction-default relative flex h-auto w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-static-white shadow-medium">
-        <ModalTop name={videoModal.name} onClick={onVideoModalClose} />
-        <VideoModalSub
+        <ModalHeader name={videoModal.name} onClick={onVideoModalClose} />
+        <VideoModalContents
           videoInputs={videoInputs}
           onVideoInputChange={onVideoInputChange}
         />
-        <ModalBottom
+        <ModalFooter
           text={videoModal.buttonText}
           disabled={!disabled}
           onCloseClick={onVideoModalClose}

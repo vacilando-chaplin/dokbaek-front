@@ -9,9 +9,9 @@ import {
   postFilmographyThumbnail,
   putFilmography
 } from "@/app/api/route";
-import FilmographyDeleteModal from "@/components/organisms/filmographyDeleteModal";
-import FilmographyMain from "@/components/organisms/filmographyMain";
-import FilmographyModal from "@/components/organisms/filmographyModal";
+import ConfirmModal from "@/components/organisms/confirmModal";
+import FilmoMain from "@/components/organisms/filmoMain";
+import FilmoModal from "@/components/organisms/filmoModal";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
@@ -383,7 +383,7 @@ const Filmography = () => {
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
-      <FilmographyMain
+      <FilmoMain
         filmoList={filmoList}
         filmoRepEditList={filmoRepEditList}
         categoryList={categoryList}
@@ -399,7 +399,7 @@ const Filmography = () => {
         onLinkModalOpen={onLinkModalOpen}
       />
       {filmoModal.active && (
-        <FilmographyModal
+        <FilmoModal
           filmoInputs={filmoInputs}
           filmoActives={filmoActives}
           filmoModal={filmoModal}
@@ -414,9 +414,11 @@ const Filmography = () => {
         />
       )}
       {filmoDelete.active && (
-        <FilmographyDeleteModal
+        <ConfirmModal
+          dense={false}
+          resizing="fixed"
           onCancel={onFilmoDeleteModalClose}
-          onDelete={onFilmoDeleteClick}
+          onConfirm={onFilmoDeleteClick}
         />
       )}
       {linkModal.active && (
