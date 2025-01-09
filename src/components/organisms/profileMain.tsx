@@ -4,7 +4,6 @@ import { EducationType, InfoResponseType } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import ProfileEmpty from "../atoms/profileEmpty";
 import { educationEngList, educationList } from "@/data/data";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/data/atom";
@@ -13,6 +12,7 @@ import Plus from "../../../public/icons/Plus.svg";
 import Download from "../../../public/icons/Download.svg";
 import Copy from "../../../public/icons/Copy.svg";
 import Edit from "../../../public/icons/Edit.svg";
+import EmptyState from "../molecules/emptyState";
 
 interface ProfileMainProps {
   linear: string;
@@ -177,7 +177,12 @@ const ProfileMain = ({
         </div>
       ) : (
         <div className="flex h-auto w-full items-center justify-center gap-2 rounded-2xl border border-gray-100 bg-gray-50 py-16">
-          <ProfileEmpty text="정보가 없어요." />
+          <EmptyState
+            text="정보가 없어요."
+            button={false}
+            buttonText=""
+            buttonType=""
+          />
         </div>
       )}
       {introduction && (

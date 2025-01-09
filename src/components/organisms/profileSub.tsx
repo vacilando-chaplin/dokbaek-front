@@ -128,6 +128,7 @@ const ProfileSub = ({
         ) : (
           <EmptyState
             text="사진이 없어요."
+            button
             buttonText="사진 추가"
             buttonType="secondaryOutlined"
             onClick={() => {
@@ -197,6 +198,7 @@ const ProfileSub = ({
         {filmographyList.length === 0 && (
           <EmptyState
             text="작품 활동이 없어요."
+            button
             buttonText="작품 활동 추가"
             buttonType="secondaryOutlined"
             onClick={() => {
@@ -219,6 +221,7 @@ const ProfileSub = ({
         ) : (
           <EmptyState
             text="영상이 없어요."
+            button
             buttonText="영상 추가"
             buttonType="secondaryOutlined"
             onClick={() => {
