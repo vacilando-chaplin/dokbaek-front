@@ -6,7 +6,7 @@ import BoxButton from "../atoms/boxButton";
 import InfoCircle from "../../../public/icons/InfoCircle.svg";
 import Plus from "../../../public/icons/Plus.svg";
 
-interface FilmographyMainProps {
+interface FilmoMainProps {
   filmoList: FilmoResponseType[];
   filmoRepEditList: FilmoResponseType[];
   categoryList: string[];
@@ -22,7 +22,7 @@ interface FilmographyMainProps {
   onLinkModalOpen: (link: string) => void;
 }
 
-const FilmographyMain = ({
+const FilmoMain = ({
   filmoList,
   filmoRepEditList,
   categoryList,
@@ -36,7 +36,7 @@ const FilmographyMain = ({
   onFilmoDeleteModalOpen,
   onFilmoRepCheck,
   onLinkModalOpen
-}: FilmographyMainProps) => {
+}: FilmoMainProps) => {
   const repFilmoList = filmoList.filter(
     (filmo: FilmoResponseType) => filmo.is_featured === true
   );
@@ -173,4 +173,4 @@ const FilmographyMain = ({
   );
 };
 
-export default FilmographyMain;
+export default FilmoMain;

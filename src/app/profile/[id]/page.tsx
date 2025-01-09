@@ -6,7 +6,6 @@ import {
   getFilmoRoles,
   getProfile
 } from "@/app/api/route";
-import ProfileFilmographyModal from "@/components/organisms/profileFilmographyModal";
 import LinkModal from "@/components/organisms/linkModal";
 import ProfileMain from "@/components/organisms/profileMain";
 import ProfilePhotoModal from "@/components/organisms/profilePhotoModal";
@@ -31,6 +30,7 @@ import {
 } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import ProfileFilmoModal from "@/components/organisms/profileFilmoModal";
 
 const Profile = () => {
   const userId = useRecoilValue(defaultId);
@@ -157,7 +157,7 @@ const Profile = () => {
         />
       )}
       {profileModal.state === "filmo" && profileModal.active && (
-        <ProfileFilmographyModal
+        <ProfileFilmoModal
           filmoList={profileData?.filmos}
           categoryList={categoryList}
           onFilmoModalActive={onFilmoModalActive}

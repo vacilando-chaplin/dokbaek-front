@@ -1,14 +1,14 @@
 import TextInput from "../atoms/textInput";
 
-interface VideoModalSubProps {
+interface VideoModalContentsProps {
   videoInputs: string;
   onVideoInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const VideoModalSub = ({
+const VideoModalContents = ({
   videoInputs,
   onVideoInputChange
-}: VideoModalSubProps) => {
+}: VideoModalContentsProps) => {
   return (
     <div className="flex h-auto w-full gap-4 bg-background-surface-light p-6">
       <div className="flex h-auto w-full flex-row gap-4">
@@ -27,4 +27,4 @@ const VideoModalSub = ({
   );
 };
 
-export default VideoModalSub;
+export default VideoModalContents;
