@@ -1,5 +1,5 @@
 import { FilmoResponseType } from "@/types/types";
-import EmptyBox from "../atoms/emptyBox";
+import EmptyFrame from "../atoms/emptyFrame";
 import Title from "../atoms/title";
 import FilmoItem from "../molecules/filmoItem";
 import BoxButton from "../atoms/boxButton";
@@ -167,7 +167,7 @@ const FilmoMain = ({
           );
         })
       ) : (
-        <EmptyBox text="작품 활동을 추가해주세요." />
+        <EmptyFrame text="작품 활동을 추가해주세요." />
       )}
     </section>
   );

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import EmptyBox from "../atoms/emptyBox";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 import { PhotoResponseType } from "@/types/types";
@@ -7,6 +6,7 @@ import Plus from "../../../public/icons/Plus.svg";
 import Check from "../../../public/icons/Check.svg";
 import Edit from "../../../public/icons/Edit.svg";
 import X from "../../../public/icons/X.svg";
+import EmptyFrame from "../atoms/emptyFrame";
 
 interface PhotoMainProps {
   photoList: PhotoResponseType[];
@@ -139,7 +139,7 @@ const PhotoMain = ({
           })}
         </div>
       ) : (
-        <EmptyBox text="사진을 추가해주세요." />
+        <EmptyFrame text="사진을 추가해주세요." />
       )}
     </section>
   );
