@@ -1,9 +1,9 @@
 import { FilmoActiveType, FilmoInputType, FilmoModalType } from "@/types/types";
-import ModalBottom from "../molecules/modalBottom";
-import ModalTop from "../molecules/modalTop";
-import FilmographySub from "./filmographySub";
+import ModalHeader from "../molecules/modalHeader";
+import ModalFooter from "../molecules/modalFooter";
+import FilmoModalContents from "./filmoModalContents";
 
-interface FilmographyModalProps {
+interface FilmoModalProps {
   filmoInputs: FilmoInputType;
   filmoActives: FilmoActiveType;
   filmoModal: FilmoModalType;
@@ -17,7 +17,7 @@ interface FilmographyModalProps {
   onFilmographyEdit: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const FilmographyModal = ({
+const FilmoModal = ({
   filmoInputs,
   filmoActives,
   filmoModal,
@@ -29,12 +29,12 @@ const FilmographyModal = ({
   onSelectThumbnail,
   onFilmographySave,
   onFilmographyEdit
-}: FilmographyModalProps) => {
+}: FilmoModalProps) => {
   return (
     <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
-      <div className="shadow-medium relative flex max-h-[80vh] w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-static-white transition-all duration-100 ease-linear">
-        <ModalTop name={filmoModal.name} onClick={onFilmoModalClose} />
-        <FilmographySub
+      <div className="interaction-default relative my-[80px] flex w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-static-white shadow-medium">
+        <ModalHeader name={filmoModal.name} onClick={onFilmoModalClose} />
+        <FilmoModalContents
           filmoInputs={filmoInputs}
           filmoActives={filmoActives}
           onFilmoInputChange={onFilmoInputChange}
@@ -43,7 +43,7 @@ const FilmographyModal = ({
           onFilmoDropdownClick={onFilmoDropdownClick}
           onSelectThumbnail={onSelectThumbnail}
         />
-        <ModalBottom
+        <ModalFooter
           text={filmoModal.buttonText}
           disabled={
             filmoInputs.classification.length === 0 ||
@@ -59,4 +59,4 @@ const FilmographyModal = ({
   );
 };
 
-export default FilmographyModal;
+export default FilmoModal;

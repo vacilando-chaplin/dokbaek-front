@@ -8,7 +8,7 @@ import SelectDropdown from "../molecules/selectDropdown";
 import SearchDropdown from "../molecules/searchDropdown";
 import TextInput from "../atoms/textInput";
 
-interface FilmographySubProps {
+interface FilmoModalContentsProps {
   filmoInputs: FilmoInputType;
   filmoActives: FilmoActiveType;
   onFilmoInputChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -18,7 +18,7 @@ interface FilmographySubProps {
   onSelectThumbnail: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FilmographySub = ({
+const FilmoModalContents = ({
   filmoInputs,
   filmoActives,
   onFilmoInputChange,
@@ -26,7 +26,7 @@ const FilmographySub = ({
   onFilmoDropdownActive,
   onFilmoDropdownClick,
   onSelectThumbnail
-}: FilmographySubProps) => {
+}: FilmoModalContentsProps) => {
   const {
     classification,
     production,
@@ -40,7 +40,7 @@ const FilmographySub = ({
   } = filmoInputs;
 
   return (
-    <div className="no-scrollbar flex h-auto w-full gap-4 overflow-auto bg-background-surface-light p-6">
+    <div className="scrollbar flex h-auto w-full gap-4 overflow-auto bg-background-surface-light p-6">
       <div className="flex h-auto w-full flex-col gap-4">
         <div className="flex w-full flex-col">
           <Label label="분류" required />
@@ -152,7 +152,7 @@ const FilmographySub = ({
             />
           </div>
         </div>
-        <div className="flex h-auto w-full flex-col pb-6">
+        <div className="flex h-auto w-full flex-col">
           <Label label="썸네일 이미지" />
           {thumbnail ? (
             <Image
@@ -175,4 +175,4 @@ const FilmographySub = ({
   );
 };
 
-export default FilmographySub;
+export default FilmoModalContents;

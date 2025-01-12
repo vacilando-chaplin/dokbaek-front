@@ -1,5 +1,4 @@
 import Image from "next/image";
-import EmptyBox from "../atoms/emptyBox";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 import { PhotoResponseType } from "@/types/types";
@@ -7,6 +6,7 @@ import Plus from "../../../public/icons/Plus.svg";
 import Check from "../../../public/icons/Check.svg";
 import Edit from "../../../public/icons/Edit.svg";
 import X from "../../../public/icons/X.svg";
+import EmptyFrame from "../atoms/emptyFrame";
 
 interface PhotoMainProps {
   photoList: PhotoResponseType[];
@@ -44,7 +44,7 @@ const PhotoMain = ({
       <div className="flex w-full flex-row justify-between">
         <Title name="사진" />
         <div className="flex items-center gap-1">
-          <label className="flex h-auto w-auto cursor-pointer flex-row items-center gap-1 rounded-[10px] border border-accent-primary-light bg-background-surface-light px-3 py-[7px] text-body3 font-medium leading-body3 tracking-body3 text-accent-primary-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined">
+          <label className="typography-body3 flex h-auto w-auto cursor-pointer flex-row items-center gap-1 rounded-[10px] border border-accent-primary-light bg-background-surface-light px-3 py-[7px] font-medium text-accent-primary-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined">
             <input
               type="file"
               accept="image/*"
@@ -74,7 +74,7 @@ const PhotoMain = ({
                   className="rounded-lg"
                 />
                 {photoRepActive === false && photoItem.isDefault && (
-                  <label className="absolute left-2 top-2 flex h-auto w-auto items-center justify-center rounded-full border border-border-default_inverse-light bg-accent-primary-light px-1.5 py-0.5 text-caption2 font-semibold leading-caption2 tracking-caption2 text-content-on_color-light">
+                  <label className="typography-caption2 absolute left-2 top-2 flex h-auto w-auto items-center justify-center rounded-full border border-border-default_inverse-light bg-accent-primary-light px-1.5 py-0.5 font-semibold text-content-on_color-light">
                     대표
                   </label>
                 )}
@@ -90,7 +90,7 @@ const PhotoMain = ({
                         onClick={() => onPhotoRepCheck(photoItem)}
                       />
                       <div
-                        className={`flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded transition-all duration-100 ease-linear ${repPhoto.id === photoItem.id ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                        className={`interaction-default flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded ${repPhoto.id === photoItem.id ? "bg-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
                       >
                         <Check
                           width="14"
@@ -102,7 +102,7 @@ const PhotoMain = ({
                       </div>
                       <label
                         htmlFor="custom-checkbox"
-                        className="select-none text-body2 font-regular leading-body2 tracking-body2"
+                        className="typography-body2 select-none font-regular"
                       />
                     </div>
                   </div>
@@ -139,7 +139,7 @@ const PhotoMain = ({
           })}
         </div>
       ) : (
-        <EmptyBox text="사진을 추가해주세요." />
+        <EmptyFrame text="사진을 추가해주세요." />
       )}
     </section>
   );

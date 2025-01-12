@@ -2,33 +2,32 @@
 
 import { stepperList } from "@/data/data";
 import { StepperType } from "@/types/types";
-import MenuItem from "../atoms/menuItem";
 import { usePathname } from "next/navigation";
+import ListItem from "../atoms/listItem";
 
-interface SideMenuProps {
+interface ListMenuProps {
   onStepper: (index: number) => void;
 }
 
-const SideMenu = ({ onStepper }: SideMenuProps) => {
-  const steps = stepperList;
-
+const ListMenu = ({ onStepper }: ListMenuProps) => {
   const pathName = usePathname();
   const activePath = pathName?.split("/")[4];
 
   return (
     <aside className="sticky top-[104px] h-fit w-[200px] rounded-2xl bg-background-surface-light p-3">
-      {steps.map((step: StepperType, index: number) => {
+      {stepperList.map((step: StepperType, index: number) => {
         return (
-          <MenuItem
+          <ListItem
             key={step.id}
-            name={step.name}
             active={step.path === "/" + activePath}
             onClick={() => onStepper(index)}
-          />
+          >
+            {step.name}
+          </ListItem>
         );
       })}
     </aside>
   );
 };
 
-export default SideMenu;
+export default ListMenu;

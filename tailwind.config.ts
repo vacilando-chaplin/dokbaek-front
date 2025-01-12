@@ -15,16 +15,38 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))"
       },
       screens: {
-        sm: '640px',
-        md: '768px',
-        lg: '1024px',
+        sm: "640px",
+        md: "768px",
+        lg: "1024px"
       },
       // toast enter and leave animation
       animation: {
+        "toast-slide-down": "toastSlideDown 100ms ease-out forwards",
+        "toast-slide-up": "toastSlideUp 100ms ease-out forwards",
         enter: "enter 300ms ease-out",
         leave: "leave 300ms ease-in forwards"
       },
       keyframes: {
+        toastSlideDown: {
+          "0%": {
+            top: "0px",
+            opacity: "0.1"
+          },
+          "100%": {
+            top: "40px",
+            opacity: "1"
+          }
+        },
+        toastSlideUp: {
+          "0%": {
+            bottom: "0px",
+            opacity: "0.1"
+          },
+          "100%": {
+            bottom: "40px",
+            opacity: "1"
+          }
+        },
         enter: {
           "0%": {
             opacity: "0",
@@ -188,7 +210,6 @@ const config: Config = {
         900: "#BB5500"
       },
       background: {
-      
         base: {
           light: "#F8F9FA",
           dark: "#171719"

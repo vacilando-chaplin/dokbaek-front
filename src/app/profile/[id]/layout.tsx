@@ -1,7 +1,7 @@
 "use client";
 
 import Toast from "@/components/atoms/toast";
-import TopBar from "@/components/organisms/topBar";
+import TopNavigation from "@/components/organisms/topNavigation";
 import { toastMessage } from "@/data/atom";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -17,8 +17,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light">
-      {message && <Toast text={message} />}
-      <TopBar />
+      {message && (
+        <Toast text={message} kind="info" fullWidth={false} placement="top" />
+      )}
+      <TopNavigation />
       {children}
     </div>
   );

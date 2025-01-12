@@ -25,7 +25,7 @@ const KakaoLogin = () => {
         fill="#3C1E1E"
         className="absolute left-4"
       />
-      <div className="text-body2 font-medium leading-body2 tracking-body2 text-static-black">
+      <div className="typography-body2 font-medium text-static-black">
         카카오로 시작하기
       </div>
     </button>

@@ -85,16 +85,16 @@ const FilmoItem = ({
       <div className="flex h-full w-full flex-col justify-between">
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
-            <label className="text-caption1 font-medium leading-caption1 tracking-caption1 text-content-tertiary-light">
+            <label className="typography-caption1 font-medium text-content-tertiary-light">
               {production.productionYear >= 1
                 ? `${production.productionYear + " | " + production.category.name}`
                 : production.category.name}
             </label>
-            <label className="text-body1 font-semibold leading-body1 tracking-body1 text-content-primary-light">
+            <label className="typography-body1 font-semibold text-content-primary-light">
               {production.title}
             </label>
           </div>
-          <div className="flex h-auto w-full flex-col gap-0.5 text-caption1 font-normal leading-caption1 tracking-caption1 text-content-secondary-light">
+          <div className="typography-caption1 flex h-auto w-full flex-col gap-0.5 font-normal text-content-secondary-light">
             <label>
               {customRole && role.id === 4 ? customRole : role.name}{" "}
               {character && `'${character}'`}

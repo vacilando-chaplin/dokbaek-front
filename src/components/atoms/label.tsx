@@ -5,7 +5,7 @@ interface LabelProps {
 
 const Label = ({ label, required }: LabelProps) => {
   return (
-    <label className="flex h-auto w-full flex-row gap-0.5 pb-2 text-center text-body3 font-medium leading-body3 tracking-body3 text-content-secondary-light">
+    <label className="typography-body3 flex h-auto w-full flex-row gap-0.5 pb-2 text-center font-medium text-content-secondary-light">
       {label}
       {required && <label className="text-state-negative-light">*</label>}
     </label>

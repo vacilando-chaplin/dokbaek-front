@@ -6,7 +6,6 @@ import { Fragment, useState } from "react";
 import Title from "../atoms/title";
 import YoutubeVideo from "../atoms/youtubeVideo";
 import FilmoItem from "../molecules/filmoItem";
-import ProfileBox from "../molecules/profileBox";
 import {
   FilmoResponseType,
   PhotoResponseType,
@@ -15,6 +14,7 @@ import {
 import ArrowChevronLeft from "../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../public/icons/ArrowChevronRight.svg";
 import PlusCircle from "../../../public/icons/PlusCircle.svg";
+import EmptyState from "../molecules/emptyState";
 
 interface PropfileSubProps {
   linear: string;
@@ -114,7 +114,7 @@ const ProfileSub = ({
                         />
                         <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                           <PlusCircle width="20" height="20" fill="#ffffff" />
-                          <span className="text-body2 font-semibold leading-body2 tracking-body2">
+                          <span className="typography-body2 font-semibold">
                             크게 보기
                           </span>
                         </div>
@@ -126,9 +126,11 @@ const ProfileSub = ({
             </div>
           </div>
         ) : (
-          <ProfileBox
+          <EmptyState
             text="사진이 없어요."
+            button
             buttonText="사진 추가"
+            buttonType="secondaryOutlined"
             onClick={() => {
               router.prefetch(`/profile/${userId}/create/photo`);
               router.push(`/profile/${userId}/create/photo`);
@@ -147,7 +149,7 @@ const ProfileSub = ({
               className="flex gap-1 rounded"
               onClick={onFilmoModalActive}
             >
-              <span className="text-body2 font-medium leading-body2 tracking-body2 text-content-tertiary-light">
+              <span className="typography-body2 font-medium text-content-tertiary-light">
                 모두 보기
               </span>
             </button>
@@ -194,9 +196,11 @@ const ProfileSub = ({
           </div>
         )}
         {filmographyList.length === 0 && (
-          <ProfileBox
+          <EmptyState
             text="작품 활동이 없어요."
+            button
             buttonText="작품 활동 추가"
+            buttonType="secondaryOutlined"
             onClick={() => {
               router.prefetch(`/profile/${userId}/create/filmo`);
               router.push(`/profile/${userId}/create/filmo`);
@@ -215,9 +219,11 @@ const ProfileSub = ({
             })}
           </div>
         ) : (
-          <ProfileBox
+          <EmptyState
             text="영상이 없어요."
+            button
             buttonText="영상 추가"
+            buttonType="secondaryOutlined"
             onClick={() => {
               router.prefetch(`/profile/${userId}/create/video`);
               router.push(`/profile/${userId}/create/video`);

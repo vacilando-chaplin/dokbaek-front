@@ -1,11 +1,11 @@
 import { VideoResponseType } from "@/types/types";
-import EmptyBox from "../atoms/emptyBox";
 import Title from "../atoms/title";
 import DeleteModal from "../molecules/deleteModal";
 import Edit from "../../../public/icons/Edit.svg";
 import X from "../../../public/icons/X.svg";
 import Plus from "../../../public/icons/Plus.svg";
 import BoxButton from "../atoms/boxButton";
+import EmptyFrame from "../atoms/emptyFrame";
 
 interface VideoMainProps {
   videoList: VideoResponseType[];
@@ -100,7 +100,7 @@ const VideoMain = ({
             })}
           </div>
         ) : (
-          <EmptyBox text="영상을 추가해주세요." />
+          <EmptyFrame text="영상을 추가해주세요." />
         )}
       </div>
     </section>

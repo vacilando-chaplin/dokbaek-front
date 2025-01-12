@@ -1,12 +1,12 @@
 import Title from "../atoms/title";
 import X from "../../../public/icons/X.svg";
 
-interface ModalTopProps {
+interface ModalHeaderProps {
   name: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const ModalTop = ({ name, onClick }: ModalTopProps) => {
+const ModalHeader = ({ name, onClick }: ModalHeaderProps) => {
   return (
     <div className="flex h-auto w-full items-center justify-between gap-3 border-b-[1px] border-border-default-light p-6">
       <Title name={name} />
@@ -17,4 +17,4 @@ const ModalTop = ({ name, onClick }: ModalTopProps) => {
   );
 };
 
-export default ModalTop;
+export default ModalHeader;

@@ -30,16 +30,14 @@ const TextInput = ({
   onChange
 }: TextInputProps) => {
   const sizeStyle: sizeStyleType = {
-    large:
-      "h-[49px] text-body2 leading-body2 tracking-body2 gap-2 rounded-[14px] py-3.5 px-4",
-    medium:
-      "h-10 text-body3 leading-body3 tracking-body3 gap-2 rounded-xl py-[11px] px-3",
-    small: "h-7 text-body3 leading-body3 tracking-body3 gap-1 rounded-lg px-2"
+    large: "h-[49px] typography-body2 gap-2 rounded-[14px] py-3.5 px-4",
+    medium: "h-10 typography-body3 gap-2 rounded-xl py-[11px] px-3",
+    small: "h-7 typography-body3 gap-1 rounded-lg px-2"
   };
 
   return (
     <div
-      className={`flex w-full border border-border-default-light font-regular transition-all duration-100 ease-linear focus-within:border-border-active-light hover:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
+      className={`interaction-default flex w-full border border-border-default-light font-regular focus-within:border-border-active-light hover:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
     >
       {icon === "youtube" && <Youtube width="16" height="16" fill="#ADB5BD" />}
       {icon === "instagram" && (
@@ -60,7 +58,7 @@ const TextInput = ({
         <div className="text-content-secondary-light">{parameter}</div>
       )}
       {limit && (
-        <label className="text-[12px] text-[#787887]">
+        <label className="text-caption1 text-[#787887]">
           {value.length}/{maxLength}
         </label>
       )}

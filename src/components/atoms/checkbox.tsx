@@ -30,7 +30,7 @@ const Checkbox = ({ type, size, disabled, onChange }: CheckboxProps) => {
         onChange={onChange}
       />
       <span
-        className={`relative flex appearance-none items-center justify-center border-[1.5px] border-border-default-light transition-all duration-100 ease-linear hover:border-accent-primary-light focus:outline-none focus:ring-2 focus:ring-accent-primary-light peer-checked:border-accent-primary-light peer-checked:bg-accent-primary-light ${checkboxSize[size]} ${disabled && "border-border-disabled-light bg-background-disabled-light"}`}
+        className={`interaction-default relative flex appearance-none items-center justify-center border-[1.5px] border-border-default-light hover:border-accent-primary-light focus:outline-none focus:ring-2 focus:ring-accent-primary-light peer-checked:border-accent-primary-light peer-checked:bg-accent-primary-light ${checkboxSize[size]} ${disabled && "border-border-disabled-light bg-background-disabled-light"}`}
       >
         <Check
           width="14"

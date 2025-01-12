@@ -22,9 +22,9 @@ const TextButton = ({
   onClick
 }: TextButtonProps) => {
   const sizeStyle: sizeStyleType = {
-    large: "py-3 px-6 gap-2 text-body2 leading-body2 tracking-body2",
-    medium: "py-3 px-5 gap-1 text-body3 leading-body3 tracking-body3",
-    small: "py-[5px] px-3 gap-1 text-body3 leading-body3 tracking-body3"
+    large: "py-3 px-6 gap-2 typography-body2",
+    medium: "py-3 px-5 gap-1 typography-body3",
+    small: "py-[5px] px-3 gap-1 typography-body3"
   };
 
   const typeStyle: typeStyleType = {
@@ -37,7 +37,7 @@ const TextButton = ({
   return (
     <button
       type="button"
-      className={`flex h-auto w-auto items-center justify-center rounded-lg font-medium outline-none transition-all duration-100 ease-linear ${sizeStyle[size]} ${typeStyle[type]} ${disabled && "opacity-40"}`}
+      className={`interaction-default flex h-auto w-auto items-center justify-center rounded-lg font-medium outline-none ${sizeStyle[size]} ${typeStyle[type]} ${disabled && "opacity-40"}`}
       disabled={disabled}
       onClick={onClick}
     >

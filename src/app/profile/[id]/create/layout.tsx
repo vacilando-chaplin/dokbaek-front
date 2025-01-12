@@ -1,11 +1,10 @@
 "use client";
 
-import SideMenu from "@/components/molecules/sideMenu";
+import ListMenu from "@/components/molecules/listMenu";
 import BottomBar from "@/components/organisms/bottomBar";
 import { defaultId, stepperInit } from "@/data/atom";
 import { stepperList } from "@/data/data";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -32,7 +31,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
-      <SideMenu onStepper={onStepper} />
+      <ListMenu onStepper={onStepper} />
       {children}
       <BottomBar
         onBack={onBackProfileClick}

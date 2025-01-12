@@ -1,12 +1,12 @@
 import { FilmoResponseType } from "@/types/types";
-import EmptyBox from "../atoms/emptyBox";
+import EmptyFrame from "../atoms/emptyFrame";
 import Title from "../atoms/title";
 import FilmoItem from "../molecules/filmoItem";
 import BoxButton from "../atoms/boxButton";
 import InfoCircle from "../../../public/icons/InfoCircle.svg";
 import Plus from "../../../public/icons/Plus.svg";
 
-interface FilmographyMainProps {
+interface FilmoMainProps {
   filmoList: FilmoResponseType[];
   filmoRepEditList: FilmoResponseType[];
   categoryList: string[];
@@ -22,7 +22,7 @@ interface FilmographyMainProps {
   onLinkModalOpen: (link: string) => void;
 }
 
-const FilmographyMain = ({
+const FilmoMain = ({
   filmoList,
   filmoRepEditList,
   categoryList,
@@ -36,7 +36,7 @@ const FilmographyMain = ({
   onFilmoDeleteModalOpen,
   onFilmoRepCheck,
   onLinkModalOpen
-}: FilmographyMainProps) => {
+}: FilmoMainProps) => {
   const repFilmoList = filmoList.filter(
     (filmo: FilmoResponseType) => filmo.is_featured === true
   );
@@ -47,7 +47,7 @@ const FilmographyMain = ({
         <Title name="작품 활동" />
         <div className="flex flex-row items-center gap-4">
           {filmoRepresentActive && (
-            <label className="text-body2 font-medium leading-body2 tracking-body2 text-accent-primary-light">
+            <label className="typography-body2 font-medium text-accent-primary-light">
               프로필 메인에 표시할 대표작을 선택해주세요. (최대6개)
             </label>
           )}
@@ -97,7 +97,7 @@ const FilmographyMain = ({
         (filmo: FilmoResponseType) => filmo.is_featured === true
       ) >= 1 && (
         <div className="flex h-auto w-full flex-col gap-2">
-          <label className="text-body2 font-semibold leading-body2 tracking-body2 text-accent-primary-light">
+          <label className="typography-body2 font-semibold text-accent-primary-light">
             대표작
           </label>
           {repFilmoList.map((filmo: FilmoResponseType) => {
@@ -132,7 +132,7 @@ const FilmographyMain = ({
               className="flex h-auto w-full flex-col gap-2"
               key={category + index}
             >
-              <label className="text-body2 font-medium leading-body2 tracking-body2 text-content-secondary-light">
+              <label className="typography-body2 font-medium text-content-secondary-light">
                 {category}
               </label>
               {filmoRepresentActive
@@ -167,10 +167,10 @@ const FilmographyMain = ({
           );
         })
       ) : (
-        <EmptyBox text="작품 활동을 추가해주세요." />
+        <EmptyFrame text="작품 활동을 추가해주세요." />
       )}
     </section>
   );
 };
 
-export default FilmographyMain;
+export default FilmoMain;
