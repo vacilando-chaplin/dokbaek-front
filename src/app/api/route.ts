@@ -9,25 +9,10 @@ import Cookies from "js-cookie";
 
 const token = Cookies.get("jwt");
 
-// 배포
-
-// const api = axios.create({
-//   baseURL: "https://filogram.my/app/api",
-//   headers: {
-//     "Content-Type": "application/json",
-//     Authorization: `Bearer ${token}`
-//   },
-//   withCredentials: true
-// });
-
-// const baseURL = "https://filogram.my/app/api";
-
-// 개발
-
-const baseURL = "http://3.38.102.209:8080";
+const baseURL = process.env.NEXT_PUBLIC_BASEURL;
 
 const api = axios.create({
-  baseURL: "http://3.38.102.209:8080",
+  baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`
@@ -36,7 +21,7 @@ const api = axios.create({
 });
 
 const multipartAPI = axios.create({
-  baseURL: "http://3.38.102.209:8080",
+  baseURL: baseURL,
   headers: {
     "Content-Type": "multipart/form-data",
     Authorization: `Bearer ${token}`
@@ -140,7 +125,7 @@ export const naverAuthLogin = async (code: string) => {
         client_id: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
         client_secret: process.env.NEXT_PUBLIC_NAVER_CLIENT_SECRET,
         code: code,
-        redirect_uri: "http://localhost:3000/auth/callback",
+        redirect_uri: process.env.NEXT_PUBLIC_OAUTH_LOGIN_REDIRECT_URI,
         grant_type: "authorization_code"
       }
     });
