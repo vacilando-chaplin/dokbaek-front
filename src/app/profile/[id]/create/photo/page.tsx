@@ -7,14 +7,15 @@ import {
   patchPhotoDefault,
   postPhoto,
   postPhotoEdit
-} from "@/app/api/route";
-import PhotoMain from "@/components/organisms/photoMain";
-import PhotoModal from "@/components/organisms/photoModal";
-import { defaultId, toastMessage } from "@/data/atom";
-import { photoModalInit, photoResponseInit } from "@/data/data";
-import { PhotoModalType, PhotoResponseType } from "@/types/types";
+} from "@/lib/api";
+import { defaultId, toastMessage } from "@/lib/atoms";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import PhotoMain from "./components/photoMain";
+import PhotoModal from "./components/photoModal";
+import { PhotoModalType } from "./types";
+import { PhotoResponseType } from "@/lib/types";
+import { photoModalInit, photoResponseInit } from "./data";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);

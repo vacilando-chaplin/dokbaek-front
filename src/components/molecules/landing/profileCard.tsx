@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Profile from "../../../../public/images/samples/profile.png";
-import { recentProfile } from "@/types/types";
+import { recentProfile } from "@/lib/types";
 
 interface ProfileCardProps {
   profile: recentProfile;

@@ -1,4 +1,4 @@
-import { sizeStyleType } from "@/types/types";
+import { sizeStyleType } from "@/lib/types";
 import X from "../../../public/icons/X.svg";
 
 interface ChipsProps {

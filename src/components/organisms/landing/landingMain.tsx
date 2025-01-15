@@ -1,7 +1,7 @@
 import React from "react";
 import TextButton from "../../atoms/textButton";
 import ProfileCard from "../../molecules/landing/profileCard";
-import { recentProfile } from "@/types/types";
+import { recentProfile } from "@/lib/types";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 
 const profiles: recentProfile[] = [

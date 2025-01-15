@@ -1,6 +1,6 @@
 "use client";
 
-import { photoDragEnd } from "@/data/atom";
+import { photoDragEnd } from "@/lib/atoms";
 import { useEffect, useRef, useState } from "react";
 import {
   Coordinates,

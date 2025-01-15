@@ -1,4 +1,4 @@
-import { sizeStyleType } from "@/types/types";
+import { sizeStyleType } from "@/lib/types";
 import Check from "../../../public/icons/Check.svg";
 
 interface CheckboxProps {

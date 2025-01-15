@@ -1,17 +1,9 @@
 "use client";
 
-import {
-  deleteFilmography,
-  getFilmoCategories,
-  getFilmoRoles,
-  getProfile,
-  postFilmography,
-  postFilmographyThumbnail,
-  putFilmography
-} from "@/app/api/route";
+import { getFilmoCategories, getFilmoRoles, getProfile } from "@/lib/api";
 import ConfirmModal from "@/components/organisms/confirmModal";
-import FilmoMain from "@/components/organisms/filmoMain";
-import FilmoModal from "@/components/organisms/filmoModal";
+import FilmoMain from "./components/filmoMain";
+import FilmoModal from "./components/filmoModal";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
@@ -19,24 +11,30 @@ import {
   filmoCategory,
   filmoRole,
   toastMessage
-} from "@/data/atom";
+} from "@/lib/atoms";
+import {
+  FilmoCategoryType,
+  FilmoResponseType,
+  FilmoRoleType
+} from "@/lib/types";
+import { setOnlyNumber } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { FilmoDeleteType } from "./types";
+import { VideoLinkType } from "../types";
 import {
   filmoDeleteInit,
   filmographyActiveInit,
   filmographyInputInit,
-  filmoModalInit,
-  videoLinkInit
-} from "@/data/data";
+  filmoModalInit
+} from "./data";
+import { videoLinkInit } from "../../data";
 import {
-  FilmoCategoryType,
-  FilmoDeleteType,
-  FilmoResponseType,
-  FilmoRoleType,
-  VideoLinkType
-} from "@/types/types";
-import { setOnlyNumber } from "@/utils/utils";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+  deleteFilmography,
+  postFilmography,
+  postFilmographyThumbnail,
+  putFilmography
+} from "./api";
 
 const Filmography = () => {
   const userId = useRecoilValue(defaultId);
