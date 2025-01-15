@@ -1,18 +1,18 @@
 "use client";
 
-import { deleteVideo, getProfile, postVideo, putVideo } from "@/app/api/route";
+import { getProfile } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
-import VideoMain from "@/components/organisms/videoMain";
-import VideoModal from "@/components/organisms/videoModal";
-import { defaultId, toastMessage } from "@/data/atom";
-import { videoLinkInit, videoModalInit } from "@/data/data";
-import {
-  VideoLinkType,
-  VideoModalType,
-  VideoResponseType
-} from "@/types/types";
+import { defaultId, toastMessage } from "@/lib/atoms";
+import { VideoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import VideoMain from "./components/videoMain";
+import VideoModal from "./components/videoModal";
+import { VideoLinkType } from "../types";
+import { VideoModalType } from "./types";
+import { videoModalInit } from "./data";
+import { videoLinkInit } from "../../data";
+import { deleteVideo, postVideo, putVideo } from "./api";
 
 const Video = () => {
   const userId = useRecoilValue(defaultId);

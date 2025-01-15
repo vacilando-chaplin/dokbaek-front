@@ -1,4 +1,4 @@
-import { sizeStyleType } from "@/types/types";
+import { sizeStyleType } from "@/lib/types";
 import Youtube from "../../../public/icons/YouTube.svg";
 import Instagram from "../../../public/icons/Instagram.svg";
 

@@ -1,19 +1,19 @@
 "use client";
 
-import {
-  kakaoAuthLogin,
-  naverAuthLogin,
-  googleAuthLogin,
-  postSignUp
-} from "@/app/api/route";
-import { defaultId, loginForm } from "@/data/atom";
-import { KakaoDataType, NaverDataType, GoogleDataType } from "@/types/types";
+import { defaultId, loginForm } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useSetToken } from "@/hooks/hooks";
+import { useSetToken } from "@/lib/hooks";
 import { v4 as uuidv4 } from "uuid";
 import Check from "../../../../public/icons/Check.svg";
+import { GoogleDataType, KakaoDataType, NaverDataType } from "./types";
+import {
+  googleAuthLogin,
+  kakaoAuthLogin,
+  naverAuthLogin,
+  postSignUp
+} from "./api";
 
 const Callback = () => {
   const router = useRouter();

@@ -1,9 +1,8 @@
 "use client";
 
-import { FilmoResponseType } from "@/types/types";
+import { FilmoResponseType } from "@/lib/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Check from "../../../public/icons/Check.svg";
 import Edit from "../../../public/icons/Edit.svg";
 import X from "../../../public/icons/X.svg";
 import PlayCircle from "../../../public/icons/PlayCircle.svg";

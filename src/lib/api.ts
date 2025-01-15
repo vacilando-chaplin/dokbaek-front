@@ -1,0 +1,157 @@
+import { SignOutRequestType } from "@/lib/types";
+import { base64ToBlob } from "@/lib/utils";
+import axios from "axios";
+import { api, multipartAPI } from "./axiosInstance";
+
+export const convertImageToBase64 = async (imageUrl: string) => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: imageUrl,
+      responseType: "arraybuffer"
+    });
+    if (typeof window !== "undefined") {
+      // 브라우저 환경에서는 FileReader를 사용
+      const base64Image = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        const blob = new Blob([res.data]);
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+      return base64Image;
+    } else {
+      // Node.js 환경에서는 Buffer를 사용
+      const base64Image = Buffer.from(res.data, "binary").toString("base64");
+      return `data:image/jpeg;base64,${base64Image}`;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUser = async () => {
+  try {
+    const res = await api.get("/user");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteUser = async () => {
+  try {
+    const res = await api.delete("/user");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postSignOut = async (data: SignOutRequestType) => {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASEURL}/auth/signout`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getProfile = async (id: number) => {
+  try {
+    const res = await api.get(`/profile/${id}`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postPhoto = async (
+  id: number,
+  origin: string,
+  preview: string
+) => {
+  const formData = new FormData();
+
+  const imageOrigin = base64ToBlob(origin);
+  const imagePreview = base64ToBlob(preview);
+
+  formData.append("origin", imageOrigin);
+  formData.append("preview", imagePreview);
+
+  try {
+    const res = await multipartAPI.post(`/profile/${id}/photo`, formData);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postPhotoEdit = async (
+  id: number,
+  origin: string,
+  preview: string,
+  photoId: string
+) => {
+  const formData = new FormData();
+
+  const imageOrigin = base64ToBlob(origin);
+  const imagePreview = base64ToBlob(preview);
+
+  formData.append("origin", imageOrigin);
+  formData.append("preview", imagePreview);
+
+  try {
+    const res = await multipartAPI.post(
+      `/profile/${id}/photo/${photoId}`,
+      formData
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deletePhoto = async (id: number, photoId: string) => {
+  try {
+    const res = await api.delete(`/profile/${id}/photo/${photoId}`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const patchPhotoDefault = async (id: number, photoId: string) => {
+  try {
+    const res = await api.patch(`/profile/${id}/photo/${photoId}/default`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFilmoRoles = async () => {
+  try {
+    const res = await api.get("/filmo/roles");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFilmoCategories = async () => {
+  try {
+    const res = await api.get("/filmo/categories");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};

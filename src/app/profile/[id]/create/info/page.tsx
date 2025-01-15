@@ -1,21 +1,18 @@
 "use client";
 
-import { getProfile, getSchoolName, putInfo } from "@/app/api/route";
-import InfoMain from "@/components/organisms/infoMain";
-import InfoSub from "@/components/organisms/infoSub";
-import InfoThird from "@/components/organisms/infoThird";
-import { defaultId, stepperInit } from "@/data/atom";
-import {
-  educationEngList,
-  educationList,
-  infoActiveInit,
-  infoInputInit
-} from "@/data/data";
-import { useDebounce } from "@/hooks/hooks";
-import { InfoActiveType, InfoInputType, SchoolType } from "@/types/types";
-import { contactFormat, setOnlyNumber } from "@/utils/utils";
+import { getProfile } from "@/lib/api";
+import { defaultId, stepperInit } from "@/lib/atoms";
+import { educationEngList, educationList } from "@/lib/data";
+import { useDebounce } from "@/lib/hooks";
+import { contactFormat, setOnlyNumber } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import InfoMain from "./components/infoMain";
+import InfoSub from "./components/infoSub";
+import InfoThird from "./components/infoThird";
+import { InfoActiveType, InfoInputType, SchoolType } from "./types";
+import { infoActiveInit, infoInputInit } from "./data";
+import { getSchoolName, putInfo } from "./api";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
