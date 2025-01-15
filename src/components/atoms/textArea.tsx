@@ -1,4 +1,4 @@
-import { sizeStyleType } from "@/types/types";
+import { sizeStyleType } from "@/lib/types";
 
 interface TextAreaProps {
   size: string;

@@ -2,12 +2,12 @@
 
 import Logo from "../atoms/logo";
 import { useRouter } from "next/navigation";
-import { postSignOut } from "@/app/api/route";
+import { postSignOut } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { defaultId, loginForm } from "@/data/atom";
+import { defaultId, loginForm } from "@/lib/atoms";
 import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
 
@@ -16,6 +16,11 @@ const TopNavigation = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginForm);
   const userId = useRecoilValue(defaultId);
+
+  const onLogIn = () => {
+    router.prefetch("/login");
+    router.push("/login");
+  };
 
   const onLogOut = async () => {
     const refreshToken = Cookies.get("refresh_token");
@@ -67,8 +72,8 @@ const TopNavigation = () => {
             >
               배우 찾기
             </Link>
-            <BoxButton type="black" size="small" onClick={onLogOut}>
-              로그아웃
+            <BoxButton type="black" size="small" onClick={onLogIn}>
+              로그인
             </BoxButton>
           </div>
         )}

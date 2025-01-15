@@ -7,8 +7,8 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.prefetch("/login");
-    router.push("/login");
+    router.prefetch("/landing");
+    router.push("/landing");
   }, []);
   return <main className=""></main>;
 };

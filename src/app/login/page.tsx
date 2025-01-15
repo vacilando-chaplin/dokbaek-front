@@ -1,8 +1,8 @@
 "use client";
 
-import KakaoLogin from "@/components/molecules/kakaoLogin";
-import NaverLogin from "@/components/molecules/naverLogin";
-import GoogleLogin from "@/components/molecules/googleLogin";
+import KakaoLogin from "@/app/login/components/kakaoLogin";
+import NaverLogin from "@/app/login/components/naverLogin";
+import GoogleLogin from "@/app/login/components/googleLogin";
 import { useEffect } from "react";
 import LogoVertical from "../../../public/icons/LogoVertical.svg";
 

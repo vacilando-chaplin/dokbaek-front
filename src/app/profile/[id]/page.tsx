@@ -5,32 +5,28 @@ import {
   getFilmoCategories,
   getFilmoRoles,
   getProfile
-} from "@/app/api/route";
+} from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
-import ProfileMain from "@/components/organisms/profileMain";
-import ProfilePhotoModal from "@/components/organisms/profilePhotoModal";
-import ProfileSub from "@/components/organisms/profileSub";
 import {
   categoryData,
   defaultId,
   filmoCategory,
   filmoRole,
   stepperInit
-} from "@/data/atom";
-import {
-  profileInit,
-  profileModalInit,
-  selectedPhotoInit,
-  videoLinkInit
-} from "@/data/data";
+} from "@/lib/atoms";
+import { profileInit } from "@/lib/data";
 import {
   FilmoCategoryType,
   FilmoResponseType,
   PhotoResponseType
-} from "@/types/types";
+} from "@/lib/types";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import ProfileFilmoModal from "@/components/organisms/profileFilmoModal";
+import ProfileMain from "./components/profileMain";
+import ProfileSub from "./components/profileSub";
+import ProfilePhotoModal from "./components/profilePhotoModal";
+import ProfileFilmoModal from "./components/profileFilmoModal";
+import { profileModalInit, selectedPhotoInit, videoLinkInit } from "./data";
 
 const Profile = () => {
   const userId = useRecoilValue(defaultId);

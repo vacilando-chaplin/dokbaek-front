@@ -2,7 +2,7 @@
 
 import Toast from "@/components/atoms/toast";
 import TopNavigation from "@/components/organisms/topNavigation";
-import { toastMessage } from "@/data/atom";
+import { toastMessage } from "@/lib/atoms";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 

@@ -1,11 +1,11 @@
 "use client";
 
-import ListMenu from "@/components/molecules/listMenu";
-import BottomBar from "@/components/organisms/bottomBar";
-import { defaultId, stepperInit } from "@/data/atom";
-import { stepperList } from "@/data/data";
+import ListMenu from "@/app/profile/[id]/create/components/listMenu";
+import BottomBar from "@/app/profile/[id]/create/components/bottomBar";
+import { defaultId, stepperInit } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { stepperList } from "./data";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const userId = useRecoilValue(defaultId);

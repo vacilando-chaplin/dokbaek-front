@@ -1,4 +1,4 @@
-import { sizeStyleType } from "@/types/types";
+import { sizeStyleType } from "@/lib/types";
 import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
 import Option from "../atoms/option";
 import HelperText from "../atoms/helperText";
