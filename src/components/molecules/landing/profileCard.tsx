@@ -1,13 +1,18 @@
 import React from "react";
 import Image from "next/image";
 import Profile from "../../../../public/images/samples/profile.png";
-import { recentProfile } from "@/lib/types";
+import { ProfileShowcaseResponseType } from "@/app/landing/types";
 
 interface ProfileCardProps {
-  profile: recentProfile;
+  profile: ProfileShowcaseResponseType;
 }
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
+  const calculateKoreanAge = () => {
+    const currentYear = new Date().getFullYear();
+    return profile?.bornYear ? currentYear - profile?.bornYear + 1 : "-";
+  };
+
   return (
     <div className="rounded-[16px] border border-gray-100 bg-background-base-light p-4 sm:w-[calc(50%-6px)] md:w-[calc(33.33%-6px)] lg:w-[calc(25%-6px)]">
       <Image
@@ -25,7 +30,11 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           <span className="mx-1">·</span>
           {profile.weight}kg
           <span className="mx-1">·</span>
-          {profile.bornYear}년생(32세)
+          {profile.bornYear && (
+            <span>
+              {profile.bornYear}년생({calculateKoreanAge()}세)
+            </span>
+          )}
         </div>
       </div>
     </div>
