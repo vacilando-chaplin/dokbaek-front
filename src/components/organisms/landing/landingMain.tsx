@@ -1,68 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextButton from "../../atoms/textButton";
 import ProfileCard from "../../molecules/landing/profileCard";
-import { recentProfile } from "@/lib/types";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
+import { getProfileShowcase } from "@/app/landing/api";
+import { ProfileShowcaseResponseType } from "@/app/landing/types";
 
-const profiles: recentProfile[] = [
-  {
-    id: 1,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  },
-  {
-    id: 2,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  },
-  {
-    id: 3,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  },
-  {
-    id: 4,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  },
-  {
-    id: 5,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  },
-  {
-    id: 6,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  },
-  {
-    id: 7,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  },
-  {
-    id: 8,
-    name: "송예빈",
-    height: 164,
-    weight: 48,
-    bornYear: 1992
-  }
-];
 const LandingMain = () => {
+  const [profiles, setProfiles] = React.useState<ProfileShowcaseResponseType[]>(
+    []
+  );
+
+  const fetchProfileShowcase = async () => {
+    const page = 0;
+    const size = 8;
+    const res = await getProfileShowcase(page, size);
+    setProfiles(res.content);
+  };
+
+  useEffect(() => {
+    fetchProfileShowcase();
+  }, []);
   return (
     <section
       className={`mx-[auto] flex w-[100%] max-w-[1000px] flex-col gap-2`}
