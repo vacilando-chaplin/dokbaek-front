@@ -47,17 +47,7 @@ export const profileInit = {
     youtubeLink: "",
     introduction: ""
   },
-  education: [
-    {
-      school: {
-        name: "",
-        schoolType: "",
-        schoolGubun: ""
-      },
-      major: "",
-      status: ""
-    }
-  ],
+  education: [],
   photos: [
     {
       id: "",

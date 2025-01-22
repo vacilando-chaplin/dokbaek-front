@@ -10,11 +10,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { defaultId, loginForm } from "@/lib/atoms";
 import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
+import { useEffect, useState } from "react";
 
 const TopNavigation = () => {
   const router = useRouter();
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginForm);
+  const [login, setLogin] = useRecoilState(loginForm);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userId = useRecoilValue(defaultId);
 
   const onLogIn = () => {
@@ -33,8 +35,15 @@ const TopNavigation = () => {
       router.push("/");
     }
 
-    setIsLoggedIn("");
+    setLogin("");
+    setIsLoggedIn(false);
   };
+
+  useEffect(() => {
+    if (login) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <section className="fixed top-0 z-50 flex h-12 w-full items-center bg-background-elevated-light px-6 shadow-drop">
@@ -59,7 +68,7 @@ const TopNavigation = () => {
             </button>
             <button
               type="button"
-              className="h-9 w-9 rounded-[100px] border border-border-default-light bg-gray-50"
+              className="flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50"
             >
               <Person width="20" height="20" fill="#5E656C" />
             </button>

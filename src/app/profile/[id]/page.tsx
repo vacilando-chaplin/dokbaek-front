@@ -128,8 +128,10 @@ const Profile = () => {
           linear={linear}
           userId={userId}
           mainPhoto={mainPhoto}
-          info={profileData?.info}
-          education={profileData?.education[0]}
+          info={profileData.info}
+          education={
+            profileData.education.length >= 1 ? profileData.education[0] : []
+          }
           setStepper={setStepper}
         />
       </div>
@@ -137,9 +139,9 @@ const Profile = () => {
         <ProfileSub
           linear={linear}
           userId={userId}
-          photoList={profileData?.photos}
-          filmographyList={profileData?.filmos}
-          videoList={profileData?.videos}
+          photoList={profileData.photos}
+          filmographyList={profileData.filmos}
+          videoList={profileData.videos}
           setStepper={setStepper}
           onPhotoModalOpen={onPhotoModalOpen}
           onFilmoModalActive={onFilmoModalActive}
