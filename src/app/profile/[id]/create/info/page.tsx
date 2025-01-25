@@ -13,6 +13,7 @@ import InfoThird from "./components/infoThird";
 import { InfoActiveType, InfoInputType, SchoolType } from "./types";
 import { infoActiveInit, infoInputInit } from "./data";
 import { getSchoolName, putInfo } from "./api";
+import ProfileSpecialityFormModal from "../../components/profileSpecialityFormModal";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
@@ -24,6 +25,7 @@ const Info = () => {
 
   // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
+  const [profileSpecialityModal, setProfileSpecialityModal] = useState(false);
 
   // 내 정보 입력
   const onInputChange = (
@@ -92,6 +94,14 @@ const Info = () => {
   // 학교검색 딜레이 적용(0.3초)
   const debounceSearch: any = useDebounce(infoInputs.school, 300);
 
+  const onAddSpeciality = () => {
+    setProfileSpecialityModal(true);
+  };
+  const onSpecialityFormModalClose = () => {
+    setProfileSpecialityModal(false);
+  };
+
+  const onSpecialityFormClick = async () => {};
   useEffect(() => {
     const getSearchSchool = async (name: string) => {
       const data = await getSchoolName(name);
@@ -182,6 +192,7 @@ const Info = () => {
         onContactChange={onContactChange}
         onInfoDropdownActive={onInfoDropdownActive}
         onItemClick={onItemClick}
+        onAddSpeciality={onAddSpeciality}
       />
       <InfoSub
         infoInputs={infoInputs}
@@ -193,6 +204,13 @@ const Info = () => {
         onItemClick={onItemClick}
       />
       <InfoThird infoInputs={infoInputs} onInputChange={onInputChange} />
+      {profileSpecialityModal && (
+        <ProfileSpecialityFormModal
+          type="add"
+          onCloseClick={onSpecialityFormModalClose}
+          onConfirmClick={onSpecialityFormClick}
+        />
+      )}
     </div>
   );
 };

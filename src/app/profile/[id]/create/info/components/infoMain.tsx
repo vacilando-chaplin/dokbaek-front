@@ -4,6 +4,8 @@ import Title from "@/components/atoms/title";
 import SearchDropdown from "@/components/molecules/searchDropdown";
 import { yearList } from "@/lib/data";
 import { InfoActiveType, InfoInputType } from "../types";
+import BoxButton from "@/components/atoms/boxButton";
+import Plus from "../../../../../../../public/icons/Plus.svg";
 
 interface InfoMainProps {
   infoInputs: InfoInputType;
@@ -14,6 +16,7 @@ interface InfoMainProps {
   onContactChange: React.ChangeEventHandler<HTMLInputElement>;
   onInfoDropdownActive: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
+  onAddSpeciality: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const InfoMain = ({
@@ -24,7 +27,8 @@ const InfoMain = ({
   onBirthChange,
   onContactChange,
   onInfoDropdownActive,
-  onItemClick
+  onItemClick,
+  onAddSpeciality
 }: InfoMainProps) => {
   const {
     name,
@@ -127,6 +131,16 @@ const InfoMain = ({
         <div className="flex h-auto w-full">
           <div className="flex w-full flex-col">
             <Label label="특기" />
+            <div className="flex h-auto w-full flex-col gap-1">
+              <BoxButton
+                type="secondaryOutlined"
+                size="medium"
+                onClick={onAddSpeciality}
+              >
+                <Plus width="12" height="12" fill="#212529" />
+                추가
+              </BoxButton>
+            </div>
           </div>
         </div>
         <div className="flex h-auto w-full flex-col">
