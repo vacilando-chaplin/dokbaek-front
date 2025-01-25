@@ -33,3 +33,10 @@ export interface SchoolType {
   estType: string;
   seq: string;
 }
+
+export interface SpecialityType {
+  id: number;
+  name: string
+  imageUrl?: string;
+  mediaUrl?: string;
+}
