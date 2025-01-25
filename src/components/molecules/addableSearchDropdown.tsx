@@ -5,7 +5,7 @@ import { sizeStyleType } from "@/lib/types";
 
 export interface SpecialityType {
   id: number;
-  name: string;
+  specialtyName: string;
 }
 
 type AddableSearchDropdownProps = {
@@ -78,7 +78,7 @@ const AddableSearchDropdown = ({
                 <Option
                   key={`${item.id}`}
                   name={name}
-                  item={item.name}
+                  item={item.specialtyName}
                   size={"medium"}
                   active={active}
                   selected={selected}
