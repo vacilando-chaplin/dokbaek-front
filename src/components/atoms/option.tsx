@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { sizeStyleType } from "@/lib/types";
-=======
-import { sizeStyleType } from "@/types/types";
->>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
 
 interface OptionProps {
   name: string;
@@ -39,11 +35,7 @@ const Option = ({
     >
       <button
         type="button"
-<<<<<<< HEAD
         className={`typography-body3 flex w-full font-medium ${selected === item ? "font-semibold text-accent-primary-light" : "text-content-primary-light"}`}
-=======
-        className={`flex w-full text-body3 font-medium leading-body3 tracking-body3 ${selected === item ? "font-semibold text-accent-primary-light" : "text-content-primary-light"}`}
->>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
       >
         {item}
       </button>

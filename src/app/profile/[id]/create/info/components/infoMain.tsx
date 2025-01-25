@@ -1,18 +1,9 @@
-<<<<<<< HEAD:src/app/profile/[id]/create/info/components/infoMain.tsx
 import Label from "@/components/atoms/label";
 import TextInput from "@/components/atoms/textInput";
 import Title from "@/components/atoms/title";
 import SearchDropdown from "@/components/molecules/searchDropdown";
 import { yearList } from "@/lib/data";
 import { InfoActiveType, InfoInputType } from "../types";
-=======
-import { yearList } from "@/data/data";
-import { InfoActiveType, InfoInputType } from "@/types/types";
-import Label from "../atoms/label";
-import Title from "../atoms/title";
-import SearchDropdown from "../molecules/searchDropdown";
-import TextInput from "../atoms/textInput";
->>>>>>> e722db3 (input => textInput으로 변경, molecules inputWithLabel 삭제):src/components/organisms/infoMain.tsx
 
 interface InfoMainProps {
   infoInputs: InfoInputType;
