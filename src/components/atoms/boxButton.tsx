@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { sizeStyleType } from "@/lib/types";
-=======
-import { sizeStyleType } from "@/types/types";
->>>>>>> a9fcb13 (dropdown => selectDropdown, searchDropdown으로 분류, globals.css에 scrollbar 추가)
 
 interface BoxButtonProps {
   children: React.ReactNode;
