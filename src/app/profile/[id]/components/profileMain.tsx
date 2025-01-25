@@ -49,7 +49,7 @@ const ProfileMain = ({
   } = info;
 
   const statusIndex = educationEngList.findIndex(
-    (item: string) => item === education.status
+    (item: string) => item === education?.status
   );
 
   const onCopyUrl = async () => {
