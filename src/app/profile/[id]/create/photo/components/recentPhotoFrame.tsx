@@ -1,0 +1,42 @@
+import HumanMale from "../../../../../../../public/icons/HumanMale.svg";
+import FaceRecognition from "../../../../../../../public/icons/FaceRecognition.svg";
+import FaceManProfile from "../../../../../../../public/icons/FaceManProfile.svg";
+import Plus from "../../../../../../../public/icons/Plus.svg";
+import UploadButton from "@/components/atoms/uploadButton";
+
+interface RecentPhotoFrameProps {
+  text: string;
+}
+
+const RecentPhotoFrame = ({ text }: RecentPhotoFrameProps) => {
+  return (
+    <div className="flex h-[204px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted border-gray-150 bg-gray-50">
+      {text === "전신 사진" && (
+        <HumanMale width="16" height="16" fill="#868E96" />
+      )}
+      {text === "얼굴 정면 사진" && (
+        <FaceRecognition width="16" height="16" fill="#868E96" />
+      )}
+      {text === "얼굴 좌측 사진" && (
+        <FaceManProfile width="16" height="16" fill="#868E96" />
+      )}
+      {text === "얼굴 우측 사진" && (
+        <FaceManProfile
+          width="16"
+          height="16"
+          fill="#868E96"
+          className="rotate-[-45deg]"
+        />
+      )}
+      <label className="typography-caption1 font-medium text-content-tertiary-light">
+        {text}
+      </label>
+      <UploadButton type="secondaryOutlined" size="small">
+        <Plus width="12" height="12" fill="#212529" />
+        추가
+      </UploadButton>
+    </div>
+  );
+};
+
+export default RecentPhotoFrame;

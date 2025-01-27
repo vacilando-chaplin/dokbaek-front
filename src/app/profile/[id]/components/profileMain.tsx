@@ -13,6 +13,7 @@ import Download from "../../../../../public/icons/Download.svg";
 import Copy from "../../../../../public/icons/Copy.svg";
 import Edit from "../../../../../public/icons/Edit.svg";
 import { EducationType, InfoResponseType } from "@/lib/types";
+import UploadButton from "@/components/atoms/uploadButton";
 
 interface ProfileMainProps {
   linear: string;
@@ -86,18 +87,10 @@ const ProfileMain = ({
             width={40}
             height={40}
           />
-          <BoxButton
-            type="secondaryOutlined"
-            size="medium"
-            onClick={() => {
-              router.prefetch(`/profile/${userId}/create/photo`);
-              router.push(`/profile/${userId}/create/photo`);
-              setStepper(1);
-            }}
-          >
+          <UploadButton type="secondaryOutlined" size="medium">
             <Plus width="14" height="14" fill="#212529" />
             대표 사진 추가
-          </BoxButton>
+          </UploadButton>
         </div>
       )}
       <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">

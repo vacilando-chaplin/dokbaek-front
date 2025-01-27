@@ -4,18 +4,19 @@ import {
   convertImageToBase64,
   deletePhoto,
   getProfile,
-  patchPhotoDefault,
   postPhoto,
   postPhotoEdit
 } from "@/lib/api";
 import { defaultId, toastMessage } from "@/lib/atoms";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import PhotoMain from "./components/photoMain";
 import PhotoModal from "./components/photoModal";
 import { PhotoModalType } from "./types";
 import { PhotoResponseType } from "@/lib/types";
-import { photoModalInit, photoResponseInit } from "./data";
+import { photoModalInit } from "./data";
+import PhotoProfile from "./components/photoProfile";
+import PhotoStillCut from "./components/photoStillCut";
+import PhotoRecent from "./components/photoRecent";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
@@ -28,17 +29,7 @@ const Photo = () => {
   const [cropImage, setCropImage] = useState("");
 
   const [photoModal, setPhotoModal] = useState<PhotoModalType>(photoModalInit);
-
   const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
-  const [photoRepActive, setPhotoRepActive] = useState(false);
-
-  // 대표작 설정
-  const [repPhoto, setRepPhoto] =
-    useState<PhotoResponseType>(photoResponseInit);
-
-  // 대표작 취소 시 대표작 원본
-  const [editRepPhoto, setEditRepPhoto] =
-    useState<PhotoResponseType>(photoResponseInit);
 
   // 사진 추가 모달 저장
   const onAddPhoto = async () => {
@@ -46,20 +37,11 @@ const Photo = () => {
       const res = await postPhoto(userId, selectImage, cropImage);
       const data = res.data;
 
-      if (photoList.length === 0) {
-        data.isDefault = true;
-        setRepPhoto(data);
-      }
-
       setPhotoList([...photoList, data]);
     } else {
       const res = await postPhoto(userId, selectImage, selectImage);
       const data = res.data;
 
-      if (photoList.length === 0) {
-        data.isDefault = true;
-        setRepPhoto(data);
-      }
       setPhotoList([...photoList, data]);
     }
 
@@ -132,38 +114,6 @@ const Photo = () => {
     });
   };
 
-  // 사진 대표작 선택 액티브
-  const onPhotoRepActive = () => {
-    setEditRepPhoto(repPhoto);
-    setPhotoRepActive(!photoRepActive);
-  };
-
-  // 사진 대표작 선택 취소
-  const onPhotoRepClose = () => {
-    setRepPhoto(editRepPhoto);
-    setEditRepPhoto(photoResponseInit);
-    setPhotoRepActive(!photoRepActive);
-  };
-
-  // 사진 대표작 체크
-  const onPhotoRepCheck = (photo: PhotoResponseType) => {
-    setRepPhoto((prev: PhotoResponseType) =>
-      prev.id === photo.id ? prev : photo
-    );
-  };
-
-  // 사진 대표작 설정 완료
-  const onPhotoRepSave = async () => {
-    await patchPhotoDefault(userId, repPhoto.id);
-
-    const res = await getProfile(userId);
-    const data = await res.data;
-
-    setPhotoList(data.photos);
-
-    setRepPhoto(photoResponseInit);
-  };
-
   // 사진 모달에 크롭 할 이미지 선택
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -188,21 +138,15 @@ const Photo = () => {
   }, []);
 
   return (
-    <div className="flex w-[65vw] flex-col gap-3">
-      <PhotoMain
+    <div className="flex w-[65vw] flex-col gap-4">
+      <PhotoProfile
         photoList={photoList}
         photoDeleteActive={photoDeleteActive}
-        photoRepActive={photoRepActive}
-        repPhoto={repPhoto}
         onSelectFile={onSelectFile}
         onPhotoModalOpen={onPhotoModalOpen}
         onPhotoEditModalOpen={onPhotoEditModalOpen}
         onDeletePhoto={onDeletePhoto}
         onDeletePhotoActive={onDeletePhotoActive}
-        onPhotoRepActive={onPhotoRepActive}
-        onPhotoRepSave={onPhotoRepSave}
-        onPhotoRepCheck={onPhotoRepCheck}
-        onPhotoRepClose={onPhotoRepClose}
       />
       {photoModal.active && (
         <PhotoModal
@@ -214,6 +158,16 @@ const Photo = () => {
           setCropImage={setCropImage}
         />
       )}
+      <PhotoRecent />
+      <PhotoStillCut
+        photoList={photoList}
+        photoDeleteActive={photoDeleteActive}
+        onSelectFile={onSelectFile}
+        onPhotoModalOpen={onPhotoModalOpen}
+        onPhotoEditModalOpen={onPhotoEditModalOpen}
+        onDeletePhoto={onDeletePhoto}
+        onDeletePhotoActive={onDeletePhotoActive}
+      />
     </div>
   );
 };
