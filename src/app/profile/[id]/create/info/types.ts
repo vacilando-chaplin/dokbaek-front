@@ -36,7 +36,7 @@ export interface SchoolType {
 
 export interface SpecialityType {
   id: number;
-  name: string
+  specialtyName: string
   imageUrl?: string;
   mediaUrl?: string;
 }
