@@ -176,14 +176,13 @@ const ProfileMain = ({
           )}
         </div>
       ) : (
-        <div className="flex h-auto w-full items-center justify-center gap-2 rounded-2xl border border-gray-100 bg-gray-50 py-16">
-          <EmptyState
-            text="정보가 없어요."
-            button={false}
-            buttonText=""
-            buttonType=""
-          />
-        </div>
+        <EmptyState
+          text="정보가 없어요."
+          icon
+          button={false}
+          buttonText=""
+          buttonType=""
+        />
       )}
       {introduction && (
         <p className="typography-body2 flex h-full w-full gap-2 whitespace-pre break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">

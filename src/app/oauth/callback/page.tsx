@@ -20,6 +20,7 @@ const Callback = () => {
 
   const [userId, setUserId] = useRecoilState(defaultId);
   const [form, setForm] = useRecoilState(loginForm);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
@@ -120,6 +121,7 @@ const Callback = () => {
       };
       getGoogleUserData();
     }
+    setIsLoaded(true);
   }, [naverToken, kakaoToken, googleToken]);
 
   return (
@@ -127,7 +129,7 @@ const Callback = () => {
       <div className="flex flex-col items-center gap-2">
         <Check width="40" height="40" fill="#01C043" />
         <div className="typography-heading3 flex flex-col items-center font-semibold text-content-primary-light">
-          <p>{form} 계정으로</p>
+          <p>{isLoaded && form} 계정으로</p>
           <p>회원가입이 완료되었어요.</p>
         </div>
         <label className="typography-body2 items-center font-medium text-content-secondary-light">

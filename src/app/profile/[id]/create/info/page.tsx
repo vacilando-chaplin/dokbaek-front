@@ -120,7 +120,7 @@ const Info = () => {
         const educationIndex = educationList.indexOf(infoInputs.education);
         const educationStatus = educationEngList[educationIndex];
 
-        const infoData = {
+        const infoData: any = {
           status: "PUBLIC",
           info: {
             name: infoInputs.name,
@@ -134,18 +134,22 @@ const Info = () => {
             youtubeLink: infoInputs.youtube,
             introduction: infoInputs.introduction
           },
-          education: [
-            {
-              school: {
-                name: infoInputs.school,
-                schoolType: "",
-                schoolGubun: ""
-              },
-              major: infoInputs.major,
-              status: educationStatus
-            }
-          ]
+          education: []
         };
+        infoInputs.school
+          ? (infoData.education = [
+              {
+                school: {
+                  name: infoInputs.school,
+                  schoolType: "",
+                  schoolGubun: ""
+                },
+                major: infoInputs.major,
+                status: educationStatus
+              }
+            ])
+          : (infoData.education = []);
+
         await putInfo(userId, infoData);
       }
     };
@@ -157,12 +161,22 @@ const Info = () => {
     const getProfileData = async () => {
       const res = await getProfile(userId);
       const data = await res.data;
+      console.log(data);
 
-      const findEducation = educationEngList.findIndex(
-        (education: string) => education === data.education[0].status
-      );
+      if (data.education.length >= 1) {
+        const findEducation = educationEngList.findIndex(
+          (education: string) => education === data.education[0].status
+        );
+        setInfoInputs({
+          ...infoInputs,
+          education: educationList[findEducation],
+          school: data.education[0].school.name,
+          major: data.education[0].major
+        });
+      }
 
       setInfoInputs({
+        ...infoInputs,
         name: data.info.name,
         birth: data.info.bornYear,
         height: data.info.height,
@@ -172,10 +186,7 @@ const Info = () => {
         speciality: data.info.speciality,
         instagram: data.info.instagramLink,
         youtube: data.info.youtubeLink,
-        introduction: data.info.introduction,
-        school: data.education[0].school.name,
-        major: data.education[0].major,
-        education: educationList[findEducation]
+        introduction: data.info.introduction
       });
     };
     getProfileData();

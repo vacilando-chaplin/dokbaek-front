@@ -182,7 +182,6 @@ const Photo = () => {
     const getProfileData = async () => {
       const res = await getProfile(userId);
       const data = await res.data;
-
       setPhotoList(data.photos);
     };
     getProfileData();
