@@ -52,13 +52,13 @@ const Callback = () => {
     const code = urlParams.get("code");
     const state = urlParams.get("state");
 
-    if (code && state?.includes("naverlogin")) {
+    if (code && state === "naver") {
       const getNaverLoginToken = async () => {
-        const res = await postNaverCode();
+        const res = await postNaverCode(code);
         const data = res.data;
         setUserId(data.defaultProfileId);
-        useSetToken("jwt", data.jwt);
-        useSetToken("refresh_token", data.refreshToken);
+        useSetToken("jwt", data.token.jwt);
+        useSetToken("refresh_token", data.token.refreshToken);
         useSetToken("login_form", "네이버");
         setForm("네이버");
       };
@@ -114,6 +114,10 @@ const Callback = () => {
     }
     setIsLoaded(true);
   }, [kakaoToken, googleToken]);
+
+  useEffect(() => {
+    console.log(form);
+  }, [form]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-10">

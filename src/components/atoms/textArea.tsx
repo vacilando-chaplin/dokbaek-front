@@ -36,7 +36,7 @@ const TextArea = ({
       />
       {limit && (
         <label className="typography-caption1 flex h-fit w-full justify-end gap-1 font-normal text-content-secondary-light">
-          {value.length}/500
+          {value ? value.length : 0}/500
         </label>
       )}
     </div>

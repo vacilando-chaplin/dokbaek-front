@@ -45,7 +45,7 @@ const TopNavigation = () => {
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <section className="fixed top-0 z-50 flex h-12 w-full items-center bg-background-elevated-light px-6 shadow-drop">

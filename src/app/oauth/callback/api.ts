@@ -20,10 +20,16 @@ export const kakaoAuthLogin = async (code: string | string[]) => {
   }
 };
 
-export const postNaverCode = async () => {
+export const postNaverCode = async (code: string) => {
   try {
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASEURL}/oauth/naver/callback`
+      `${process.env.NEXT_PUBLIC_BASEURL}/oauth/token`,
+      { code },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
     );
     const data = res.data;
 
