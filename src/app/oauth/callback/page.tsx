@@ -1,17 +1,17 @@
 "use client";
 
-import { defaultId, loginForm } from "@/lib/atoms";
+import { defaultId } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useSetToken } from "@/lib/hooks";
 import { v4 as uuidv4 } from "uuid";
 import Check from "../../../../public/icons/Check.svg";
-import { GoogleDataType, KakaoDataType, NaverDataType } from "./types";
+import { GoogleDataType, KakaoDataType } from "./types";
 import {
   googleAuthLogin,
   kakaoAuthLogin,
-  naverAuthLogin,
+  postNaverCode,
   postSignUp
 } from "./api";
 
@@ -19,10 +19,9 @@ const Callback = () => {
   const router = useRouter();
 
   const [userId, setUserId] = useRecoilState(defaultId);
-  const [form, setForm] = useRecoilState(loginForm);
+  const [form, setForm] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [naverToken, setNaverToken] = useState<NaverDataType>();
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
   const [googleToken, setGoogleToken] = useState<GoogleDataType>();
 
@@ -53,12 +52,17 @@ const Callback = () => {
     const code = urlParams.get("code");
     const state = urlParams.get("state");
 
-    if (code && state?.includes("naver_login")) {
-      const getNaverAccessToken = async () => {
-        const res = await naverAuthLogin(code);
-        setNaverToken(res);
+    if (code && state?.includes("naverlogin")) {
+      const getNaverLoginToken = async () => {
+        const res = await postNaverCode();
+        const data = res.data;
+        setUserId(data.defaultProfileId);
+        useSetToken("jwt", data.jwt);
+        useSetToken("refresh_token", data.refreshToken);
+        useSetToken("login_form", "네이버");
+        setForm("네이버");
       };
-      getNaverAccessToken();
+      getNaverLoginToken();
     } else if (code && state?.includes("kakao_login")) {
       const getKakaoAccessToken = async () => {
         const res = await kakaoAuthLogin(code);
@@ -75,22 +79,7 @@ const Callback = () => {
   }, []);
 
   useEffect(() => {
-    if (naverToken) {
-      const getNaverUserData = async () => {
-        const res = await postSignUp({
-          domain: "NAVER",
-          accessToken: naverToken.access_token,
-          deviceId: deviceId
-        });
-        const data = await res.data;
-
-        setUserId(data.defaultProfileId);
-        useSetToken("jwt", data.token.jwt);
-        useSetToken("refresh_token", data.token.refreshToken);
-        setForm("네이버");
-      };
-      getNaverUserData();
-    } else if (kakaoToken) {
+    if (kakaoToken) {
       const getKakaoUserData = async () => {
         const res = await postSignUp({
           domain: "KAKAO",
@@ -102,6 +91,7 @@ const Callback = () => {
         setUserId(data.defaultProfileId);
         useSetToken("jwt", data.token.jwt);
         useSetToken("refresh_token", data.token.refreshToken);
+        useSetToken("login_form", "카카오");
         setForm("카카오");
       };
       getKakaoUserData();
@@ -117,12 +107,13 @@ const Callback = () => {
         setUserId(data.defaultProfileId);
         useSetToken("jwt", data.token.jwt);
         useSetToken("refresh_token", data.token.refreshToken);
+        useSetToken("login_form", "구글");
         setForm("구글");
       };
       getGoogleUserData();
     }
     setIsLoaded(true);
-  }, [naverToken, kakaoToken, googleToken]);
+  }, [kakaoToken, googleToken]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-10">

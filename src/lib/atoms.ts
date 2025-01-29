@@ -14,12 +14,6 @@ export const defaultId = atom<number>({
   effects_UNSTABLE: [persistAtom]
 });
 
-export const loginForm = atom<string>({
-  key: "loginForm",
-  default: "",
-  effects_UNSTABLE: [persistAtom]
-});
-
 export const stepperInit = atom<number>({
   key: "stepperInit",
   default: 0

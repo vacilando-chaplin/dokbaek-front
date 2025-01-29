@@ -20,6 +20,19 @@ export const kakaoAuthLogin = async (code: string | string[]) => {
   }
 };
 
+export const postNaverCode = async () => {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASEURL}/oauth/naver/callback`
+    );
+    const data = res.data;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const naverAuthLogin = async (code: string) => {
   try {
     const res = await axios.post("https://nid.naver.com/oauth2.0/token", null, {
