@@ -6,27 +6,35 @@ import { educationEngList, educationList } from "@/lib/data";
 import { useDebounce } from "@/lib/hooks";
 import { contactFormat, setOnlyNumber } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import InfoMain from "./components/infoMain";
 import InfoSub from "./components/infoSub";
 import InfoThird from "./components/infoThird";
-import { InfoActiveType, InfoInputType, SchoolType } from "./types";
+import { InfoActiveType, InfoInputType, SchoolType, SpecialtyType } from "./types";
 import { infoActiveInit, infoInputInit } from "./data";
-import { getSchoolName, putInfo } from "./api";
-import ProfileSpecialityFormModal from "../../components/profileSpecialityFormModal";
+import { getSchoolName, postSpecialty, putInfo } from "./api";
+import { specialtyData } from '../../../../../lib/atoms'
+import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal"
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
   const stepper = useRecoilValue(stepperInit);
-
+  
   const [infoInputs, setInfoInputs] = useState<InfoInputType>(infoInputInit);
   const [infoActives, setInfoActives] =
-    useState<InfoActiveType>(infoActiveInit);
-
+  useState<InfoActiveType>(infoActiveInit);
+  
+  const [specialties, setSpecialties] = useRecoilState<SpecialtyType[]>(specialtyData);
+  const [searchSpecialty, setSearchSpecialty] = useState<any[]>([]);
+  const [specialty, setSpecialty] = useState<SpecialtyType>({
+    id: 0,
+    specialtyName: "",
+    imageUrl: "",
+    mediaUrl: ""
+  });
   // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
-  const [profileSpecialityModal, setProfileSpecialityModal] = useState(false);
-
+  const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
   // 내 정보 입력
   const onInputChange = (
     e:
@@ -94,14 +102,54 @@ const Info = () => {
   // 학교검색 딜레이 적용(0.3초)
   const debounceSearch: any = useDebounce(infoInputs.school, 300);
 
-  const onAddSpeciality = () => {
-    setProfileSpecialityModal(true);
+  const onSpecialtyFormModalClose = () => {
+    setProfileSpecialtyModal(false);
   };
-  const onSpecialityFormModalClose = () => {
-    setProfileSpecialityModal(false);
+  
+  const onSpecialtyFormModalOpen = async () => {
+    setProfileSpecialtyModal(true);
   };
 
-  const onSpecialityFormClick = async () => {};
+  const onAddSpecialty = async (newSpecialty: string) => {
+    const res = await postSpecialty(newSpecialty);
+    const data = {
+      id: res.data.id,
+      specialtyName: res.data.specialtyName,
+    }
+    setSpecialties((prev) => [...prev, data]);
+    setSpecialty({id: 0, specialtyName: "", imageUrl: "", mediaUrl: ""})
+    setProfileSpecialtyModal(true);
+  };
+  const onSaveSpecialty = () => {
+    setSpecialties(specialties);
+    onSpecialtyFormModalClose()
+  }
+  const onSpecialtyDropdownClick = (name: string, item: string) => {
+    const selectedSpecialty = searchSpecialty.find(
+      (specialty) => specialty.specialtyName === item
+    );
+    if (
+      selectedSpecialty &&
+      !specialties.some((specialty) => specialty.specialtyName === item)
+    ) {
+      setSpecialties((prev) => [...prev, selectedSpecialty]);
+      setSpecialty({id: 0, specialtyName: "", imageUrl: "", mediaUrl: ""})
+    }
+  };
+
+  const onSpecialtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target
+    setSpecialty({...specialty, specialtyName: value})
+  }
+
+  const onDeleteSpecialty = (specialtyId: number) => {
+    return () => {
+      setSpecialties((prev) =>
+        prev.filter((specialty) => specialty.id !== specialtyId)
+      );
+    };
+  };
+
   useEffect(() => {
     const getSearchSchool = async (name: string) => {
       const data = await getSchoolName(name);
@@ -129,7 +177,7 @@ const Info = () => {
             weight: Number(infoInputs.weight),
             email: infoInputs.email,
             contact: infoInputs.contact,
-            speciality: infoInputs.speciality,
+            specialty: infoInputs.specialty,
             instagramLink: infoInputs.instagram,
             youtubeLink: infoInputs.youtube,
             introduction: infoInputs.introduction
@@ -161,7 +209,6 @@ const Info = () => {
     const getProfileData = async () => {
       const res = await getProfile(userId);
       const data = await res.data;
-      console.log(data);
 
       if (data.education.length >= 1) {
         const findEducation = educationEngList.findIndex(
@@ -183,7 +230,7 @@ const Info = () => {
         weight: data.info.weight,
         contact: data.info.contact,
         email: data.info.email,
-        speciality: data.info.speciality,
+        specialty: data.info.specialty,
         instagram: data.info.instagramLink,
         youtube: data.info.youtubeLink,
         introduction: data.info.introduction
@@ -197,14 +244,16 @@ const Info = () => {
       <InfoMain
         infoInputs={infoInputs}
         infoActives={infoActives}
+        specialties={specialties}
         onInputChange={onInputChange}
         onNumberChange={onNumberChange}
         onBirthChange={onBirthChange}
         onContactChange={onContactChange}
         onInfoDropdownActive={onInfoDropdownActive}
         onItemClick={onItemClick}
-        onAddSpeciality={onAddSpeciality}
-      />
+        onSpecialtyFormModalOpen={onSpecialtyFormModalOpen}
+        onDeleteSpecialty={onDeleteSpecialty}
+        />
       <InfoSub
         infoInputs={infoInputs}
         infoActives={infoActives}
@@ -215,12 +264,21 @@ const Info = () => {
         onItemClick={onItemClick}
       />
       <InfoThird infoInputs={infoInputs} onInputChange={onInputChange} />
-      {profileSpecialityModal && (
-        <ProfileSpecialityFormModal
+      {profileSpecialtyModal && (
+        <ProfileSpecialtyFormModal
           type="add"
-          onCloseClick={onSpecialityFormModalClose}
-          onConfirmClick={onSpecialityFormClick}
-        />
+          specialties={specialties}
+          setSpecialties={setSpecialties}
+          searchSpecialty={searchSpecialty}
+          setSearchSpecialty={setSearchSpecialty}
+          specialty={specialty}
+          onSpecialtyFormModalClose={onSpecialtyFormModalClose}
+          onAddSpecialty={onAddSpecialty}
+          onSpecialtyDropdownClick={onSpecialtyDropdownClick}
+          onSpecialtyChange={onSpecialtyChange}
+          onDeleteSpecialty={onDeleteSpecialty}
+          onSaveSpecialty={onSaveSpecialty}
+        />  
       )}
     </div>
   );

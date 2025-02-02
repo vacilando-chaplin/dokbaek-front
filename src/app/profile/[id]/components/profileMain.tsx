@@ -34,14 +34,14 @@ const ProfileMain = ({
   const router = useRouter();
 
   const setToast = useSetRecoilState(toastMessage);
-
+  info.specialty='피아노'
   const {
     name,
     bornYear,
     height,
     weight,
     contact,
-    speciality,
+    specialty,
     email,
     instagramLink,
     youtubeLink,
@@ -144,7 +144,7 @@ const ProfileMain = ({
               {educationList[statusIndex]}
             </span>
           )}
-          {speciality && <span>{speciality && "특기: " + speciality}</span>}
+          {specialty && <span>{specialty && "특기: " + specialty}</span>}
           {email && <span>{email}</span>}
           {instagramLink.length >= 27 && (
             <Link
