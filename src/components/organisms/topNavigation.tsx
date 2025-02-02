@@ -1,26 +1,29 @@
 "use client";
 
 import Logo from "../atoms/logo";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { postSignOut } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { defaultId } from "@/lib/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { currentPath, defaultId } from "@/lib/atoms";
 import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
 import { useEffect, useState } from "react";
 
 const TopNavigation = () => {
   const router = useRouter();
+  const pathName = usePathname();
 
   const jwt = Cookies.get("jwt");
+  const setPathName = useSetRecoilState(currentPath);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userId = useRecoilValue(defaultId);
 
   const onLogIn = () => {
+    setPathName(pathName);
     router.prefetch("/login");
     router.push("/login");
   };

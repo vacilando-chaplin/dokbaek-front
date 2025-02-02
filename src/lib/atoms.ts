@@ -60,3 +60,8 @@ export const profileData = atom({
   default: {},
   effects_UNSTABLE: [persistAtom]
 });
+
+export const currentPath = atom({
+  key: "currentPath",
+  default: "/"
+});
