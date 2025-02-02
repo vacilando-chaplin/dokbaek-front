@@ -24,6 +24,7 @@ const TopNavigation = () => {
 
   const onLogIn = () => {
     setPathName(pathName);
+
     router.prefetch("/login");
     router.push("/login");
   };

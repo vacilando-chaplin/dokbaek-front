@@ -83,12 +83,8 @@ export const postSignUp = async (data: SignUpRequestType) => {
   }
   try {
     const res = await api.post("/auth/signup", data);
-    if (res.status === 200) {
-      return res.data;
-    }
-    if (res.status === 201) {
-      return res.data;
-    }
+    const resData = res.data;
+    return { resData };
   } catch (error) {
     throw error;
   }

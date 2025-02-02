@@ -1,9 +1,9 @@
 "use client";
 
-import { defaultId } from "@/lib/atoms";
-import { useRouter } from "next/navigation";
+import { currentPath, defaultId } from "@/lib/atoms";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useSetToken } from "@/lib/hooks";
 import { v4 as uuidv4 } from "uuid";
 import Check from "../../../../public/icons/Check.svg";
@@ -18,9 +18,15 @@ import {
 const Callback = () => {
   const router = useRouter();
 
+  const urlParams = useSearchParams();
+  const isNewUser = urlParams.get("isNewUser");
+
+  const currentPathName = useRecoilValue(currentPath);
   const [userId, setUserId] = useRecoilState(defaultId);
+
   const [form, setForm] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [signState, setSignState] = useState("");
 
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
   const [googleToken, setGoogleToken] = useState<GoogleDataType>();
@@ -48,7 +54,6 @@ const Callback = () => {
   useEffect(() => {
     setDeviceIdInCookie();
 
-    const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const state = urlParams.get("state");
 
@@ -56,11 +61,14 @@ const Callback = () => {
       const getNaverLoginToken = async () => {
         const res = await postNaverCode(code);
         const data = res.data;
-        setUserId(data.defaultProfileId);
+        setUserId(data.userId);
         useSetToken("jwt", data.token.jwt);
         useSetToken("refresh_token", data.token.refreshToken);
         useSetToken("login_form", "네이버");
         setForm("네이버");
+        if (isNewUser === "false") {
+          router.push(`${currentPathName}`);
+        }
       };
       getNaverLoginToken();
     } else if (code && state?.includes("kakao_login")) {
@@ -81,66 +89,85 @@ const Callback = () => {
   useEffect(() => {
     if (kakaoToken) {
       const getKakaoUserData = async () => {
-        const res = await postSignUp({
+        const res: any = await postSignUp({
           domain: "KAKAO",
           accessToken: kakaoToken.access_token,
           deviceId: deviceId
         });
-        const data = await res.data;
+        const data = res.resData;
 
-        setUserId(data.defaultProfileId);
-        useSetToken("jwt", data.token.jwt);
-        useSetToken("refresh_token", data.token.refreshToken);
+        setUserId(data.data.userId);
+        useSetToken("jwt", data.data.token.jwt);
+        useSetToken("refresh_token", data.data.token.refreshToken);
         useSetToken("login_form", "카카오");
         setForm("카카오");
+
+        if (data.code === 200) {
+          router.push(`${currentPathName}`);
+        } else if (data.code === 201) {
+          setSignState("signup");
+        }
       };
       getKakaoUserData();
     } else if (googleToken) {
       const getGoogleUserData = async () => {
-        const res = await postSignUp({
+        const res: any = await postSignUp({
           domain: "GOOGLE",
           accessToken: googleToken.access_token,
           deviceId: deviceId
         });
-        const data = await res.data;
+        const data = await res.resData;
 
-        setUserId(data.defaultProfileId);
-        useSetToken("jwt", data.token.jwt);
-        useSetToken("refresh_token", data.token.refreshToken);
+        setUserId(data.data.userId);
+        useSetToken("jwt", data.data.token.jwt);
+        useSetToken("refresh_token", data.data.token.refreshToken);
         useSetToken("login_form", "구글");
         setForm("구글");
+
+        if (data.code === 200) {
+          router.push(`${currentPathName}`);
+        } else if (data.code === 201) {
+          setSignState("signup");
+        }
       };
       getGoogleUserData();
+    }
+    if (isNewUser === "false") {
+      router.push(`${currentPathName}`);
     }
     setIsLoaded(true);
   }, [kakaoToken, googleToken]);
 
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
+  useEffect(() => {}, [form]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-10">
-      <div className="flex flex-col items-center gap-2">
-        <Check width="40" height="40" fill="#01C043" />
-        <div className="typography-heading3 flex flex-col items-center font-semibold text-content-primary-light">
-          <p>{isLoaded && form} 계정으로</p>
-          <p>회원가입이 완료되었어요.</p>
+    <>
+      {isNewUser === "true" || signState === "signup" ? (
+        <div className="flex flex-col items-center justify-center gap-10">
+          <div className="flex flex-col items-center gap-2">
+            <Check width="40" height="40" fill="#01C043" />
+            <div className="typography-heading3 flex flex-col items-center font-semibold text-content-primary-light">
+              <p>{isLoaded && form} 계정으로</p>
+              <p>회원가입이 완료되었어요.</p>
+            </div>
+            <label className="typography-body2 items-center font-medium text-content-secondary-light">
+              이제 나만의 프로필을 만들어 보세요.
+            </label>
+          </div>
+          <button
+            type="button"
+            className="interaction-default flex h-auto w-[134px] items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5 hover:bg-hover-primary active:bg-pressed-primary"
+            onClick={onClick}
+          >
+            <div className="typography-body2 font-medium text-static-white">
+              프로필 만들기
+            </div>
+          </button>
         </div>
-        <label className="typography-body2 items-center font-medium text-content-secondary-light">
-          이제 나만의 프로필을 만들어 보세요.
-        </label>
-      </div>
-      <button
-        type="button"
-        className="interaction-default flex h-auto w-[134px] items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5 hover:bg-hover-primary active:bg-pressed-primary"
-        onClick={onClick}
-      >
-        <div className="typography-body2 font-medium text-static-white">
-          프로필 만들기
-        </div>
-      </button>
-    </div>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 
