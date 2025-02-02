@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useSetToken } from "@/lib/hooks";
-import { v4 as uuidv4 } from "uuid";
 import Check from "../../../../public/icons/Check.svg";
 import { GoogleDataType, KakaoDataType } from "./types";
 import {
@@ -31,29 +30,12 @@ const Callback = () => {
   const [kakaoToken, setKakaoToken] = useState<KakaoDataType>();
   const [googleToken, setGoogleToken] = useState<GoogleDataType>();
 
-  const generateDeviceId = (): string => {
-    return uuidv4();
-  };
-
-  const deviceId = generateDeviceId();
-
-  const setDeviceIdInCookie = () => {
-    if (typeof window !== "undefined") {
-      const expirationDate = new Date();
-      expirationDate.setFullYear(expirationDate.getFullYear() + 1); // 1년 후 만료
-      const expires = `expires=${expirationDate.toUTCString()}`;
-      document.cookie = `deviceId=${deviceId}; ${expires}; path=/; Secure; SameSite=Strict`;
-    }
-  };
-
   const onClick = () => {
     router.prefetch(`/profile/${userId}/create/info`);
     router.push(`/profile/${userId}/create/info`);
   };
 
   useEffect(() => {
-    setDeviceIdInCookie();
-
     const code = urlParams.get("code");
     const state = urlParams.get("state");
 
@@ -91,8 +73,7 @@ const Callback = () => {
       const getKakaoUserData = async () => {
         const res: any = await postSignUp({
           domain: "KAKAO",
-          accessToken: kakaoToken.access_token,
-          deviceId: deviceId
+          accessToken: kakaoToken.access_token
         });
         const data = res.resData;
 
@@ -113,8 +94,7 @@ const Callback = () => {
       const getGoogleUserData = async () => {
         const res: any = await postSignUp({
           domain: "GOOGLE",
-          accessToken: googleToken.access_token,
-          deviceId: deviceId
+          accessToken: googleToken.access_token
         });
         const data = await res.resData;
 

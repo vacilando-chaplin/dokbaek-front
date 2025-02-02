@@ -5,6 +5,7 @@ import NaverLogin from "@/app/login/components/naverLogin";
 import GoogleLogin from "@/app/login/components/googleLogin";
 import { useEffect } from "react";
 import LogoVertical from "../../../public/icons/LogoVertical.svg";
+import Tooltip from "@/components/atoms/tooltip";
 
 const Login = () => {
   const loadKakaoSDK = () => {
@@ -29,7 +30,7 @@ const Login = () => {
   }, []);
 
   return (
-    <main className="flex h-auto w-auto flex-col gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20">
+    <main className="relative flex h-auto w-auto flex-col items-center gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20">
       <div className="flex flex-col items-center justify-center gap-4">
         <LogoVertical width="103" height="56" />
         <label className="typography-body2 font-semibold text-content-primary-light">
@@ -40,6 +41,9 @@ const Login = () => {
         <KakaoLogin />
         <NaverLogin />
         <GoogleLogin />
+      </div>
+      <div className="absolute">
+        <Tooltip placement="top" text="마지막에 로그인했어요" />
       </div>
     </main>
   );

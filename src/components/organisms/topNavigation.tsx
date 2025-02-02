@@ -33,7 +33,7 @@ const TopNavigation = () => {
     const refreshToken = Cookies.get("refresh_token");
 
     if (refreshToken) {
-      await postSignOut({ refreshToken: refreshToken, deviceId: "" });
+      await postSignOut({ refreshToken: refreshToken });
       Cookies.remove("jwt", { path: "/" });
       Cookies.remove("refresh_token", { path: "/" });
       router.prefetch("/");
