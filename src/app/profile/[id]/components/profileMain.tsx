@@ -34,7 +34,6 @@ const ProfileMain = ({
   const router = useRouter();
 
   const setToast = useSetRecoilState(toastMessage);
-  info.specialty='피아노'
   const {
     name,
     bornYear,
