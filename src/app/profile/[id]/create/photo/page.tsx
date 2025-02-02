@@ -8,12 +8,12 @@ import {
   postPhotoEdit
 } from "@/lib/api";
 import { defaultId, toastMessage } from "@/lib/atoms";
+import { PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import PhotoModal from "./components/photoModal";
 import { PhotoModalType } from "./types";
-import { PhotoResponseType } from "@/lib/types";
 import { photoModalInit } from "./data";
+import PhotoModal from "./components/photoModal";
 import PhotoProfile from "./components/photoProfile";
 import PhotoStillCut from "./components/photoStillCut";
 import PhotoRecent from "./components/photoRecent";
@@ -56,7 +56,7 @@ const Photo = () => {
     await postPhotoEdit(userId, selectImage, cropImage, photoModal.id);
 
     const res = await getProfile(userId);
-    const data = await res.data;
+    const data = res.data;
 
     setPhotoList(data.photos);
     setPhotoModal(photoModalInit);
@@ -70,7 +70,7 @@ const Photo = () => {
     await deletePhoto(userId, id);
 
     const res = await getProfile(userId);
-    const data = await res.data;
+    const data = res.data;
 
     setPhotoList(data.photos);
     setPhotoDeleteActive(!photoDeleteActive);
@@ -158,7 +158,6 @@ const Photo = () => {
           setCropImage={setCropImage}
         />
       )}
-      <PhotoRecent />
       <PhotoStillCut
         photoList={photoList}
         photoDeleteActive={photoDeleteActive}
@@ -168,6 +167,7 @@ const Photo = () => {
         onDeletePhoto={onDeletePhoto}
         onDeletePhotoActive={onDeletePhotoActive}
       />
+      <PhotoRecent />
     </div>
   );
 };
