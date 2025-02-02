@@ -6,8 +6,11 @@ import GoogleLogin from "@/app/login/components/googleLogin";
 import { useEffect } from "react";
 import LogoVertical from "../../../public/icons/LogoVertical.svg";
 import Tooltip from "@/components/atoms/tooltip";
+import Cookies from "js-cookie";
 
 const Login = () => {
+  const currentLoginForm = Cookies.get("login_form");
+
   const loadKakaoSDK = () => {
     if (window.Kakao) {
       return;
@@ -38,12 +41,36 @@ const Login = () => {
         </label>
       </div>
       <div className="flex h-auto w-full flex-col gap-2">
-        <KakaoLogin />
-        <NaverLogin />
-        <GoogleLogin />
-      </div>
-      <div className="absolute">
-        <Tooltip placement="top" text="마지막에 로그인했어요" />
+        {currentLoginForm === "카카오" ? (
+          <div className="relative flex items-center justify-center">
+            <KakaoLogin />
+            <div className="absolute -top-7">
+              <Tooltip placement="top" text="마지막에 로그인했어요" />
+            </div>
+          </div>
+        ) : (
+          <KakaoLogin />
+        )}
+        {currentLoginForm === "네이버" ? (
+          <div className="relative flex items-center justify-center">
+            <NaverLogin />
+            <div className="absolute -top-7">
+              <Tooltip placement="top" text="마지막에 로그인했어요" />
+            </div>
+          </div>
+        ) : (
+          <NaverLogin />
+        )}
+        {currentLoginForm === "구글" ? (
+          <div className="relative flex items-center justify-center">
+            <GoogleLogin />
+            <div className="absolute -top-7">
+              <Tooltip placement="top" text="마지막에 로그인했어요" />
+            </div>
+          </div>
+        ) : (
+          <GoogleLogin />
+        )}
       </div>
     </main>
   );
