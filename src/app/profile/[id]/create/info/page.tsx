@@ -115,9 +115,11 @@ const Info = () => {
     const data = {
       id: res.data.id,
       specialtyName: res.data.specialtyName,
+      imageUrl: '',
+      mediaUrl: ''
     }
     setSpecialties((prev) => [...prev, data]);
-    setSpecialty({id: 0, specialtyName: "", imageUrl: "", mediaUrl: ""})
+      setSpecialty({id: 0, specialtyName: "", imageUrl: "", mediaUrl: ""})
     setProfileSpecialtyModal(true);
   };
   const onSaveSpecialty = () => {
@@ -132,7 +134,13 @@ const Info = () => {
       selectedSpecialty &&
       !specialties.some((specialty) => specialty.specialtyName === item)
     ) {
-      setSpecialties((prev) => [...prev, selectedSpecialty]);
+      const data = {
+        id: selectedSpecialty.id,
+        specialtyName: selectedSpecialty.specialtyName,
+        imageUrl: '',
+        mediaUrl: ''
+      }
+      setSpecialties((prev) => [...prev, data]);
       setSpecialty({id: 0, specialtyName: "", imageUrl: "", mediaUrl: ""})
     }
   };
@@ -182,7 +190,8 @@ const Info = () => {
             youtubeLink: infoInputs.youtube,
             introduction: infoInputs.introduction
           },
-          education: []
+          education: [],
+          specialties: specialties
         };
         infoInputs.school
           ? (infoData.education = [
