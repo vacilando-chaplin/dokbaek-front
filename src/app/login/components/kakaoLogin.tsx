@@ -16,7 +16,7 @@ const KakaoLogin = () => {
   return (
     <button
       type="button"
-      className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-[#FAE64D] px-6 py-3"
+      className="interaction-default relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] bg-[#FAE64D] px-6 py-3 hover:brightness-90 active:brightness-[80%]"
       onClick={onKakaoLogin}
     >
       <Kakao

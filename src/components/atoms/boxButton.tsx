@@ -40,8 +40,10 @@ const BoxButton = ({
       "bg-background-surface-light hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined text-content-primary-light border border-border-default-light",
     negative:
       "bg-state-negative-light hover:bg-hover-negative active:bg-pressed-negative text-static-white",
-    negativeOutlined: "bg-state-negative-light text-state-negative-light",
-    black: "bg-content-primary-light text-static-white"
+    negativeOutlined:
+      "bg-state-negative-light text-state-negative-light hover:brightness-90 active:brightness-[80%]",
+    black:
+      "bg-content-primary-light text-static-white hover:brightness-90 active:brightness-[80%]"
   };
 
   return (
