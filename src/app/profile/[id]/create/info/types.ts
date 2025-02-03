@@ -5,7 +5,7 @@ export interface InfoInputType {
   weight: string;
   contact: string;
   email: string;
-  speciality: string;
+  specialty: string;
   instagram: string;
   youtube: string;
   introduction: string;
@@ -34,9 +34,9 @@ export interface SchoolType {
   seq: string;
 }
 
-export interface SpecialityType {
+export interface SpecialtyType {
   id: number;
-  specialtyName: string
+  specialtyName: string;
   imageUrl?: string;
   mediaUrl?: string;
 }
