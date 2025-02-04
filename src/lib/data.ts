@@ -42,7 +42,7 @@ export const profileInit = {
     weight: 0,
     email: "",
     contact: "",
-    speciality: "",
+    specialty: "",
     instagramLink: "",
     youtubeLink: "",
     introduction: ""
@@ -100,16 +100,3 @@ export const year = new Date().getFullYear();
 export const yearList = Array.from(new Array(70), (v, index) =>
   (year - index).toString()
 );
-
-export const specialityList = [
-  { id: 1, specialtyName: "연기"},
-  { id: 2, specialtyName: "댄스"},
-  { id: 3, specialtyName: "노래"},
-  { id: 4, specialtyName: "모델"},
-  { id: 5, specialtyName: "스포츠"},
-  { id: 6, specialtyName: "기타"},
-  { id: 7, specialtyName: "경상도 사투리"},
-  { id: 8, specialtyName: "전라도 사투리"},
-  { id: 9, specialtyName: "충청도 사투리"},
-  { id: 10, specialtyName: "강원도 사투리"},
-]

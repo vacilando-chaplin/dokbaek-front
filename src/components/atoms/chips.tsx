@@ -2,14 +2,20 @@ import { sizeStyleType } from "@/lib/types";
 import X from "../../../public/icons/X.svg";
 
 interface ChipsProps {
-  size: string;
   text: string;
+  size?: "large" | "medium" | "small";
   icon?: boolean;
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Chips = ({ size, text, icon, disabled, onClick }: ChipsProps) => {
+const Chips = ({ 
+  size = "medium",
+  text, 
+  icon, 
+  disabled, 
+  onClick 
+}: ChipsProps) => {
   const sizeStyle: sizeStyleType = {
     large: "py-1.5 px-3 gap-1 typography-body2",
     medium: "py-[5px] px-2 gap-0.5 typography-body3",

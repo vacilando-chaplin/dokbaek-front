@@ -23,7 +23,7 @@ export interface ProfileResponseType {
     weight: number;
     email: string;
     contact: string;
-    speciality: string;
+    specialty: string;
     instagramLink: string;
     youtubeLink: string;
     introduction: string;
@@ -95,7 +95,7 @@ export interface InfoResponseType {
   weight: number;
   email: string;
   contact: string;
-  speciality: string;
+  specialty: string;
   instagramLink: string;
   youtubeLink: string;
   introduction: string;

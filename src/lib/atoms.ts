@@ -1,3 +1,4 @@
+import { SpecialtyType } from "@/app/profile/[id]/create/info/types";
 import {
   FilmoCategoryType,
   FilmoRoleType,
@@ -61,8 +62,13 @@ export const profileData = atom({
   effects_UNSTABLE: [persistAtom]
 });
 
+export const specialtyData = atom<SpecialtyType[]>({
+  key: "specialtyData",
+  default: [],
+  effects_UNSTABLE: [persistAtom]
+});
+
 export const currentPath = atom({
   key: "currentPath",
-  default: "/",
-  effects_UNSTABLE: [persistAtom]
+  default: "/"
 });

@@ -28,3 +28,27 @@ export const putInfo = async (id: number, data: any) => {
     throw error;
   }
 };
+
+export const getSpecialty = async (
+  keyword: string,
+  page: number,
+  size: number
+) => {
+  try {
+    const res = await api.get(
+      `/specialty?keyword=${keyword}&page=${page}&size=${size}`
+    );
+    return res.data.data.content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postSpecialty = async (specialtyName: string) => {
+  try {
+    const res = await api.post(`/specialty`, { specialtyName });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
