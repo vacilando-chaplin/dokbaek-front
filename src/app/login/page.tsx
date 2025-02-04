@@ -5,8 +5,12 @@ import NaverLogin from "@/app/login/components/naverLogin";
 import GoogleLogin from "@/app/login/components/googleLogin";
 import { useEffect } from "react";
 import LogoVertical from "../../../public/icons/LogoVertical.svg";
+import Tooltip from "@/components/atoms/tooltip";
+import Cookies from "js-cookie";
 
 const Login = () => {
+  const currentLoginForm = Cookies.get("login_form");
+
   const loadKakaoSDK = () => {
     if (window.Kakao) {
       return;
@@ -29,7 +33,7 @@ const Login = () => {
   }, []);
 
   return (
-    <main className="flex h-auto w-auto flex-col gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20">
+    <main className="relative flex h-auto w-auto flex-col items-center gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20">
       <div className="flex flex-col items-center justify-center gap-4">
         <LogoVertical width="103" height="56" />
         <label className="typography-body2 font-semibold text-content-primary-light">
@@ -37,9 +41,36 @@ const Login = () => {
         </label>
       </div>
       <div className="flex h-auto w-full flex-col gap-2">
-        <KakaoLogin />
-        <NaverLogin />
-        <GoogleLogin />
+        {currentLoginForm === "카카오" ? (
+          <div className="relative flex items-center justify-center">
+            <KakaoLogin />
+            <div className="absolute -top-7">
+              <Tooltip placement="top" text="마지막에 로그인했어요" />
+            </div>
+          </div>
+        ) : (
+          <KakaoLogin />
+        )}
+        {currentLoginForm === "네이버" ? (
+          <div className="relative flex items-center justify-center">
+            <NaverLogin />
+            <div className="absolute -top-7">
+              <Tooltip placement="top" text="마지막에 로그인했어요" />
+            </div>
+          </div>
+        ) : (
+          <NaverLogin />
+        )}
+        {currentLoginForm === "구글" ? (
+          <div className="relative flex items-center justify-center">
+            <GoogleLogin />
+            <div className="absolute -top-7">
+              <Tooltip placement="top" text="마지막에 로그인했어요" />
+            </div>
+          </div>
+        ) : (
+          <GoogleLogin />
+        )}
       </div>
     </main>
   );

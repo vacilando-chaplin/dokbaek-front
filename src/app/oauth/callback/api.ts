@@ -20,6 +20,25 @@ export const kakaoAuthLogin = async (code: string | string[]) => {
   }
 };
 
+export const postNaverCode = async (code: string) => {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASEURL}/oauth/token`,
+      { code },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    const data = res.data;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const naverAuthLogin = async (code: string) => {
   try {
     const res = await axios.post("https://nid.naver.com/oauth2.0/token", null, {
@@ -64,12 +83,8 @@ export const postSignUp = async (data: SignUpRequestType) => {
   }
   try {
     const res = await api.post("/auth/signup", data);
-    if (res.status === 200) {
-      return res.data;
-    }
-    if (res.status === 201) {
-      return res.data;
-    }
+    const resData = res.data;
+    return { resData };
   } catch (error) {
     throw error;
   }

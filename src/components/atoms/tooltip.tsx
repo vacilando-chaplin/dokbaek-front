@@ -3,26 +3,29 @@ import ArrowTriangleUp from "../../../public/icons/ArrowTriangleUp.svg";
 
 interface TooltipProps {
   placement: string;
+  text: string;
 }
 
-const Tooltip = ({ placement }: TooltipProps) => {
+const Tooltip = ({ placement, text }: TooltipProps) => {
   return (
     <div className="relative flex h-auto w-auto max-w-80 items-center justify-center gap-0.5 rounded-lg bg-accent-primary-light px-2.5 py-1.5 shadow-low">
       {placement === "top" && (
         <ArrowTriangleDown
-          width="8"
-          height="4"
+          width="24"
+          height="24"
           fill="#1E85EF"
-          className="absolute top-0"
+          className="absolute bottom-[-12px]"
         />
       )}
-      <label className="typhography-body2 text-left font-medium text-content-on_color-light" />
+      <label className="typography-body2 text-left font-semibold text-content-on_color-light">
+        {text}
+      </label>
       {placement === "bottom" && (
         <ArrowTriangleUp
-          width="8"
-          height="4"
+          width="24"
+          height="24"
           fill="#1E85EF"
-          className="absolute bottom-0"
+          className="absolute top-[-12px]"
         />
       )}
     </div>

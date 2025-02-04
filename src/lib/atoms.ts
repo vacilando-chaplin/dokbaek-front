@@ -15,12 +15,6 @@ export const defaultId = atom<number>({
   effects_UNSTABLE: [persistAtom]
 });
 
-export const loginForm = atom<string>({
-  key: "loginForm",
-  default: "",
-  effects_UNSTABLE: [persistAtom]
-});
-
 export const stepperInit = atom<number>({
   key: "stepperInit",
   default: 0
@@ -72,4 +66,9 @@ export const specialtyData = atom<SpecialtyType[]>({
   key: "specialtyData",
   default: [],
   effects_UNSTABLE: [persistAtom]
+});
+
+export const currentPath = atom({
+  key: "currentPath",
+  default: "/"
 });
