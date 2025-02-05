@@ -1,25 +1,30 @@
 "use client";
 
 import Logo from "../atoms/logo";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { postSignOut } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { defaultId, loginForm } from "@/lib/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { currentPath, defaultId } from "@/lib/atoms";
 import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
 import { useEffect, useState } from "react";
 
 const TopNavigation = () => {
   const router = useRouter();
+  const pathName = usePathname();
 
-  const [login, setLogin] = useRecoilState(loginForm);
+  const jwt = Cookies.get("jwt");
+  const setPathName = useSetRecoilState(currentPath);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userId = useRecoilValue(defaultId);
 
   const onLogIn = () => {
+    setPathName(pathName);
+
     router.prefetch("/login");
     router.push("/login");
   };
@@ -28,22 +33,23 @@ const TopNavigation = () => {
     const refreshToken = Cookies.get("refresh_token");
 
     if (refreshToken) {
-      await postSignOut({ refreshToken: refreshToken, deviceId: "" });
+      await postSignOut({ refreshToken: refreshToken });
       Cookies.remove("jwt", { path: "/" });
       Cookies.remove("refresh_token", { path: "/" });
       router.prefetch("/");
       router.push("/");
     }
 
-    setLogin("");
     setIsLoggedIn(false);
   };
 
   useEffect(() => {
-    if (login) {
+    if (jwt) {
       setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <section className="fixed top-0 z-50 flex h-12 w-full items-center bg-background-elevated-light px-6 shadow-drop">

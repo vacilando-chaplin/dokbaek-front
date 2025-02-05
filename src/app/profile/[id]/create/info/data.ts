@@ -5,7 +5,7 @@ export const infoInputInit = {
   weight: "",
   contact: "",
   email: "",
-  speciality: "",
+  specialty: "",
   instagram: "",
   youtube: "",
   introduction: "",

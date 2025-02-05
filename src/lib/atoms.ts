@@ -1,3 +1,4 @@
+import { SpecialtyType } from "@/app/profile/[id]/create/info/types";
 import {
   FilmoCategoryType,
   FilmoRoleType,
@@ -11,12 +12,6 @@ const { persistAtom } = recoilPersist();
 export const defaultId = atom<number>({
   key: "defaultId",
   default: 0,
-  effects_UNSTABLE: [persistAtom]
-});
-
-export const loginForm = atom<string>({
-  key: "loginForm",
-  default: "",
   effects_UNSTABLE: [persistAtom]
 });
 
@@ -65,4 +60,15 @@ export const profileData = atom({
   key: "profileData",
   default: {},
   effects_UNSTABLE: [persistAtom]
+});
+
+export const specialtyData = atom<SpecialtyType[]>({
+  key: "specialtyData",
+  default: [],
+  effects_UNSTABLE: [persistAtom]
+});
+
+export const currentPath = atom({
+  key: "currentPath",
+  default: "/"
 });

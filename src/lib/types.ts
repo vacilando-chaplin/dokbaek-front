@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     Kakao: any;
+    naver: any;
   }
 }
 
@@ -22,7 +23,7 @@ export interface ProfileResponseType {
     weight: number;
     email: string;
     contact: string;
-    speciality: string;
+    specialty: string;
     instagramLink: string;
     youtubeLink: string;
     introduction: string;
@@ -94,7 +95,7 @@ export interface InfoResponseType {
   weight: number;
   email: string;
   contact: string;
-  speciality: string;
+  specialty: string;
   instagramLink: string;
   youtubeLink: string;
   introduction: string;
@@ -197,7 +198,6 @@ export interface VideoResponseType {
 export interface SignUpRequestType {
   domain: string;
   accessToken: string;
-  deviceId: string;
 }
 
 export interface SignUpResponseType {
@@ -210,5 +210,4 @@ export interface SignUpResponseType {
 
 export interface SignOutRequestType {
   refreshToken: string;
-  deviceId: string;
 }
