@@ -18,6 +18,7 @@ interface PhotoStillCutProps {
   onPhotoEditModalOpen: (photo: any) => void;
   onDeletePhoto: (id: string) => void;
   onDeletePhotoActive: React.MouseEventHandler<HTMLButtonElement>;
+  onDrop: (images: File[], rejectedFiles: any[]) => void;
 }
 
 const PhotoStillCut = ({
@@ -27,7 +28,8 @@ const PhotoStillCut = ({
   onPhotoModalOpen,
   onPhotoEditModalOpen,
   onDeletePhoto,
-  onDeletePhotoActive
+  onDeletePhotoActive,
+  onDrop
 }: PhotoStillCutProps) => {
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
@@ -98,7 +100,10 @@ const PhotoStillCut = ({
           })}
         </div>
       ) : (
-        <EmptyPhotoFrame text="추가할 사진을 끌어다 놓으세요." />
+        <EmptyPhotoFrame
+          text="추가할 사진을 끌어다 놓으세요."
+          onDrop={onDrop}
+        />
       )}
     </section>
   );

@@ -23,6 +23,22 @@ const Photo = () => {
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [photoList, setPhotoList] = useState<PhotoResponseType[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+
+  const onDrop = (images: File[], rejectedFiles: any[]) => {
+    if (rejectedFiles.length > 0) {
+      return;
+    }
+
+    setSelectedImages(images);
+    setPhotoModal({
+      ...photoModal,
+      state: "add",
+      active: true,
+      name: "사진 추가",
+      buttonText: "추가"
+    });
+  };
 
   // 이미지 크롭할 때 사진
   const [selectImage, setSelectImage] = useState("");
@@ -147,6 +163,7 @@ const Photo = () => {
         onPhotoEditModalOpen={onPhotoEditModalOpen}
         onDeletePhoto={onDeletePhoto}
         onDeletePhotoActive={onDeletePhotoActive}
+        onDrop={onDrop}
       />
       {photoModal.active && (
         <PhotoModal
@@ -166,6 +183,7 @@ const Photo = () => {
         onPhotoEditModalOpen={onPhotoEditModalOpen}
         onDeletePhoto={onDeletePhoto}
         onDeletePhotoActive={onDeletePhotoActive}
+        onDrop={onDrop}
       />
       <PhotoRecent />
     </div>
