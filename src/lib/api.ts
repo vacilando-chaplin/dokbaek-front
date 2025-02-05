@@ -1,4 +1,3 @@
-import { SignOutRequestType } from "@/lib/types";
 import { base64ToBlob } from "@/lib/utils";
 import axios from "axios";
 import { api, multipartAPI } from "./axiosInstance";
@@ -48,14 +47,14 @@ export const deleteUser = async () => {
   }
 };
 
-export const postSignOut = async (data: SignOutRequestType) => {
+export const deleteSignOut = async (refreshToken: string) => {
   try {
-    const res = await axios.post(
+    const res = await axios.delete(
       `${process.env.NEXT_PUBLIC_BASEURL}/auth/signout`,
-      data,
       {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${refreshToken}`
         }
       }
     );

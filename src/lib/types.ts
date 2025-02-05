@@ -207,7 +207,3 @@ export interface SignUpResponseType {
   };
   defaultProfileId: number;
 }
-
-export interface SignOutRequestType {
-  refreshToken: string;
-}

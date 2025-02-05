@@ -2,7 +2,7 @@
 
 import Logo from "../atoms/logo";
 import { usePathname, useRouter } from "next/navigation";
-import { postSignOut } from "@/lib/api";
+import { deleteSignOut } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
@@ -33,7 +33,7 @@ const TopNavigation = () => {
     const refreshToken = Cookies.get("refresh_token");
 
     if (refreshToken) {
-      await postSignOut({ refreshToken: refreshToken });
+      await deleteSignOut(refreshToken);
       Cookies.remove("jwt", { path: "/" });
       Cookies.remove("refresh_token", { path: "/" });
       router.prefetch("/");
@@ -57,6 +57,9 @@ const TopNavigation = () => {
         <Logo />
         {isLoggedIn ? (
           <div className="flex flex-row gap-5">
+            <BoxButton type="black" size="small" onClick={onLogOut}>
+              로그아웃
+            </BoxButton>
             <Link
               href="/landing"
               className="typography-body3 flex items-center font-semibold text-content-secondary-light"
