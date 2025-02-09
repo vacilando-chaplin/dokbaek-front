@@ -15,7 +15,7 @@ import Edit from "../../../../../public/icons/Edit.svg";
 import { EducationType, InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
-
+import X from "../../../../../public/icons/X.svg"
 interface ProfileMainProps {
   linear: string;
   userId: number;
@@ -24,6 +24,7 @@ interface ProfileMainProps {
   education: EducationType;
   onMainPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDeleteMainPhoto: React.MouseEventHandler<HTMLButtonElement>;
   setStepper: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -36,6 +37,7 @@ const ProfileMain = ({
   setStepper,
   onMainPhotoSelectFile,
   onMainPhotoModalOpen,
+  onDeleteMainPhoto,
 }: ProfileMainProps) => {
   const router = useRouter();
 
@@ -93,6 +95,15 @@ const ProfileMain = ({
               <Plus width="14" height="14" fill="#212529" />
               대표 사진 변경
             </UploadButton>
+            </div>
+            <div className="absolute top-2 right-2">
+              <button
+                className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                type="button"
+                onClick={onDeleteMainPhoto}
+              >
+                <X width="12" height="12" fill="#FB3E34" />
+              </button>
             </div>
 
           </div>

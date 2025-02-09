@@ -116,8 +116,7 @@ const Profile = () => {
     }
   };
 
-  const onEditMainPhoto = () => {
-    
+  const onDeleteMainPhoto = async () => {
   }
   
   useEffect(() => {
@@ -182,6 +181,7 @@ const Profile = () => {
           info={profileData.info}
           onMainPhotoSelectFile={onMainPhotoSelectFile}
           onMainPhotoModalOpen={onMainPhotoModalOpen}
+          onDeleteMainPhoto={onDeleteMainPhoto}
           education={
             profileData.education.length >= 1 ? profileData.education[0] : []
           }
