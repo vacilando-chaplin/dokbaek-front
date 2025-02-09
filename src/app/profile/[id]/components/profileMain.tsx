@@ -129,9 +129,9 @@ const ProfileMain = ({
             {weight && weight + "kg"}
           </span>
           {contact && <span>{contact}</span>}
-          {education.school.name && (
+          {education.school?.name && (
             <span>
-              {education.school.name}{" "}
+              {education.school?.name}{" "}
               {education.major && education.major + " 전공"}{" "}
               {educationList[statusIndex]}
             </span>
