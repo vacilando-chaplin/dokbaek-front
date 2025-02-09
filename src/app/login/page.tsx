@@ -3,33 +3,17 @@
 import KakaoLogin from "@/app/login/components/kakaoLogin";
 import NaverLogin from "@/app/login/components/naverLogin";
 import GoogleLogin from "@/app/login/components/googleLogin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LogoVertical from "../../../public/icons/LogoVertical.svg";
 import Tooltip from "@/components/atoms/tooltip";
 import Cookies from "js-cookie";
 
 const Login = () => {
-  const currentLoginForm = Cookies.get("login_form");
-
-  const loadKakaoSDK = () => {
-    if (window.Kakao) {
-      return;
-    }
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    script.onload = () => {
-      if (window.Kakao) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-      }
-    };
-    document.head.appendChild(script);
-  };
+  const [loginForm, setLoginForm] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      loadKakaoSDK();
-    }
+    const currentLoginForm = Cookies.get("login_form");
+    setLoginForm(currentLoginForm || null);
   }, []);
 
   return (
@@ -41,7 +25,7 @@ const Login = () => {
         </label>
       </div>
       <div className="flex h-auto w-full flex-col gap-2">
-        {currentLoginForm === "카카오" ? (
+        {loginForm === "카카오" ? (
           <div className="relative flex items-center justify-center">
             <KakaoLogin />
             <div className="absolute -top-7">
@@ -51,7 +35,7 @@ const Login = () => {
         ) : (
           <KakaoLogin />
         )}
-        {currentLoginForm === "네이버" ? (
+        {loginForm === "네이버" ? (
           <div className="relative flex items-center justify-center">
             <NaverLogin />
             <div className="absolute -top-7">
@@ -61,7 +45,7 @@ const Login = () => {
         ) : (
           <NaverLogin />
         )}
-        {currentLoginForm === "구글" ? (
+        {loginForm === "구글" ? (
           <div className="relative flex items-center justify-center">
             <GoogleLogin />
             <div className="absolute -top-7">
