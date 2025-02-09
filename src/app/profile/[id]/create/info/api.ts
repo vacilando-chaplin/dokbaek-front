@@ -52,3 +52,19 @@ export const postSpecialty = async (specialtyName: string) => {
     throw error;
   }
 };
+
+export const postUserProfileSpecialty = async (
+  profileId: number,
+  specialtyId: number,
+  mediaUrl: string
+) => {
+  try {
+    const res = await api.post(`/profile/${profileId}/specialty`, {
+      specialtyId,
+      mediaUrl
+    });
+    return res.data.data;
+  } catch (error) {
+    throw error;
+  }
+};

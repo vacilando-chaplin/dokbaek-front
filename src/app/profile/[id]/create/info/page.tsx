@@ -12,7 +12,7 @@ import InfoSub from "./components/infoSub";
 import InfoThird from "./components/infoThird";
 import { InfoActiveType, InfoInputType, SchoolType, SpecialtyType } from "./types";
 import { infoActiveInit, infoInputInit } from "./data";
-import { getSchoolName, postSpecialty, putInfo } from "./api";
+import { getSchoolName, postSpecialty, postUserProfileSpecialty, putInfo } from "./api";
 import { specialtyData } from '../../../../../lib/atoms'
 import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal"
 
@@ -119,13 +119,24 @@ const Info = () => {
       mediaUrl: ''
     }
     setSpecialties((prev) => [...prev, data]);
-      setSpecialty({id: 0, specialtyName: "", imageUrl: "", mediaUrl: ""})
+    setSpecialty({id: 0, specialtyName: "", imageUrl: "", mediaUrl: ""})
     setProfileSpecialtyModal(true);
   };
-  const onSaveSpecialty = () => {
+  const onSaveSpecialty = async () => {
     setSpecialties(specialties);
     onSpecialtyFormModalClose()
+
+    if(specialties && specialties.length > 0) {
+      const profileId = userId
+      
+      for(const specialty of specialties) {
+        const specialtyId = specialty.id
+        const mediaUrl = specialty.mediaUrl ?? ''
+        await postUserProfileSpecialty(profileId, specialtyId, mediaUrl);
+      }
+    }
   }
+  
   const onSpecialtyDropdownClick = (name: string, item: string) => {
     const selectedSpecialty = searchSpecialty.find(
       (specialty) => specialty.specialtyName === item
