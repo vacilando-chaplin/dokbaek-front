@@ -136,7 +136,7 @@ const Info = () => {
       }
     }
   }
-  
+
   const onSpecialtyDropdownClick = (name: string, item: string) => {
     const selectedSpecialty = searchSpecialty.find(
       (specialty) => specialty.specialtyName === item
@@ -180,49 +180,53 @@ const Info = () => {
     getSearchSchool(debounceSearch);
   }, [debounceSearch]);
 
+  const onSaveInfo = async () => {
+      const educationIndex = educationList.indexOf(infoInputs.education);
+      const educationStatus = educationEngList[educationIndex];
+
+      const infoData: any = {
+        status: "PUBLIC",
+        info: {
+          name: infoInputs.name,
+          bornYear: Number(infoInputs.birth),
+          height: Number(infoInputs.height),
+          weight: Number(infoInputs.weight),
+          email: infoInputs.email,
+          contact: infoInputs.contact,
+          specialty: infoInputs.specialty,
+          instagramLink: infoInputs.instagram,
+          youtubeLink: infoInputs.youtube,
+          introduction: infoInputs.introduction
+        },
+        education: [],
+        specialties: specialties
+      };
+      infoInputs.school
+        ? (infoData.education = [
+            {
+              school: {
+                name: infoInputs.school,
+                schoolType: "",
+                schoolGubun: ""
+              },
+              major: infoInputs.major,
+              status: educationStatus
+            }
+          ])
+        : (infoData.education = []);
+
+      await putInfo(userId, infoData);
+    }
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
   useEffect(() => {
-    const onStepper = async () => {
-      if (stepper !== 0) {
-        const educationIndex = educationList.indexOf(infoInputs.education);
-        const educationStatus = educationEngList[educationIndex];
-
-        const infoData: any = {
-          status: "PUBLIC",
-          info: {
-            name: infoInputs.name,
-            bornYear: Number(infoInputs.birth),
-            height: Number(infoInputs.height),
-            weight: Number(infoInputs.weight),
-            email: infoInputs.email,
-            contact: infoInputs.contact,
-            specialty: infoInputs.specialty,
-            instagramLink: infoInputs.instagram,
-            youtubeLink: infoInputs.youtube,
-            introduction: infoInputs.introduction
-          },
-          education: [],
-          specialties: specialties
-        };
-        infoInputs.school
-          ? (infoData.education = [
-              {
-                school: {
-                  name: infoInputs.school,
-                  schoolType: "",
-                  schoolGubun: ""
-                },
-                major: infoInputs.major,
-                status: educationStatus
-              }
-            ])
-          : (infoData.education = []);
-
-        await putInfo(userId, infoData);
-      }
-    };
-    onStepper();
+    onSaveInfo();
   }, [stepper]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      onSaveInfo();
+    }, 1000);
+  }, [infoInputs])
 
   // 내 정보 업데이트
   useEffect(() => {
