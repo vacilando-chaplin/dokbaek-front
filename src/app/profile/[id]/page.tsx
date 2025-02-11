@@ -32,6 +32,7 @@ import { PhotoModalType } from "./create/photo/types";
 import { photoModalInit } from "./create/photo/data";
 import PhotoModal from "./create/photo/components/photoModal";
 import { postProfilePhotoMain } from "./create/info/api";
+import { SpecialtyItemType } from "./create/info/types";
 
 const Profile = () => {
   const userId = useRecoilValue(defaultId);
@@ -47,6 +48,7 @@ const Profile = () => {
   const [linear, setLinear] = useState("sub");
 
   const [profileData, setProfileData] = useState<any>(profileInit);
+  const [profileSpecialties, setProfileSpecialties] = useState<SpecialtyItemType[]>([]);
   const [mainPhoto, setMainPhoto] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
   const [profileModal, setProfileModal] = useState(profileModalInit);
@@ -115,7 +117,8 @@ const Profile = () => {
       console.log('error', error)
     }
   };
-
+  const onEditMainPhoto = async () => {
+  }
   const onDeleteMainPhoto = async () => {
   }
   
@@ -130,9 +133,8 @@ const Profile = () => {
     const getProfileData = async () => {
       const res = await getProfile(userId);
       const data = await res.data;
-
       setProfileData(data);
-
+      setProfileSpecialties(data.specialties)
       const findMainPhoto = data.photos.find(
         (photo: PhotoResponseType) => photo.isDefault === true
       );
@@ -179,6 +181,7 @@ const Profile = () => {
           userId={userId}
           mainPhoto={mainPhoto}
           info={profileData.info}
+          profileSpecialties={profileSpecialties}
           onMainPhotoSelectFile={onMainPhotoSelectFile}
           onMainPhotoModalOpen={onMainPhotoModalOpen}
           onDeleteMainPhoto={onDeleteMainPhoto}

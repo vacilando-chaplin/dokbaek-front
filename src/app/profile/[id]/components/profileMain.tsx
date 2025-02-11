@@ -16,11 +16,13 @@ import { EducationType, InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
 import X from "../../../../../public/icons/X.svg"
+import { SpecialtyItemType } from "../create/info/types";
 interface ProfileMainProps {
   linear: string;
   userId: number;
   mainPhoto: string;
   info: InfoResponseType;
+  profileSpecialties: SpecialtyItemType[];
   education: EducationType;
   onMainPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -33,6 +35,7 @@ const ProfileMain = ({
   userId,
   mainPhoto,
   info,
+  profileSpecialties,
   education,
   setStepper,
   onMainPhotoSelectFile,
@@ -174,7 +177,6 @@ const ProfileMain = ({
               {educationList[statusIndex]}
             </span>
           )}
-          {specialty && <span>{specialty && "특기: " + specialty}</span>}
           {email && <span>{email}</span>}
           {instagramLink.length >= 27 && (
             <Link
@@ -213,6 +215,18 @@ const ProfileMain = ({
           buttonText=""
           buttonType=""
         />
+      )}
+      {profileSpecialties.length >= 1 && (
+        <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
+          <div className='text-body2 font-semibold mb-2'>
+            특기
+          </div>
+          <div className="flex gap-1">
+            {profileSpecialties.map((item) => (
+              <span key={item.id} className="bg-accent-light-light text-accent-primary-light px-2 rounded-[8px] py-[5px]">피아노</span>
+            ))}
+          </div>
+        </div>
       )}
       {introduction && (
         <p className="typography-body2 flex h-full w-full gap-2 whitespace-pre break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
