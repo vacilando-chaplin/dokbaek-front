@@ -1,4 +1,5 @@
-import { api } from "@/lib/axiosInstance";
+import { api, multipartAPI } from "@/lib/axiosInstance";
+import { base64ToBlob } from "@/lib/utils";
 
 // 커리어넷 학교 검색 api
 export const getSchoolName = async (search: string) => {
@@ -29,6 +30,27 @@ export const putInfo = async (id: number, data: any) => {
   }
 };
 
+export const postProfilePhotoMain = async (
+  id: number,
+  origin: string,
+  preview: string
+) => {
+  try {
+    const formData = new FormData();
+
+    const imageOrigin = base64ToBlob(origin);
+    const imagePreview = base64ToBlob(preview);
+
+    formData.append("origin", imageOrigin);
+    formData.append("preview", imagePreview);
+
+    const res = await multipartAPI.post(`/profile/${id}/photo/main`, formData);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getSpecialty = async (
   keyword: string,
   page: number,
@@ -48,6 +70,22 @@ export const postSpecialty = async (specialtyName: string) => {
   try {
     const res = await api.post(`/specialty`, { specialtyName });
     return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postUserProfileSpecialty = async (
+  profileId: number,
+  specialtyId: number,
+  mediaUrl: string
+) => {
+  try {
+    const res = await api.post(`/profile/${profileId}/specialty`, {
+      specialtyId,
+      mediaUrl
+    });
+    return res.data.data;
   } catch (error) {
     throw error;
   }

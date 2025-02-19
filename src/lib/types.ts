@@ -213,4 +213,5 @@ export interface SignUpResponseType {
     refreshToken: string;
   };
   defaultProfileId: number;
+  userId: number;
 }

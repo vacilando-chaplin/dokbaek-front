@@ -14,13 +14,17 @@ import Copy from "../../../../../public/icons/Copy.svg";
 import Edit from "../../../../../public/icons/Edit.svg";
 import { EducationType, InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
-
+import Tooltip from "@/components/atoms/tooltip";
+import X from "../../../../../public/icons/X.svg"
 interface ProfileMainProps {
   linear: string;
   userId: number;
   mainPhoto: string;
   info: InfoResponseType;
   education: EducationType;
+  onMainPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
+  onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDeleteMainPhoto: React.MouseEventHandler<HTMLButtonElement>;
   setStepper: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -30,7 +34,10 @@ const ProfileMain = ({
   mainPhoto,
   info,
   education,
-  setStepper
+  setStepper,
+  onMainPhotoSelectFile,
+  onMainPhotoModalOpen,
+  onDeleteMainPhoto,
 }: ProfileMainProps) => {
   const router = useRouter();
 
@@ -68,15 +75,38 @@ const ProfileMain = ({
     >
       {mainPhoto ? (
         <div className="flex h-[60vh] w-full">
-          <Image
-            src={mainPhoto}
-            alt="대표 사진"
-            width="0"
-            height="0"
-            sizes="100vw"
-            priority
-            className="h-auto w-full rounded-2xl"
-          />
+          <div className="relative h-full w-full ">
+            <Image
+              src={mainPhoto}
+              alt="대표 사진"
+              width="0"
+              height="0"
+              sizes="100vw"
+              priority
+              className="h-full w-full rounded-2xl"
+            />
+            <div className="absolute bottom-2 left-2">
+              <UploadButton 
+                type="secondaryOutlined"
+                size="medium"
+                onClick={onMainPhotoModalOpen}
+                onChange={onMainPhotoSelectFile}
+              >
+              <Plus width="14" height="14" fill="#212529" />
+              대표 사진 변경
+            </UploadButton>
+            </div>
+            <div className="absolute top-2 right-2">
+              <button
+                className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                type="button"
+                onClick={onDeleteMainPhoto}
+              >
+                <X width="12" height="12" fill="#FB3E34" />
+              </button>
+            </div>
+
+          </div>
         </div>
       ) : (
         <div className="flex h-[60vh] w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
@@ -86,7 +116,15 @@ const ProfileMain = ({
             width={40}
             height={40}
           />
-          <UploadButton type="secondaryOutlined" size="medium">
+          <div>
+            <Tooltip placement="top" text="대표 사진을 추가하세요." />
+          </div>
+          <UploadButton 
+            type="secondaryOutlined"
+            size="medium"
+            onClick={onMainPhotoModalOpen}
+            onChange={onMainPhotoSelectFile}
+          >
             <Plus width="14" height="14" fill="#212529" />
             대표 사진 추가
           </UploadButton>
@@ -129,9 +167,9 @@ const ProfileMain = ({
             {weight && weight + "kg"}
           </span>
           {contact && <span>{contact}</span>}
-          {education.school.name && (
+          {education.school?.name && (
             <span>
-              {education.school.name}{" "}
+              {education.school?.name}{" "}
               {education.major && education.major + " 전공"}{" "}
               {educationList[statusIndex]}
             </span>

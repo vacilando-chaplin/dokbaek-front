@@ -12,7 +12,8 @@ import {
   defaultId,
   filmoCategory,
   filmoRole,
-  stepperInit
+  stepperInit,
+  toastMessage
 } from "@/lib/atoms";
 import { profileInit } from "@/lib/data";
 import {
@@ -27,6 +28,10 @@ import ProfileSub from "./components/profileSub";
 import ProfilePhotoModal from "./components/profilePhotoModal";
 import ProfileFilmoModal from "./components/profileFilmoModal";
 import { profileModalInit, selectedPhotoInit, videoLinkInit } from "./data";
+import { PhotoModalType } from "./create/photo/types";
+import { photoModalInit } from "./create/photo/data";
+import PhotoModal from "./create/photo/components/photoModal";
+import { postProfilePhotoMain } from "./create/info/api";
 
 const Profile = () => {
   const userId = useRecoilValue(defaultId);
@@ -46,6 +51,12 @@ const Profile = () => {
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
   const [profileModal, setProfileModal] = useState(profileModalInit);
   const [videoLink, setVideoLink] = useState(videoLinkInit);
+
+  const [cropImage, setCropImage] = useState("");
+  const [photoModal, setPhotoModal] = useState<PhotoModalType>(photoModalInit);
+  const [selectImage, setSelectImage] = useState("");
+  const setToastMessage = useSetRecoilState(toastMessage);
+
 
   const onPhotoModalOpen = async (photo: string) => {
     const blurPhoto = await convertImageToBase64(photo);
@@ -70,6 +81,44 @@ const Profile = () => {
     setVideoLink(videoLinkInit);
   };
 
+  const onMainPhotoSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setCropImage(reader.result?.toString() || "");
+        setSelectImage(reader.result?.toString() || "");
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    e.currentTarget.value = "";
+  };
+
+  const onMainPhotoModalOpen = () => {
+    setPhotoModal({
+      ...photoModal,
+      state: "add",
+      active: true,
+      name: "대표 사진 추가",
+      buttonText: "추가"
+    });
+  };
+
+  const onAddMainPhoto = async () => {
+    try {
+      const res = await postProfilePhotoMain(userId, selectImage, selectImage);
+      const data = res.data;
+
+      setMainPhoto(data.mainPhotoPreviewPath);
+      setPhotoModal(photoModalInit);
+      setToastMessage("사진을 추가했어요.");
+    } catch (error) { 
+      console.log('error', error)
+    }
+  };
+
+  const onDeleteMainPhoto = async () => {
+  }
+  
   useEffect(() => {
     if (mainRef.current && subRef.current) {
       const mainHeight = mainRef.current.offsetHeight;
@@ -118,6 +167,7 @@ const Profile = () => {
     const resultCategoryList = filteredCategoryList.map(
       (category: FilmoCategoryType) => category.name
     );
+    setMainPhoto(profileData.mainPhotoPath);
     setCategoryList(resultCategoryList);
   }, [profileData]);
 
@@ -129,6 +179,9 @@ const Profile = () => {
           userId={userId}
           mainPhoto={mainPhoto}
           info={profileData.info}
+          onMainPhotoSelectFile={onMainPhotoSelectFile}
+          onMainPhotoModalOpen={onMainPhotoModalOpen}
+          onDeleteMainPhoto={onDeleteMainPhoto}
           education={
             profileData.education.length >= 1 ? profileData.education[0] : []
           }
@@ -148,6 +201,16 @@ const Profile = () => {
           onFilmoLinkModalOpen={onFilmoLinkModalOpen}
         />
       </div>
+      {photoModal.active && (
+        <PhotoModal
+          selectImage={selectImage}
+          photoModal={photoModal}
+          onModalActive={onPhotoModalClose}
+          onAddPhoto={onAddMainPhoto}
+          onEditPhoto={onEditMainPhoto}
+          setCropImage={setCropImage}
+        />
+      )}
       {profileModal.state === "photo" && profileModal.active && (
         <ProfilePhotoModal
           selectedPhoto={selectedPhoto}

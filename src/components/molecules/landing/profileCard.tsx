@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Profile from "../../../../public/images/samples/profile.png";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
+import { postProfileLike } from "@/app/profiles/api";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
@@ -12,9 +13,14 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
     const currentYear = new Date().getFullYear();
     return profile?.bornYear ? currentYear - profile?.bornYear + 1 : "-";
   };
+  const onClickProfileLike = () => {
+    if(profile.id) {
+      const res = postProfileLike(profile.id);
+    }
+  }
 
   return (
-    <div className="rounded-[16px] border border-gray-100 bg-background-base-light p-4 sm:w-[calc(50%-6px)] md:w-[calc(33.33%-6px)] lg:w-[calc(25%-6px)]">
+    <div onClick={onClickProfileLike} className="rounded-[16px] border border-gray-100 bg-background-base-light p-4 sm:w-[calc(50%-6px)] md:w-[calc(33.33%-6px)] lg:w-[calc(25%-6px)]">
       <Image
         src={Profile}
         alt="photo"
