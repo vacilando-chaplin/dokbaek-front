@@ -1,41 +1,58 @@
 "use client";
 
-import { photoDragEnd } from "@/lib/atoms";
 import { useEffect, useRef, useState } from "react";
-import {
-  Coordinates,
-  Cropper,
-  CropperRef,
-  debounce
-} from "react-advanced-cropper";
+import { Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 
 interface ImageCropperProps {
   selectImage: string;
   setCropImage: any;
+  cropData?: any;
+  setCropData?: any;
 }
 
-const ImageCropper = ({ selectImage, setCropImage }: ImageCropperProps) => {
+const ImageCropper = ({
+  cropData,
+  selectImage,
+  setCropData,
+  setCropImage
+}: ImageCropperProps) => {
   const cropperRef = useRef<CropperRef>(null);
 
-  // const [coordinates, setCoordinates] = useState<Coordinates | null>(null); // cropper 좌표
-  // setCoordinates(cropperRef.current.getCoordinates());
   const [isLoading, setIsLoading] = useState(false);
 
-  const onCrop = () => {
+  const onCropEnd = () => {
     if (cropperRef.current) {
-      setCropImage(cropperRef.current.getCanvas()?.toDataURL());
+      const cropData = cropperRef.current.getCoordinates();
+      const cropImagetoString = cropperRef.current.getCanvas()?.toDataURL();
+
+      setCropData(cropData);
+      setCropImage(cropImagetoString);
     }
+  };
+
+  const defaultSize = ({ imageSize, visibleArea }: any) => {
+    const aspectRatio = 160 / 204;
+    const targetWidth = visibleArea ? visibleArea.width : imageSize.width;
+    const maxWidth = Math.min(720, imageSize.width - 160);
+    const finalWidth = Math.min(targetWidth, maxWidth);
+    const finalHeight = finalWidth / aspectRatio;
+
+    return {
+      width: finalWidth,
+      height: finalHeight
+    };
   };
 
   useEffect(() => {
     if (selectImage) {
+      setIsLoading(true);
       const img = new Image();
       img.src = selectImage;
       img.onload = () => {
         setTimeout(() => {
-          setIsLoading(true);
-        }, 1000);
+          onCropEnd();
+        }, 200);
       };
     }
     return () => {};
@@ -47,12 +64,12 @@ const ImageCropper = ({ selectImage, setCropImage }: ImageCropperProps) => {
         <Cropper
           ref={cropperRef}
           src={selectImage}
-          onChange={onCrop}
-          // onChange={debounce(onCrop, 3000)}
-          // onMove={() => setDragEnd(false)}
-          stencilProps={{
-            aspectRatio: 160 / 204
-          }}
+          defaultSize={
+            Object.keys(cropData).length >= 1 ? cropData : defaultSize
+          }
+          defaultPosition={Object.keys(cropData).length >= 1 && cropData}
+          onInteractionEnd={onCropEnd}
+          className="h-full w-full"
         />
       )}
     </>

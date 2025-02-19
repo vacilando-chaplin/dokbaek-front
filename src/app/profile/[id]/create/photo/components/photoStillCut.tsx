@@ -11,18 +11,18 @@ import EmptyPhotoFrame from "./emptyPhotoFrame";
 import UploadButton from "@/components/atoms/uploadButton";
 
 interface PhotoStillCutProps {
-  photoList: PhotoResponseType[];
+  stillCutList: PhotoResponseType[];
   photoDeleteActive: boolean;
   onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
-  onPhotoEditModalOpen: (photo: any) => void;
-  onDeletePhoto: (id: string) => void;
+  onPhotoModalOpen: (category: string) => void;
+  onPhotoEditModalOpen: (photo: any, category: string) => void;
+  onDeletePhoto: (id: string, category: string) => void;
   onDeletePhotoActive: React.MouseEventHandler<HTMLButtonElement>;
   onDrop: (images: File[], rejectedFiles: any[]) => void;
 }
 
 const PhotoStillCut = ({
-  photoList,
+  stillCutList,
   photoDeleteActive,
   onSelectFile,
   onPhotoModalOpen,
@@ -37,27 +37,28 @@ const PhotoStillCut = ({
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-2">
             <Title name="스틸컷" />
-            <LimitLabel value={0} limit={20} />
+            <LimitLabel value={stillCutList.length} limit={20} />
           </div>
           <TitleHelperText text="출연할 작품 안에서의 모습이 담긴 사진을 추가해주세요." />
         </div>
         <UploadButton
           type="primaryOutlined"
           size="small"
-          onClick={onPhotoModalOpen}
+          disabled={stillCutList.length >= 20}
+          onClick={() => onPhotoModalOpen("stillcut")}
           onChange={onSelectFile}
         >
           <Plus width="12" height="12" fill="#1E85EF" />
           추가
         </UploadButton>
       </div>
-      {photoList.length >= 1 ? (
+      {stillCutList.length >= 1 ? (
         <div className="grid w-full grid-cols-4 gap-2">
-          {photoList.map((photoItem: PhotoResponseType) => {
+          {stillCutList.map((photoItem: PhotoResponseType) => {
             return (
               <figure
                 key={photoItem.id}
-                className="relative flex aspect-[300/383] h-full w-full rounded-lg"
+                className="relative flex aspect-[160/204] h-full w-full rounded-lg"
               >
                 <Image
                   src={photoItem.previewPath}
@@ -72,7 +73,7 @@ const PhotoStillCut = ({
                   {/* edit */}
                   <label
                     className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
-                    onClick={() => onPhotoEditModalOpen(photoItem)}
+                    onClick={() => onPhotoEditModalOpen(photoItem, "stillcut")}
                   >
                     <Edit width="12" height="12" fill="#212529" />
                   </label>
@@ -87,8 +88,9 @@ const PhotoStillCut = ({
                   {/* deleteModal */}
                   {photoDeleteActive && (
                     <DeleteModal
-                      text="이 사진을 삭제할까요?"
                       id={photoItem.id}
+                      text="이 사진을 삭제할까요?"
+                      category="stillcut"
                       onCancel={onDeletePhotoActive}
                       onDelete={onDeletePhoto}
                     />
@@ -102,7 +104,10 @@ const PhotoStillCut = ({
       ) : (
         <EmptyPhotoFrame
           text="추가할 사진을 끌어다 놓으세요."
+          listSize={stillCutList.length}
           onDrop={onDrop}
+          onCropModalOpen={() => onPhotoModalOpen("stillcut")}
+          onChange={onSelectFile}
         />
       )}
     </section>

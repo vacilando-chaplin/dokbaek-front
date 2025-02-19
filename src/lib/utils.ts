@@ -69,3 +69,33 @@ export const base64ToBlob = (base64String: string) => {
   }
   return new Blob(byteArrays, { type: mimeType });
 };
+
+export const getFileMimeTypeFromUrl = async (url: string) => {
+  const response = await fetch(url);
+  const contentType = response.headers.get("Content-Type");
+
+  if (contentType && contentType === "application/octet-stream") {
+    const buffer = await response.arrayBuffer();
+    const uint8Array = new Uint8Array(buffer);
+
+    if (uint8Array[0] === 0xff && uint8Array[1] === 0xd8) {
+      return "image/jpeg";
+    }
+    if (uint8Array[0] === 0x89 && uint8Array[1] === 0x50) {
+      return "image/png";
+    }
+
+    return "unknown";
+  }
+
+  return contentType || "unknown";
+};
+
+export const convertToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string); // base64 문자열 반환
+    reader.onerror = reject;
+    reader.readAsDataURL(file); // 파일을 base64로 변환
+  });
+};

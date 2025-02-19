@@ -4,4 +4,12 @@ export interface PhotoModalType {
   active: boolean;
   name: string;
   buttonText: string;
+  category: string;
+}
+
+export interface SelectedImagesType {
+  origin: string;
+  preview: string;
+  originImage: string;
+  cropData: any;
 }

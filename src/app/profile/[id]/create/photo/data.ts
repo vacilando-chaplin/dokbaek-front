@@ -3,5 +3,6 @@ export const photoModalInit = {
   state: "",
   active: false,
   name: "",
-  buttonText: ""
+  buttonText: "",
+  category: ""
 };

@@ -6,11 +6,17 @@ import UploadButton from "@/components/atoms/uploadButton";
 
 interface RecentPhotoFrameProps {
   text: string;
+  onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
 }
 
-const RecentPhotoFrame = ({ text }: RecentPhotoFrameProps) => {
+const RecentPhotoFrame = ({
+  text,
+  onSelectFile,
+  onPhotoModalOpen
+}: RecentPhotoFrameProps) => {
   return (
-    <div className="flex h-[204px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted border-gray-150 bg-gray-50">
+    <div className="flex aspect-[160/204] h-full w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted border-gray-150 bg-gray-50">
       {text === "전신 사진" && (
         <HumanMale width="16" height="16" fill="#868E96" />
       )}
@@ -31,7 +37,12 @@ const RecentPhotoFrame = ({ text }: RecentPhotoFrameProps) => {
       <label className="typography-caption1 font-medium text-content-tertiary-light">
         {text}
       </label>
-      <UploadButton type="secondaryOutlined" size="small">
+      <UploadButton
+        type="secondaryOutlined"
+        size="small"
+        onClick={onPhotoModalOpen}
+        onChange={onSelectFile}
+      >
         <Plus width="12" height="12" fill="#212529" />
         추가
       </UploadButton>

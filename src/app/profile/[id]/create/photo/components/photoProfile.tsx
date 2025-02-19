@@ -14,9 +14,9 @@ interface PhotoProfileProps {
   photoList: PhotoResponseType[];
   photoDeleteActive: boolean;
   onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
-  onPhotoEditModalOpen: (photo: any) => void;
-  onDeletePhoto: (id: string) => void;
+  onPhotoModalOpen: (category: string) => void;
+  onPhotoEditModalOpen: (photo: any, category: string) => void;
+  onDeletePhoto: (id: string, category: string) => void;
   onDeletePhotoActive: React.MouseEventHandler<HTMLButtonElement>;
   onDrop: (images: File[], rejectedFiles: any[]) => void;
 }
@@ -37,14 +37,15 @@ const PhotoProfile = ({
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-2">
             <Title name="프로필 사진" />
-            <LimitLabel value={0} limit={20} />
+            <LimitLabel value={photoList.length} limit={20} />
           </div>
           <TitleHelperText text="자신의 매력을 가장 잘 보여줄 수 있는 프로필 사진을 추가해주세요." />
         </div>
         <UploadButton
           type="primaryOutlined"
           size="small"
-          onClick={onPhotoModalOpen}
+          disabled={photoList.length >= 20}
+          onClick={() => onPhotoModalOpen("photo")}
           onChange={onSelectFile}
         >
           <Plus width="12" height="12" fill="#1E85EF" />
@@ -57,7 +58,7 @@ const PhotoProfile = ({
             return (
               <figure
                 key={photoItem.id}
-                className="relative flex aspect-[300/383] h-full w-full rounded-lg"
+                className="relative flex aspect-[160/204] h-full w-full rounded-lg"
               >
                 <Image
                   src={photoItem.previewPath}
@@ -72,7 +73,7 @@ const PhotoProfile = ({
                   {/* edit */}
                   <label
                     className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
-                    onClick={() => onPhotoEditModalOpen(photoItem)}
+                    onClick={() => onPhotoEditModalOpen(photoItem, "photo")}
                   >
                     <Edit width="12" height="12" fill="#212529" />
                   </label>
@@ -87,8 +88,9 @@ const PhotoProfile = ({
                   {/* deleteModal */}
                   {photoDeleteActive && (
                     <DeleteModal
-                      text="이 사진을 삭제할까요?"
                       id={photoItem.id}
+                      text="이 사진을 삭제할까요?"
+                      category="photo"
                       onCancel={onDeletePhotoActive}
                       onDelete={onDeletePhoto}
                     />
@@ -102,7 +104,10 @@ const PhotoProfile = ({
       ) : (
         <EmptyPhotoFrame
           text="추가할 사진을 끌어다 놓으세요."
+          listSize={photoList.length}
           onDrop={onDrop}
+          onCropModalOpen={() => onPhotoModalOpen("photo")}
+          onChange={onSelectFile}
         />
       )}
     </section>

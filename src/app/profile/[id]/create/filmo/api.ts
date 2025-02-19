@@ -1,4 +1,4 @@
-import { api, multipartAPI } from "@/lib/axiosInstance";
+import { api } from "@/lib/axiosInstance";
 import { FilmoRequestType } from "@/lib/types";
 import { base64ToBlob } from "@/lib/utils";
 
@@ -18,7 +18,7 @@ export const postFilmographyThumbnail = async (thumbnail: string) => {
   formData.append("thumbnail", imageOrigin);
 
   try {
-    const res = await multipartAPI.post(`/filmo/thumbnail`, formData);
+    const res = await api.post(`/filmo/thumbnail`, formData);
     return res.data;
   } catch (error) {
     throw error;
