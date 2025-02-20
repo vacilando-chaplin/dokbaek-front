@@ -302,7 +302,6 @@ const Photo = () => {
       buttonText: "완료",
       category: category
     });
-    console.log(category);
   };
 
   // 사진 삭제 모달 액티브

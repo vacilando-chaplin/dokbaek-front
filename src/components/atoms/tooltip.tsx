@@ -8,7 +8,7 @@ interface TooltipProps {
 
 const Tooltip = ({ placement, text }: TooltipProps) => {
   return (
-    <div className="relative flex h-auto w-auto max-w-80 items-center justify-center gap-0.5 rounded-lg bg-accent-primary-light px-2.5 py-1.5 shadow-low">
+    <div className="interaction-default relative flex h-auto w-auto max-w-80 items-center justify-center gap-0.5 rounded-lg bg-accent-primary-light px-2.5 py-1.5 shadow-low">
       {placement === "top" && (
         <ArrowTriangleDown
           width="24"

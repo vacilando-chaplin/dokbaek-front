@@ -7,12 +7,14 @@ import "react-advanced-cropper/dist/style.css";
 interface ImageCropperProps {
   selectImage: string;
   setCropImage: any;
+  cropType: string;
   cropData?: any;
   setCropData?: any;
 }
 
 const ImageCropper = ({
   cropData,
+  cropType,
   selectImage,
   setCropData,
   setCropImage
@@ -38,10 +40,19 @@ const ImageCropper = ({
     const finalWidth = Math.min(targetWidth, maxWidth);
     const finalHeight = finalWidth / aspectRatio;
 
-    return {
-      width: finalWidth,
-      height: finalHeight
-    };
+    if (cropType === "stillcut") {
+      const stillcutWidth = imageSize.width * 0.8;
+      const stillcutHeight = stillcutWidth * (9 / 16);
+      return {
+        width: stillcutWidth,
+        height: stillcutHeight
+      };
+    } else {
+      return {
+        width: finalWidth,
+        height: finalHeight
+      };
+    }
   };
 
   useEffect(() => {

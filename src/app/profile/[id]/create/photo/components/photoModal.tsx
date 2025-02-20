@@ -41,6 +41,7 @@ const PhotoModal = ({
               selectedImages.length >= 1 &&
               selectedImages[selectedPhotoId].cropData
             }
+            cropType={photoModal.category}
             selectImage={selectImage}
             setCropData={setCropData}
             setCropImage={setCropImage}
