@@ -10,17 +10,24 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentPath, defaultId } from "@/lib/atoms";
 import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
+import Heart from "../../../public/icons/Heart.svg";
 import { useEffect, useState } from "react";
+
+interface UserMenuType {
+  name: string;
+  onClick: () => void;
+}
 
 const TopNavigation = () => {
   const router = useRouter();
   const pathName = usePathname();
 
   const jwt = Cookies.get("jwt");
+  const userId = useRecoilValue(defaultId);
   const setPathName = useSetRecoilState(currentPath);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userId = useRecoilValue(defaultId);
+  const [userMenuActive, setUserMenuActive] = useState(false);
 
   const onLogIn = () => {
     setPathName(pathName);
@@ -43,6 +50,25 @@ const TopNavigation = () => {
     setIsLoggedIn(false);
   };
 
+  const onUserMenuClick = () => {
+    setUserMenuActive(!userMenuActive);
+  };
+
+  const userMenu = [
+    {
+      name: "계정 연동",
+      onClick: () => {}
+    },
+    {
+      name: "알림 설정",
+      onClick: () => {}
+    },
+    {
+      name: "로그아웃",
+      onClick: onLogOut
+    }
+  ];
+
   useEffect(() => {
     if (jwt) {
       setIsLoggedIn(true);
@@ -57,9 +83,6 @@ const TopNavigation = () => {
         <Logo />
         {isLoggedIn ? (
           <div className="flex flex-row gap-5">
-            <BoxButton type="black" size="small" onClick={onLogOut}>
-              로그아웃
-            </BoxButton>
             <Link
               href="/landing"
               className="typography-body3 flex items-center font-semibold text-content-secondary-light"
@@ -72,15 +95,39 @@ const TopNavigation = () => {
             >
               내 프로필
             </Link>
+            <Link href={`/`} className="flex items-center">
+              <Heart width="20" height="20" fill="#5E656C" />
+            </Link>
             <button type="button">
               <Bell width="20" height="20" fill="#5E656C" />
             </button>
             <button
               type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50"
+              className="relative flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50"
+              onClick={onUserMenuClick}
             >
               <Person width="20" height="20" fill="#5E656C" />
             </button>
+            {userMenuActive && (
+              <div className="scrollbar interaction-default absolute right-6 top-11 z-10 flex h-auto max-h-[332px] w-[120px] animate-enter list-none flex-col rounded-xl bg-background-elevated-light p-2 shadow-low">
+                {userMenu.map((item: UserMenuType) => {
+                  return (
+                    <div
+                      key={item.name}
+                      className="flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2"
+                    >
+                      <button
+                        type="button"
+                        className="typography-body3 font-regular text-content-primary-light"
+                        onClick={item.onClick}
+                      >
+                        {item.name}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-row gap-5">
