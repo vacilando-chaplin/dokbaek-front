@@ -33,24 +33,22 @@ const ImageCropper = ({
     }
   };
 
-  const defaultSize = ({ imageSize, visibleArea }: any) => {
-    const aspectRatio = 160 / 204;
-    const targetWidth = visibleArea ? visibleArea.width : imageSize.width;
-    const maxWidth = Math.min(720, imageSize.width - 160);
-    const finalWidth = Math.min(targetWidth, maxWidth);
-    const finalHeight = finalWidth / aspectRatio;
-
+  const defaultSize = ({ imageSize }: any) => {
     if (cropType === "stillcut") {
       const stillcutWidth = imageSize.width * 0.8;
       const stillcutHeight = stillcutWidth * (9 / 16);
+
       return {
         width: stillcutWidth,
         height: stillcutHeight
       };
     } else {
+      const width = imageSize.width * 0.6;
+      const height = width * (16 / 9);
+
       return {
-        width: finalWidth,
-        height: finalHeight
+        width: width,
+        height: height
       };
     }
   };
