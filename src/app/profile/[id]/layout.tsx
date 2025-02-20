@@ -16,7 +16,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }, [message]);
 
   return (
-    <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light">
+    <div className="relative flex min-h-dvh w-full flex-col items-center">
       {message && (
         <Toast text={message} kind="info" fullWidth={false} placement="top" />
       )}

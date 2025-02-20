@@ -40,3 +40,12 @@ export interface SpecialtyType {
   imageUrl?: string;
   mediaUrl?: string;
 }
+export interface SpecialtyItemType {
+  createdAt: string | null;
+  displayOrder: number | null;
+  id: number | null;
+  imageUrl: string | null;
+  mediaUrl: string | null;
+  specialtyId: number | null;
+  updatedAt: string | null;
+}
