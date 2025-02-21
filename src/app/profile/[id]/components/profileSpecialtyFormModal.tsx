@@ -1,7 +1,7 @@
 import React from "react";
 import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
-import ProfileSpecialtyEditor from "@/components/organisms/profileSpecialtyEditor";
+import ProfileSpecialtyEditor from "@/app/profile/[id]/components/profileSpecialtyEditor";
 import { SpecialtyType } from "../create/info/types";
 
 interface ProfileSpecialtyFormModalProps {
