@@ -1,6 +1,6 @@
 import { base64ToBlob } from "@/lib/utils";
 import axios from "axios";
-import { api, multipartAPI } from "./axiosInstance";
+import { api } from "./axiosInstance";
 
 export const convertImageToBase64 = async (imageUrl: string) => {
   try {
@@ -20,7 +20,6 @@ export const convertImageToBase64 = async (imageUrl: string) => {
       });
       return base64Image;
     } else {
-      // Node.js 환경에서는 Buffer를 사용
       const base64Image = Buffer.from(res.data, "binary").toString("base64");
       return `data:image/jpeg;base64,${base64Image}`;
     }
@@ -76,7 +75,8 @@ export const getProfile = async (id: number) => {
 export const postPhoto = async (
   id: number,
   origin: string,
-  preview: string
+  preview: string,
+  category: string
 ) => {
   const formData = new FormData();
 
@@ -87,30 +87,26 @@ export const postPhoto = async (
   formData.append("preview", imagePreview);
 
   try {
-    const res = await multipartAPI.post(`/profile/${id}/photo`, formData);
+    const res = await api.post(`/profile/${id}/${category}`, formData);
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const postPhotoEdit = async (
+export const patchPhoto = async (
   id: number,
-  origin: string,
   preview: string,
-  photoId: string
+  photoId: string,
+  category: string
 ) => {
   const formData = new FormData();
-
-  const imageOrigin = base64ToBlob(origin);
   const imagePreview = base64ToBlob(preview);
-
-  formData.append("origin", imageOrigin);
   formData.append("preview", imagePreview);
 
   try {
-    const res = await multipartAPI.post(
-      `/profile/${id}/photo/${photoId}`,
+    const res = await api.patch(
+      `/profile/${id}/${category}/${photoId}`,
       formData
     );
     return res.data;
@@ -119,18 +115,13 @@ export const postPhotoEdit = async (
   }
 };
 
-export const deletePhoto = async (id: number, photoId: string) => {
+export const deletePhoto = async (
+  id: number,
+  photoId: string,
+  category: string
+) => {
   try {
-    const res = await api.delete(`/profile/${id}/photo/${photoId}`);
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const patchPhotoDefault = async (id: number, photoId: string) => {
-  try {
-    const res = await api.patch(`/profile/${id}/photo/${photoId}/default`);
+    const res = await api.delete(`/profile/${id}/${category}/${photoId}`);
     return res.data;
   } catch (error) {
     throw error;

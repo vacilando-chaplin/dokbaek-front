@@ -34,11 +34,6 @@ export const infoRequired = atom<InfoRequiredType>({
   }
 });
 
-export const photoDragEnd = atom<boolean>({
-  key: "photoDragEnd",
-  default: false
-});
-
 export const categoryData = atom<string[]>({
   key: "categoryData",
   default: []

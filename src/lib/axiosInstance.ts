@@ -8,16 +8,6 @@ const baseURL = process.env.NEXT_PUBLIC_BASEURL;
 const api = axios.create({
   baseURL: baseURL,
   headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`
-  },
-  withCredentials: true
-});
-
-const multipartAPI = axios.create({
-  baseURL: baseURL,
-  headers: {
-    "Content-Type": "multipart/form-data",
     Authorization: `Bearer ${token}`
   },
   withCredentials: true
@@ -41,28 +31,14 @@ const refreshToken = async () => {
     const { jwt, refreshToken } = data.data.token;
     useSetToken("jwt", jwt);
     useSetToken("refresh_token", refreshToken);
-    return jwt
-    
+    return jwt;
   } catch (error) {
     console.error(error);
     throw error;
-  }  
-}
+  }
+};
 
 api.interceptors.request.use(
-  (config) => {
-    const token = Cookies.get("jwt");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-multipartAPI.interceptors.request.use(
   (config) => {
     const token = Cookies.get("jwt");
     if (token) {
@@ -96,10 +72,9 @@ const addResponseInterceptor = (axiosInstance: any) => {
       }
       return Promise.reject(error);
     }
-  )
-}
+  );
+};
 
 addResponseInterceptor(api);
-addResponseInterceptor(multipartAPI);
 
-export { api, multipartAPI };
+export { api };

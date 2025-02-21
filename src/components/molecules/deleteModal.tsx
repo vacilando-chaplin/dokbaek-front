@@ -2,13 +2,20 @@ import ArrowTriangleUp from "../../../public/icons/ArrowTriangleUp.svg";
 import BoxButton from "../atoms/boxButton";
 
 interface DeleteModalProps {
-  text: string;
   id: string;
+  text: string;
+  category: string;
   onCancel: React.MouseEventHandler<HTMLButtonElement>;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, category: string) => void;
 }
 
-const DeleteModal = ({ text, id, onCancel, onDelete }: DeleteModalProps) => {
+const DeleteModal = ({
+  id,
+  text,
+  category,
+  onCancel,
+  onDelete
+}: DeleteModalProps) => {
   return (
     <div className="absolute -right-2 top-10 z-10 animate-enter shadow-low">
       <ArrowTriangleUp
@@ -30,7 +37,7 @@ const DeleteModal = ({ text, id, onCancel, onDelete }: DeleteModalProps) => {
             size="small"
             onClick={(e) => {
               e.stopPropagation();
-              onDelete(id);
+              onDelete(id, category);
             }}
           >
             삭제

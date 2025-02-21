@@ -130,11 +130,18 @@ export interface InfoRequiredType {
 
 export interface PhotoResponseType {
   id: string;
-  userProfileId: number;
   path: string;
   previewPath: string;
   displayOrder: number;
-  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PhotoRecentResponseType {
+  id: string;
+  photoType: string;
+  path: string;
+  previewPath: string;
   createdAt: string;
   updatedAt: string;
 }
