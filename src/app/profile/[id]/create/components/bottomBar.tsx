@@ -1,4 +1,3 @@
-import Check from "../../../../../../public/icons/Check.svg";
 import ArrowDirectionLeft from "../../../../../../public/icons/ArrowDirectionLeft.svg";
 import BoxButton from "@/components/atoms/boxButton";
 
@@ -16,10 +15,6 @@ const BottomBar = ({ disabled, onBack, onSave }: BottomBarProps) => {
           <ArrowDirectionLeft width="14" height="14" fill="#212529" />
           돌아가기
         </BoxButton>
-        <label className="typography-caption1 flex items-center gap-1 font-medium text-state-positive-light">
-          <Check width="12" height="12" fill="#01C043" />
-          저장되었어요.
-        </label>
       </div>
       <div className="flex gap-2">
         <BoxButton
