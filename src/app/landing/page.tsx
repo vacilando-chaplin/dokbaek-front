@@ -1,7 +1,7 @@
 "use client";
 
-import LandingMain from "@/components/organisms/landing/landingMain";
-import LandingSub from "@/components/organisms/landing/landingSub";
+import LandingMain from "@/app/landing/components/landingMain";
+import LandingSub from "@/app/landing/components/landingSub";
 
 const Page = () => {
   return (
