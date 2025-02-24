@@ -7,6 +7,7 @@ import FilmoModal from "./components/filmoModal";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
+  completionProgress,
   defaultId,
   filmoCategory,
   filmoRole,
@@ -17,7 +18,7 @@ import {
   FilmoResponseType,
   FilmoRoleType
 } from "@/lib/types";
-import { setOnlyNumber } from "@/lib/utils";
+import { isValid, setOnlyNumber } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { FilmoDeleteType } from "./types";
@@ -39,6 +40,8 @@ import {
 const Filmography = () => {
   const userId = useRecoilValue(defaultId);
   const setToastMessage = useSetRecoilState(toastMessage);
+
+  const [completion, setCompletion] = useRecoilState(completionProgress);
 
   const [filmoRoleList, setFilmoRoleList] =
     useRecoilState<FilmoRoleType[]>(filmoRole);
@@ -113,6 +116,7 @@ const Filmography = () => {
     const res = await getProfile(userId);
     const data = await res.data;
 
+    setCompletion({ ...completion, filmography: true });
     setFilmoList(data.filmos);
     setFilmoInputs(filmographyInputInit);
     setFilmoModal({ ...filmoModal, active: false });
@@ -337,8 +341,10 @@ const Filmography = () => {
     const res = await getProfile(userId);
     const data = await res.data;
 
+    isValid(data.filmos)
+      ? setCompletion({ ...completion, filmography: true })
+      : setCompletion({ ...completion, filmography: false });
     setFilmoList(data.filmos);
-
     setFilmoDelete(filmoDeleteInit);
     setToastMessage("작품 활동을 삭제했어요.");
   };
@@ -374,6 +380,10 @@ const Filmography = () => {
     const getProfileData = async () => {
       const res = await getProfile(userId);
       const data = await res.data;
+
+      isValid(data.filmos)
+        ? setCompletion({ ...completion, filmography: true })
+        : setCompletion({ ...completion, filmography: false });
       setFilmoList(data.filmos);
     };
     getProfileData();
