@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 import { completionProgress } from "@/lib/atoms";
 
 interface BottomBarProps {
-  disabled?: boolean;
+  disabled: boolean;
   onBack: React.MouseEventHandler<HTMLButtonElement>;
   onSave: React.MouseEventHandler<HTMLButtonElement>;
 }
