@@ -7,10 +7,10 @@ import {
   postPhoto,
   patchPhoto
 } from "@/lib/api";
-import { defaultId, toastMessage } from "@/lib/atoms";
+import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { PhotoModalType, SelectedImagesType } from "./types";
 import { photoModalInit } from "./data";
 import PhotoModal from "./components/photoModal";
@@ -18,12 +18,13 @@ import PhotoProfile from "./components/photoProfile";
 import PhotoStillCut from "./components/photoStillCut";
 import PhotoRecent from "./components/photoRecent";
 import imageCompression from "browser-image-compression";
-import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
+import { convertToBase64, getFileMimeTypeFromUrl, isValid } from "@/lib/utils";
 import { postRecentPhoto, postRecentPhotoEdit } from "./api";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
   const setToastMessage = useSetRecoilState(toastMessage);
+  const [completion, setCompletion] = useRecoilState(completionProgress);
 
   const options = {
     maxSizeMB: 0.5,
@@ -155,6 +156,7 @@ const Photo = () => {
       } else {
         await postPhoto(userId, selectedImages[0].origin, cropImage, "photo");
       }
+      setCompletion({ ...completion, profilePhoto: true });
     } else if (photoModal.category === "stillcut") {
       if (selectedImages.length > 1) {
         for (const [index, images] of selectedImages.entries()) {
@@ -173,6 +175,7 @@ const Photo = () => {
           "stillcut"
         );
       }
+      setCompletion({ ...completion, stillcutPhoto: true });
     }
     const res = await getProfile(userId);
     const data = res.data;
@@ -209,6 +212,7 @@ const Photo = () => {
     const res = await getProfile(userId);
     const data = res.data;
 
+    setCompletion({ ...completion, recentPhoto: true });
     setRecentPhotoList(data.recentPhotos);
     setPhotoModal(photoModalInit);
     setSelectImage("");
@@ -242,6 +246,18 @@ const Photo = () => {
 
     const res = await getProfile(userId);
     const data = res.data;
+
+    isValid(data.photos)
+      ? setCompletion({ ...completion, profilePhoto: true })
+      : setCompletion({ ...completion, profilePhoto: false });
+
+    isValid(data.stillCuts)
+      ? setCompletion({ ...completion, stillcutPhoto: true })
+      : setCompletion({ ...completion, stillcutPhoto: false });
+
+    isValid(data.recentPhotos)
+      ? setCompletion({ ...completion, recentPhoto: true })
+      : setCompletion({ ...completion, recentPhoto: false });
 
     setPhotoList(data.photos);
     setStillCutList(data.stillCuts);
@@ -336,6 +352,18 @@ const Photo = () => {
     const getProfileData = async () => {
       const res = await getProfile(userId);
       const data = await res.data;
+
+      isValid(data.photos)
+        ? setCompletion({ ...completion, profilePhoto: true })
+        : setCompletion({ ...completion, profilePhoto: false });
+
+      isValid(data.stillCuts)
+        ? setCompletion({ ...completion, stillcutPhoto: true })
+        : setCompletion({ ...completion, stillcutPhoto: false });
+
+      isValid(data.recentPhotos)
+        ? setCompletion({ ...completion, recentPhoto: true })
+        : setCompletion({ ...completion, recentPhoto: false });
 
       setPhotoList(data.photos);
       setStillCutList(data.stillCuts);

@@ -12,6 +12,19 @@ export const contactFormat = (contact: string): string => {
   return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
 };
 
+export const isValid = (value: string | number | any[]): boolean => {
+  if (typeof value === "string") {
+    return value.trim().length >= 1;
+  }
+  if (typeof value === "number") {
+    return value > 0;
+  }
+  if (Array.isArray(value)) {
+    return value.length >= 1;
+  }
+  return false;
+};
+
 export const setCanvasPreview = (
   image: HTMLImageElement,
   canvas: HTMLCanvasElement,

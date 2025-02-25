@@ -1,5 +1,6 @@
 import { SpecialtyType } from "@/app/profile/[id]/create/info/types";
 import {
+  CompletionProgressType,
   FilmoCategoryType,
   FilmoRoleType,
   InfoRequiredType
@@ -18,6 +19,30 @@ export const defaultId = atom<number>({
 export const stepperInit = atom<number>({
   key: "stepperInit",
   default: 0
+});
+
+export const completionProgress = atom<CompletionProgressType>({
+  key: "completionProgress",
+  default: {
+    name: false,
+    birth: false,
+    height: false,
+    weight: false,
+    contact: false,
+    email: false,
+    specialty: false,
+    youtube: false,
+    instagram: false,
+    schoolName: false,
+    schoolMajor: false,
+    schoolStatus: false,
+    introduction: false,
+    profilePhoto: false,
+    stillcutPhoto: false,
+    recentPhoto: false,
+    filmography: false,
+    video: false
+  }
 });
 
 export const toastMessage = atom<string>({

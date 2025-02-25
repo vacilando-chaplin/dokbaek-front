@@ -5,7 +5,6 @@ export interface InfoInputType {
   weight: string;
   contact: string;
   email: string;
-  specialty: string;
   instagram: string;
   youtube: string;
   introduction: string;

@@ -2,10 +2,10 @@
 
 import { getProfile } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
-import { defaultId, toastMessage } from "@/lib/atoms";
+import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
 import { VideoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import VideoMain from "./components/videoMain";
 import VideoModal from "./components/videoModal";
 import { VideoLinkType } from "../types";
@@ -13,10 +13,13 @@ import { VideoModalType } from "./types";
 import { videoModalInit } from "./data";
 import { videoLinkInit } from "../../data";
 import { deleteVideo, postVideo, putVideo } from "./api";
+import { isValid } from "@/lib/utils";
 
 const Video = () => {
   const userId = useRecoilValue(defaultId);
   const setToastMessage = useSetRecoilState(toastMessage);
+
+  const [completion, setCompletion] = useRecoilState(completionProgress);
 
   const [videoList, setVideoList] = useState<VideoResponseType[]>([]);
   const [videoInputs, setVideoInputs] = useState("");
@@ -55,6 +58,7 @@ const Video = () => {
     const res = await getProfile(userId);
     const data = await res.data;
 
+    setCompletion({ ...completion, video: true });
     setVideoList(data.videos);
     setVideoModal({ ...videoModal, active: false });
     setVideoInputs("");
@@ -104,6 +108,9 @@ const Video = () => {
     const res = await getProfile(userId);
     const data = await res.data;
 
+    isValid(data.videos)
+      ? setCompletion({ ...completion, video: true })
+      : setCompletion({ ...completion, video: false });
     setVideoList(data.videos);
     setVideoDeleteModalActive(!videoDeleteModalActive);
     setToastMessage("영상을 삭제했어요.");
@@ -124,6 +131,10 @@ const Video = () => {
     const getProfileData = async () => {
       const res = await getProfile(userId);
       const data = await res.data;
+
+      isValid(data.videos)
+        ? setCompletion({ ...completion, video: true })
+        : setCompletion({ ...completion, video: false });
       setVideoList(data.videos);
     };
     getProfileData();

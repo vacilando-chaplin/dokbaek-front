@@ -1,14 +1,23 @@
-import Check from "../../../../../../public/icons/Check.svg";
 import ArrowDirectionLeft from "../../../../../../public/icons/ArrowDirectionLeft.svg";
 import BoxButton from "@/components/atoms/boxButton";
+import ProgressBar from "./progressBar";
+import { useRecoilValue } from "recoil";
+import { completionProgress } from "@/lib/atoms";
 
 interface BottomBarProps {
-  disabled?: boolean;
+  disabled: boolean;
   onBack: React.MouseEventHandler<HTMLButtonElement>;
   onSave: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const BottomBar = ({ disabled, onBack, onSave }: BottomBarProps) => {
+  const completion = useRecoilValue(completionProgress);
+  const totalItems = Object.keys(completion).length;
+  const completedItems = Object.values(completion).filter(
+    (value) => value === true
+  ).length;
+  const progress = Math.floor((completedItems / totalItems) * 100);
+
   return (
     <section className="fixed bottom-0 z-50 flex h-auto w-full items-center justify-between border-t-[1px] bg-background-elevated-light px-6 py-3 shadow-low">
       <div className="flex gap-4">
@@ -16,12 +25,9 @@ const BottomBar = ({ disabled, onBack, onSave }: BottomBarProps) => {
           <ArrowDirectionLeft width="14" height="14" fill="#212529" />
           돌아가기
         </BoxButton>
-        <label className="typography-caption1 flex items-center gap-1 font-medium text-state-positive-light">
-          <Check width="12" height="12" fill="#01C043" />
-          저장되었어요.
-        </label>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-row items-center gap-6">
+        <ProgressBar progress={progress} />
         <BoxButton
           type="primary"
           size="medium"
