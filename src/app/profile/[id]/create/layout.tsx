@@ -2,7 +2,7 @@
 
 import ListMenu from "@/app/profile/[id]/create/components/listMenu";
 import BottomBar from "@/app/profile/[id]/create/components/bottomBar";
-import { defaultId, stepperInit } from "@/lib/atoms";
+import { completionProgress, defaultId, stepperInit } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { stepperList } from "./data";
@@ -10,6 +10,7 @@ import { postProfileDraftPublish } from "../api";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const userId = useRecoilValue(defaultId);
+  const { name, birth, contact } = useRecoilValue(completionProgress);
 
   const router = useRouter();
 
@@ -39,7 +40,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <BottomBar
         onBack={onBackProfileClick}
         onSave={onSaveProfileClick}
-        // disabled={canSave}
+        disabled={!(name && birth && contact)}
       />
     </div>
   );
