@@ -17,7 +17,7 @@ export const postRecentPhoto = async (
 
   try {
     const res = await api.post(
-      `/profile/${id}/recent?photoType=${photoType}`,
+      `/profile/${id}/draft/recent?photoType=${photoType}`,
       formData
     );
     return res.data;
@@ -43,7 +43,7 @@ export const postRecentPhotoEdit = async (
 
   try {
     const res = await api.post(
-      `/profile/${id}/${category}/${photoId}`,
+      `/profile/${id}/${category}/draft/${photoId}`,
       formData
     );
     return res.data;

@@ -1,4 +1,4 @@
-import { api, multipartAPI } from "@/lib/axiosInstance";
+import { api } from "@/lib/axiosInstance";
 import { base64ToBlob } from "@/lib/utils";
 
 // 커리어넷 학교 검색 api
@@ -44,7 +44,7 @@ export const postProfilePhotoMain = async (
     formData.append("origin", imageOrigin);
     formData.append("preview", imagePreview);
 
-    const res = await multipartAPI.post(`/profile/${id}/photo/main`, formData);
+    const res = await api.post(`/profile/${id}/photo/main`, formData);
     return res.data;
   } catch (error) {
     throw error;

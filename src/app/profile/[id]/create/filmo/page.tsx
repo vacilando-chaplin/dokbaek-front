@@ -1,6 +1,6 @@
 "use client";
 
-import { getFilmoCategories, getFilmoRoles, getProfile } from "@/lib/api";
+import { getFilmoCategories, getFilmoRoles } from "@/lib/api";
 import ConfirmModal from "@/components/organisms/confirmModal";
 import FilmoMain from "./components/filmoMain";
 import FilmoModal from "./components/filmoModal";
@@ -36,6 +36,7 @@ import {
   postFilmographyThumbnail,
   putFilmography
 } from "./api";
+import { getProfileDraft } from "../../api";
 
 const Filmography = () => {
   const userId = useRecoilValue(defaultId);
@@ -113,7 +114,7 @@ const Filmography = () => {
 
     await postFilmography(userId, filmo);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setCompletion({ ...completion, filmography: true });
@@ -151,7 +152,7 @@ const Filmography = () => {
 
     await putFilmography(userId, filmoInputs.id, editFilmo);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -196,7 +197,7 @@ const Filmography = () => {
           displayOrder: filmo.displayOrder
         }))
     );
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -338,7 +339,7 @@ const Filmography = () => {
   const onFilmoDeleteClick = async () => {
     await deleteFilmography(userId, filmoDelete.id);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     isValid(data.filmos)
@@ -378,7 +379,7 @@ const Filmography = () => {
   // 필모그래피 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId);
+      const res = await getProfileDraft(userId);
       const data = await res.data;
 
       isValid(data.filmos)
@@ -425,6 +426,11 @@ const Filmography = () => {
         <ConfirmModal
           dense={false}
           resizing="fixed"
+          titleText="작품 활동을 삭제할까요?"
+          cancelText="취소"
+          confirmText="삭제"
+          cancelButtonType="secondaryOutlined"
+          confirmButtonType="negative"
           onCancel={onFilmoDeleteModalClose}
           onConfirm={onFilmoDeleteClick}
         />

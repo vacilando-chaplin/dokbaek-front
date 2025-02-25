@@ -87,7 +87,7 @@ export const postPhoto = async (
   formData.append("preview", imagePreview);
 
   try {
-    const res = await api.post(`/profile/${id}/${category}`, formData);
+    const res = await api.post(`/profile/${id}/draft/${category}`, formData);
     return res.data;
   } catch (error) {
     throw error;
@@ -106,7 +106,7 @@ export const patchPhoto = async (
 
   try {
     const res = await api.patch(
-      `/profile/${id}/${category}/${photoId}`,
+      `/profile/${id}/${category}/draft/${photoId}`,
       formData
     );
     return res.data;
@@ -121,7 +121,7 @@ export const deletePhoto = async (
   category: string
 ) => {
   try {
-    const res = await api.delete(`/profile/${id}/${category}/${photoId}`);
+    const res = await api.delete(`/profile/${id}/draft/${category}/${photoId}`);
     return res.data;
   } catch (error) {
     throw error;

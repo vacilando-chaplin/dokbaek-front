@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  convertImageToBase64,
-  deletePhoto,
-  getProfile,
-  postPhoto,
-  patchPhoto
-} from "@/lib/api";
+import { deletePhoto, postPhoto, patchPhoto } from "@/lib/api";
 import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
@@ -20,6 +14,7 @@ import PhotoRecent from "./components/photoRecent";
 import imageCompression from "browser-image-compression";
 import { convertToBase64, getFileMimeTypeFromUrl, isValid } from "@/lib/utils";
 import { postRecentPhoto, postRecentPhotoEdit } from "./api";
+import { getProfileDraft } from "../../api";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
@@ -177,7 +172,7 @@ const Photo = () => {
       }
       setCompletion({ ...completion, stillcutPhoto: true });
     }
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -194,7 +189,7 @@ const Photo = () => {
   const onEditPhoto = async () => {
     await patchPhoto(userId, cropImage, photoModal.id, photoModal.category);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -209,7 +204,7 @@ const Photo = () => {
   const onAddRecentPhoto = async () => {
     await postRecentPhoto(userId, selectImage, cropImage, photoModal.category);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setCompletion({ ...completion, recentPhoto: true });
@@ -230,7 +225,7 @@ const Photo = () => {
       photoModal.category
     );
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setRecentPhotoList(data.recentPhotos);
@@ -244,7 +239,7 @@ const Photo = () => {
   const onDeletePhoto = async (id: string, category: string) => {
     await deletePhoto(userId, id, category);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     isValid(data.photos)
@@ -350,7 +345,7 @@ const Photo = () => {
   // 사진 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId);
+      const res = await getProfileDraft(userId);
       const data = await res.data;
 
       isValid(data.photos)

@@ -1,6 +1,5 @@
 "use client";
 
-import { getProfile } from "@/lib/api";
 import { completionProgress, defaultId, stepperInit } from "@/lib/atoms";
 import { educationEngList, educationList } from "@/lib/data";
 import { useDebounce } from "@/lib/hooks";
@@ -25,6 +24,7 @@ import {
 } from "./api";
 import { specialtyData } from "../../../../../lib/atoms";
 import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal";
+import { getProfileDraft } from "../../api";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
@@ -263,7 +263,7 @@ const Info = () => {
   // 내 정보 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId);
+      const res = await getProfileDraft(userId);
       const data = await res.data;
 
       if (data.education.length >= 1) {

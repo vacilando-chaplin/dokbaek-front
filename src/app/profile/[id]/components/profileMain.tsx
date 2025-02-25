@@ -15,7 +15,7 @@ import Edit from "../../../../../public/icons/Edit.svg";
 import { EducationType, InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
-import X from "../../../../../public/icons/X.svg"
+import X from "../../../../../public/icons/X.svg";
 import { SpecialtyItemType } from "../create/info/types";
 interface ProfileMainProps {
   linear: string;
@@ -24,6 +24,7 @@ interface ProfileMainProps {
   info: InfoResponseType;
   profileSpecialties: SpecialtyItemType[];
   education: EducationType;
+  onProfileEdit: React.MouseEventHandler<HTMLButtonElement>;
   onMainPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDeleteMainPhoto: React.MouseEventHandler<HTMLButtonElement>;
@@ -38,9 +39,10 @@ const ProfileMain = ({
   profileSpecialties,
   education,
   setStepper,
+  onProfileEdit,
   onMainPhotoSelectFile,
   onMainPhotoModalOpen,
-  onDeleteMainPhoto,
+  onDeleteMainPhoto
 }: ProfileMainProps) => {
   const router = useRouter();
 
@@ -51,7 +53,6 @@ const ProfileMain = ({
     height,
     weight,
     contact,
-    specialty,
     email,
     instagramLink,
     youtubeLink,
@@ -78,7 +79,7 @@ const ProfileMain = ({
     >
       {mainPhoto ? (
         <div className="flex h-[60vh] w-full">
-          <div className="relative h-full w-full ">
+          <div className="relative h-full w-full">
             <Image
               src={mainPhoto}
               alt="대표 사진"
@@ -89,17 +90,17 @@ const ProfileMain = ({
               className="h-full w-full rounded-2xl"
             />
             <div className="absolute bottom-2 left-2">
-              <UploadButton 
+              <UploadButton
                 type="secondaryOutlined"
                 size="medium"
                 onClick={onMainPhotoModalOpen}
                 onChange={onMainPhotoSelectFile}
               >
-              <Plus width="14" height="14" fill="#212529" />
-              대표 사진 변경
-            </UploadButton>
+                <Plus width="14" height="14" fill="#212529" />
+                대표 사진 변경
+              </UploadButton>
             </div>
-            <div className="absolute top-2 right-2">
+            <div className="absolute right-2 top-2">
               <button
                 className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
                 type="button"
@@ -108,7 +109,6 @@ const ProfileMain = ({
                 <X width="12" height="12" fill="#FB3E34" />
               </button>
             </div>
-
           </div>
         </div>
       ) : (
@@ -122,7 +122,7 @@ const ProfileMain = ({
           <div>
             <Tooltip placement="top" text="대표 사진을 추가하세요." />
           </div>
-          <UploadButton 
+          <UploadButton
             type="secondaryOutlined"
             size="medium"
             onClick={onMainPhotoModalOpen}
@@ -145,11 +145,7 @@ const ProfileMain = ({
         <BoxButton
           type="secondaryOutlined"
           size="medium"
-          onClick={() => {
-            router.prefetch(`/profile/${userId}/create/info`);
-            router.push(`/profile/${userId}/create/info`);
-            setStepper(0);
-          }}
+          onClick={onProfileEdit}
         >
           <Edit width="14" height="14" fill="#212529" />
           프로필 편집
@@ -218,12 +214,15 @@ const ProfileMain = ({
       )}
       {profileSpecialties.length >= 1 && (
         <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
-          <div className='text-body2 font-semibold mb-2'>
-            특기
-          </div>
+          <div className="mb-2 text-body2 font-semibold">특기</div>
           <div className="flex gap-1">
             {profileSpecialties.map((item) => (
-              <span key={item.id} className="bg-accent-light-light text-accent-primary-light px-2 rounded-[8px] py-[5px]">피아노</span>
+              <span
+                key={item.id}
+                className="rounded-[8px] bg-accent-light-light px-2 py-[5px] text-accent-primary-light"
+              >
+                피아노
+              </span>
             ))}
           </div>
         </div>

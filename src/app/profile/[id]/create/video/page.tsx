@@ -1,6 +1,5 @@
 "use client";
 
-import { getProfile } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
 import { VideoResponseType } from "@/lib/types";
@@ -14,6 +13,7 @@ import { videoModalInit } from "./data";
 import { videoLinkInit } from "../../data";
 import { deleteVideo, postVideo, putVideo } from "./api";
 import { isValid } from "@/lib/utils";
+import { getProfileDraft } from "../../api";
 
 const Video = () => {
   const userId = useRecoilValue(defaultId);
@@ -55,7 +55,7 @@ const Video = () => {
   const onVideoModalSave = async () => {
     await postVideo(userId, videoInputs);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setCompletion({ ...completion, video: true });
@@ -81,7 +81,7 @@ const Video = () => {
   const onVideoModalEdit = async () => {
     await putVideo(userId, videoModal.id, videoInputs);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setVideoList(data.videos);
@@ -105,7 +105,7 @@ const Video = () => {
   const onVideoDeleteClick = async () => {
     await deleteVideo(userId, videoModal.id);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     isValid(data.videos)
@@ -129,7 +129,7 @@ const Video = () => {
   // 비디오 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId);
+      const res = await getProfileDraft(userId);
       const data = await res.data;
 
       isValid(data.videos)

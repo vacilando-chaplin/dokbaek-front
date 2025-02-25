@@ -4,7 +4,7 @@ import { base64ToBlob } from "@/lib/utils";
 
 export const postFilmography = async (id: number, data: FilmoRequestType) => {
   try {
-    const res = await api.post(`/profile/${id}/filmo`, data);
+    const res = await api.post(`/profile/${id}/draft/filmo`, data);
     return res.data;
   } catch (error) {
     throw error;
@@ -31,7 +31,7 @@ export const putFilmography = async (
   data: FilmoRequestType
 ) => {
   try {
-    const res = await api.put(`/profile/${id}/filmo/${filmoId}`, data);
+    const res = await api.put(`/profile/${id}/draft/filmo/${filmoId}`, data);
     return res.data;
   } catch (error) {
     throw error;
@@ -40,7 +40,7 @@ export const putFilmography = async (
 
 export const deleteFilmography = async (id: number, filmoId: number) => {
   try {
-    const res = await api.delete(`/profile/${id}/filmo/${filmoId}`);
+    const res = await api.delete(`/profile/${id}/draft/filmo/${filmoId}`);
     return res.data;
   } catch (error) {
     throw error;

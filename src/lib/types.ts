@@ -34,78 +34,114 @@ export interface CompletionProgressType {
 }
 
 export interface ProfileResponseType {
-  id: number;
-  userId: number;
-  status: string;
-  info: {
-    name: string;
-    bornYear: number;
-    height: number;
-    weight: number;
-    email: string;
-    contact: string;
-    specialty: string;
-    instagramLink: string;
-    youtubeLink: string;
-    introduction: string;
-  };
-  education: [
-    {
-      school: {
-        name: string;
-        schoolType: string;
-        schoolGubun: string;
-      };
-      major: string;
-      status: string;
-    }
-  ];
-  photos: [
-    {
-      id: string;
-      userProfileId: number;
-      path: string;
-      previewPath: string;
-      displayOrder: number;
-      isDefault: true;
-      createdAt: string;
-      updatedAt: string;
-    }
-  ];
-  filmos: [
-    {
-      id: number;
-      role: {
+  code: number;
+  message: string;
+  data: {
+    id: number;
+    userId: number;
+    status: string;
+    info: {
+      name: string;
+      bornYear: number;
+      height: number;
+      weight: number;
+      email: string;
+      contact: string;
+      instagramLink: string;
+      youtubeLink: string;
+      introduction: string;
+    };
+    mainPhotoPath: string;
+    mainPhotoPreviewPath: string;
+    education: [
+      {
+        school: {
+          name: string;
+          schoolType: string;
+          schoolGubun: string;
+        };
+        major: string;
+        status: string;
+      }
+    ];
+    photos: [
+      {
+        id: string;
+        path: string;
+        previewPath: string;
+        displayOrder: number;
+        createdAt: string;
+        updatedAt: string;
+      }
+    ];
+    recentPhotos: [
+      {
+        id: string;
+        photoType: string;
+        path: string;
+        previewPath: string;
+        createdAt: string;
+        updatedAt: string;
+      }
+    ];
+    stillCuts: [
+      {
+        id: string;
+        path: string;
+        previewPath: string;
+        displayOrder: number;
+        createdAt: string;
+        updatedAt: string;
+      }
+    ];
+    filmos: [
+      {
         id: number;
-        name: string;
-      };
-      customRole: string;
-      character: string;
-      is_featured: true;
-      production: {
-        category: {
+        role: {
           id: number;
           name: string;
         };
-        productionYear: number;
-        title: string;
-        description: string;
-        videoUrl: string;
-        thumbnailUrl: string;
-      };
-      displayOrder: number;
-    }
-  ];
-  videos: [
-    {
-      id: number;
-      userProfileId: number;
-      url: string;
-      displayOrder: number;
-    }
-  ];
-  createdAt: string;
-  updatedAt: string;
+        customRole: string;
+        character: string;
+        isFeatured: true;
+        production: {
+          category: {
+            id: number;
+            name: string;
+          };
+          productionYear: number;
+          title: string;
+          description: string;
+          videoUrl: string;
+          thumbnailUrl: string;
+        };
+        displayOrder: number;
+      }
+    ];
+    videos: [
+      {
+        id: number;
+        url: string;
+        displayOrder: number;
+      }
+    ];
+    specialties: [
+      {
+        id: number;
+        specialty: {
+          id: number;
+          specialtyName: string;
+        };
+        imageUrl: string;
+        mediaUrl: string;
+        displayOrder: number;
+        createdAt: string;
+        updatedAt: string;
+      }
+    ];
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 export interface InfoResponseType {

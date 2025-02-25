@@ -6,6 +6,7 @@ import { defaultId, stepperInit } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { stepperList } from "./data";
+import { postProfileDraftPublish } from "../api";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const userId = useRecoilValue(defaultId);
@@ -19,7 +20,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     router.push(`/profile/${userId}/create/${stepperList[index].path}`);
   };
 
-  const onSaveProfileClick = () => {
+  const onSaveProfileClick = async () => {
+    await postProfileDraftPublish(userId);
+
     router.prefetch(`/profile/${userId}`);
     router.push(`/profile/${userId}`);
   };

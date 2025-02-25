@@ -33,8 +33,13 @@ import { photoModalInit } from "./create/photo/data";
 import PhotoModal from "./create/photo/components/photoModal";
 import { postProfilePhotoMain } from "./create/info/api";
 import { SpecialtyItemType } from "./create/info/types";
+import { useRouter } from "next/navigation";
+import { deleteProfileDraft, getProfileDraft, postProfileDraft } from "./api";
+import ConfirmModal from "@/components/organisms/confirmModal";
 
 const Profile = () => {
+  const router = useRouter();
+
   const userId = useRecoilValue(defaultId);
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const [filmoCategoryList, setFilmoCategoryList] =
@@ -47,8 +52,12 @@ const Profile = () => {
   const subRef = useRef<HTMLDivElement>(null);
   const [linear, setLinear] = useState("sub");
 
+  const [draftData, setDraftData] = useState({});
+
   const [profileData, setProfileData] = useState<any>(profileInit);
-  const [profileSpecialties, setProfileSpecialties] = useState<SpecialtyItemType[]>([]);
+  const [profileSpecialties, setProfileSpecialties] = useState<
+    SpecialtyItemType[]
+  >([]);
   const [mainPhoto, setMainPhoto] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
   const [profileModal, setProfileModal] = useState(profileModalInit);
@@ -59,6 +68,44 @@ const Profile = () => {
   const [selectImage, setSelectImage] = useState("");
   const setToastMessage = useSetRecoilState(toastMessage);
 
+  const onMoveProfileCreate = () => {
+    setStepper(0);
+    router.prefetch(`/profile/${userId}/create/info`);
+    router.push(`/profile/${userId}/create/info`);
+  };
+
+  // 프로필 편집
+  const onProfileEdit = async () => {
+    const isDraft = await postProfileDraft(userId);
+
+    if (isDraft.status === 200) {
+      setDraftData(isDraft.data);
+      setProfileModal({ state: "profileEdit", active: true });
+    } else if (isDraft.status === 201) {
+      const res = await postProfileDraft(userId);
+      const data = res.data;
+      setDraftData(data);
+      onMoveProfileCreate();
+    }
+  };
+
+  const onProfileDraftModalClose = () => {
+    setProfileModal({ state: "profileEdit", active: false });
+  };
+
+  const onProfileDraftRejected = async () => {
+    await deleteProfileDraft(userId);
+
+    const res = await postProfileDraft(userId);
+    const data = res.data;
+
+    setDraftData(data);
+    onMoveProfileCreate();
+  };
+
+  const onProfileDraftConfiremd = async () => {
+    onMoveProfileCreate();
+  };
 
   const onPhotoModalOpen = async (photo: string) => {
     const blurPhoto = await convertImageToBase64(photo);
@@ -113,15 +160,13 @@ const Profile = () => {
       setMainPhoto(data.mainPhotoPreviewPath);
       setPhotoModal(photoModalInit);
       setToastMessage("사진을 추가했어요.");
-    } catch (error) { 
-      console.log('error', error)
+    } catch (error) {
+      console.log("error", error);
     }
   };
-  const onEditMainPhoto = async () => {
-  }
-  const onDeleteMainPhoto = async () => {
-  }
-  
+  const onEditMainPhoto = async () => {};
+  const onDeleteMainPhoto = async () => {};
+
   useEffect(() => {
     if (mainRef.current && subRef.current) {
       const mainHeight = mainRef.current.offsetHeight;
@@ -134,11 +179,7 @@ const Profile = () => {
       const res = await getProfile(userId);
       const data = await res.data;
       setProfileData(data);
-      setProfileSpecialties(data.specialties)
-      const findMainPhoto = data.photos.find(
-        (photo: PhotoResponseType) => photo.isDefault === true
-      );
-      setMainPhoto(findMainPhoto);
+      setProfileSpecialties(data.specialties);
     };
 
     const getFilmoCategoryList = async () => {
@@ -182,6 +223,7 @@ const Profile = () => {
           mainPhoto={mainPhoto}
           info={profileData.info}
           profileSpecialties={profileSpecialties}
+          onProfileEdit={onProfileEdit}
           onMainPhotoSelectFile={onMainPhotoSelectFile}
           onMainPhotoModalOpen={onMainPhotoModalOpen}
           onDeleteMainPhoto={onDeleteMainPhoto}
@@ -204,7 +246,7 @@ const Profile = () => {
           onFilmoLinkModalOpen={onFilmoLinkModalOpen}
         />
       </div>
-      {photoModal.active && (
+      {/* {photoModal.active && (
         <PhotoModal
           selectImage={selectImage}
           photoModal={photoModal}
@@ -212,6 +254,20 @@ const Profile = () => {
           onAddPhoto={onAddMainPhoto}
           onEditPhoto={onEditMainPhoto}
           setCropImage={setCropImage}
+        />
+      )} */}
+      {profileModal.state === "profileEdit" && profileModal.active && (
+        <ConfirmModal
+          dense
+          resizing="fixed"
+          titleText="작성하던 프로필이 있습니다."
+          bodyText="프로필 작성을 계속하시겠어요?(취소 시 임시저장된 데이터는 사라집니다.)"
+          cancelText="취소"
+          confirmText="확인"
+          cancelButtonType="negative"
+          confirmButtonType="primary"
+          onCancel={onProfileDraftRejected}
+          onConfirm={onProfileDraftConfiremd}
         />
       )}
       {profileModal.state === "photo" && profileModal.active && (
