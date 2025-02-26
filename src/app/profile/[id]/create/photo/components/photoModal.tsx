@@ -1,8 +1,8 @@
 import ImageCropper from "@/components/molecules/imageCropper";
 import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
-import { PhotoModalType, SelectedImagesType } from "../types";
 import Image from "next/image";
+import { PhotoModalType, SelectedImagesType } from "../../../types";
 
 interface PhotoModalProps {
   selectImage: string;

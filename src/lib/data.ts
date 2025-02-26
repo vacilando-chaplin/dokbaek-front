@@ -31,7 +31,7 @@ export const classificationList = [
 
 export const castList = ["주연", "조연", "단역", "직접 입력"];
 
-export const profileInit = {
+export const profileResponseInit = {
   id: 0,
   userId: 0,
   status: "",
@@ -42,20 +42,49 @@ export const profileInit = {
     weight: 0,
     email: "",
     contact: "",
-    specialty: "",
     instagramLink: "",
     youtubeLink: "",
     introduction: ""
   },
-  education: [],
+  mainPhotoPath: "",
+  mainPhotoPreviewPath: "",
+  education: [
+    {
+      school: {
+        name: "",
+        schoolType: "",
+        schoolGubun: ""
+      },
+      major: "",
+      status: ""
+    }
+  ],
   photos: [
     {
       id: "",
-      userProfileId: 0,
       path: "",
       previewPath: "",
       displayOrder: 0,
-      isDefault: false,
+      createdAt: "",
+      updatedAt: ""
+    }
+  ],
+  recentPhotos: [
+    {
+      id: "",
+      photoType: "",
+      path: "",
+      previewPath: "",
+      createdAt: "",
+      updatedAt: ""
+    }
+  ],
+  stillCuts: [
+    {
+      id: "",
+      path: "",
+      previewPath: "",
+      displayOrder: 0,
       createdAt: "",
       updatedAt: ""
     }
@@ -69,7 +98,7 @@ export const profileInit = {
       },
       customRole: "",
       character: "",
-      is_featured: false,
+      isFeatured: true,
       production: {
         category: {
           id: 0,
@@ -87,13 +116,34 @@ export const profileInit = {
   videos: [
     {
       id: 0,
-      userProfileId: 0,
       url: "",
       displayOrder: 0
     }
   ],
+  specialties: [
+    {
+      id: 0,
+      specialty: {
+        id: 0,
+        specialtyName: ""
+      },
+      imageUrl: "",
+      mediaUrl: "",
+      displayOrder: 0,
+      createdAt: "",
+      updatedAt: ""
+    }
+  ],
+  likesCount: 0,
+  likedByMe: true,
+  viewsCount: 0,
   createdAt: "",
   updatedAt: ""
+};
+
+export const imageCompressionOptions = {
+  maxSizeMB: 0.5,
+  useWebWorker: true
 };
 
 export const year = new Date().getFullYear();

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { educationEngList, educationList } from "@/lib/data";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
@@ -15,38 +14,42 @@ import Edit from "../../../../../public/icons/Edit.svg";
 import { EducationType, InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
-import X from "../../../../../public/icons/X.svg";
+import DotsVertical from "../../../../../public/icons/DotsVertical.svg";
 import { SpecialtyItemType } from "../create/info/types";
+
 interface ProfileMainProps {
   linear: string;
-  userId: number;
   mainPhoto: string;
   info: InfoResponseType;
   profileSpecialties: SpecialtyItemType[];
   education: EducationType;
+  mainPhotoMenuActive: boolean;
   onProfileEdit: React.MouseEventHandler<HTMLButtonElement>;
-  onMainPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
+  onMainPhotoModalOpen: () => void;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onDeleteMainPhoto: React.MouseEventHandler<HTMLButtonElement>;
-  setStepper: React.Dispatch<React.SetStateAction<number>>;
+  onMainPhotoMenuActive: () => void;
+  onMainPhotoChangeModalOpen: () => void;
+  onMainPhotoEditModalOpen: () => void;
+  onMainPhotoDeleteModalOpen: () => void;
 }
 
 const ProfileMain = ({
   linear,
-  userId,
   mainPhoto,
   info,
   profileSpecialties,
   education,
-  setStepper,
+  mainPhotoMenuActive,
   onProfileEdit,
   onMainPhotoSelectFile,
   onMainPhotoModalOpen,
-  onDeleteMainPhoto
+  onMainPhotoMenuActive,
+  onMainPhotoChangeModalOpen,
+  onMainPhotoEditModalOpen,
+  onMainPhotoDeleteModalOpen
 }: ProfileMainProps) => {
-  const router = useRouter();
-
   const setToast = useSetRecoilState(toastMessage);
+
   const {
     name,
     bornYear,
@@ -89,26 +92,52 @@ const ProfileMain = ({
               priority
               className="h-full w-full rounded-2xl"
             />
-            <div className="absolute bottom-2 left-2">
-              <UploadButton
-                type="secondaryOutlined"
-                size="medium"
-                onClick={onMainPhotoModalOpen}
-                onChange={onMainPhotoSelectFile}
-              >
-                <Plus width="14" height="14" fill="#212529" />
-                대표 사진 변경
-              </UploadButton>
-            </div>
-            <div className="absolute right-2 top-2">
+            <div className="absolute right-1 top-1">
               <button
-                className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none"
                 type="button"
-                onClick={onDeleteMainPhoto}
+                onClick={onMainPhotoMenuActive}
               >
-                <X width="12" height="12" fill="#FB3E34" />
+                <DotsVertical width="20" height="20" fill="#212529" />
               </button>
             </div>
+            {mainPhotoMenuActive && (
+              <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low">
+                <label className="typography-body3 flex h-[38px] w-full cursor-pointer gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      onMainPhotoChangeModalOpen();
+                      onMainPhotoMenuActive();
+                      onMainPhotoSelectFile(e);
+                    }}
+                  />
+                  변경
+                </label>
+                <button
+                  type="button"
+                  className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
+                  onClick={() => {
+                    onMainPhotoMenuActive();
+                    onMainPhotoEditModalOpen();
+                  }}
+                >
+                  편집
+                </button>
+                <button
+                  type="button"
+                  className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
+                  onClick={() => {
+                    onMainPhotoMenuActive();
+                    onMainPhotoDeleteModalOpen();
+                  }}
+                >
+                  삭제
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ) : (

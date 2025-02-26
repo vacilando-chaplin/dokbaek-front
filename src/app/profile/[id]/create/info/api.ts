@@ -1,5 +1,4 @@
 import { api } from "@/lib/axiosInstance";
-import { base64ToBlob } from "@/lib/utils";
 
 // 커리어넷 학교 검색 api
 export const getSchoolName = async (search: string) => {
@@ -24,27 +23,6 @@ export const getSchoolName = async (search: string) => {
 export const putInfo = async (id: number, data: any) => {
   try {
     const res = await api.put(`/profile/${id}`, data);
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const postProfilePhotoMain = async (
-  id: number,
-  origin: string,
-  preview: string
-) => {
-  try {
-    const formData = new FormData();
-
-    const imageOrigin = base64ToBlob(origin);
-    const imagePreview = base64ToBlob(preview);
-
-    formData.append("origin", imageOrigin);
-    formData.append("preview", imagePreview);
-
-    const res = await api.post(`/profile/${id}/photo/main`, formData);
     return res.data;
   } catch (error) {
     throw error;

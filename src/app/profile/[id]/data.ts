@@ -12,3 +12,10 @@ export const profileModalInit = {
   state: "",
   active: false
 };
+
+export const profilePhotoModalInit = {
+  state: "",
+  active: false,
+  name: "",
+  buttonText: ""
+};

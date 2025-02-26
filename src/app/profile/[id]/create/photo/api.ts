@@ -30,8 +30,7 @@ export const postRecentPhotoEdit = async (
   id: number,
   origin: string,
   preview: string,
-  photoId: string,
-  category: string
+  photoId: string
 ) => {
   const formData = new FormData();
 
@@ -43,7 +42,7 @@ export const postRecentPhotoEdit = async (
 
   try {
     const res = await api.post(
-      `/profile/${id}/${category}/draft/${photoId}`,
+      `/profile/${id}/recent/draft/${photoId}`,
       formData
     );
     return res.data;

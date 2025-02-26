@@ -5,7 +5,6 @@ import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { PhotoModalType, SelectedImagesType } from "./types";
 import { photoModalInit } from "./data";
 import PhotoModal from "./components/photoModal";
 import PhotoProfile from "./components/photoProfile";
@@ -15,16 +14,13 @@ import imageCompression from "browser-image-compression";
 import { convertToBase64, getFileMimeTypeFromUrl, isValid } from "@/lib/utils";
 import { postRecentPhoto, postRecentPhotoEdit } from "./api";
 import { getProfileDraft } from "../../api";
+import { PhotoModalType, SelectedImagesType } from "../../types";
+import { imageCompressionOptions } from "@/lib/data";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
   const setToastMessage = useSetRecoilState(toastMessage);
   const [completion, setCompletion] = useRecoilState(completionProgress);
-
-  const options = {
-    maxSizeMB: 0.5,
-    useWebWorker: true
-  };
 
   const [photoList, setPhotoList] = useState<PhotoResponseType[]>([]);
   const [stillCutList, setStillCutList] = useState<PhotoResponseType[]>([]);
@@ -53,7 +49,10 @@ const Photo = () => {
     let fileData: any = [];
 
     for (const file of images) {
-      const downSizedFile = await imageCompression(file, options);
+      const downSizedFile = await imageCompression(
+        file,
+        imageCompressionOptions
+      );
       const downSizedImage = await convertToBase64(downSizedFile);
 
       fileData = fileData.concat([
@@ -88,7 +87,10 @@ const Photo = () => {
     let fileData: any = [];
 
     for (const file of images) {
-      const downSizedFile = await imageCompression(file, options);
+      const downSizedFile = await imageCompression(
+        file,
+        imageCompressionOptions
+      );
       const downSizedImage = await convertToBase64(downSizedFile);
 
       fileData = fileData.concat([
@@ -217,13 +219,7 @@ const Photo = () => {
 
   // 최근 사진 편집 모달 완료
   const onEditRecentPhoto = async () => {
-    await postRecentPhotoEdit(
-      userId,
-      selectImage,
-      cropImage,
-      photoModal.id,
-      photoModal.category
-    );
+    await postRecentPhotoEdit(userId, selectImage, cropImage, photoModal.id);
 
     const res = await getProfileDraft(userId);
     const data = res.data;
@@ -292,7 +288,7 @@ const Photo = () => {
     const blob = await response.blob();
     const file = new File([blob], "image", { type: mimeType });
 
-    const downSizedFile = await imageCompression(file, options);
+    const downSizedFile = await imageCompression(file, imageCompressionOptions);
     const downSizedImage = await convertToBase64(downSizedFile);
 
     setCropImage(downSizedImage);
@@ -325,7 +321,10 @@ const Photo = () => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const originImage = await convertToBase64(file);
-      const downSizedFile = await imageCompression(file, options);
+      const downSizedFile = await imageCompression(
+        file,
+        imageCompressionOptions
+      );
       const downSizedImage = await convertToBase64(downSizedFile);
 
       setSelectImage(downSizedImage);

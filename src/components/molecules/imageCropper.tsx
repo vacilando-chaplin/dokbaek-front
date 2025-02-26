@@ -7,9 +7,9 @@ import "react-advanced-cropper/dist/style.css";
 interface ImageCropperProps {
   selectImage: string;
   setCropImage: any;
-  cropType: string;
-  cropData?: any;
-  setCropData?: any;
+  cropData: any;
+  setCropData: any;
+  cropType?: string;
 }
 
 const ImageCropper = ({
@@ -55,13 +55,13 @@ const ImageCropper = ({
 
   useEffect(() => {
     if (selectImage) {
-      setIsLoading(true);
       const img = new Image();
       img.src = selectImage;
       img.onload = () => {
         setTimeout(() => {
+          setIsLoading(true);
           onCropEnd();
-        }, 200);
+        }, 1000);
       };
     }
     return () => {};

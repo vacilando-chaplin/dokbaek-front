@@ -106,7 +106,7 @@ export const patchPhoto = async (
 
   try {
     const res = await api.patch(
-      `/profile/${id}/${category}/draft/${photoId}`,
+      `/profile/${id}/draft/${category}/${photoId}`,
       formData
     );
     return res.data;
