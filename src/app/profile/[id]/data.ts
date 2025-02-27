@@ -8,11 +8,6 @@ export const selectedPhotoInit = {
   blur: ""
 };
 
-export const profileModalInit = {
-  state: "",
-  active: false
-};
-
 export const profilePhotoModalInit = {
   state: "",
   active: false,

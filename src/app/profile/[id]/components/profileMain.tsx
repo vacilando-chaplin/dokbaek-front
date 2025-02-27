@@ -24,7 +24,8 @@ interface ProfileMainProps {
   profileSpecialties: SpecialtyItemType[];
   education: EducationType;
   mainPhotoMenuActive: boolean;
-  onProfileEdit: React.MouseEventHandler<HTMLButtonElement>;
+  setStepperData: React.Dispatch<React.SetStateAction<number>>;
+  onProfileEdit: () => void;
   onMainPhotoModalOpen: () => void;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onMainPhotoMenuActive: () => void;
@@ -40,6 +41,7 @@ const ProfileMain = ({
   profileSpecialties,
   education,
   mainPhotoMenuActive,
+  setStepperData,
   onProfileEdit,
   onMainPhotoSelectFile,
   onMainPhotoModalOpen,
@@ -174,7 +176,10 @@ const ProfileMain = ({
         <BoxButton
           type="secondaryOutlined"
           size="medium"
-          onClick={onProfileEdit}
+          onClick={() => {
+            setStepperData(0);
+            onProfileEdit();
+          }}
         >
           <Edit width="14" height="14" fill="#212529" />
           프로필 편집
@@ -237,6 +242,7 @@ const ProfileMain = ({
           text="정보가 없어요."
           icon
           button={false}
+          buttonSize=""
           buttonText=""
           buttonType=""
         />

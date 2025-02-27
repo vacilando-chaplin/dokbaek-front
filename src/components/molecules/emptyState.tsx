@@ -5,6 +5,7 @@ import Plus from "../../../public/icons/Plus.svg";
 interface EmptyStateProps {
   text: string;
   button?: boolean;
+  buttonSize: string;
   buttonText: string;
   buttonType: string;
   icon?: boolean;
@@ -14,6 +15,7 @@ interface EmptyStateProps {
 const EmptyState = ({
   text,
   button,
+  buttonSize,
   buttonText,
   buttonType,
   icon,
@@ -29,7 +31,7 @@ const EmptyState = ({
           </label>
         </div>
         {button && (
-          <BoxButton type={buttonType} size="medium" onClick={onClick}>
+          <BoxButton type={buttonType} size={buttonSize} onClick={onClick}>
             <Plus width="12" height="12" fill="#212529" />
             {buttonText}
           </BoxButton>

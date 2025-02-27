@@ -24,7 +24,6 @@ import ProfileSub from "./components/profileSub";
 import ProfilePhotoModal from "./components/profilePhotoModal";
 import ProfileFilmoModal from "./components/profileFilmoModal";
 import {
-  profileModalInit,
   profilePhotoModalInit,
   selectedPhotoInit,
   videoLinkInit
@@ -40,7 +39,11 @@ import {
 } from "./api";
 import ConfirmModal from "@/components/organisms/confirmModal";
 import { photoModalInit } from "./create/photo/data";
-import { ProfilePhotoModalType } from "./types";
+import {
+  PhotoLabelType,
+  ProfileModalType,
+  ProfilePhotoModalType
+} from "./types";
 import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import imageCompression from "browser-image-compression";
 import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
@@ -54,6 +57,7 @@ const Profile = () => {
     useRecoilState(filmoCategory);
   const setFilmoRoleList = useSetRecoilState(filmoRole);
   const setStepper = useSetRecoilState(stepperInit);
+  const [stepperData, setStepperData] = useState(0);
 
   // main, sub 구분선
   const mainRef = useRef<HTMLDivElement>(null);
@@ -64,8 +68,15 @@ const Profile = () => {
   const [profileSpecialties, setProfileSpecialties] = useState<
     SpecialtyItemType[]
   >([]);
+  const [photoLabel, setPhotoLabel] = useState<PhotoLabelType>({
+    id: 0,
+    name: "프로필 사진"
+  });
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
-  const [profileModal, setProfileModal] = useState(profileModalInit);
+  const [profileModal, setProfileModal] = useState<ProfileModalType>({
+    state: "",
+    active: false
+  });
   const [videoLink, setVideoLink] = useState(videoLinkInit);
 
   // 대표 사진 데이터
@@ -83,10 +94,12 @@ const Profile = () => {
 
   const setToastMessage = useSetRecoilState(toastMessage);
 
-  const onMoveProfileCreate = () => {
-    setStepper(0);
-    router.prefetch(`/profile/${userId}/create/info`);
-    router.push(`/profile/${userId}/create/info`);
+  const onMoveProfileCreate = (stepper: number) => {
+    const path = ["info", "photo", "filmo", "video"];
+
+    setStepper(stepper);
+    router.prefetch(`/profile/${userId}/create/${path[stepper]}`);
+    router.push(`/profile/${userId}/create/${path[stepper]}`);
   };
 
   // 프로필 편집
@@ -98,7 +111,7 @@ const Profile = () => {
       setProfileModal({ state: "profileEdit", active: true });
     } else if (isDraft.status === 201) {
       await postProfileDraft(userId);
-      onMoveProfileCreate();
+      onMoveProfileCreate(stepperData);
     }
   };
 
@@ -106,14 +119,18 @@ const Profile = () => {
     await deleteProfileDraft(userId);
     await postProfileDraft(userId);
 
-    onMoveProfileCreate();
+    onMoveProfileCreate(stepperData);
   };
 
   const onProfileDraftConfiremd = async () => {
-    onMoveProfileCreate();
+    onMoveProfileCreate(stepperData);
   };
 
-  //
+  // ProfileSub
+
+  const onSwitchPhotoLabel = (id: number, name: string) => {
+    setPhotoLabel({ id: id, name: name });
+  };
 
   const onPhotoModalOpen = async (photo: string) => {
     const blurPhoto = await convertImageToBase64(photo);
@@ -123,7 +140,7 @@ const Profile = () => {
   };
 
   const onPhotoModalClose = () => {
-    setProfileModal(profileModalInit);
+    setProfileModal({ state: "", active: false });
   };
 
   const onFilmoModalActive = () => {
@@ -261,7 +278,7 @@ const Profile = () => {
 
     setMainPhoto("");
     setMainPhotoOrigin("");
-    setProfileModal(profileModalInit);
+    setProfileModal({ state: "", active: false });
     setToastMessage("대표 사진을 삭제했어요.");
   };
 
@@ -320,6 +337,7 @@ const Profile = () => {
           info={profileData.info}
           profileSpecialties={profileSpecialties}
           mainPhotoMenuActive={mainPhotoMenuActive}
+          setStepperData={setStepperData}
           onProfileEdit={onProfileEdit}
           onMainPhotoSelectFile={onMainPhotoSelectFile}
           onMainPhotoModalOpen={onMainPhotoModalOpen}
@@ -335,11 +353,15 @@ const Profile = () => {
       <div ref={subRef} className="flex-[1_1_70%]">
         <ProfileSub
           linear={linear}
-          userId={userId}
-          photoList={profileData.photos}
+          photoLabel={photoLabel}
+          profilePhotoList={profileData.photos}
+          stillcutPhotoList={profileData.stillCuts}
+          recentPhotoList={profileData.recentPhotos}
           filmographyList={profileData.filmos}
           videoList={profileData.videos}
-          setStepper={setStepper}
+          setStepperData={setStepperData}
+          onMoveToCreate={onProfileEdit}
+          onSwitchPhotoLabel={onSwitchPhotoLabel}
           onPhotoModalOpen={onPhotoModalOpen}
           onFilmoModalActive={onFilmoModalActive}
           onFilmoLinkModalOpen={onFilmoLinkModalOpen}

@@ -16,7 +16,7 @@ export interface SelectedImagesType {
   origin: string;
   preview: string;
   originImage: string;
-  cropData: any;
+  cropData?: CropDataType;
 }
 
 export interface CropDataType {
@@ -26,9 +26,19 @@ export interface CropDataType {
   height: number;
 }
 
+export interface ProfileModalType {
+  state: "" | "deleteMainPhoto" | "profileEdit" | "photo" | "filmo";
+  active: boolean;
+}
+
 export interface ProfilePhotoModalType {
   state: string;
   active: boolean;
   name: string;
   buttonText: string;
+}
+
+export interface PhotoLabelType {
+  id: number;
+  name: string;
 }

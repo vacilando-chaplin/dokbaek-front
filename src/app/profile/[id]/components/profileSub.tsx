@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import {
   FilmoResponseType,
@@ -15,14 +14,19 @@ import YoutubeVideo from "@/components/atoms/youtubeVideo";
 import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
+import { PhotoLabelType } from "../types";
 
 interface PropfileSubProps {
   linear: string;
-  userId: number;
-  photoList: PhotoResponseType[];
+  photoLabel: PhotoLabelType;
+  profilePhotoList: PhotoResponseType[];
+  stillcutPhotoList: PhotoResponseType[];
+  recentPhotoList: PhotoResponseType[];
   filmographyList: FilmoResponseType[];
   videoList: VideoResponseType[];
-  setStepper: React.Dispatch<React.SetStateAction<number>>;
+  setStepperData: React.Dispatch<React.SetStateAction<number>>;
+  onMoveToCreate: () => void;
+  onSwitchPhotoLabel: () => void;
   onPhotoModalOpen: (photo: string) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoLinkModalOpen: (link: string) => void;
@@ -30,17 +34,19 @@ interface PropfileSubProps {
 
 const ProfileSub = ({
   linear,
-  userId,
-  photoList,
+  photoLabel,
+  profilePhotoList,
+  stillcutPhotoList,
+  recentPhotoList,
   filmographyList,
   videoList,
-  setStepper,
+  setStepperData,
+  onMoveToCreate,
+  onSwitchPhotoLabel,
   onPhotoModalOpen,
   onFilmoModalActive,
   onFilmoLinkModalOpen
 }: PropfileSubProps) => {
-  const router = useRouter();
-
   const repFilmoList = filmographyList.filter(
     (filmo: FilmoResponseType) => filmo.is_featured === true
   );
@@ -65,7 +71,7 @@ const ProfileSub = ({
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title name="사진" />
-          {photoList.length > 4 && (
+          {profilePhotoList.length > 4 && (
             <div className="flex gap-1">
               {/* PrevButton */}
               <button
@@ -78,17 +84,19 @@ const ProfileSub = ({
               </button>
               {/* NextButton */}
               <button
-                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(photoList.length / 5) && "opacity-40"}`}
+                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(profilePhotoList.length / 5) && "opacity-40"}`}
                 type="button"
-                disabled={photoSlider === Math.floor(photoList.length / 5)}
-                onClick={() => onSliderNext(photoList.length)}
+                disabled={
+                  photoSlider === Math.floor(profilePhotoList.length / 5)
+                }
+                onClick={() => onSliderNext(profilePhotoList.length)}
               >
                 <ArrowChevronRight width="16" height="16" fill="#5E656C" />
               </button>
             </div>
           )}
         </div>
-        {photoList.length >= 1 && photoList[0].isDefault === false ? (
+        {profilePhotoList.length >= 1 ? (
           <div className="relative overflow-hidden">
             <div
               className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
@@ -96,30 +104,28 @@ const ProfileSub = ({
                 transform: `translateX(-${photoSlider * 100}%)`
               }}
             >
-              {photoList.map((photo: PhotoResponseType) => {
+              {profilePhotoList.map((photo: PhotoResponseType) => {
                 return (
                   <Fragment key={photo.id}>
-                    {photo.isDefault === false && (
-                      <figure
-                        className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
-                        onClick={() => onPhotoModalOpen(photo.path)}
-                      >
-                        <Image
-                          src={photo.previewPath}
-                          alt={photo.id}
-                          width={0}
-                          height={0}
-                          sizes="100vw"
-                          className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
-                        />
-                        <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
-                          <PlusCircle width="20" height="20" fill="#ffffff" />
-                          <span className="typography-body2 font-semibold">
-                            크게 보기
-                          </span>
-                        </div>
-                      </figure>
-                    )}
+                    <figure
+                      className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
+                      onClick={() => onPhotoModalOpen(photo.path)}
+                    >
+                      <Image
+                        src={photo.previewPath}
+                        alt={photo.id}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
+                      />
+                      <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
+                        <PlusCircle width="20" height="20" fill="#ffffff" />
+                        <span className="typography-body2 font-semibold">
+                          크게 보기
+                        </span>
+                      </div>
+                    </figure>
                   </Fragment>
                 );
               })}
@@ -129,12 +135,12 @@ const ProfileSub = ({
           <EmptyState
             text="사진이 없어요."
             button
-            buttonText="사진 추가"
+            buttonSize="small"
+            buttonText="추가"
             buttonType="secondaryOutlined"
             onClick={() => {
-              router.prefetch(`/profile/${userId}/create/photo`);
-              router.push(`/profile/${userId}/create/photo`);
-              setStepper(1);
+              setStepperData(1);
+              onMoveToCreate();
             }}
           />
         )}
@@ -199,12 +205,12 @@ const ProfileSub = ({
           <EmptyState
             text="작품 활동이 없어요."
             button
-            buttonText="작품 활동 추가"
+            buttonSize="small"
+            buttonText="추가"
             buttonType="secondaryOutlined"
             onClick={() => {
-              router.prefetch(`/profile/${userId}/create/filmo`);
-              router.push(`/profile/${userId}/create/filmo`);
-              setStepper(2);
+              setStepperData(2);
+              onMoveToCreate();
             }}
           />
         )}
@@ -222,11 +228,12 @@ const ProfileSub = ({
           <EmptyState
             text="영상이 없어요."
             button
-            buttonText="영상 추가"
+            buttonSize="small"
+            buttonText="추가"
             buttonType="secondaryOutlined"
             onClick={() => {
-              router.prefetch(`/profile/${userId}/create/video`);
-              router.push(`/profile/${userId}/create/video`);
+              setStepperData(3);
+              onMoveToCreate();
             }}
           />
         )}
