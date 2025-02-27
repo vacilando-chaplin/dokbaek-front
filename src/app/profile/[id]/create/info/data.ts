@@ -19,3 +19,13 @@ export const infoActiveInit = {
   school: false,
   education: false
 };
+
+export const educationInit = {
+  school: {
+    name: "",
+    schoolType: "",
+    schoolGubun: ""
+  },
+  major: "",
+  status: "졸업"
+};

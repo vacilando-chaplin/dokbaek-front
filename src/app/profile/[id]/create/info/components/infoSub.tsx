@@ -14,6 +14,7 @@ interface infoSubProps {
   onSchoolChange: React.ChangeEventHandler<HTMLInputElement>;
   onInfoDropdownActive: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
+  onSaveEducation: () => void;
 }
 
 const InfoSub = ({
@@ -23,7 +24,8 @@ const InfoSub = ({
   onInputChange,
   onSchoolChange,
   onInfoDropdownActive,
-  onItemClick
+  onItemClick,
+  onSaveEducation
 }: infoSubProps) => {
   const { school, major, education } = infoInputs;
   return (
@@ -44,6 +46,7 @@ const InfoSub = ({
             onClick={onItemClick}
             onActive={onInfoDropdownActive}
             onChange={onSchoolChange}
+            onSave={onSaveEducation}
           />
         </div>
         <div className="flex h-auto w-full flex-col">
@@ -57,6 +60,7 @@ const InfoSub = ({
                 value={major}
                 maxLength={20}
                 onChange={onInputChange}
+                onBlur={onSaveEducation}
               />
             </div>
             <div className="flex flex-[1_1_25%]">
@@ -69,6 +73,7 @@ const InfoSub = ({
                 selected={education}
                 onClick={onItemClick}
                 onActive={onInfoDropdownActive}
+                onSave={onSaveEducation}
               />
             </div>
           </div>

@@ -11,6 +11,7 @@ import InfoSub from "./components/infoSub";
 import InfoThird from "./components/infoThird";
 import {
   InfoActiveType,
+  InfoDataType,
   InfoInputType,
   SchoolType,
   SpecialtyType
@@ -18,13 +19,16 @@ import {
 import { infoActiveInit, infoInputInit } from "./data";
 import {
   getSchoolName,
+  postEducation,
   postSpecialty,
   postUserProfileSpecialty,
+  putEducation,
   putInfoDraft
 } from "./api";
 import { specialtyData } from "../../../../../lib/atoms";
 import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal";
 import { getProfileDraft } from "../../api";
+import { EducationWithIdType } from "@/lib/types";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
@@ -47,6 +51,8 @@ const Info = () => {
   });
   // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
+  const [education, setEducation] = useState<EducationWithIdType[] | []>([]);
+  const [educationId, setEducationId] = useState(0);
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
   // 내 정보 입력
   const onInputChange = (
@@ -214,45 +220,62 @@ const Info = () => {
   }, [debounceSearch]);
 
   const onSaveInfo = async () => {
+    const infoData: InfoDataType = {
+      name: infoInputs.name,
+      bornYear: Number(infoInputs.birth),
+      height: Number(infoInputs.height),
+      weight: Number(infoInputs.weight),
+      email: infoInputs.email,
+      contact: infoInputs.contact,
+      instagramLink: infoInputs.instagram,
+      youtubeLink: infoInputs.youtube,
+      introduction: infoInputs.introduction
+    };
+    await putInfoDraft(userId, infoData);
+  };
+
+  const onCreateEducation = async () => {
     const educationIndex = educationList.indexOf(infoInputs.education);
     const educationStatus = educationEngList[educationIndex];
 
-    const infoData: any = {
-      status: "PUBLIC",
-      info: {
-        name: infoInputs.name,
-        bornYear: Number(infoInputs.birth),
-        height: Number(infoInputs.height),
-        weight: Number(infoInputs.weight),
-        email: infoInputs.email,
-        contact: infoInputs.contact,
-        instagramLink: infoInputs.instagram,
-        youtubeLink: infoInputs.youtube,
-        introduction: infoInputs.introduction
+    const educationData = {
+      school: {
+        name: infoInputs.school,
+        schoolType: "",
+        schoolGubun: ""
       },
-      education: [],
-      specialties: specialties
+      major: infoInputs.school,
+      status: educationStatus
     };
-    infoInputs.school
-      ? (infoData.education = [
-          {
-            school: {
-              name: infoInputs.school,
-              schoolType: "",
-              schoolGubun: ""
-            },
-            major: infoInputs.major,
-            status: educationStatus
-          }
-        ])
-      : (infoData.education = []);
-
-    await putInfoDraft(userId, infoData);
+    await postEducation(userId, educationData);
   };
+
+  const onSaveEducation = async () => {
+    const educationIndex = educationList.indexOf(infoInputs.education);
+    const educationStatus = educationEngList[educationIndex];
+
+    if (education.length === 0) {
+      onCreateEducation();
+    } else {
+      const educationData = {
+        school: {
+          name: infoInputs.school,
+          schoolType: "",
+          schoolGubun: ""
+        },
+        major: infoInputs.school,
+        status: educationStatus
+      };
+      await putEducation(userId, educationId, educationData);
+    }
+  };
+
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
   useEffect(() => {
     onSaveInfo();
   }, [stepper]);
+
+  // console.log(infoInputs);
 
   useEffect(() => {
     setTimeout(() => {
@@ -282,6 +305,8 @@ const Info = () => {
           school: data.education[0].school.name,
           major: data.education[0].major
         });
+        setEducation(data.education);
+        setEducationId(data.education.id);
       }
 
       setCompletion({
@@ -337,6 +362,7 @@ const Info = () => {
         onSchoolChange={onSchoolChange}
         onInfoDropdownActive={onInfoDropdownActive}
         onItemClick={onItemClick}
+        onSaveEducation={onSaveEducation}
       />
       <InfoThird infoInputs={infoInputs} onInputChange={onInputChange} />
       {profileSpecialtyModal && (

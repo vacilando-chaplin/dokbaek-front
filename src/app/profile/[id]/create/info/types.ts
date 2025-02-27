@@ -19,6 +19,18 @@ export interface InfoActiveType {
   education: boolean;
 }
 
+export interface InfoDataType {
+  name: string;
+  bornYear: number;
+  height: number;
+  weight: number;
+  email: string;
+  contact: string;
+  instagramLink: string;
+  youtubeLink: string;
+  introduction: string;
+}
+
 export interface SchoolType {
   campusName: string;
   collegeinfourl: string;

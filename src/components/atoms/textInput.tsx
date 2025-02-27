@@ -14,6 +14,7 @@ interface TextInputProps {
   maxLength?: number;
   placeholder?: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: () => void;
 }
 
 const TextInput = ({
@@ -27,7 +28,8 @@ const TextInput = ({
   parameter,
   maxLength,
   placeholder,
-  onChange
+  onChange,
+  onBlur
 }: TextInputProps) => {
   const sizeStyle: sizeStyleType = {
     large: "h-[49px] typography-body2 gap-2 rounded-[14px] py-3.5 px-4",
@@ -53,6 +55,7 @@ const TextInput = ({
         autoComplete="off"
         className="h-auto w-full text-content-primary-light placeholder-content-alternative-light outline-none"
         onChange={onChange}
+        onBlur={onBlur}
       />
       {parameter && (
         <div className="text-content-secondary-light">{parameter}</div>
