@@ -20,7 +20,7 @@ import {
   getSchoolName,
   postSpecialty,
   postUserProfileSpecialty,
-  putInfo
+  putInfoDraft
 } from "./api";
 import { specialtyData } from "../../../../../lib/atoms";
 import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal";
@@ -247,7 +247,7 @@ const Info = () => {
         ])
       : (infoData.education = []);
 
-    await putInfo(userId, infoData);
+    await putInfoDraft(userId, infoData);
   };
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
   useEffect(() => {

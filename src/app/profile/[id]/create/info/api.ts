@@ -20,9 +20,9 @@ export const getSchoolName = async (search: string) => {
   return await data;
 };
 
-export const putInfo = async (id: number, data: any) => {
+export const putInfoDraft = async (id: number, data: any) => {
   try {
-    const res = await api.put(`/profile/${id}`, data);
+    const res = await api.put(`/profile/${id}/draft/info`, data);
     return res.data;
   } catch (error) {
     throw error;

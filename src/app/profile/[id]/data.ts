@@ -14,3 +14,10 @@ export const profilePhotoModalInit = {
   name: "",
   buttonText: ""
 };
+
+export const cropDataInit = {
+  top: 0,
+  left: 0,
+  width: 0,
+  height: 0
+};

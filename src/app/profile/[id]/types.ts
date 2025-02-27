@@ -16,7 +16,7 @@ export interface SelectedImagesType {
   origin: string;
   preview: string;
   originImage: string;
-  cropData?: CropDataType;
+  cropData: CropDataType;
 }
 
 export interface CropDataType {

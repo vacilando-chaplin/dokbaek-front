@@ -1,15 +1,16 @@
 "use client";
 
+import { CropDataType } from "@/app/profile/[id]/types";
 import { useEffect, useRef, useState } from "react";
-import { Cropper, CropperRef } from "react-advanced-cropper";
+import { Coordinates, Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 
 interface ImageCropperProps {
   selectImage: string;
   setCropImage: any;
-  cropData: any;
-  setCropData: any;
-  cropType?: string;
+  cropData: CropDataType;
+  setCropData: React.Dispatch<React.SetStateAction<Coordinates | null>>;
+  cropType: string;
 }
 
 const ImageCropper = ({
@@ -25,10 +26,12 @@ const ImageCropper = ({
 
   const onCropEnd = () => {
     if (cropperRef.current) {
-      const cropData = cropperRef.current.getCoordinates();
-      const cropImagetoString = cropperRef.current.getCanvas()?.toDataURL();
+      const cropper = cropperRef.current;
+      const cropCoordinates = cropper.getCoordinates();
+      const cropCanvas = cropper.getCanvas();
+      const cropImagetoString = cropCanvas?.toDataURL();
 
-      setCropData(cropData);
+      setCropData(cropCoordinates);
       setCropImage(cropImagetoString);
     }
   };
@@ -74,9 +77,11 @@ const ImageCropper = ({
           ref={cropperRef}
           src={selectImage}
           defaultSize={
-            Object.keys(cropData).length >= 1 ? cropData : defaultSize
+            cropData.top === 0 && cropData.left === 0 ? defaultSize : cropData
           }
-          defaultPosition={Object.keys(cropData).length >= 1 && cropData}
+          defaultPosition={
+            cropData.top !== 0 && cropData.left !== 0 ? cropData : undefined
+          }
           onInteractionEnd={onCropEnd}
           className="h-full w-full"
         />

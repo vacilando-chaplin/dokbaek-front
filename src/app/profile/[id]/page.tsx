@@ -24,6 +24,7 @@ import ProfileSub from "./components/profileSub";
 import ProfilePhotoModal from "./components/profilePhotoModal";
 import ProfileFilmoModal from "./components/profileFilmoModal";
 import {
+  cropDataInit,
   profilePhotoModalInit,
   selectedPhotoInit,
   videoLinkInit
@@ -90,7 +91,7 @@ const Profile = () => {
   // 대표 사진 크롭 데이터
   const [cropImage, setCropImage] = useState("");
   const [selectImage, setSelectImage] = useState("");
-  const [cropData, setCropData] = useState({});
+  const [cropData, setCropData] = useState(cropDataInit);
 
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -109,9 +110,6 @@ const Profile = () => {
 
     if (isDraft.status === 200) {
       setProfileModal({ state: "profileEdit", active: true });
-    } else if (isDraft.status === 201) {
-      await postProfileDraft(userId);
-      onMoveProfileCreate(stepperData);
     }
   };
 
@@ -228,7 +226,7 @@ const Profile = () => {
   const onMainPhotoModalClose = () => {
     setCropImage("");
     setSelectImage("");
-    setCropData({});
+    setCropData(cropDataInit);
     setMainPhotoModal(photoModalInit);
   };
 
@@ -238,7 +236,7 @@ const Profile = () => {
 
     setSelectImage("");
     setCropImage("");
-    setCropData({});
+    setCropData(cropDataInit);
     setMainPhoto(data.mainPhotoPreviewPath);
     setMainPhotoOrigin(data.mainPhotoPath);
     setMainPhotoModal(photoModalInit);
@@ -253,7 +251,7 @@ const Profile = () => {
 
     setSelectImage("");
     setCropImage("");
-    setCropData({});
+    setCropData(cropDataInit);
     setMainPhoto(data.mainPhotoPreviewPath);
     setMainPhotoOrigin(data.mainPhotoPath);
     setMainPhotoModal(photoModalInit);
@@ -269,7 +267,7 @@ const Profile = () => {
     setMainPhotoModal(photoModalInit);
     setSelectImage("");
     setCropImage("");
-    setCropData({});
+    setCropData(cropDataInit);
     setToastMessage("대표 사진을 수정했어요.");
   };
 
@@ -361,7 +359,7 @@ const Profile = () => {
           videoList={profileData.videos}
           setStepperData={setStepperData}
           onMoveToCreate={onProfileEdit}
-          onSwitchPhotoLabel={onSwitchPhotoLabel}
+          // onSwitchPhotoLabel={onSwitchPhotoLabel}
           onPhotoModalOpen={onPhotoModalOpen}
           onFilmoModalActive={onFilmoModalActive}
           onFilmoLinkModalOpen={onFilmoLinkModalOpen}

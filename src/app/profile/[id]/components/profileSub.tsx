@@ -26,7 +26,7 @@ interface PropfileSubProps {
   videoList: VideoResponseType[];
   setStepperData: React.Dispatch<React.SetStateAction<number>>;
   onMoveToCreate: () => void;
-  onSwitchPhotoLabel: () => void;
+  // onSwitchPhotoLabel: () => void;
   onPhotoModalOpen: (photo: string) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoLinkModalOpen: (link: string) => void;
@@ -42,7 +42,7 @@ const ProfileSub = ({
   videoList,
   setStepperData,
   onMoveToCreate,
-  onSwitchPhotoLabel,
+  // onSwitchPhotoLabel,
   onPhotoModalOpen,
   onFilmoModalActive,
   onFilmoLinkModalOpen

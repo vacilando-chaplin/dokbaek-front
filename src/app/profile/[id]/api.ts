@@ -13,7 +13,7 @@ export const getProfileDraft = async (profileId: number) => {
 export const postProfileDraft = async (profileId: number) => {
   try {
     const res = await api.post(`/profile/${profileId}/draft`);
-    return res.data;
+    return res;
   } catch (error) {
     throw error;
   }

@@ -14,8 +14,9 @@ import imageCompression from "browser-image-compression";
 import { convertToBase64, getFileMimeTypeFromUrl, isValid } from "@/lib/utils";
 import { postRecentPhoto, postRecentPhotoEdit } from "./api";
 import { getProfileDraft } from "../../api";
-import { PhotoModalType, SelectedImagesType } from "../../types";
+import { CropDataType, PhotoModalType, SelectedImagesType } from "../../types";
 import { imageCompressionOptions } from "@/lib/data";
+import { cropDataInit } from "../../data";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
@@ -32,7 +33,7 @@ const Photo = () => {
   const [selectImage, setSelectImage] = useState("");
   const [cropImage, setCropImage] = useState("");
   const [selectedPhotoId, setSelectedPhotoId] = useState(0);
-  const [cropData, setCropData] = useState<any>({});
+  const [cropData, setCropData] = useState<CropDataType>(cropDataInit);
   const [selectedImages, setSelectedImages] = useState<SelectedImagesType[]>(
     []
   );
@@ -98,7 +99,7 @@ const Photo = () => {
           origin: downSizedImage,
           preview: downSizedImage,
           originImage: downSizedImage,
-          cropData: {}
+          cropData: cropDataInit
         }
       ]);
     }
@@ -298,7 +299,7 @@ const Photo = () => {
         origin: downSizedImage,
         preview: downSizedImage,
         originImage: downSizedImage,
-        cropData: {}
+        cropData: cropDataInit
       }
     ]);
     setPhotoModal({
@@ -334,7 +335,7 @@ const Photo = () => {
           origin: originImage,
           preview: downSizedImage,
           originImage: selectImage,
-          cropData: {}
+          cropData: cropDataInit
         }
       ]);
     }
