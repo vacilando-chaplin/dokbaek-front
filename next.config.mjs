@@ -10,6 +10,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "filogram.s3.ap-northeast-2.amazonaws.com",
         pathname: "/**"
+      },
+      {
+        protocol: "http",
+        hostname: "3.38.102.209",
+        port: "8080",
+        pathname: "/**"
       }
     ]
   },
