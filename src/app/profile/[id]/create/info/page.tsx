@@ -275,8 +275,6 @@ const Info = () => {
     onSaveInfo();
   }, [stepper]);
 
-  // console.log(infoInputs);
-
   useEffect(() => {
     setTimeout(() => {
       onSaveInfo();

@@ -1,6 +1,5 @@
 import { api } from "@/lib/axiosInstance";
 import { EducationInitType } from "@/lib/types";
-import qs from "qs";
 
 // 커리어넷 학교 검색 api
 export const getSchoolName = async (search: string) => {
@@ -76,10 +75,9 @@ export const postEducation = async (
   educationDto: EducationInitType
 ) => {
   try {
-    const queryString = qs.stringify(educationDto, { arrayFormat: "brackets" });
-
     const res = await api.post(
-      `/profile/${profileId}/draft/education?${queryString}`
+      `/profile/${profileId}/draft/education`,
+      educationDto
     );
     return res.data;
   } catch (error) {
@@ -93,12 +91,9 @@ export const putEducation = async (
   educationDto: EducationInitType
 ) => {
   try {
-    const queryString = qs.stringify(educationDto, {
-      arrayFormat: "brackets"
-    });
-
     const res = await api.put(
-      `/profile/${profileId}/draft/education/${educationId}?${queryString}`
+      `/profile/${profileId}/draft/education/${educationId}`,
+      educationDto
     );
     return res.data;
   } catch (error) {
