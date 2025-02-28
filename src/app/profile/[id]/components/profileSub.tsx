@@ -14,19 +14,17 @@ import YoutubeVideo from "@/components/atoms/youtubeVideo";
 import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
-import { PhotoLabelType } from "../types";
+import ChipItem from "@/components/atoms/chipItem";
 
 interface PropfileSubProps {
   linear: string;
-  photoLabel: PhotoLabelType;
-  profilePhotoList: PhotoResponseType[];
-  stillcutPhotoList: PhotoResponseType[];
-  recentPhotoList: PhotoResponseType[];
+  photoLabel: string;
+  selectedPhotoList: PhotoResponseType[];
   filmographyList: FilmoResponseType[];
   videoList: VideoResponseType[];
   setStepperData: React.Dispatch<React.SetStateAction<number>>;
   onMoveToCreate: () => void;
-  // onSwitchPhotoLabel: () => void;
+  onSwitchPhotoLabel: (label: string) => void;
   onPhotoModalOpen: (photo: string) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoLinkModalOpen: (link: string) => void;
@@ -35,14 +33,12 @@ interface PropfileSubProps {
 const ProfileSub = ({
   linear,
   photoLabel,
-  profilePhotoList,
-  stillcutPhotoList,
-  recentPhotoList,
+  selectedPhotoList,
   filmographyList,
   videoList,
   setStepperData,
   onMoveToCreate,
-  // onSwitchPhotoLabel,
+  onSwitchPhotoLabel,
   onPhotoModalOpen,
   onFilmoModalActive,
   onFilmoLinkModalOpen
@@ -69,9 +65,29 @@ const ProfileSub = ({
     >
       {/* photo */}
       <div className="flex h-auto w-full flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <Title name="사진" />
-          {profilePhotoList.length > 4 && (
+        <Title name="사진" />
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row gap-2">
+            <ChipItem
+              state={photoLabel === "profilePhoto" ? "selected" : "default"}
+              onClick={() => onSwitchPhotoLabel("profilePhoto")}
+            >
+              프로필 사진
+            </ChipItem>
+            <ChipItem
+              state={photoLabel === "stillcutPhoto" ? "selected" : "default"}
+              onClick={() => onSwitchPhotoLabel("stillcutPhoto")}
+            >
+              스틸컷
+            </ChipItem>
+            <ChipItem
+              state={photoLabel === "recentPhoto" ? "selected" : "default"}
+              onClick={() => onSwitchPhotoLabel("recentPhoto")}
+            >
+              최근 사진
+            </ChipItem>
+          </div>
+          {selectedPhotoList.length > 4 && (
             <div className="flex gap-1">
               {/* PrevButton */}
               <button
@@ -84,19 +100,19 @@ const ProfileSub = ({
               </button>
               {/* NextButton */}
               <button
-                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(profilePhotoList.length / 5) && "opacity-40"}`}
+                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(selectedPhotoList.length / 5) && "opacity-40"}`}
                 type="button"
                 disabled={
-                  photoSlider === Math.floor(profilePhotoList.length / 5)
+                  photoSlider === Math.floor(selectedPhotoList.length / 5)
                 }
-                onClick={() => onSliderNext(profilePhotoList.length)}
+                onClick={() => onSliderNext(selectedPhotoList.length)}
               >
                 <ArrowChevronRight width="16" height="16" fill="#5E656C" />
               </button>
             </div>
           )}
         </div>
-        {profilePhotoList.length >= 1 ? (
+        {selectedPhotoList.length >= 1 ? (
           <div className="relative overflow-hidden">
             <div
               className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
@@ -104,7 +120,7 @@ const ProfileSub = ({
                 transform: `translateX(-${photoSlider * 100}%)`
               }}
             >
-              {profilePhotoList.map((photo: PhotoResponseType) => {
+              {selectedPhotoList.map((photo: PhotoResponseType) => {
                 return (
                   <Fragment key={photo.id}>
                     <figure

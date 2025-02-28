@@ -37,8 +37,3 @@ export interface ProfilePhotoModalType {
   name: string;
   buttonText: string;
 }
-
-export interface PhotoLabelType {
-  id: number;
-  name: string;
-}
