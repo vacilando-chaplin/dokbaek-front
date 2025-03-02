@@ -1,6 +1,6 @@
 export interface InfoInputType {
   name: string;
-  birth: string;
+  bornYear: string;
   height: string;
   weight: string;
   contact: string;
@@ -8,15 +8,18 @@ export interface InfoInputType {
   instagram: string;
   youtube: string;
   introduction: string;
-  school: string;
-  major: string;
-  education: string;
 }
 
 export interface InfoActiveType {
-  birth: boolean;
+  bornYear: boolean;
   school: boolean;
   education: boolean;
+}
+
+export interface InfoEducationType {
+  school: string;
+  major: string;
+  education: string;
 }
 
 export interface InfoDataType {

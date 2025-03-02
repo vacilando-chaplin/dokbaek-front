@@ -4,30 +4,30 @@ import Title from "@/components/atoms/title";
 import SearchDropdown from "@/components/molecules/searchDropdown";
 import SelectDropdown from "@/components/molecules/selectDropdown";
 import { educationList } from "@/lib/data";
-import { InfoActiveType, InfoInputType } from "../types";
+import { InfoActiveType, InfoEducationType } from "../types";
 
 interface infoSubProps {
-  infoInputs: InfoInputType;
+  educationInputs: InfoEducationType;
   infoActives: InfoActiveType;
   schoolList: string[];
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onSchoolChange: React.ChangeEventHandler<HTMLInputElement>;
   onInfoDropdownActive: (name: string, state: boolean) => void;
   onItemClick: (name: string, item: string) => void;
-  onSaveEducation: () => void;
+  onBlurEducation: () => void;
 }
 
 const InfoSub = ({
-  infoInputs,
+  educationInputs,
   infoActives,
   schoolList,
   onInputChange,
   onSchoolChange,
   onInfoDropdownActive,
   onItemClick,
-  onSaveEducation
+  onBlurEducation
 }: infoSubProps) => {
-  const { school, major, education } = infoInputs;
+  const { school, major, education } = educationInputs;
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
       <Title name="학력" />
@@ -46,7 +46,7 @@ const InfoSub = ({
             onClick={onItemClick}
             onActive={onInfoDropdownActive}
             onChange={onSchoolChange}
-            onSave={onSaveEducation}
+            onSave={onBlurEducation}
           />
         </div>
         <div className="flex h-auto w-full flex-col">
@@ -60,7 +60,7 @@ const InfoSub = ({
                 value={major}
                 maxLength={20}
                 onChange={onInputChange}
-                onBlur={onSaveEducation}
+                onBlur={onBlurEducation}
               />
             </div>
             <div className="flex flex-[1_1_25%]">
@@ -73,7 +73,7 @@ const InfoSub = ({
                 selected={education}
                 onClick={onItemClick}
                 onActive={onInfoDropdownActive}
-                onSave={onSaveEducation}
+                onSave={onBlurEducation}
               />
             </div>
           </div>

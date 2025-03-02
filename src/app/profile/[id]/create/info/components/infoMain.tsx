@@ -20,6 +20,7 @@ interface InfoMainProps {
   onItemClick: (name: string, item: string) => void;
   onSpecialtyFormModalOpen: React.MouseEventHandler<HTMLButtonElement>;
   onDeleteSpecialty: (specialtyId: number) => () => void;
+  onBlurInfo: () => void;
 }
 
 const InfoMain = ({
@@ -33,9 +34,10 @@ const InfoMain = ({
   onInfoDropdownActive,
   onItemClick,
   onSpecialtyFormModalOpen,
-  onDeleteSpecialty
+  onDeleteSpecialty,
+  onBlurInfo
 }: InfoMainProps) => {
-  const { name, birth, height, weight, contact, email, instagram, youtube } =
+  const { name, bornYear, height, weight, contact, email, instagram, youtube } =
     infoInputs;
 
   return (
@@ -53,22 +55,24 @@ const InfoMain = ({
               maxLength={10}
               placeholder="이름을 입력해주세요."
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
           </div>
           <div className="flex w-full flex-col">
             <Label label="출생연도" required />
             <SearchDropdown
               size="medium"
-              name="birth"
+              name="bornYear"
               list={yearList}
-              value={birth}
-              active={infoActives.birth}
-              selected={birth}
+              value={bornYear}
+              active={infoActives.bornYear}
+              selected={bornYear}
               maxLength={4}
               placeholder="출생연도를 선택해주세요."
               onClick={onItemClick}
               onActive={onInfoDropdownActive}
               onChange={onBirthChange}
+              onSave={onBlurInfo}
             />
           </div>
         </div>
@@ -84,6 +88,7 @@ const InfoMain = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
+              onBlur={onBlurInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -97,6 +102,7 @@ const InfoMain = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
+              onBlur={onBlurInfo}
             />
           </div>
         </div>
@@ -110,6 +116,7 @@ const InfoMain = ({
               value={contact}
               maxLength={13}
               onChange={onContactChange}
+              onBlur={onBlurInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -121,6 +128,7 @@ const InfoMain = ({
               value={email}
               maxLength={40}
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
           </div>
         </div>
@@ -164,6 +172,7 @@ const InfoMain = ({
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
             <TextInput
               type="link"
@@ -174,6 +183,7 @@ const InfoMain = ({
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
           </div>
         </div>
