@@ -24,11 +24,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const onSaveProfileClick = async () => {
     await postProfileDraftPublish(userId);
 
+    setStepper(0);
     router.prefetch(`/profile/${userId}`);
     router.push(`/profile/${userId}`);
   };
 
   const onBackProfileClick = () => {
+    setStepper(0);
     router.prefetch(`/profile/${userId}`);
     router.push(`/profile/${userId}`);
   };

@@ -164,8 +164,18 @@ export interface InfoResponseType {
     }
   ];
 }
+export interface EducationInitType {
+  school: {
+    name: string;
+    schoolType: string;
+    schoolGubun: string;
+  };
+  major: string;
+  status: string;
+}
 
-export interface EducationType {
+export interface EducationWithIdType {
+  id: number;
   school: {
     name: string;
     schoolType: string;
