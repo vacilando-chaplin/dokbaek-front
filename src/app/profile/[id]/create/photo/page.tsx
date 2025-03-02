@@ -34,9 +34,14 @@ const Photo = () => {
   const [cropImage, setCropImage] = useState("");
   const [selectedPhotoId, setSelectedPhotoId] = useState(0);
   const [cropData, setCropData] = useState<CropDataType>(cropDataInit);
-  const [selectedImages, setSelectedImages] = useState<SelectedImagesType[]>(
-    []
-  );
+  const [selectedImages, setSelectedImages] = useState<SelectedImagesType[]>([
+    {
+      origin: "",
+      preview: "",
+      originImage: "",
+      cropData: cropDataInit
+    }
+  ]);
 
   const [photoModal, setPhotoModal] = useState<PhotoModalType>(photoModalInit);
   const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
@@ -61,7 +66,7 @@ const Photo = () => {
           origin: downSizedImage,
           preview: downSizedImage,
           originImage: downSizedImage,
-          cropData: {}
+          cropData: cropDataInit
         }
       ]);
     }

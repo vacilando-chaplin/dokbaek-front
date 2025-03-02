@@ -16,7 +16,11 @@ import {
   toastMessage
 } from "@/lib/atoms";
 import { imageCompressionOptions, profileResponseInit } from "@/lib/data";
-import { FilmoCategoryType, FilmoResponseType } from "@/lib/types";
+import {
+  FilmoCategoryType,
+  FilmoResponseType,
+  PhotoResponseType
+} from "@/lib/types";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ProfileMain from "./components/profileMain";
@@ -40,11 +44,7 @@ import {
 } from "./api";
 import ConfirmModal from "@/components/organisms/confirmModal";
 import { photoModalInit } from "./create/photo/data";
-import {
-  PhotoLabelType,
-  ProfileModalType,
-  ProfilePhotoModalType
-} from "./types";
+import { ProfileModalType, ProfilePhotoModalType } from "./types";
 import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import imageCompression from "browser-image-compression";
 import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
@@ -69,11 +69,11 @@ const Profile = () => {
   const [profileSpecialties, setProfileSpecialties] = useState<
     SpecialtyItemType[]
   >([]);
-  const [photoLabel, setPhotoLabel] = useState<PhotoLabelType>({
-    id: 0,
-    name: "프로필 사진"
-  });
+  const [photoLabel, setPhotoLabel] = useState("profilePhoto");
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
+  const [selectedPhotoList, setSelectedPhotoList] = useState<
+    PhotoResponseType[]
+  >(profileData.photos);
   const [profileModal, setProfileModal] = useState<ProfileModalType>({
     state: "",
     active: false
@@ -126,8 +126,15 @@ const Profile = () => {
 
   // ProfileSub
 
-  const onSwitchPhotoLabel = (id: number, name: string) => {
-    setPhotoLabel({ id: id, name: name });
+  const onSwitchPhotoLabel = (label: string) => {
+    setPhotoLabel(label);
+    if (label === "profilePhoto") {
+      setSelectedPhotoList(profileData.photos);
+    } else if (label === "stillcutPhoto") {
+      setSelectedPhotoList(profileData.stillCuts);
+    } else if (label === "recentPhoto") {
+      setSelectedPhotoList(profileData.recentPhotos);
+    }
   };
 
   const onPhotoModalOpen = async (photo: string) => {
@@ -352,14 +359,12 @@ const Profile = () => {
         <ProfileSub
           linear={linear}
           photoLabel={photoLabel}
-          profilePhotoList={profileData.photos}
-          stillcutPhotoList={profileData.stillCuts}
-          recentPhotoList={profileData.recentPhotos}
+          selectedPhotoList={selectedPhotoList}
           filmographyList={profileData.filmos}
           videoList={profileData.videos}
           setStepperData={setStepperData}
           onMoveToCreate={onProfileEdit}
-          // onSwitchPhotoLabel={onSwitchPhotoLabel}
+          onSwitchPhotoLabel={onSwitchPhotoLabel}
           onPhotoModalOpen={onPhotoModalOpen}
           onFilmoModalActive={onFilmoModalActive}
           onFilmoLinkModalOpen={onFilmoLinkModalOpen}
