@@ -18,6 +18,7 @@ export const infoActiveInit = {
 };
 
 export const educationInputInit = {
+  name: 0,
   school: "",
   major: "",
   education: "졸업"

@@ -16,6 +16,15 @@ export const educationEngList = [
   "DROPPED_OUT"
 ];
 
+export const educationEnum = {
+  GRADUATED: "졸업",
+  PENDING: "졸업 예정",
+  ENROLLED: "재학 중",
+  LEAVE_OF_ABSENCE: "휴학",
+  COMPLETION: "수료",
+  DROPPED_OUT: "중퇴"
+};
+
 export const classificationList = [
   "장편상업영화",
   "장편독립영화",

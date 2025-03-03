@@ -76,7 +76,6 @@ export const postEducation = async (
   educationDto: EducationInitType
 ) => {
   try {
-    console.log(educationDto);
     const res = await api.post(
       `/profile/${profileId}/draft/education`,
       educationDto

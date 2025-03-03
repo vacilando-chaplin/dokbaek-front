@@ -1,7 +1,7 @@
 "use client";
 
 import { completionProgress, defaultId, stepperInit } from "@/lib/atoms";
-import { educationEngList, educationList } from "@/lib/data";
+import { educationEngList, educationEnum, educationList } from "@/lib/data";
 import { useDebounce } from "@/lib/hooks";
 import { contactFormat, isValid, setOnlyNumber } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ import {
 } from "./types";
 import { educationInputInit, infoActiveInit, infoInputInit } from "./data";
 import {
+  deleteEducation,
   getSchoolName,
   postEducation,
   postSpecialty,
@@ -52,9 +53,7 @@ const Info = () => {
 
   // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
-  const [education, setEducation] = useState<EducationWithIdType[] | []>([]);
-  const [educationInputs, setEducationInputs] = useState(educationInputInit);
-  const [educationId, setEducationId] = useState(0);
+  const [education, setEducation] = useState<EducationWithIdType[]>([]);
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
 
   // 내 정보 입력
@@ -111,21 +110,6 @@ const Info = () => {
       : setCompletion({ ...completion, [name]: false });
   };
 
-  // 학교 검색
-  const onSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setEducationInputs({
-      ...educationInputs,
-      [name]: value
-    });
-    if (value && !infoActives.school) {
-      setInfoActives({ ...infoActives, [name]: true });
-    }
-    isValid(value)
-      ? setCompletion({ ...completion, [name]: true })
-      : setCompletion({ ...completion, [name]: false });
-  };
-
   // 드랍다운 수동 액티브
   const onInfoDropdownActive = (name: string, state: boolean) => {
     setInfoActives({ ...infoActives, [name]: !state });
@@ -137,9 +121,6 @@ const Info = () => {
     setCompletion({ ...completion, [name]: true });
     onSaveInfo();
   };
-
-  // 학교검색 딜레이 적용(0.3초)
-  const debounceSearch: any = useDebounce(educationInputs.school, 300);
 
   const onSpecialtyFormModalClose = () => {
     setProfileSpecialtyModal(false);
@@ -227,68 +208,103 @@ const Info = () => {
     await putInfoDraft(userId, infoData);
   };
 
-  const onMajorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 학교 검색
+  const onSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEducationInputs({
-      ...educationInputs,
-      [name]: value
-    });
+    setEducation(
+      education.map((item) =>
+        item.id === Number(name) ? { ...item, [name]: value } : item
+      )
+    );
+    if (value && !infoActives.school) {
+      setInfoActives({ ...infoActives, [name]: true });
+    }
     isValid(value)
       ? setCompletion({ ...completion, [name]: true })
       : setCompletion({ ...completion, [name]: false });
   };
 
-  useEffect(() => {
-    const getSearchSchool = async (name: string) => {
-      const data = await getSchoolName(name);
-      const filteredSchoolName = data.map(
-        (school: SchoolType) => school.schoolName
-      );
-      setSchoolList(filteredSchoolName);
-    };
-    getSearchSchool(debounceSearch);
-  }, [debounceSearch]);
+  // 학교검색 딜레이 적용(0.3초)
+  // const debounceSearch: string = useDebounce(educationInputs.school, 300);
+
+  const onMajorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEducation(
+      education.map((item) =>
+        item.id === Number(name) ? { ...item, [name]: value } : item
+      )
+    );
+    isValid(value)
+      ? setCompletion({ ...completion, [name]: true })
+      : setCompletion({ ...completion, [name]: false });
+  };
+
+  // useEffect(() => {
+  //   const getSearchSchool = async (name: string) => {
+  //     const data = await getSchoolName(name);
+  //     const filteredSchoolName = data.map(
+  //       (school: SchoolType) => school.schoolName
+  //     );
+  //     setSchoolList(filteredSchoolName);
+  //   };
+  //   getSearchSchool(debounceSearch);
+  // }, [debounceSearch]);
 
   const onCreateEducation = async () => {
-    const educationIndex = educationList.indexOf(educationInputs.education);
-    const educationStatus = educationEngList[educationIndex];
-
     const educationData = {
       school: {
-        name: educationInputs.school,
+        name: "",
         schoolType: "",
         schoolGubun: ""
       },
-      major: educationInputs.major,
-      status: educationStatus
+      major: "",
+      status: "GRADUATED"
     };
-    await postEducation(userId, educationData);
+    const res = await postEducation(userId, educationData);
+    const data = res.data;
+
+    setEducation([data, ...education]);
   };
 
-  const onSaveEducation = async () => {
-    const educationIndex = educationList.indexOf(educationInputs.education);
-    const educationStatus = educationEngList[educationIndex];
+  const onDeleteEducation = async (educationId: number) => {
+    await deleteEducation(userId, educationId);
 
-    if (education.length === 0) {
-      onCreateEducation();
-    } else {
-      const educationData = {
-        school: {
-          name: educationInputs.school,
-          schoolType: "",
-          schoolGubun: ""
-        },
-        major: educationInputs.major,
-        status: educationStatus
-      };
-      await putEducation(userId, educationId, educationData);
-    }
+    const res = await getProfileDraft(userId);
+    const data = await res.data;
+
+    setEducation(data.education);
+  };
+
+  const onSaveEducation = async (educationId: number) => {
+    const educationIndex = education.findIndex(
+      (item) => item.id === educationId
+    );
+    const educationStatus = education[educationIndex].status;
+
+    const status = () => {
+      for (const [key, value] of Object.entries(educationEnum)) {
+        if (value === educationStatus) {
+          return key;
+        }
+      }
+      return "GRADUATED";
+    };
+
+    const educationData = {
+      school: {
+        name: education[educationIndex].school.name,
+        schoolType: education[educationIndex].school.schoolType,
+        schoolGubun: education[educationIndex].school.schoolGubun
+      },
+      major: education[educationIndex].major,
+      status: status()
+    };
+    await putEducation(userId, education[0].id, educationData);
   };
 
   const onEducationClick = (name: string, item: string) => {
-    setEducationInputs({ ...educationInputs, [name]: item });
+    setEducation({ ...education, [name]: item });
     setCompletion({ ...completion, [name]: true });
-    onSaveEducation();
   };
 
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
@@ -315,14 +331,7 @@ const Info = () => {
           schoolMajor: isValid(data.education[0].major),
           schoolStatus: isValid(educationList[findEducation])
         });
-        setEducationInputs({
-          ...educationInputs,
-          education: educationList[findEducation],
-          school: data.education[0].school.name,
-          major: data.education[0].major
-        });
         setEducation(data.education);
-        setEducationId(data.education.id);
       }
 
       setCompletion({
@@ -372,7 +381,7 @@ const Info = () => {
         onBlurInfo={onSaveInfo}
       />
       <InfoSub
-        educationInputs={educationInputs}
+        education={education}
         infoActives={infoActives}
         schoolList={schoolList}
         onInputChange={onMajorChange}
@@ -380,8 +389,14 @@ const Info = () => {
         onInfoDropdownActive={onInfoDropdownActive}
         onItemClick={onEducationClick}
         onBlurEducation={onSaveEducation}
+        onCreateEducation={onCreateEducation}
+        onDeleteEducation={onDeleteEducation}
       />
-      <InfoThird infoInputs={infoInputs} onInputChange={onInputChange} />
+      <InfoThird
+        infoInputs={infoInputs}
+        onInputChange={onInputChange}
+        onSaveInfo={onSaveInfo}
+      />
       {profileSpecialtyModal && (
         <ProfileSpecialtyFormModal
           type="add"

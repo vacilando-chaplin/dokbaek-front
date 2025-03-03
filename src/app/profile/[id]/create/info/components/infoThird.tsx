@@ -5,9 +5,14 @@ import { InfoInputType } from "../types";
 interface InfoThirdProps {
   infoInputs: InfoInputType;
   onInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onSaveInfo: () => void;
 }
 
-const InfoThird = ({ infoInputs, onInputChange }: InfoThirdProps) => {
+const InfoThird = ({
+  infoInputs,
+  onInputChange,
+  onSaveInfo
+}: InfoThirdProps) => {
   const { introduction } = infoInputs;
 
   return (
@@ -20,6 +25,7 @@ const InfoThird = ({ infoInputs, onInputChange }: InfoThirdProps) => {
         limit={500}
         placeholder="자기소개를 입력해주세요."
         onChange={onInputChange}
+        onSave={onSaveInfo}
       />
     </section>
   );
