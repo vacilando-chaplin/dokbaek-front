@@ -137,14 +137,24 @@ const Profile = () => {
     }
   };
 
-  const onPhotoModalOpen = async (photo: string) => {
+  const onPhotoModalOpen = async (
+    photo: string,
+    photoId: string,
+    index: number
+  ) => {
     const blurPhoto = await convertImageToBase64(photo);
 
-    setSelectedPhoto({ origin: photo, blur: blurPhoto });
+    setSelectedPhoto({
+      index: index,
+      photoId: photoId,
+      origin: photo,
+      blur: blurPhoto
+    });
     setProfileModal({ state: "photo", active: true });
   };
 
   const onPhotoModalClose = () => {
+    setSelectedPhoto(selectedPhotoInit);
     setProfileModal({ state: "", active: false });
   };
 
@@ -398,13 +408,12 @@ const Profile = () => {
       )}
       {profileModal.state === "profileEdit" && profileModal.active && (
         <ConfirmModal
-          dense
+          dense={false}
           resizing="fixed"
-          titleText="작성하던 프로필이 있습니다."
-          bodyText="프로필 작성을 계속하시겠어요?(취소 시 임시저장된 데이터는 사라집니다.)"
-          cancelText="취소"
-          confirmText="확인"
-          cancelButtonType="negative"
+          titleText="작성 중인 프로필이 있습니다. 불러올까요?"
+          cancelText="새로 작성"
+          confirmText="불러오기"
+          cancelButtonType="secondaryOutlined"
           confirmButtonType="primary"
           onCancel={onProfileDraftRejected}
           onConfirm={onProfileDraftConfiremd}
@@ -412,7 +421,9 @@ const Profile = () => {
       )}
       {profileModal.state === "photo" && profileModal.active && (
         <ProfilePhotoModal
+          photoLabel={photoLabel}
           selectedPhoto={selectedPhoto}
+          selectedPhotoList={selectedPhotoList}
           onPhotoModalClose={onPhotoModalClose}
         />
       )}

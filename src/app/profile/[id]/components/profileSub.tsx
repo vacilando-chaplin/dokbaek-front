@@ -25,7 +25,7 @@ interface PropfileSubProps {
   setStepperData: React.Dispatch<React.SetStateAction<number>>;
   onMoveToCreate: () => void;
   onSwitchPhotoLabel: (label: string) => void;
-  onPhotoModalOpen: (photo: string) => void;
+  onPhotoModalOpen: (photo: string, photoId: string, index: number) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoLinkModalOpen: (link: string) => void;
 }
@@ -120,31 +120,35 @@ const ProfileSub = ({
                 transform: `translateX(-${photoSlider * 100}%)`
               }}
             >
-              {selectedPhotoList.map((photo: PhotoResponseType) => {
-                return (
-                  <Fragment key={photo.id}>
-                    <figure
-                      className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
-                      onClick={() => onPhotoModalOpen(photo.path)}
-                    >
-                      <Image
-                        src={photo.previewPath}
-                        alt={photo.id}
-                        width={0}
-                        height={0}
-                        sizes="100vw"
-                        className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
-                      />
-                      <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
-                        <PlusCircle width="20" height="20" fill="#ffffff" />
-                        <span className="typography-body2 font-semibold">
-                          크게 보기
-                        </span>
-                      </div>
-                    </figure>
-                  </Fragment>
-                );
-              })}
+              {selectedPhotoList.map(
+                (photo: PhotoResponseType, index: number) => {
+                  return (
+                    <Fragment key={photo.id}>
+                      <figure
+                        className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
+                        onClick={() =>
+                          onPhotoModalOpen(photo.path, photo.id, index)
+                        }
+                      >
+                        <Image
+                          src={photo.previewPath}
+                          alt={photo.id}
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
+                        />
+                        <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
+                          <PlusCircle width="20" height="20" fill="#ffffff" />
+                          <span className="typography-body2 font-semibold">
+                            크게 보기
+                          </span>
+                        </div>
+                      </figure>
+                    </Fragment>
+                  );
+                }
+              )}
             </div>
           </div>
         ) : (
