@@ -60,7 +60,7 @@ export const postUserProfileSpecialty = async (
   mediaUrl: string
 ) => {
   try {
-    const res = await api.post(`/profile/${profileId}/specialty`, {
+    const res = await api.post(`/profile/${profileId}/draft/specialty`, {
       specialtyId,
       mediaUrl
     });

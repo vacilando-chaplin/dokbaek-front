@@ -4,7 +4,8 @@ import {
   convertImageToBase64,
   getFilmoCategories,
   getFilmoRoles,
-  getProfile
+  getProfile,
+  getProfileOtherUser
 } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import {
@@ -34,7 +35,7 @@ import {
   videoLinkInit
 } from "./data";
 import { SpecialtyItemType } from "./create/info/types";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   deleteProfileDraft,
   deleteProfilePhotoMain,
@@ -53,6 +54,9 @@ const Profile = () => {
   const router = useRouter();
 
   const userId = useRecoilValue(defaultId);
+  const pathName = usePathname();
+  const pathUserId = pathName.split("/").filter(Boolean).pop();
+
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const [filmoCategoryList, setFilmoCategoryList] =
     useRecoilState(filmoCategory);
@@ -66,6 +70,7 @@ const Profile = () => {
   const [linear, setLinear] = useState("sub");
 
   const [profileData, setProfileData] = useState<any>(profileResponseInit);
+  const [otherUser, setOtherUser] = useState(false);
   const [profileSpecialties, setProfileSpecialties] = useState<
     SpecialtyItemType[]
   >([]);
@@ -73,7 +78,7 @@ const Profile = () => {
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
   const [selectedPhotoList, setSelectedPhotoList] = useState<
     PhotoResponseType[]
-  >(profileData.photos);
+  >([]);
   const [profileModal, setProfileModal] = useState<ProfileModalType>({
     state: "",
     active: false
@@ -306,12 +311,23 @@ const Profile = () => {
     }
 
     const getProfileData = async () => {
-      const res = await getProfile(userId);
-      const data = res.data;
-      setProfileData(data);
-      setMainPhoto(data.mainPhotoPreviewPath);
-      setMainPhotoOrigin(data.mainPhotoPath);
-      setProfileSpecialties(data.specialties);
+      if (userId !== Number(pathUserId)) {
+        setOtherUser(true);
+        const res = await getProfileOtherUser(userId);
+        const data = res.data;
+        setProfileData(data);
+        setMainPhoto(data.mainPhotoPreviewPath);
+        setMainPhotoOrigin(data.mainPhotoPath);
+        setProfileSpecialties(data.specialties);
+      } else {
+        setOtherUser(false);
+        const res = await getProfile(userId);
+        const data = res.data;
+        setProfileData(data);
+        setMainPhoto(data.mainPhotoPreviewPath);
+        setMainPhotoOrigin(data.mainPhotoPath);
+        setProfileSpecialties(data.specialties);
+      }
     };
 
     const getFilmoCategoryList = async () => {
@@ -344,10 +360,11 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden">
+    <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light">
       <div ref={mainRef} className="flex-[1_1_30%]">
         <ProfileMain
           linear={linear}
+          otherUser={otherUser}
           mainPhoto={mainPhoto}
           info={profileData.info}
           profileSpecialties={profileSpecialties}
@@ -368,6 +385,7 @@ const Profile = () => {
       <div ref={subRef} className="flex-[1_1_70%]">
         <ProfileSub
           linear={linear}
+          otherUser={otherUser}
           photoLabel={photoLabel}
           selectedPhotoList={selectedPhotoList}
           filmographyList={profileData.filmos}

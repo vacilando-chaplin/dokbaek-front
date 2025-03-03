@@ -72,6 +72,17 @@ export const getProfile = async (id: number) => {
   }
 };
 
+export const getProfileOtherUser = async (id: number) => {
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASEURL}/profile/${id}`
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const postPhoto = async (
   id: number,
   origin: string,

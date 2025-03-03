@@ -18,6 +18,7 @@ import ChipItem from "@/components/atoms/chipItem";
 
 interface PropfileSubProps {
   linear: string;
+  otherUser: boolean;
   photoLabel: string;
   selectedPhotoList: PhotoResponseType[];
   filmographyList: FilmoResponseType[];
@@ -32,6 +33,7 @@ interface PropfileSubProps {
 
 const ProfileSub = ({
   linear,
+  otherUser,
   photoLabel,
   selectedPhotoList,
   filmographyList,
@@ -158,6 +160,7 @@ const ProfileSub = ({
             buttonSize="small"
             buttonText="추가"
             buttonType="secondaryOutlined"
+            otherUser={otherUser}
             onClick={() => {
               setStepperData(1);
               onMoveToCreate();
@@ -228,6 +231,7 @@ const ProfileSub = ({
             buttonSize="small"
             buttonText="추가"
             buttonType="secondaryOutlined"
+            otherUser={otherUser}
             onClick={() => {
               setStepperData(2);
               onMoveToCreate();
@@ -251,6 +255,7 @@ const ProfileSub = ({
             buttonSize="small"
             buttonText="추가"
             buttonType="secondaryOutlined"
+            otherUser={otherUser}
             onClick={() => {
               setStepperData(3);
               onMoveToCreate();

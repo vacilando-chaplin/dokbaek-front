@@ -53,8 +53,8 @@ const ProfilePhotoModal = ({
           width={0}
           height={0}
           sizes="100vw"
-          placeholder="blur"
-          blurDataURL={selectedPhotoList[currentIndex].path}
+          // placeholder="blur"
+          // blurDataURL={selectedPhotoList[currentIndex].path}
           className={`rounded-2xl ${photoLabel === "stillcutPhoto" ? "h-[60vh] w-[90%]" : "h-full w-[60vh]"}`}
         />
       </div>

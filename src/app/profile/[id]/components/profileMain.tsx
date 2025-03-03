@@ -11,7 +11,7 @@ import Plus from "../../../../../public/icons/Plus.svg";
 import Download from "../../../../../public/icons/Download.svg";
 import Copy from "../../../../../public/icons/Copy.svg";
 import Edit from "../../../../../public/icons/Edit.svg";
-import { EducationType, InfoResponseType } from "@/lib/types";
+import { InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
 import DotsVertical from "../../../../../public/icons/DotsVertical.svg";
@@ -19,10 +19,11 @@ import { SpecialtyItemType } from "../create/info/types";
 
 interface ProfileMainProps {
   linear: string;
+  otherUser: boolean;
   mainPhoto: string;
   info: InfoResponseType;
   profileSpecialties: SpecialtyItemType[];
-  education: EducationType;
+  education: any;
   mainPhotoMenuActive: boolean;
   setStepperData: React.Dispatch<React.SetStateAction<number>>;
   onProfileEdit: () => void;
@@ -36,6 +37,7 @@ interface ProfileMainProps {
 
 const ProfileMain = ({
   linear,
+  otherUser,
   mainPhoto,
   info,
   profileSpecialties,
@@ -94,15 +96,17 @@ const ProfileMain = ({
               priority
               className="h-full w-full rounded-2xl"
             />
-            <div className="absolute right-1 top-1">
-              <button
-                className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none"
-                type="button"
-                onClick={onMainPhotoMenuActive}
-              >
-                <DotsVertical width="20" height="20" fill="#212529" />
-              </button>
-            </div>
+            {otherUser === false && (
+              <div className="absolute right-1 top-1">
+                <button
+                  className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none"
+                  type="button"
+                  onClick={onMainPhotoMenuActive}
+                >
+                  <DotsVertical width="20" height="20" fill="#212529" />
+                </button>
+              </div>
+            )}
             {mainPhotoMenuActive && (
               <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low">
                 <label className="typography-body3 flex h-[38px] w-full cursor-pointer gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light">
@@ -150,41 +154,53 @@ const ProfileMain = ({
             width={40}
             height={40}
           />
-          <div>
-            <Tooltip placement="top" text="대표 사진을 추가하세요." />
-          </div>
-          <UploadButton
-            type="secondaryOutlined"
-            size="medium"
-            onClick={onMainPhotoModalOpen}
-            onChange={onMainPhotoSelectFile}
-          >
-            <Plus width="14" height="14" fill="#212529" />
-            대표 사진 추가
-          </UploadButton>
+          {otherUser === false && (
+            <>
+              <div>
+                <Tooltip placement="top" text="대표 사진을 추가하세요." />
+              </div>
+              <UploadButton
+                type="secondaryOutlined"
+                size="medium"
+                onClick={onMainPhotoModalOpen}
+                onChange={onMainPhotoSelectFile}
+              >
+                <Plus width="14" height="14" fill="#212529" />
+                대표 사진 추가
+              </UploadButton>
+            </>
+          )}
         </div>
       )}
-      <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-        <BoxButton type="secondaryOutlined" size="medium">
-          <Download width="14" height="14" fill="#212529" />
-          PDF 다운로드
-        </BoxButton>
+
+      {otherUser ? (
         <BoxButton type="secondaryOutlined" size="medium" onClick={onCopyUrl}>
           <Copy width="14" height="14" fill="#212529" />
           링크 복사
         </BoxButton>
-        <BoxButton
-          type="secondaryOutlined"
-          size="medium"
-          onClick={() => {
-            setStepperData(0);
-            onProfileEdit();
-          }}
-        >
-          <Edit width="14" height="14" fill="#212529" />
-          프로필 편집
-        </BoxButton>
-      </div>
+      ) : (
+        <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
+          <BoxButton type="secondaryOutlined" size="medium">
+            <Download width="14" height="14" fill="#212529" />
+            PDF 다운로드
+          </BoxButton>
+          <BoxButton type="secondaryOutlined" size="medium" onClick={onCopyUrl}>
+            <Copy width="14" height="14" fill="#212529" />
+            링크 복사
+          </BoxButton>
+          <BoxButton
+            type="secondaryOutlined"
+            size="medium"
+            onClick={() => {
+              setStepperData(0);
+              onProfileEdit();
+            }}
+          >
+            <Edit width="14" height="14" fill="#212529" />
+            프로필 편집
+          </BoxButton>
+        </div>
+      )}
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
         <label className="typography-body1 font-semibold">{name}</label>
         <label className="typography-body2 font-medium">배우</label>
@@ -245,6 +261,7 @@ const ProfileMain = ({
           buttonSize=""
           buttonText=""
           buttonType=""
+          otherUser={otherUser}
         />
       )}
       {profileSpecialties.length >= 1 && (
