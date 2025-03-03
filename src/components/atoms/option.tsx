@@ -8,7 +8,6 @@ interface OptionProps {
   selected: string;
   onClick: (name: string, item: string) => void;
   onActive: (name: string, state: boolean) => void;
-  onSave?: () => void;
 }
 
 const Option = ({
@@ -18,19 +17,12 @@ const Option = ({
   active,
   selected,
   onClick,
-  onActive,
-  onSave
+  onActive
 }: OptionProps) => {
   const sizeStyle: sizeStyleType = {
     large: "py-3 px-4 h-[46px]",
     medium: "py-2 px-3 h-[38px]",
     small: "py-2 px-3 h-[38px]"
-  };
-
-  const onOptionSave = () => {
-    if (onSave) {
-      onSave();
-    }
   };
 
   return (
@@ -39,7 +31,6 @@ const Option = ({
       onClick={() => {
         onClick(name, item);
         onActive(name, active);
-        onOptionSave();
       }}
     >
       <button

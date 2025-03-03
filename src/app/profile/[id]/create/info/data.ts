@@ -1,6 +1,6 @@
 export const infoInputInit = {
   name: "",
-  birth: "",
+  bornYear: "",
   height: "",
   weight: "",
   contact: "",
@@ -8,16 +8,20 @@ export const infoInputInit = {
   specialty: "",
   instagram: "",
   youtube: "",
-  introduction: "",
-  school: "",
-  major: "",
-  education: "졸업"
+  introduction: ""
 };
 
 export const infoActiveInit = {
-  birth: false,
+  bornYear: false,
   school: false,
   education: false
+};
+
+export const educationInputInit = {
+  name: 0,
+  school: "",
+  major: "",
+  education: "졸업"
 };
 
 export const educationInit = {

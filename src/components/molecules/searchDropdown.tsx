@@ -56,6 +56,7 @@ const SearchDropdown = ({
           autoComplete="off"
           value={value}
           onChange={onChange}
+          onBlur={onSave}
         />
         <button
           type="button"
@@ -86,7 +87,6 @@ const SearchDropdown = ({
                   selected={selected}
                   onClick={onClick}
                   onActive={onActive}
-                  onSave={onSave}
                 />
               );
             })}

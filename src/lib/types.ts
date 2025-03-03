@@ -164,6 +164,16 @@ export interface InfoResponseType {
     }
   ];
 }
+
+export interface EducationEnumType {
+  GRADUATED: string;
+  PENDING: string;
+  ENROLLED: string;
+  LEAVE_OF_ABSENCE: string;
+  COMPLETION: string;
+  DROPPED_OUT: string;
+}
+
 export interface EducationInitType {
   school: {
     name: string;
@@ -181,6 +191,13 @@ export interface EducationWithIdType {
     schoolType: string;
     schoolGubun: string;
   };
+  major: string;
+  status: string;
+}
+
+export interface EducationInputsType {
+  name: number;
+  school: string;
   major: string;
   status: string;
 }

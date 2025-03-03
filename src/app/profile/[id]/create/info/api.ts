@@ -1,5 +1,6 @@
 import { api } from "@/lib/axiosInstance";
 import { EducationInitType } from "@/lib/types";
+import { InfoDataType } from "./types";
 
 // 커리어넷 학교 검색 api
 export const getSchoolName = async (search: string) => {
@@ -21,7 +22,7 @@ export const getSchoolName = async (search: string) => {
   return await data;
 };
 
-export const putInfoDraft = async (id: number, data: any) => {
+export const putInfoDraft = async (id: number, data: InfoDataType) => {
   try {
     const res = await api.put(`/profile/${id}/draft/info`, data);
     return res.data;
