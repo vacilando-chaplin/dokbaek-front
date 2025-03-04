@@ -4,7 +4,7 @@ import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.sv
 
 const LandingSub = () => {
   return (
-    <div className="mx-[auto] mt-[40px] flex w-[100%] max-w-[1000px] flex-col rounded-2xl">
+    <div className="mx-[auto] mt-[40px] flex w-[100%] flex-col rounded-2xl">
       <div
         className="relative h-[240px] px-[100px]"
         style={{

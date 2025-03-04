@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import TextButton from "../../../components/atoms/textButton";
+import ProfileCard from "../../../components/molecules/profileCard";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 import { getProfileShowcase } from "@/app/landing/api";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
-import ProfileCard from "@/components/molecules/profileCard";
+import { useRouter } from "next/navigation";
+import TextButton from "@/components/atoms/textButton";
 
 const LandingMain = () => {
+  const router = useRouter();
   const [profiles, setProfiles] = React.useState<ProfileShowcaseResponseType[]>(
     []
   );
@@ -21,20 +23,36 @@ const LandingMain = () => {
     fetchProfileShowcase();
   }, []);
   return (
-    <section
-      className={`mx-[auto] flex w-[100%] max-w-[1000px] flex-col gap-2`}
-    >
+    <section className={`mx-[auto] flex w-[100%] flex-col gap-2`}>
       <div className="my-16">
         <div className="mb-6 flex items-center justify-between">
           <p className="text-heading2 font-semibold text-content-primary-light">
             새로 올라온 프로필
           </p>
-          <TextButton type="secondary" size="large">
+          <TextButton
+            type="secondary"
+            size="large"
+            onClick={() => {
+              router.push(`/profiles`);
+            }}
+          >
             더 많은 프로필 보기
             <ArrowDirectionRight width="16" height="16" fill="#868E96" />
           </TextButton>
         </div>
-        <div className="flex flex-wrap justify-start gap-2">
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "1272px",
+            margin: "46px auto 0",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(234px, 1fr))",
+            gap: "13px"
+          }}
+        >
+          {profiles.map((profile, index) => (
+            <ProfileCard profile={profile} key={index} />
+          ))}{" "}
           {profiles.map((profile, index) => (
             <ProfileCard profile={profile} key={index} />
           ))}
