@@ -360,8 +360,6 @@ const Profile = () => {
     getProfileData();
   }, []);
 
-  console.log(profileData);
-
   return (
     <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light">
       <div ref={mainRef} className="flex-[1_1_30%]">

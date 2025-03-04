@@ -167,10 +167,7 @@ const ProfileMain = ({
               height={40}
             />
             {otherUser === false && (
-              <>
-                <div>
-                  <Tooltip placement="top" text="대표 사진을 추가하세요." />
-                </div>
+              <div className="relative flex justify-center">
                 <UploadButton
                   type="secondaryOutlined"
                   size="medium"
@@ -180,7 +177,10 @@ const ProfileMain = ({
                   <Plus width="14" height="14" fill="#212529" />
                   대표 사진 추가
                 </UploadButton>
-              </>
+                <div className="absolute -top-10">
+                  <Tooltip placement="top" text="대표 사진을 추가하세요." />
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -191,7 +191,7 @@ const ProfileMain = ({
           링크 복사
         </BoxButton>
       ) : (
-        <div className="grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
+        <div className="relative grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
           <BoxButton type="secondaryOutlined" size="medium">
             <Download width="14" height="14" fill="#212529" />
             PDF 다운로드
@@ -200,17 +200,25 @@ const ProfileMain = ({
             <Copy width="14" height="14" fill="#212529" />
             링크 복사
           </BoxButton>
-          <BoxButton
-            type="secondaryOutlined"
-            size="medium"
-            onClick={() => {
-              setStepperData(0);
-              onProfileEdit();
-            }}
-          >
-            <Edit width="14" height="14" fill="#212529" />
-            프로필 편집
-          </BoxButton>
+          <div className="relative flex justify-center">
+            <button
+              type="button"
+              className="interaction-default typography-body3 flex h-auto w-full items-center justify-center gap-1.5 rounded-xl border border-border-default-light bg-background-surface-light px-5 py-[11px] font-medium text-content-primary-light outline-none hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined"
+              onClick={() => {
+                setStepperData(0);
+                onProfileEdit();
+              }}
+            >
+              <Edit width="14" height="14" fill="#212529" />
+              프로필 편집
+            </button>
+            {bornYear === 0 ||
+              (contact.length === 0 && (
+                <div className="absolute -top-10">
+                  <Tooltip placement="top" text="프로필을 완성하세요." />
+                </div>
+              ))}
+          </div>
         </div>
       )}
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
