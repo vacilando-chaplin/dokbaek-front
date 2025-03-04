@@ -12,6 +12,27 @@ export interface sizeStyleType {
   [key: string]: string;
 }
 
+export interface CompletionProgressType {
+  name: boolean;
+  birth: boolean;
+  height: boolean;
+  weight: boolean;
+  contact: boolean;
+  email: boolean;
+  specialty: boolean;
+  youtube: boolean;
+  instagram: boolean;
+  schoolName: boolean;
+  schoolMajor: boolean;
+  schoolStatus: boolean;
+  introduction: boolean;
+  profilePhoto: boolean;
+  stillcutPhoto: boolean;
+  recentPhoto: boolean;
+  filmography: boolean;
+  video: boolean;
+}
+
 export interface ProfileResponseType {
   id: number;
   userId: number;

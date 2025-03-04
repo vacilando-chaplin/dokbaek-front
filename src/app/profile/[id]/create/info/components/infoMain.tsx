@@ -7,6 +7,7 @@ import { InfoActiveType, InfoInputType, SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
 import Plus from "../../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
+
 interface InfoMainProps {
   infoInputs: InfoInputType;
   infoActives: InfoActiveType;
@@ -34,17 +35,8 @@ const InfoMain = ({
   onSpecialtyFormModalOpen,
   onDeleteSpecialty
 }: InfoMainProps) => {
-  const {
-    name,
-    birth,
-    height,
-    weight,
-    contact,
-    email,
-    specialty,
-    instagram,
-    youtube
-  } = infoInputs;
+  const { name, birth, height, weight, contact, email, instagram, youtube } =
+    infoInputs;
 
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
@@ -145,12 +137,17 @@ const InfoMain = ({
                 추가/수정
               </BoxButton>
             </div>
-            <div className="flex h-auto gap-1 mt-2">
+            <div className="mt-2 flex h-auto gap-1">
               {specialties.map((item: SpecialtyType) => {
                 const { id, specialtyName } = item;
                 return (
-                  <Chips key={id} text={specialtyName} icon onClick={onDeleteSpecialty(id)}/>
-                )
+                  <Chips
+                    key={id}
+                    text={specialtyName}
+                    icon
+                    onClick={onDeleteSpecialty(id)}
+                  />
+                );
               })}
             </div>
           </div>

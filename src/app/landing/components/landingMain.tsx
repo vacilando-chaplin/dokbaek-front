@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import TextButton from "../../atoms/textButton";
-import ProfileCard from "../../molecules/landing/profileCard";
+import TextButton from "../../../components/atoms/textButton";
+import ProfileCard from "./profileCard";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 import { getProfileShowcase } from "@/app/landing/api";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
