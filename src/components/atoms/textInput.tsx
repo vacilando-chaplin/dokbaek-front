@@ -6,7 +6,7 @@ interface TextInputProps {
   type: string;
   size: string;
   name: string;
-  value: string;
+  value: any;
   icon?: string;
   limit?: boolean;
   disabled?: boolean;
