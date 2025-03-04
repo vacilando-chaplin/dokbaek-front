@@ -18,6 +18,8 @@
     "react-advanced-cropper": "^0.20.0",
     "react-dom": "^18",
     "react-dropzone": "^14.3.5",
+    "react-paginate": "^8.3.0",
+    "react-range-slider-input": "^3.2.1",
     "react-youtube": "^10.1.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0"

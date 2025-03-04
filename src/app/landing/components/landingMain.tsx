@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import TextButton from "../../../components/atoms/textButton";
-import ProfileCard from "./profileCard";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 import { getProfileShowcase } from "@/app/landing/api";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
+import ProfileCard from "@/components/molecules/profileCard";
 
 const LandingMain = () => {
   const [profiles, setProfiles] = React.useState<ProfileShowcaseResponseType[]>(
