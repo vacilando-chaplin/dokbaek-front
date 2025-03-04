@@ -94,93 +94,97 @@ const ProfileMain = ({
       className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
     >
       {mainPhoto ? (
-        <div className="flex h-[70vh] w-full">
-          <div className="relative h-full w-full">
+        <div
+          className="relative w-full"
+          style={{ paddingBottom: `${(532 / 416) * 100}%` }}
+        >
+          <Image
+            src={mainPhoto}
+            alt="대표 사진"
+            layout="fill"
+            priority
+            className="h-full w-full rounded-2xl"
+          />
+          {otherUser === false && (
+            <div className="absolute right-1 top-1">
+              <button
+                className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none"
+                type="button"
+                onClick={onMainPhotoMenuActive}
+              >
+                <DotsVertical width="20" height="20" fill="#212529" />
+              </button>
+            </div>
+          )}
+          {mainPhotoMenuActive && (
+            <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low">
+              <label className="typography-body3 flex h-[38px] w-full cursor-pointer gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    onMainPhotoChangeModalOpen();
+                    onMainPhotoMenuActive();
+                    onMainPhotoSelectFile(e);
+                  }}
+                />
+                변경
+              </label>
+              <button
+                type="button"
+                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
+                onClick={() => {
+                  onMainPhotoMenuActive();
+                  onMainPhotoEditModalOpen();
+                }}
+              >
+                편집
+              </button>
+              <button
+                type="button"
+                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
+                onClick={() => {
+                  onMainPhotoMenuActive();
+                  onMainPhotoDeleteModalOpen();
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div
+          className="relative w-full"
+          style={{ paddingBottom: `${(532 / 416) * 100}%` }}
+        >
+          <div className="absolute flex h-full w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
             <Image
-              src={mainPhoto}
-              alt="대표 사진"
-              sizes="100vw"
-              fill
-              priority
-              className="h-full w-full rounded-2xl"
+              src="/icons/Account.svg"
+              alt="account"
+              width={40}
+              height={40}
             />
             {otherUser === false && (
-              <div className="absolute right-1 top-1">
-                <button
-                  className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none"
-                  type="button"
-                  onClick={onMainPhotoMenuActive}
+              <>
+                <div>
+                  <Tooltip placement="top" text="대표 사진을 추가하세요." />
+                </div>
+                <UploadButton
+                  type="secondaryOutlined"
+                  size="medium"
+                  onClick={onMainPhotoModalOpen}
+                  onChange={onMainPhotoSelectFile}
                 >
-                  <DotsVertical width="20" height="20" fill="#212529" />
-                </button>
-              </div>
-            )}
-            {mainPhotoMenuActive && (
-              <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low">
-                <label className="typography-body3 flex h-[38px] w-full cursor-pointer gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      onMainPhotoChangeModalOpen();
-                      onMainPhotoMenuActive();
-                      onMainPhotoSelectFile(e);
-                    }}
-                  />
-                  변경
-                </label>
-                <button
-                  type="button"
-                  className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
-                  onClick={() => {
-                    onMainPhotoMenuActive();
-                    onMainPhotoEditModalOpen();
-                  }}
-                >
-                  편집
-                </button>
-                <button
-                  type="button"
-                  className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
-                  onClick={() => {
-                    onMainPhotoMenuActive();
-                    onMainPhotoDeleteModalOpen();
-                  }}
-                >
-                  삭제
-                </button>
-              </div>
+                  <Plus width="14" height="14" fill="#212529" />
+                  대표 사진 추가
+                </UploadButton>
+              </>
             )}
           </div>
         </div>
-      ) : (
-        <div className="flex h-[60vh] w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
-          <Image
-            src="/icons/Account.svg"
-            alt="account"
-            width={40}
-            height={40}
-          />
-          {otherUser === false && (
-            <>
-              <div>
-                <Tooltip placement="top" text="대표 사진을 추가하세요." />
-              </div>
-              <UploadButton
-                type="secondaryOutlined"
-                size="medium"
-                onClick={onMainPhotoModalOpen}
-                onChange={onMainPhotoSelectFile}
-              >
-                <Plus width="14" height="14" fill="#212529" />
-                대표 사진 추가
-              </UploadButton>
-            </>
-          )}
-        </div>
       )}
-
       {otherUser ? (
         <BoxButton type="secondaryOutlined" size="medium" onClick={onCopyUrl}>
           <Copy width="14" height="14" fill="#212529" />
@@ -251,38 +255,41 @@ const ProfileMain = ({
           otherUser={otherUser}
         />
       )}
-      <ProfileInfoContainer title="SNS">
-        <div className="flex flex-row gap-2">
-          {isValidInstagramUrl(instagramLink) && (
-            <Link
-              href={instagramLink}
-              className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
-              target="_blank"
-            >
-              <Image
-                src="/icons/instagramIcon.svg"
-                alt="instagram"
-                width={14}
-                height={14}
-              />
-            </Link>
-          )}
-          {isValidYoutubeChannelUrl(youtubeLink) && (
-            <Link
-              href={youtubeLink}
-              className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
-              target="_blank"
-            >
-              <Image
-                src="/icons/youtubeIcon.svg"
-                alt="youtube"
-                width={16}
-                height={16}
-              />
-            </Link>
-          )}
-        </div>
-      </ProfileInfoContainer>
+      {(isValidInstagramUrl(instagramLink) ||
+        isValidYoutubeChannelUrl(youtubeLink)) && (
+        <ProfileInfoContainer title="SNS">
+          <div className="flex flex-row gap-2">
+            {isValidInstagramUrl(instagramLink) && (
+              <Link
+                href={instagramLink}
+                className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
+                target="_blank"
+              >
+                <Image
+                  src="/icons/instagramIcon.svg"
+                  alt="instagram"
+                  width={14}
+                  height={14}
+                />
+              </Link>
+            )}
+            {isValidYoutubeChannelUrl(youtubeLink) && (
+              <Link
+                href={youtubeLink}
+                className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
+                target="_blank"
+              >
+                <Image
+                  src="/icons/youtubeIcon.svg"
+                  alt="youtube"
+                  width={16}
+                  height={16}
+                />
+              </Link>
+            )}
+          </div>
+        </ProfileInfoContainer>
+      )}
       {profileSpecialties.length >= 1 && (
         <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
           <div className="mb-2 text-body2 font-semibold">특기</div>
