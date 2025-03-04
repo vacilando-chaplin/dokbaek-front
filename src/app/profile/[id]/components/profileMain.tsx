@@ -16,12 +16,15 @@ import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
 import DotsVertical from "../../../../../public/icons/DotsVertical.svg";
 import { SpecialtyItemType } from "../create/info/types";
+import ProfileInfoContainer from "./profileInfoContainer";
+import { isValidInstagramUrl, isValidYoutubeChannelUrl } from "@/lib/utils";
 
 interface ProfileMainProps {
+  info: InfoResponseType;
   linear: string;
+  updated: string;
   otherUser: boolean;
   mainPhoto: string;
-  info: InfoResponseType;
   profileSpecialties: SpecialtyItemType[];
   education: any;
   mainPhotoMenuActive: boolean;
@@ -36,10 +39,11 @@ interface ProfileMainProps {
 }
 
 const ProfileMain = ({
+  info,
   linear,
+  updated,
   otherUser,
   mainPhoto,
-  info,
   profileSpecialties,
   education,
   mainPhotoMenuActive,
@@ -79,6 +83,11 @@ const ProfileMain = ({
       throw error;
     }
   };
+
+  const date = new Date(updated);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
 
   return (
     <section
@@ -201,11 +210,19 @@ const ProfileMain = ({
         </div>
       )}
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
-        <label className="typography-body1 font-semibold">{name}</label>
-        <label className="typography-body2 font-medium">배우</label>
+        <div className="flex flex-row items-center gap-3">
+          <span className="typography-body1 font-semibold">{name}</span>
+          <div className="typography-caption1 flex flex-row gap-1 font-medium text-content-tertiary-light">
+            <span>최근 업데이트</span>
+            <span>
+              {year}.{month}.{day}
+            </span>
+          </div>
+        </div>
+        <span className="typography-body2 font-medium">배우</span>
       </div>
       {bornYear >= 1 || contact ? (
-        <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
+        <ProfileInfoContainer title="기본 정보">
           <span>
             {bornYear}년생{" "}
             <label className="opacity-50">
@@ -214,44 +231,15 @@ const ProfileMain = ({
             {height && height + "cm "}
             {weight && weight + "kg"}
           </span>
-          {contact && <span>{contact}</span>}
-          {education.school?.name && (
+          {education.length >= 1 && (
             <span>
-              {education.school?.name}{" "}
+              {education.school.name}{" "}
               {education.major && education.major + " 전공"}{" "}
               {educationList[statusIndex]}
             </span>
           )}
           {email && <span>{email}</span>}
-          {instagramLink.length >= 27 && (
-            <Link
-              href={instagramLink}
-              className="flex w-fit items-center gap-1"
-              target="_blank"
-            >
-              <Image
-                src="/icons/instagram.svg"
-                alt="instagram"
-                width={24}
-                height={24}
-              />
-            </Link>
-          )}
-          {youtubeLink.length >= 26 && (
-            <Link
-              href={youtubeLink}
-              className="flex w-fit items-center gap-1"
-              target="_blank"
-            >
-              <Image
-                src="/icons/youtube.svg"
-                alt="youtube"
-                width={24}
-                height={24}
-              />
-            </Link>
-          )}
-        </div>
+        </ProfileInfoContainer>
       ) : (
         <EmptyState
           text="정보가 없어요."
@@ -263,6 +251,38 @@ const ProfileMain = ({
           otherUser={otherUser}
         />
       )}
+      <ProfileInfoContainer title="SNS">
+        <div className="flex flex-row gap-2">
+          {isValidInstagramUrl(instagramLink) && (
+            <Link
+              href={instagramLink}
+              className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
+              target="_blank"
+            >
+              <Image
+                src="/icons/instagramIcon.svg"
+                alt="instagram"
+                width={14}
+                height={14}
+              />
+            </Link>
+          )}
+          {isValidYoutubeChannelUrl(youtubeLink) && (
+            <Link
+              href={youtubeLink}
+              className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
+              target="_blank"
+            >
+              <Image
+                src="/icons/youtubeIcon.svg"
+                alt="youtube"
+                width={16}
+                height={16}
+              />
+            </Link>
+          )}
+        </div>
+      </ProfileInfoContainer>
       {profileSpecialties.length >= 1 && (
         <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
           <div className="mb-2 text-body2 font-semibold">특기</div>
@@ -279,9 +299,9 @@ const ProfileMain = ({
         </div>
       )}
       {introduction && (
-        <p className="typography-body2 flex h-full w-full gap-2 whitespace-pre break-all rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
-          {introduction}
-        </p>
+        <ProfileInfoContainer title="자기소개" introduction>
+          <p className="whitespace-pre break-all">{introduction}</p>
+        </ProfileInfoContainer>
       )}
     </section>
   );
