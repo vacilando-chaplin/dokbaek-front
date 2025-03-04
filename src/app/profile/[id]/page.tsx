@@ -88,6 +88,7 @@ const Profile = () => {
   // 대표 사진 데이터
   const [mainPhoto, setMainPhoto] = useState("");
   const [mainPhotoOrigin, setMainPhotoOrigin] = useState("");
+  const [mainPhotoTemp, setMainPhotoTemp] = useState("");
   const [mainPhotoModal, setMainPhotoModal] = useState<ProfilePhotoModalType>(
     profilePhotoModalInit
   );
@@ -195,7 +196,7 @@ const Profile = () => {
 
       setSelectImage(downSizedImage);
       setCropImage(downSizedImage);
-      setMainPhotoOrigin(originImage);
+      setMainPhotoTemp(originImage);
     }
     e.target.value = "";
   };
@@ -253,7 +254,7 @@ const Profile = () => {
   };
 
   const onAddMainPhoto = async () => {
-    const res = await postProfilePhotoMain(userId, mainPhotoOrigin, cropImage);
+    const res = await postProfilePhotoMain(userId, mainPhotoTemp, cropImage);
     const data = res.data;
 
     setSelectImage("");
@@ -268,7 +269,7 @@ const Profile = () => {
   const onChangeMainPhoto = async () => {
     await deleteProfilePhotoMain(userId);
 
-    const res = await postProfilePhotoMain(userId, mainPhotoOrigin, cropImage);
+    const res = await postProfilePhotoMain(userId, mainPhotoTemp, cropImage);
     const data = res.data;
 
     setSelectImage("");

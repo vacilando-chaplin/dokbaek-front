@@ -8,7 +8,7 @@ import "react-advanced-cropper/dist/style.css";
 interface ImageCropperProps {
   selectImage: string;
   setCropImage: any;
-  cropData: CropDataType;
+  cropData: any;
   setCropData: React.Dispatch<React.SetStateAction<Coordinates | null>>;
   cropType: string;
 }
@@ -64,7 +64,7 @@ const ImageCropper = ({
         setTimeout(() => {
           setIsLoading(true);
           onCropEnd();
-        }, 1000);
+        }, 500);
       };
     }
     return () => {};
@@ -82,6 +82,9 @@ const ImageCropper = ({
           defaultPosition={
             cropData.top !== 0 && cropData.left !== 0 ? cropData : undefined
           }
+          stencilProps={{
+            aspectRatio: 9 / 16
+          }}
           onInteractionEnd={onCropEnd}
           className="h-full w-full"
         />

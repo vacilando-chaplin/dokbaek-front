@@ -277,7 +277,6 @@ export interface FilmoResponseType {
 
 export interface VideoResponseType {
   id: number;
-  userProfileId: number;
   url: string;
   displayOrder: number;
 }

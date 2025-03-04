@@ -85,14 +85,13 @@ const ProfileMain = ({
       className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
     >
       {mainPhoto ? (
-        <div className="flex h-[60vh] w-full">
+        <div className="flex h-[70vh] w-full">
           <div className="relative h-full w-full">
             <Image
               src={mainPhoto}
               alt="대표 사진"
-              width="0"
-              height="0"
               sizes="100vw"
+              fill
               priority
               className="h-full w-full rounded-2xl"
             />
