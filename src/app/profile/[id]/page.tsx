@@ -148,13 +148,10 @@ const Profile = () => {
     photoId: string,
     index: number
   ) => {
-    const blurPhoto = await convertImageToBase64(photo);
-
     setSelectedPhoto({
       index: index,
       photoId: photoId,
-      origin: photo,
-      blur: blurPhoto
+      origin: photo
     });
     setProfileModal({ state: "photo", active: true });
   };
@@ -319,6 +316,7 @@ const Profile = () => {
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
         setMainPhotoOrigin(data.mainPhotoPath);
+        setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
       } else {
         setOtherUser(false);
@@ -327,6 +325,7 @@ const Profile = () => {
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
         setMainPhotoOrigin(data.mainPhotoPath);
+        setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
       }
     };
@@ -449,7 +448,7 @@ const Profile = () => {
       )}
       {profileModal.state === "filmo" && profileModal.active && (
         <ProfileFilmoModal
-          filmoList={profileData?.filmos}
+          filmoList={profileData.filmos}
           categoryList={categoryList}
           onFilmoModalActive={onFilmoModalActive}
           onFilmoLinkModalOpen={onFilmoLinkModalOpen}

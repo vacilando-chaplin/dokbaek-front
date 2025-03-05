@@ -2,7 +2,6 @@ export interface SelectedPhotoType {
   index: number;
   photoId: string;
   origin: string;
-  blur: string;
 }
 
 export interface PhotoModalType {

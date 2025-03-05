@@ -23,7 +23,7 @@ const ProfilePhotoModal = ({
 }: ProfilePhotoModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(selectedPhoto.index);
 
-  const onPrevButton = () => {
+  const onPrevButton = async () => {
     setCurrentIndex(
       (prevIndex) =>
         (prevIndex - 1 + selectedPhotoList.length) % selectedPhotoList.length
@@ -35,17 +35,23 @@ const ProfilePhotoModal = ({
   };
 
   return (
-    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-50 md:inset-0">
+    <section
+      className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-hidden bg-background-scrim-light bg-opacity-50 backdrop-blur-[20px] md:inset-0"
+      onClick={onPhotoModalClose}
+    >
       <button
         className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 ${currentIndex === 0 && "opacity-40"}`}
         type="button"
         disabled={currentIndex === 0}
-        onClick={onPrevButton}
+        onClick={(e) => {
+          onPrevButton();
+          e.stopPropagation();
+        }}
       >
         <ArrowChevronLeft width="16" height="16" fill="#FFFFFF" />
       </button>
       <div
-        className={`flex h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center gap-6`}
+        className={`flex h-full max-h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center gap-6`}
       >
         <Image
           src={selectedPhotoList[currentIndex].path}
@@ -53,16 +59,20 @@ const ProfilePhotoModal = ({
           width={0}
           height={0}
           sizes="100vw"
-          // placeholder="blur"
-          // blurDataURL={selectedPhotoList[currentIndex].path}
-          className={`rounded-2xl ${photoLabel === "stillcutPhoto" ? "h-[60vh] w-[90%]" : "h-full w-[60vh]"}`}
+          placeholder="empty"
+          priority
+          className={`max-h-[80vh] rounded-2xl object-fill ${photoLabel === "stillcutPhoto" ? "w-[100vh]" : "w-[60vh] max-w-[80vh]"}`}
+          onClick={(e) => e.stopPropagation()}
         />
       </div>
       <button
         className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 ${currentIndex === selectedPhotoList.length - 1 && "opacity-40"}`}
         type="button"
         disabled={currentIndex === selectedPhotoList.length - 1}
-        onClick={onNextButton}
+        onClick={(e) => {
+          onNextButton();
+          e.stopPropagation();
+        }}
       >
         <ArrowChevronRight width="16" height="16" fill="#FFFFFF" />
       </button>

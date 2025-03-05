@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   FilmoResponseType,
   PhotoResponseType,
@@ -57,9 +57,13 @@ const ProfileSub = ({
 
   const onSliderNext = (slides: number) => {
     setPhotoSlider((prev) =>
-      prev <= Math.floor(slides / 5) - 1 ? prev + 1 : prev
+      prev <= Math.floor(slides / 4) - 1 ? prev + 1 : prev
     );
   };
+
+  useEffect(() => {
+    setPhotoSlider(0);
+  }, [photoLabel]);
 
   return (
     <section
@@ -127,7 +131,7 @@ const ProfileSub = ({
                   return (
                     <Fragment key={photo.id}>
                       <figure
-                        className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
+                        className="relative flex w-[24.4%] min-w-[24.4%] cursor-pointer items-center justify-center rounded-[18px]"
                         onClick={() =>
                           onPhotoModalOpen(photo.path, photo.id, index)
                         }
@@ -138,7 +142,7 @@ const ProfileSub = ({
                           width={0}
                           height={0}
                           sizes="100vw"
-                          className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
+                          className="aspect-[258/330] h-auto max-h-[50vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
                         />
                         <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                           <PlusCircle width="20" height="20" fill="#ffffff" />
@@ -172,17 +176,15 @@ const ProfileSub = ({
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title name="작품 활동" />
-          {filmographyList.length > 6 && (
-            <button
-              type="button"
-              className="flex gap-1 rounded"
-              onClick={onFilmoModalActive}
-            >
-              <span className="typography-body2 font-medium text-content-tertiary-light">
-                모두 보기
-              </span>
-            </button>
-          )}
+          <button
+            type="button"
+            className="flex gap-1 rounded"
+            onClick={onFilmoModalActive}
+          >
+            <span className="typography-body2 font-medium text-content-tertiary-light">
+              모두 보기
+            </span>
+          </button>
         </div>
         {filmographyList.length >= 1 && repFilmoList.length < 6 && (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">

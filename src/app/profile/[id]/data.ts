@@ -6,8 +6,7 @@ export const videoLinkInit = {
 export const selectedPhotoInit = {
   index: 0,
   photoId: "",
-  origin: "",
-  blur: ""
+  origin: ""
 };
 
 export const profilePhotoModalInit = {

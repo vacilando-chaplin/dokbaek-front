@@ -101,6 +101,7 @@ const ProfileMain = ({
           <Image
             src={mainPhoto}
             alt="대표 사진"
+            sizes="30vw"
             layout="fill"
             priority
             className="h-full w-full rounded-2xl"
