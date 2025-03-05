@@ -55,14 +55,14 @@ const TopNavigation = () => {
   };
 
   const userMenu = [
-    {
-      name: "계정 연동",
-      onClick: () => {}
-    },
-    {
-      name: "알림 설정",
-      onClick: () => {}
-    },
+    // {
+    //   name: "계정 연동",
+    //   onClick: () => {}
+    // },
+    // {
+    //   name: "알림 설정",
+    //   onClick: () => {}
+    // },
     {
       name: "로그아웃",
       onClick: onLogOut
@@ -98,9 +98,9 @@ const TopNavigation = () => {
             <Link href={`/`} className="flex items-center">
               <Heart width="20" height="20" fill="#5E656C" />
             </Link>
-            <button type="button">
+            {/* <button type="button">
               <Bell width="20" height="20" fill="#5E656C" />
-            </button>
+            </button> */}
             <button
               type="button"
               className="relative flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50"
