@@ -329,6 +329,7 @@ const Profile = () => {
         setProfileSpecialties(data.specialties);
       }
     };
+    getProfileData();
 
     const getFilmoCategoryList = async () => {
       const res = await getFilmoCategories();
@@ -341,7 +342,11 @@ const Profile = () => {
       const data = res.data;
       setFilmoRoleList(data);
     };
+    getFilmoCategoryList();
+    getFilmoRoleList();
+  }, []);
 
+  useEffect(() => {
     const filteredCategoryList = filmoCategoryList.filter(
       (category: FilmoCategoryType) =>
         profileData.filmos.findIndex(
@@ -353,11 +358,7 @@ const Profile = () => {
       (category: FilmoCategoryType) => category.name
     );
     setCategoryList(resultCategoryList);
-
-    getFilmoCategoryList();
-    getFilmoRoleList();
-    getProfileData();
-  }, []);
+  }, [profileData]);
 
   return (
     <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light">

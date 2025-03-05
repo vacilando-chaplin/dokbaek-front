@@ -20,7 +20,7 @@ const ProfileFilmoModal = ({
     <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40">
       <div className="interaction-default relative my-20 flex h-auto w-full max-w-[1024px] animate-enter flex-col items-center justify-center rounded-3xl bg-static-white shadow-medium">
         <ModalHeader name="작품 활동" onClick={onFilmoModalActive} />
-        <div className="scrollbar flex h-full w-full flex-col overflow-auto overscroll-contain rounded-3xl">
+        <div className="scrollbar flex h-full max-h-[80vh] w-full flex-col overflow-auto overscroll-contain rounded-3xl">
           {categoryList.map((category: string) => {
             const filmo = filmoList.filter(
               (filmo: FilmoResponseType) =>
@@ -35,9 +35,8 @@ const ProfileFilmoModal = ({
                 <div className="grid h-auto w-full grid-flow-row grid-cols-3 gap-2">
                   {filmo.map((item: FilmoResponseType) => {
                     return (
-                      <div className="flex h-auto w-full gap-2">
+                      <div className="flex h-auto w-full gap-2" key={item.id}>
                         <FilmoItem
-                          key={item.id}
                           filmo={item}
                           canEdit={false}
                           onLink={() =>
