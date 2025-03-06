@@ -95,7 +95,7 @@ const TopNavigation = () => {
             >
               내 프로필
             </Link>
-            <Link href={`/`} className="flex items-center">
+            <Link href={`/likes`} className="flex items-center">
               <Heart width="20" height="20" fill="#5E656C" />
             </Link>
             <button type="button">
