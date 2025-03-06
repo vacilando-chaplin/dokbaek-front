@@ -122,8 +122,8 @@ const Page = () => {
   }, [searchParams.toString()]);
 
   return (
-    <div className="mt-11 w-[100%] justify-center gap-6 sm:w-[100%] md:w-[85%] lg:w-[80%]">
-      <section className="container-max" style={{ margin: "50px auto" }}>
+    <div className="container-max m-[auto] mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
+      <section className="mt-11">
         <p className="mb-6 text-heading2 font-semibold text-content-primary-light">
           배우 찾기
         </p>
@@ -140,7 +140,11 @@ const Page = () => {
             profiles={profiles}
             profilesData={profilesData}
           />
-          <ProfilesMain profiles={profiles} profilesData={profilesData} />
+          <ProfilesMain
+            profiles={profiles}
+            profilesData={profilesData}
+            fetchProfiles={fetchProfiles}
+          />
         </div>
       </section>
     </div>

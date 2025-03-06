@@ -18,7 +18,7 @@ const GoogleLogin = () => {
   return (
     <button
       type="button"
-      className="relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] border border-border-default-light px-6 py-3"
+      className="interaction-default relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] border border-border-default-light px-6 py-3 hover:bg-gray-100 active:bg-gray-100"
       onClick={onGoogleLogin}
     >
       <Google
@@ -27,8 +27,8 @@ const GoogleLogin = () => {
         fill="#ffffff"
         className="absolute left-4"
       />
-      <div className="typhography-body2 font-medium text-static-black">
-        구글로 시작하기
+      <div className="typography-body2 font-medium text-static-black">
+        Google로 시작하기
       </div>
     </button>
   );

@@ -8,8 +8,13 @@ import Pagination from "@/components/atoms/pagination";
 interface ProfilesMainProps {
   profiles: ProfileShowcaseResponseType[];
   profilesData: ProfilesResponseType | undefined;
+  fetchProfiles: () => void;
 }
-const ProfilesMain = ({ profiles, profilesData }: ProfilesMainProps) => {
+const ProfilesMain = ({
+  profiles,
+  profilesData,
+  fetchProfiles
+}: ProfilesMainProps) => {
   const totalPage = profilesData?.totalPages || 0;
   const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -28,8 +33,12 @@ const ProfilesMain = ({ profiles, profilesData }: ProfilesMainProps) => {
               gridTemplateColumns: "repeat(auto-fill, minmax(184px, 1fr))"
             }}
           >
-            {profiles.map((profile, index) => (
-              <ProfileCard profile={profile} key={index} />
+            {profiles.map((profile) => (
+              <ProfileCard
+                profile={profile}
+                key={profile.id}
+                fetchProfiles={fetchProfiles}
+              />
             ))}
           </div>
           <div className="mt-6">
