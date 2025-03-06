@@ -9,6 +9,7 @@ import LikeRed from "../../../public/icons/LikeRed.svg";
 import EyeOn from "../../../public/icons/EyeOn.svg";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import LoginModal from "../organisms/loginModal";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
@@ -17,12 +18,13 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
+  const [loginModal, setLoginModal] = useState(false);
 
   const jwt = Cookies.get("jwt");
   const router = useRouter();
 
   const onClickProfile = () => {
-    console.log(profile, profile.id);
+    if (loginModal) return;
     router.push(`/profile/${profile.id}`);
   };
 
@@ -33,9 +35,12 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
     const currentYear = new Date().getFullYear();
     return profile?.bornYear ? currentYear - profile?.bornYear + 1 : "-";
   };
+  interface OnClickProfileLikeEvent
+    extends React.MouseEvent<HTMLButtonElement> {}
+
   const onClickProfileLike = async () => {
     if (!jwt || !profile.id) {
-      alert("로그인 후 이용해주세요.");
+      setLoginModal(true);
       return;
     }
 
@@ -57,7 +62,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
   return (
     <div
       onClick={onClickProfile}
-      className="w-[100%] cursor-pointer rounded-[16px] border border-gray-100 bg-background-base-light p-4"
+      className="w-[100%] cursor-pointer rounded-[16px] border border-gray-100 bg-background-base-light p-4 hover:border-gray-300"
     >
       <div className="relative">
         <Image src={Profile} alt="photo" className="w-[100%] rounded-[16px]" />
@@ -83,6 +88,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
           </p>
           <button
             type="button"
+            className="p-0.5 hover:rounded-2xl hover:bg-gray-200"
             onClick={(e) => {
               e.stopPropagation();
               onClickProfileLike();
@@ -108,6 +114,9 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
           )}
         </div>
       </div>
+      {loginModal && (
+        <LoginModal onLoginModalClose={() => setLoginModal(false)} />
+      )}
     </div>
   );
 };

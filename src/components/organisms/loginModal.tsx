@@ -1,0 +1,77 @@
+import X from "../../../public/icons/X.svg";
+import LogoVertical from "../../../public/icons/LogoVertical.svg";
+import KakaoLogin from "@/app/login/components/kakaoLogin";
+import NaverLogin from "@/app/login/components/naverLogin";
+import GoogleLogin from "@/app/login/components/googleLogin";
+import { useEffect, useState } from "react";
+import Tooltip from "@/components/atoms/tooltip";
+import Cookies from "js-cookie";
+
+interface LoginModalProps {
+  onLoginModalClose: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+const LoginModal = ({ onLoginModalClose }: LoginModalProps) => {
+  const [loginForm, setLoginForm] = useState<string | null>(null);
+
+  useEffect(() => {
+    const currentLoginForm = Cookies.get("login_form");
+    setLoginForm(currentLoginForm || null);
+  }, []);
+
+  return (
+    <section className="fixed inset-0 z-[999] flex max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
+      <div
+        className={`interaction-default relative flex h-auto w-[487px] max-w-[487px] animate-enter flex-col rounded-3xl bg-background-elevated-light shadow-medium`}
+      >
+        <div className="absolute right-6 top-6">
+          <button type="button" className="p-2" onClick={onLoginModalClose}>
+            <X width="20" height="20" fill="#868E96" />
+          </button>
+        </div>
+        <div className="mx-[80px] mb-[72px] mt-[88px]">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <LogoVertical height="56" />
+            <label className="typography-body2 font-semibold text-content-primary-light">
+              쉽고 빠르게 프로필을 만들어보세요.
+            </label>
+          </div>
+          <div className="mt-10 flex h-auto w-full flex-col gap-2">
+            {loginForm === "카카오" ? (
+              <div className="relative flex items-center justify-center">
+                <KakaoLogin />
+                <div className="absolute -top-7">
+                  <Tooltip placement="top" text="마지막에 로그인했어요" />
+                </div>
+              </div>
+            ) : (
+              <KakaoLogin />
+            )}
+            {loginForm === "네이버" ? (
+              <div className="relative flex items-center justify-center">
+                <NaverLogin />
+                <div className="absolute -top-7">
+                  <Tooltip placement="top" text="마지막에 로그인했어요" />
+                </div>
+              </div>
+            ) : (
+              <NaverLogin />
+            )}
+            {loginForm === "구글" ? (
+              <div className="relative flex items-center justify-center">
+                <GoogleLogin />
+                <div className="absolute -top-7">
+                  <Tooltip placement="top" text="마지막에 로그인했어요" />
+                </div>
+              </div>
+            ) : (
+              <GoogleLogin />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default LoginModal;
