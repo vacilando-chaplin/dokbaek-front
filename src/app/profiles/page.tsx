@@ -111,7 +111,6 @@ const Page = () => {
       const res = await getProfiles(getSearchParams().toString());
       setProfiles(res.content);
       setProfilesData(res);
-      console.log(res);
     } catch (error) {
       console.error(error);
     }

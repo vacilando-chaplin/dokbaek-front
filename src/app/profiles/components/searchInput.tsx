@@ -39,10 +39,11 @@ const SearchInput = (props: SearchInputProps) => {
         size="medium"
         name="keyword"
         value={search}
-        placeholder=""
+        icon="search"
+        placeholder="이름, 학교"
         maxLength={200}
         onChange={handleSearch}
-      />
+      ></TextInput>
     </form>
   );
 };

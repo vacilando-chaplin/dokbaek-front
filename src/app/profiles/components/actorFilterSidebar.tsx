@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import TextInput from "@/components/atoms/textInput";
 import ArrowChevronDownGray from "../../../../public/icons/ArrowChevronDownGray.svg";
+import Reset from "../../../../public/icons/Reset.svg";
 
 import {
   ProfileShowcaseResponseType,
@@ -10,6 +11,7 @@ import {
 } from "@/app/landing/types";
 import RangeSlider from "@/components/molecules/rangeSlider";
 import SearchInput from "./searchInput";
+import { useRouter } from "next/navigation";
 
 interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];
@@ -45,6 +47,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     currMaxWeight,
     handleSubmit
   } = props;
+  const router = useRouter();
+  const [shouldSubmit, setShouldSubmit] = useState(false);
 
   const [keyword, setKeyword] = useState("");
   const [minBornYear, setMinBornYear] = useState(0);
@@ -65,6 +69,10 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     minWeight,
     maxWeight
   ]);
+
+  const [isBornYearOpen, setIsBornYearOpen] = useState(true);
+  const [isHeightOpen, setIsHeightOpen] = useState(true);
+  const [isWeightOpen, setIsWeightOpen] = useState(true);
 
   useEffect(() => {
     if (currKeyword) setKeyword(currKeyword);
@@ -142,6 +150,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     setMinWeight(0);
     setMaxWeight(0);
     onSubmit();
+    router.push(`/profiles`);
   };
 
   const handleBornYearRangeChange = (newRange: [number, number]) => {
@@ -187,15 +196,42 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
 
   useEffect(() => {
     setBornYearRange([minBornYear, maxBornYear]);
+    const timer = setTimeout(() => {
+      onSubmit();
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [minBornYear, maxBornYear]);
 
   useEffect(() => {
     setHeightRange([minHeight, maxHeight]);
+    const timer = setTimeout(() => {
+      onSubmit();
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [minHeight, maxHeight]);
 
   useEffect(() => {
     setWeightRange([minWeight, maxWeight]);
+    const timer = setTimeout(() => {
+      onSubmit();
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [minWeight, maxWeight]);
+
+  useEffect(() => {
+    if (shouldSubmit) {
+      onSubmit();
+      setShouldSubmit(false);
+    }
+  }, [
+    minBornYear,
+    maxBornYear,
+    minHeight,
+    maxHeight,
+    minWeight,
+    maxWeight,
+    shouldSubmit
+  ]);
 
   return (
     <aside className="h-fit w-[320px] rounded-2xl border bg-background-surface-light">
@@ -207,19 +243,22 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
             size="small"
             onClick={onClickFilterReset}
           >
-            필터 초기화
+            <Reset width="14" height="14" fill="#212529" />
+            <label>필터 초기화</label>
           </BoxButton>
         </div>
       </div>
       <div className="border-b-[1px] border-border-default-light py-4">
         <div className="px-5">
-          <div className="typography-body3 mb-2">키워드</div>
+          <div className="typography-body3 mb-2 text-content-secondary-light">
+            키워드
+          </div>
           <div className="flex items-center gap-2">
             <SearchInput
               text={keyword}
               onChange={handleKeywordChange}
               onSubmit={onSubmit}
-            />
+            ></SearchInput>
             <BoxButton
               type="secondaryOutlined"
               size="medium"
@@ -231,128 +270,221 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
         </div>
       </div>
       <div className="border-b-[1px] border-border-default-light px-5 py-4">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="typography-body3">
+        <div className="flex items-center justify-between">
+          <div className="typography-body3 text-content-secondary-light">
             나이(년생)
             <span className="ml-2 text-accent-primary-light">
               {getTypeRange("bornYear")}
             </span>
           </div>
-          <ArrowChevronDownGray width="20" height="20" />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setMinBornYear(0);
+                setMaxBornYear(0);
+                setShouldSubmit(true);
+              }}
+              className="flex items-center gap-1"
+            >
+              <Reset width="12" height="12" fill="#ADB5BD" />
+              <label
+                style={{ wordBreak: "keep-all" }}
+                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+              >
+                초기화
+              </label>
+            </button>
+            <button
+              onClick={() => setIsBornYearOpen((prev) => !prev)}
+              className="transition-transform duration-200"
+            >
+              <ArrowChevronDownGray
+                width="20"
+                height="20"
+                className={isBornYearOpen ? "rotate-180" : "rotate-0"}
+              />
+            </button>
+          </div>
         </div>
-        <div className="mb-4 flex items-center gap-2">
-          <TextInput
-            type="number"
-            size="medium"
-            name="minBornYear"
-            value={minBornYear}
-            placeholder="0"
-            maxLength={200}
-            onChange={handleMinBornYearChange}
-          />
-          ~
-          <TextInput
-            type="number"
-            size="medium"
-            name="maxBornYear"
-            value={maxBornYear}
-            placeholder="0"
-            maxLength={200}
-            onChange={handleMaxBornYearChange}
-          />
-        </div>
-        <div>
-          <RangeSlider
-            value={bornYearRange}
-            setValue={handleBornYearRangeChange}
-            min={1900}
-            max={2025}
-          />
-        </div>
+        {isBornYearOpen && (
+          <div className="mt-4">
+            <div className="mb-4 flex items-center gap-2">
+              <TextInput
+                type="number"
+                size="medium"
+                name="minBornYear"
+                value={minBornYear}
+                placeholder="0"
+                maxLength={200}
+                onChange={handleMinBornYearChange}
+              />
+              ~
+              <TextInput
+                type="number"
+                size="medium"
+                name="maxBornYear"
+                value={maxBornYear}
+                placeholder="0"
+                maxLength={200}
+                onChange={handleMaxBornYearChange}
+              />
+            </div>
+            <div className="mb-2">
+              <RangeSlider
+                value={bornYearRange}
+                setValue={handleBornYearRangeChange}
+                min={1900}
+                max={2025}
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div className="border-b-[1px] border-border-default-light px-5 py-4">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="typography-body3">
+        <div className="flex items-center justify-between">
+          <div className="typography-body3 text-content-secondary-light">
             키
             <span className="ml-2 text-accent-primary-light">
               {getTypeRange("height")}
             </span>
           </div>
-          <ArrowChevronDownGray width="20" height="20" />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setMinHeight(0);
+                setMaxHeight(0);
+                setShouldSubmit(true);
+              }}
+              className="flex items-center gap-1"
+            >
+              <Reset width="12" height="12" fill="#ADB5BD" />
+              <label
+                style={{ wordBreak: "keep-all" }}
+                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+              >
+                초기화
+              </label>
+            </button>
+            <button
+              onClick={() => setIsHeightOpen((prev) => !prev)}
+              className="transition-transform duration-200"
+            >
+              <ArrowChevronDownGray
+                width="20"
+                height="20"
+                className={isHeightOpen ? "rotate-180" : "rotate-0"}
+              />
+            </button>
+          </div>
         </div>
-        <div className="mb-4 flex items-center gap-2">
-          <TextInput
-            type="number"
-            size="medium"
-            name="minHeight"
-            value={minHeight}
-            parameter={"cm"}
-            placeholder="0"
-            maxLength={200}
-            onChange={handleMinHeightChange}
-          />
-          ~
-          <TextInput
-            type="number"
-            size="medium"
-            name="maxHeight"
-            value={maxHeight}
-            parameter={"cm"}
-            placeholder="0"
-            maxLength={200}
-            onChange={handleMaxHeightChange}
-          />
-        </div>
-        <div>
-          <RangeSlider
-            value={heightRange}
-            setValue={handleHeightRangeChange}
-            min={0}
-            max={200}
-          />
-        </div>
+        {isHeightOpen && (
+          <div className="mt-4">
+            <div className="mb-4 flex items-center gap-2">
+              <TextInput
+                type="number"
+                size="medium"
+                name="minHeight"
+                value={minHeight}
+                parameter={"cm"}
+                placeholder="0"
+                maxLength={200}
+                onChange={handleMinHeightChange}
+              />
+              ~
+              <TextInput
+                type="number"
+                size="medium"
+                name="maxHeight"
+                value={maxHeight}
+                parameter={"cm"}
+                placeholder="0"
+                maxLength={200}
+                onChange={handleMaxHeightChange}
+              />
+            </div>
+            <div className="mb-2">
+              <RangeSlider
+                value={heightRange}
+                setValue={handleHeightRangeChange}
+                min={0}
+                max={200}
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div className="px-5 py-4">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="typography-body3">
+        <div className="flex items-center justify-between">
+          <div className="typography-body3 text-content-secondary-light">
             몸무게
             <span className="ml-2 text-accent-primary-light">
               {getTypeRange("weight")}
             </span>
           </div>
-          <ArrowChevronDownGray width="20" height="20" />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setMinWeight(0);
+                setMaxWeight(0);
+                setShouldSubmit(true);
+              }}
+              className="flex items-center gap-1"
+            >
+              <Reset width="12" height="12" fill="#ADB5BD" />
+              <label
+                style={{ wordBreak: "keep-all" }}
+                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+              >
+                초기화
+              </label>
+            </button>
+            <button
+              onClick={() => setIsWeightOpen((prev) => !prev)}
+              className="transition-transform duration-200"
+            >
+              <ArrowChevronDownGray
+                width="20"
+                height="20"
+                className={isWeightOpen ? "rotate-180" : "rotate-0"}
+              />
+            </button>
+          </div>
         </div>
-        <div className="mb-4 flex items-center gap-2">
-          <TextInput
-            type="number"
-            size="medium"
-            name="minWeight"
-            value={minWeight}
-            parameter={"kg"}
-            placeholder="0"
-            maxLength={200}
-            onChange={handleMinWeightChange}
-          />
-          ~
-          <TextInput
-            type="number"
-            size="medium"
-            name="maxWeight"
-            value={maxWeight}
-            parameter={"kg"}
-            placeholder="0"
-            maxLength={200}
-            onChange={handleMaxWeightChange}
-          />
-        </div>
-        <div>
-          <RangeSlider
-            value={WeightRange}
-            setValue={handleWeightRangeChange}
-            min={0}
-            max={200}
-          />
-        </div>
+        {isWeightOpen && (
+          <div className="mt-4">
+            <div className="mb-4 flex items-center gap-2">
+              <TextInput
+                type="number"
+                size="medium"
+                name="minWeight"
+                value={minWeight}
+                parameter={"kg"}
+                placeholder="0"
+                maxLength={200}
+                onChange={handleMinWeightChange}
+              />
+              ~
+              <TextInput
+                type="number"
+                size="medium"
+                name="maxWeight"
+                value={maxWeight}
+                parameter={"kg"}
+                placeholder="0"
+                maxLength={200}
+                onChange={handleMaxWeightChange}
+              />
+            </div>
+            <div className="mb-2">
+              <RangeSlider
+                value={WeightRange}
+                setValue={handleWeightRangeChange}
+                min={0}
+                max={200}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

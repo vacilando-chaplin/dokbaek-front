@@ -1,6 +1,7 @@
 import { sizeStyleType } from "@/lib/types";
 import Youtube from "../../../public/icons/YouTube.svg";
 import Instagram from "../../../public/icons/Instagram.svg";
+import Search from "../../../public/icons/Search.svg";
 
 interface TextInputProps {
   type: string;
@@ -39,6 +40,7 @@ const TextInput = ({
     <div
       className={`interaction-default flex w-full border border-border-default-light font-regular focus-within:border-border-active-light hover:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
     >
+      {icon === "search" && <Search width="16" height="16" fill="#ADB5BD" />}
       {icon === "youtube" && <Youtube width="16" height="16" fill="#ADB5BD" />}
       {icon === "instagram" && (
         <Instagram width="16" height="16" fill="#ADB5BD" />
