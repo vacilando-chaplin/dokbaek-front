@@ -30,7 +30,7 @@ const FilmoItem = ({
   onCheck,
   onLink
 }: FilmoItemProps) => {
-  const { id, role, customRole, character, is_featured, production } = filmo;
+  const { id, role, customRole, character, isFeatured, production } = filmo;
 
   const checkYoutube =
     (production.videoUrl &&
@@ -41,10 +41,10 @@ const FilmoItem = ({
 
   useEffect(() => {
     if (representativeCount && representativeCount >= 6) {
-      if (is_featured) {
+      if (isFeatured) {
         setDisabled(false);
       }
-      if (is_featured === false) {
+      if (isFeatured === false) {
         setDisabled(true);
       }
     } else {

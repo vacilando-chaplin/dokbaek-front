@@ -240,7 +240,7 @@ export interface FilmoRequestType {
   roleId: number;
   customRole: string;
   character: string;
-  is_featured: boolean;
+  isFeatured: boolean;
   production: {
     categoryId: number;
     productionYear: number;
@@ -260,7 +260,7 @@ export interface FilmoResponseType {
   };
   customRole: string;
   character: string;
-  is_featured: boolean;
+  isFeatured: boolean;
   production: {
     category: {
       id: number;

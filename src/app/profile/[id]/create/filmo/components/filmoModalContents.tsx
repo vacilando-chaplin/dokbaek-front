@@ -40,7 +40,7 @@ const FilmoModalContents = ({
   } = filmoInputs;
 
   return (
-    <div className="scrollbar flex h-auto w-full gap-4 overflow-auto bg-background-surface-light p-6">
+    <div className="scrollbar flex h-full max-h-[80vh] w-full gap-4 overflow-auto overscroll-contain bg-background-surface-light p-6">
       <div className="flex h-auto w-full flex-col gap-4">
         <div className="flex w-full flex-col">
           <Label label="분류" required />

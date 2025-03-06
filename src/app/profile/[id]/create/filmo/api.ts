@@ -4,6 +4,7 @@ import { base64ToBlob } from "@/lib/utils";
 
 export const postFilmography = async (id: number, data: FilmoRequestType) => {
   try {
+    console.log(data);
     const res = await api.post(`/profile/${id}/draft/filmo`, data);
     return res.data;
   } catch (error) {
@@ -11,14 +12,35 @@ export const postFilmography = async (id: number, data: FilmoRequestType) => {
   }
 };
 
-export const postFilmographyThumbnail = async (thumbnail: string) => {
+export const postFilmographyThumbnail = async (
+  id: number,
+  filmoId: number,
+  thumbnail: string
+) => {
   const formData = new FormData();
 
   const imageOrigin = base64ToBlob(thumbnail);
   formData.append("thumbnail", imageOrigin);
 
   try {
-    const res = await api.post(`/filmo/thumbnail`, formData);
+    const res = await api.post(
+      `/profile/${id}/draft/filmo/${filmoId}/thumbnail`,
+      formData
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteFilmographyThumbnail = async (
+  id: number,
+  filmoId: number
+) => {
+  try {
+    const res = await api.delete(
+      `/profile/${id}/draft/filmo/${filmoId}/thumbnail`
+    );
     return res.data;
   } catch (error) {
     throw error;

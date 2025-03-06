@@ -33,6 +33,7 @@ import {
 import { videoLinkInit } from "../../data";
 import {
   deleteFilmography,
+  deleteFilmographyThumbnail,
   postFilmography,
   postFilmographyThumbnail,
   putFilmography
@@ -102,7 +103,7 @@ const Filmography = () => {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      is_featured: false,
+      isFeatured: false,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -114,7 +115,14 @@ const Filmography = () => {
       displayOrder: 0
     };
 
-    await postFilmography(userId, filmo);
+    const filmoRes = await postFilmography(userId, filmo);
+    const filmoData = await filmoRes.data;
+
+    await postFilmographyThumbnail(
+      userId,
+      filmoData.id,
+      filmoData.thumbnailUrl
+    );
 
     const res = await getProfileDraft(userId);
     const data = await res.data;
@@ -140,7 +148,7 @@ const Filmography = () => {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      is_featured: filmoInputs.representative,
+      isFeatured: filmoInputs.representative,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -180,14 +188,13 @@ const Filmography = () => {
 
   // 필모그래피 대표작 설정 완료
   const onFilmoRepSave = async () => {
-    filmoRepEditList.map(
-      async (filmo: FilmoResponseType) =>
-        filmo.is_featured === true &&
-        (await putFilmography(userId, filmo.id, {
+    for (const filmo of filmoRepEditList) {
+      if (filmo.isFeatured) {
+        await putFilmography(userId, filmo.id, {
           roleId: filmo.role.id,
           customRole: filmo.customRole,
           character: filmo.character,
-          is_featured: true,
+          isFeatured: true,
           production: {
             categoryId: filmo.production.category.id,
             productionYear: filmo.production.productionYear,
@@ -197,8 +204,10 @@ const Filmography = () => {
             thumbnailUrl: filmo.production.thumbnailUrl
           },
           displayOrder: filmo.displayOrder
-        }))
-    );
+        });
+      }
+    }
+
     const res = await getProfileDraft(userId);
     const data = await res.data;
 
@@ -210,7 +219,7 @@ const Filmography = () => {
   // 필모그래피 대표작 설정 체크
   const onFilmoRepCheck = (id: number) => {
     const checkFilmoRep = filmoRepEditList.map((item: FilmoResponseType) =>
-      item.id === id ? { ...item, is_featured: !item.is_featured } : item
+      item.id === id ? { ...item, isFeatured: !item.isFeatured } : item
     );
     setFilmoRepEditList(checkFilmoRep);
   };
@@ -285,9 +294,7 @@ const Filmography = () => {
         const imageUrl = reader.result?.toString() || "";
         imageElement.src = imageUrl;
 
-        const res = await postFilmographyThumbnail(imageUrl);
-        const data = await res.data;
-        setFilmoInputs({ ...filmoInputs, thumbnail: data });
+        setFilmoInputs({ ...filmoInputs, thumbnail: imageUrl });
       });
 
       reader.readAsDataURL(e.target.files[0]);
@@ -313,7 +320,7 @@ const Filmography = () => {
       description: filmo.production.description,
       link: filmo.production.videoUrl,
       thumbnail: filmo.production.thumbnailUrl,
-      representative: filmo.is_featured,
+      representative: filmo.isFeatured,
       id: filmo.id,
       displayOrder: filmo.displayOrder
     });
@@ -339,6 +346,7 @@ const Filmography = () => {
 
   // 필모그래피 삭제 모달 삭제 버튼 클릭
   const onFilmoDeleteClick = async () => {
+    await deleteFilmographyThumbnail(userId, filmoDelete.id);
     await deleteFilmography(userId, filmoDelete.id);
 
     const res = await getProfileDraft(userId);
@@ -354,10 +362,10 @@ const Filmography = () => {
 
   useEffect(() => {
     const filmoCount = filmoList.filter(
-      (filmo: FilmoResponseType) => filmo.is_featured === true
+      (filmo: FilmoResponseType) => filmo.isFeatured === true
     );
     const filmoRepEditCount = filmoRepEditList.filter(
-      (filmo: FilmoResponseType) => filmo.is_featured === true
+      (filmo: FilmoResponseType) => filmo.isFeatured === true
     );
     const combineCount = filmoCount.length + filmoRepEditCount.length;
     setRepresentativeCount(combineCount);
