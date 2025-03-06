@@ -9,7 +9,7 @@ const LandingSub = () => {
         className="relative h-[240px] px-[100px]"
         style={{
           background:
-            "linear-gradient(275.85deg, rgba(30, 133, 239, 0.08) 0%, rgba(99, 123, 255, 0.08) 100%);",
+            "linear-gradient(275.85deg, rgba(30, 133, 239, 0.08) 0%, rgba(99, 123, 255, 0.08) 100%)",
           borderRadius: "40px"
         }}
       >
