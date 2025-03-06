@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  convertImageToBase64,
   getFilmoCategories,
   getFilmoRoles,
   getProfile,
@@ -37,10 +36,8 @@ import {
 import { SpecialtyItemType } from "./create/info/types";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  deleteProfileDraft,
   deleteProfilePhotoMain,
   patchProfilePhotoMain,
-  postProfileDraft,
   postProfilePhotoMain
 } from "./api";
 import ConfirmModal from "@/components/organisms/confirmModal";
@@ -62,7 +59,6 @@ const Profile = () => {
     useRecoilState(filmoCategory);
   const setFilmoRoleList = useSetRecoilState(filmoRole);
   const setStepper = useSetRecoilState(stepperInit);
-  const [stepperData, setStepperData] = useState(0);
 
   // main, sub 구분선
   const mainRef = useRef<HTMLDivElement>(null);
@@ -101,33 +97,14 @@ const Profile = () => {
 
   const setToastMessage = useSetRecoilState(toastMessage);
 
-  const onMoveProfileCreate = (stepper: number) => {
+  // 프로필 편집으로 이동
+
+  const onMoveToCreate = async (stepper: number) => {
     const path = ["info", "photo", "filmo", "video"];
 
     setStepper(stepper);
     router.prefetch(`/profile/${userId}/create/${path[stepper]}`);
     router.push(`/profile/${userId}/create/${path[stepper]}`);
-  };
-
-  // 프로필 편집
-
-  const onProfileEdit = async () => {
-    const isDraft = await postProfileDraft(userId);
-
-    if (isDraft.status === 200) {
-      setProfileModal({ state: "profileEdit", active: true });
-    }
-  };
-
-  const onProfileDraftRejected = async () => {
-    await deleteProfileDraft(userId);
-    await postProfileDraft(userId);
-
-    onMoveProfileCreate(stepperData);
-  };
-
-  const onProfileDraftConfiremd = async () => {
-    onMoveProfileCreate(stepperData);
   };
 
   // ProfileSub
@@ -371,8 +348,7 @@ const Profile = () => {
           updated={profileData.updatedAt}
           profileSpecialties={profileSpecialties}
           mainPhotoMenuActive={mainPhotoMenuActive}
-          setStepperData={setStepperData}
-          onProfileEdit={onProfileEdit}
+          onMoveToCreate={onMoveToCreate}
           onMainPhotoSelectFile={onMainPhotoSelectFile}
           onMainPhotoModalOpen={onMainPhotoModalOpen}
           onMainPhotoMenuActive={onMainPhotoMenuActive}
@@ -392,8 +368,7 @@ const Profile = () => {
           selectedPhotoList={selectedPhotoList}
           filmographyList={profileData.filmos}
           videoList={profileData.videos}
-          setStepperData={setStepperData}
-          onMoveToCreate={onProfileEdit}
+          onMoveToCreate={onMoveToCreate}
           onSwitchPhotoLabel={onSwitchPhotoLabel}
           onPhotoModalOpen={onPhotoModalOpen}
           onFilmoModalActive={onFilmoModalActive}
@@ -424,19 +399,6 @@ const Profile = () => {
           confirmButtonType="negative"
           onCancel={onMainPhotoDeleteModalActive}
           onConfirm={onDeleteMainPhoto}
-        />
-      )}
-      {profileModal.state === "profileEdit" && profileModal.active && (
-        <ConfirmModal
-          dense={false}
-          resizing="fixed"
-          titleText="작성 중인 프로필이 있습니다. 불러올까요?"
-          cancelText="새로 작성"
-          confirmText="불러오기"
-          cancelButtonType="secondaryOutlined"
-          confirmButtonType="primary"
-          onCancel={onProfileDraftRejected}
-          onConfirm={onProfileDraftConfiremd}
         />
       )}
       {profileModal.state === "photo" && profileModal.active && (

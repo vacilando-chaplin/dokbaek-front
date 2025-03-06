@@ -23,8 +23,7 @@ interface PropfileSubProps {
   selectedPhotoList: PhotoResponseType[];
   filmographyList: FilmoResponseType[];
   videoList: VideoResponseType[];
-  setStepperData: React.Dispatch<React.SetStateAction<number>>;
-  onMoveToCreate: () => void;
+  onMoveToCreate: (stepper: number) => void;
   onSwitchPhotoLabel: (label: string) => void;
   onPhotoModalOpen: (photo: string, photoId: string, index: number) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
@@ -38,7 +37,6 @@ const ProfileSub = ({
   selectedPhotoList,
   filmographyList,
   videoList,
-  setStepperData,
   onMoveToCreate,
   onSwitchPhotoLabel,
   onPhotoModalOpen,
@@ -165,10 +163,7 @@ const ProfileSub = ({
             buttonText="추가"
             buttonType="secondaryOutlined"
             otherUser={otherUser}
-            onClick={() => {
-              setStepperData(1);
-              onMoveToCreate();
-            }}
+            onClick={() => onMoveToCreate(1)}
           />
         )}
       </div>
@@ -234,10 +229,7 @@ const ProfileSub = ({
             buttonText="추가"
             buttonType="secondaryOutlined"
             otherUser={otherUser}
-            onClick={() => {
-              setStepperData(2);
-              onMoveToCreate();
-            }}
+            onClick={() => onMoveToCreate(2)}
           />
         )}
       </div>
@@ -258,10 +250,7 @@ const ProfileSub = ({
             buttonText="추가"
             buttonType="secondaryOutlined"
             otherUser={otherUser}
-            onClick={() => {
-              setStepperData(3);
-              onMoveToCreate();
-            }}
+            onClick={() => onMoveToCreate(3)}
           />
         )}
       </div>

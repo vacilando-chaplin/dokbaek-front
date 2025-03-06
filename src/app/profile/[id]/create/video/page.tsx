@@ -1,7 +1,12 @@
 "use client";
 
 import LinkModal from "@/components/organisms/linkModal";
-import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
+import {
+  completionProgress,
+  defaultId,
+  isDraft,
+  toastMessage
+} from "@/lib/atoms";
 import { VideoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -17,6 +22,7 @@ import { getProfileDraft } from "../../api";
 
 const Video = () => {
   const userId = useRecoilValue(defaultId);
+  const isDraftState = useRecoilValue(isDraft);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -138,7 +144,7 @@ const Video = () => {
       setVideoList(data.videos);
     };
     getProfileData();
-  }, []);
+  }, [isDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

@@ -1,7 +1,12 @@
 "use client";
 
 import { deletePhoto, postPhoto, patchPhoto } from "@/lib/api";
-import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
+import {
+  completionProgress,
+  defaultId,
+  isDraft,
+  toastMessage
+} from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -20,6 +25,7 @@ import { cropDataInit } from "../../data";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
+  const isDraftState = useRecoilValue(isDraft);
   const setToastMessage = useSetRecoilState(toastMessage);
   const [completion, setCompletion] = useRecoilState(completionProgress);
 
@@ -370,7 +376,7 @@ const Photo = () => {
       setRecentPhotoList(data.recentPhotos);
     };
     getProfileData();
-  }, []);
+  }, [isDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-4">

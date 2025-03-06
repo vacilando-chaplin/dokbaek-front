@@ -7,6 +7,7 @@ import {
 } from "@/lib/types";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { profileResponseInit } from "./data";
 
 const { persistAtom } = recoilPersist();
 
@@ -78,8 +79,7 @@ export const filmoRole = atom<FilmoRoleType[]>({
 
 export const profileData = atom({
   key: "profileData",
-  default: {},
-  effects_UNSTABLE: [persistAtom]
+  default: profileResponseInit
 });
 
 export const specialtyData = atom<SpecialtyType[]>({
@@ -91,4 +91,9 @@ export const specialtyData = atom<SpecialtyType[]>({
 export const currentPath = atom({
   key: "currentPath",
   default: "/"
+});
+
+export const isDraft = atom({
+  key: "isDraft",
+  default: false
 });

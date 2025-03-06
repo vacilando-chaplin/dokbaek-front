@@ -1,6 +1,11 @@
 "use client";
 
-import { completionProgress, defaultId, stepperInit } from "@/lib/atoms";
+import {
+  completionProgress,
+  defaultId,
+  isDraft,
+  stepperInit
+} from "@/lib/atoms";
 import { educationEngList, educationEnum, educationList } from "@/lib/data";
 import { useDebounce } from "@/lib/hooks";
 import { contactFormat, isValid, setOnlyNumber } from "@/lib/utils";
@@ -34,6 +39,7 @@ import { EducationWithIdType } from "@/lib/types";
 const Info = () => {
   const userId = useRecoilValue(defaultId);
   const stepper = useRecoilValue(stepperInit);
+  const isDraftState = useRecoilValue(isDraft);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
 
@@ -338,14 +344,19 @@ const Info = () => {
         ...completion,
         name: isValid(data.info.name),
         birth: isValid(data.info.bornYear),
-        height: isValid(data.info.height),
-        weight: isValid(data.info.weight),
+        height: data.info.height > 0 ? true : false,
+        weight: data.info.weight > 0 ? true : false,
         contact: isValid(data.info.contact),
         email: isValid(data.info.email),
         specialty: isValid(data.specialties),
         youtube: isValid(data.info.youtubeLink),
         instagram: isValid(data.info.instagramLink),
-        introduction: isValid(data.info.introduction)
+        introduction: isValid(data.info.introduction),
+        profilePhoto: isValid(data.photos),
+        stillcutPhoto: isValid(data.stillCuts),
+        recentPhoto: isValid(data.recentPhotos),
+        filmography: isValid(data.filmos),
+        video: isValid(data.videos)
       });
 
       setInfoInputs({
@@ -362,7 +373,7 @@ const Info = () => {
       });
     };
     getProfileData();
-  }, []);
+  }, [isDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

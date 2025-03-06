@@ -11,6 +11,7 @@ import {
   defaultId,
   filmoCategory,
   filmoRole,
+  isDraft,
   toastMessage
 } from "@/lib/atoms";
 import {
@@ -40,6 +41,7 @@ import { getProfileDraft } from "../../api";
 
 const Filmography = () => {
   const userId = useRecoilValue(defaultId);
+  const isDraftState = useRecoilValue(isDraft);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -388,7 +390,7 @@ const Filmography = () => {
       setFilmoList(data.filmos);
     };
     getProfileData();
-  }, []);
+  }, [isDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
