@@ -12,9 +12,10 @@ import { useRouter } from "next/navigation";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
+  fetchProfiles: () => void;
 }
 
-const ProfileCard = ({ profile }: ProfileCardProps) => {
+const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
 
   const jwt = Cookies.get("jwt");
@@ -48,6 +49,8 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
       }
     } catch (error) {
       setLiked((prev) => !prev);
+    } finally {
+      fetchProfiles();
     }
   };
 
