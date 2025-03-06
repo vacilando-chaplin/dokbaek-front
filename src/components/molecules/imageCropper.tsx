@@ -38,15 +38,15 @@ const ImageCropper = ({
 
   const defaultSize = ({ imageSize }: any) => {
     if (cropType === "stillcut") {
-      const stillcutWidth = imageSize.width * 0.8;
-      const stillcutHeight = stillcutWidth * (9 / 16);
+      const stillcutWidth = imageSize.width * 0.4;
+      const stillcutHeight = stillcutWidth * (160 / 204);
 
       return {
         width: stillcutWidth,
         height: stillcutHeight
       };
     } else {
-      const width = imageSize.width * 0.6;
+      const width = imageSize.width * 0.2;
       const height = width * (16 / 9);
 
       return {
@@ -83,7 +83,7 @@ const ImageCropper = ({
             cropData.top !== 0 && cropData.left !== 0 ? cropData : undefined
           }
           stencilProps={{
-            aspectRatio: 9 / 16
+            aspectRatio: cropType === "stillcut" ? 16 / 9 : 160 / 204
           }}
           onInteractionEnd={onCropEnd}
           className="h-full w-full"

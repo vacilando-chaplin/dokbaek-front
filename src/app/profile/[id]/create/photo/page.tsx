@@ -286,7 +286,14 @@ const Photo = () => {
   const onPhotoModalClose = (e: any) => {
     setCropImage("");
     setSelectImage("");
-    setSelectedImages([]);
+    setSelectedImages([
+      {
+        origin: "",
+        preview: "",
+        originImage: "",
+        cropData: cropDataInit
+      }
+    ]);
     setPhotoModal(photoModalInit);
   };
 
