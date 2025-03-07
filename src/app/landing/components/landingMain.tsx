@@ -51,10 +51,11 @@ const LandingMain = () => {
           }}
         >
           {profiles.map((profile, index) => (
-            <ProfileCard profile={profile} key={index} />
-          ))}{" "}
-          {profiles.map((profile, index) => (
-            <ProfileCard profile={profile} key={index} />
+            <ProfileCard
+              profile={profile}
+              key={profile.id}
+              fetchProfiles={fetchProfileShowcase}
+            />
           ))}
         </div>
       </div>
