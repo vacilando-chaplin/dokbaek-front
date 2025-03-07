@@ -49,6 +49,7 @@ const BoxButton = ({
   return (
     <button
       type="button"
+      style={{ wordBreak: "keep-all", lineHeight: "16px" }}
       className={`interaction-default flex h-auto w-auto items-center justify-center font-medium outline-none ${sizeStyle[size]} ${typeStyle[type]} ${disabled && "opacity-40"}`}
       disabled={disabled}
       onClick={onClick}

@@ -1,7 +1,7 @@
-import { patchPhotoDefault } from "../../lib/api";
 export interface ProfileSearchParams {
   page?: number | null;
   size?: number | null;
+  sort?: "RECENT_UPDATED" | "MOST_LIKED" | null;
   sex?: "M" | "F" | "U" | null;
   keyword?: string | null;
   minBornYear?: number | null;

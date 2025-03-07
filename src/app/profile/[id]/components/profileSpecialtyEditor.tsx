@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
 import AddableSearchDropdown from "../../../../components/molecules/addableSearchDropdown";
+import React, { useEffect, useState } from "react";
 import { SpecialtyType } from "@/app/profile/[id]/create/info/types";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import XCircleFill from "../../../../../public/icons/XCircleFill.svg";
+import XCircleFillBlack from "../../../../../public/icons/XCircleFillBlack.svg";
 import { getSpecialty } from '../create/info/api';
 import { useDebounce } from "@/lib/hooks";
 import ProfileSpecialtyMediaModal from "./profileSpecialtyMediaModal";
@@ -31,8 +32,33 @@ const ProfileSpecialtyEditor = ({
 }: ProfileSpecialtyEditorProps) => {
   const [profileSpecialtyMediaModal, setProfileSpecialtyMediaModal] = useState(false);
   const [selectedSpecialtyId, setSelectedSpecialtyId] = useState<number | null>(null);
-  
-  const onAddImage = () => {};
+
+  const onChangeProfileSpecialtyPhoto = (e: React.ChangeEvent<HTMLInputElement>, specialtyId:number) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.addEventListener("load", async () => {
+        const imageUrl = reader.result?.toString() || "";
+
+        const updatedSpecialties = specialties.map((specialty: SpecialtyType) =>
+          specialty.id === specialtyId ? { ...specialty, imageUrl: imageUrl } : specialty
+        );
+        setSpecialties(updatedSpecialties);
+
+        e.currentTarget.value = "";
+      });
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  const onDeleteSpecialtyPhoto = (specialtyId: number) => { 
+    const updatedSpecialties = specialties.map((specialty: SpecialtyType) =>
+      specialty.id === specialtyId ? { ...specialty, imageUrl: "" } : specialty
+    );
+    setSpecialties(updatedSpecialties);
+  }
 
   const onProfileSpecialtyMediaModalOpen = (specialtyId: number) => {
     setSelectedSpecialtyId(specialtyId)
@@ -42,7 +68,6 @@ const ProfileSpecialtyEditor = ({
     setSelectedSpecialtyId(null);
     setProfileSpecialtyMediaModal(false);
   }
-  const onLinkModalClose = () => {}
   const debounceSearch: any = useDebounce(specialty?.specialtyName, 500);
 
   const fetchSpecialty = async (keyword: string) => {
@@ -103,14 +128,20 @@ const ProfileSpecialtyEditor = ({
                 <div className="flex items-center justify-between">
                   <div>{specialty.specialtyName}</div>
                   <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className="flex items-center font-medium text-content-tertiary-light"
-                      onClick={onAddImage}
+                    <label
+                      htmlFor={`upload-${specialty.id}`}
+                      className="flex items-center font-medium text-content-tertiary-light cursor-pointer"
                     >
+                      <input
+                        id={`upload-${specialty.id}`}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => onChangeProfileSpecialtyPhoto(e, specialty.id)}
+                      />
                       <PlusCircle width="12" height="12" fill="#ADB5BD" />
                       <span style={{ marginLeft: "2px" }}>사진</span>
-                    </button>
+                    </label>
                     <button
                       type="button"
                       className="flex items-center font-medium text-content-tertiary-light"
@@ -128,26 +159,35 @@ const ProfileSpecialtyEditor = ({
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center justify-between mt-2">
-                  <div className="text-xs text-content-tertiary-light">
-                    {specialty.mediaUrl && (
-                      <div className="relative">
-                        <img
-                          src={`https://img.youtube.com/vi/${
-                            specialty.mediaUrl.includes("https://www.youtube.com/watch?v=")
-                              ? specialty.mediaUrl.slice(32, 43)
-                              : specialty.mediaUrl.slice(17, 48)
-                          }/maxresdefault.jpg`}
-                          alt="YouTube Thumbnail"
-                          className="h-[80px] w-[142px] rounded-lg"
-                        />
-                        <button type="button" className="absolute top-2 right-2" onClick={() => onDeleteSpecialtyMedia(specialty.id)}>
-                          <XCircleFill width="15" height="15" fill="#363644" />
-                        </button>
-                      </div>
-                    )}
-
-                  </div>
+                <div className={`flex items-center gap-2 ${(specialty.imageUrl || specialty.mediaUrl) && "mt-2"}`} >
+                  {specialty.imageUrl && (
+                    <div className="relative">
+                      <img
+                        src={specialty.imageUrl}
+                        alt="Image Preview"
+                        className="h-[80px] w-[fit] rounded-lg border border-gray-400"
+                      />
+                      <button type="button" className="absolute top-1 right-1" aria-label="사진 삭제" onClick={() => onDeleteSpecialtyPhoto(specialty.id)}>
+                        <XCircleFillBlack />
+                      </button>
+                    </div>
+                  )}
+                  {specialty.mediaUrl && (
+                    <div className="relative">
+                      <img
+                        src={`https://img.youtube.com/vi/${
+                          specialty.mediaUrl.includes("https://www.youtube.com/watch?v=")
+                            ? specialty.mediaUrl.slice(32, 43)
+                            : specialty.mediaUrl.slice(17, 48)
+                        }/maxresdefault.jpg`}
+                        alt="YouTube Thumbnail"
+                        className="h-[80px] w-[142px] rounded-lg"
+                      />
+                      <button type="button" className="absolute top-1 right-1" aria-label="영상 삭제" onClick={() => onDeleteSpecialtyMedia(specialty.id)}>
+                        <XCircleFillBlack />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </li>
             ))}

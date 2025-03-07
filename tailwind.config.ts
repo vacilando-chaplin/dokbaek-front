@@ -17,7 +17,7 @@ const config: Config = {
       screens: {
         sm: "640px",
         md: "768px",
-        lg: "1024px"
+        lg: "1524px"
       },
       // toast enter and leave animation
       animation: {

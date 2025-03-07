@@ -4,12 +4,12 @@ import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.sv
 
 const LandingSub = () => {
   return (
-    <div className="mx-[auto] mt-[40px] flex w-[100%] max-w-[1000px] flex-col rounded-2xl">
+    <div className="mx-[auto] mt-[40px] flex w-[100%] flex-col rounded-2xl">
       <div
         className="relative h-[240px] px-[100px]"
         style={{
           background:
-            "linear-gradient(275.85deg, rgba(30, 133, 239, 0.08) 0%, rgba(99, 123, 255, 0.08) 100%);",
+            "linear-gradient(275.85deg, rgba(30, 133, 239, 0.08) 0%, rgba(99, 123, 255, 0.08) 100%)",
           borderRadius: "40px"
         }}
       >
