@@ -84,14 +84,14 @@ const TopNavigation = () => {
         {isLoggedIn ? (
           <div className="flex flex-row gap-5">
             <Link
-              href="/landing"
-              className="typography-body3 flex items-center font-semibold text-content-secondary-light"
+              href={`/profiles`}
+              className="typography-body3 flex items-center font-semibold text-content-secondary-light hover:text-accent-primary-light"
             >
               배우 찾기
             </Link>
             <Link
               href={`/profile/${userId}`}
-              className="typography-body3 flex items-center font-semibold text-content-secondary-light"
+              className="typography-body3 flex items-center font-semibold text-content-secondary-light hover:text-accent-primary-light"
             >
               내 프로필
             </Link>
