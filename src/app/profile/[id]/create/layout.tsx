@@ -6,6 +6,7 @@ import {
   completionProgress,
   defaultId,
   isDraft,
+  isDraftComplete,
   stepperInit
 } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
@@ -26,6 +27,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const jwt = Cookies.get("jwt");
   const { name, birth, contact } = useRecoilValue(completionProgress);
   const [isDraftState, setIsDraftState] = useRecoilState(isDraft);
+  const setIsDraftLoading = useSetRecoilState(isDraftComplete);
   const [completion, setCompletion] = useRecoilState(completionProgress);
 
   const [progress, setProgress] = useState(0);
@@ -42,6 +44,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const onSaveProfileClick = async () => {
     await postProfileDraftPublish(userId);
 
+    setIsDraftLoading(false);
     setStepper(0);
     router.prefetch(`/profile/${userId}`);
     router.push(`/profile/${userId}`);
@@ -49,6 +52,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const onBackProfileClick = () => {
     setStepper(0);
+    setIsDraftLoading(false);
     router.prefetch(`/profile/${userId}`);
     router.push(`/profile/${userId}`);
   };
@@ -58,10 +62,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     await postProfileDraft(userId);
 
     setIsDraftState(false);
+    setIsDraftLoading(true);
   };
 
   const onProfileDraftConfirmed = async () => {
     setIsDraftState(false);
+    setIsDraftLoading(true);
   };
 
   useEffect(() => {
@@ -76,6 +82,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       if (res.status === 200) {
         setIsDraftState(true);
+      } else if (res.status === 201) {
+        setIsDraftLoading(true);
       }
 
       setCompletion({

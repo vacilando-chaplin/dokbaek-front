@@ -5,6 +5,7 @@ import {
   completionProgress,
   defaultId,
   isDraft,
+  isDraftComplete,
   toastMessage
 } from "@/lib/atoms";
 import { VideoResponseType } from "@/lib/types";
@@ -22,7 +23,7 @@ import { getProfileDraft } from "../../api";
 
 const Video = () => {
   const userId = useRecoilValue(defaultId);
-  const isDraftState = useRecoilValue(isDraft);
+  const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -135,16 +136,18 @@ const Video = () => {
   // 비디오 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfileDraft(userId);
-      const data = await res.data;
+      if (isDraftLoading) {
+        const res = await getProfileDraft(userId);
+        const data = await res.data;
 
-      isValid(data.videos)
-        ? setCompletion({ ...completion, video: true })
-        : setCompletion({ ...completion, video: false });
-      setVideoList(data.videos);
+        isValid(data.videos)
+          ? setCompletion({ ...completion, video: true })
+          : setCompletion({ ...completion, video: false });
+        setVideoList(data.videos);
+      }
     };
     getProfileData();
-  }, [isDraftState]);
+  }, [isDraftLoading]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

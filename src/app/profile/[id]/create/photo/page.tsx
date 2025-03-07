@@ -5,6 +5,7 @@ import {
   completionProgress,
   defaultId,
   isDraft,
+  isDraftComplete,
   toastMessage
 } from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
@@ -25,7 +26,7 @@ import { cropDataInit } from "../../data";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
-  const isDraftState = useRecoilValue(isDraft);
+  const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
   const [completion, setCompletion] = useRecoilState(completionProgress);
 
@@ -363,27 +364,29 @@ const Photo = () => {
   // 사진 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfileDraft(userId);
-      const data = await res.data;
+      if (isDraftLoading) {
+        const res = await getProfileDraft(userId);
+        const data = await res.data;
 
-      isValid(data.photos)
-        ? setCompletion({ ...completion, profilePhoto: true })
-        : setCompletion({ ...completion, profilePhoto: false });
+        isValid(data.photos)
+          ? setCompletion({ ...completion, profilePhoto: true })
+          : setCompletion({ ...completion, profilePhoto: false });
 
-      isValid(data.stillCuts)
-        ? setCompletion({ ...completion, stillcutPhoto: true })
-        : setCompletion({ ...completion, stillcutPhoto: false });
+        isValid(data.stillCuts)
+          ? setCompletion({ ...completion, stillcutPhoto: true })
+          : setCompletion({ ...completion, stillcutPhoto: false });
 
-      isValid(data.recentPhotos)
-        ? setCompletion({ ...completion, recentPhoto: true })
-        : setCompletion({ ...completion, recentPhoto: false });
+        isValid(data.recentPhotos)
+          ? setCompletion({ ...completion, recentPhoto: true })
+          : setCompletion({ ...completion, recentPhoto: false });
 
-      setPhotoList(data.photos);
-      setStillCutList(data.stillCuts);
-      setRecentPhotoList(data.recentPhotos);
+        setPhotoList(data.photos);
+        setStillCutList(data.stillCuts);
+        setRecentPhotoList(data.recentPhotos);
+      }
     };
     getProfileData();
-  }, [isDraftState]);
+  }, [isDraftLoading]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-4">

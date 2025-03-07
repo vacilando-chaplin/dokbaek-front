@@ -3,7 +3,7 @@
 import {
   completionProgress,
   defaultId,
-  isDraft,
+  isDraftComplete,
   stepperInit
 } from "@/lib/atoms";
 import { educationEngList, educationEnum, educationList } from "@/lib/data";
@@ -39,7 +39,7 @@ import { EducationWithIdType } from "@/lib/types";
 const Info = () => {
   const userId = useRecoilValue(defaultId);
   const stepper = useRecoilValue(stepperInit);
-  const isDraftState = useRecoilValue(isDraft);
+  const isDraftLoading = useRecoilValue(isDraftComplete);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
 
@@ -404,69 +404,73 @@ const Info = () => {
   // 내 정보 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfileDraft(userId);
-      const data = await res.data;
+      if (isDraftLoading) {
+        const res = await getProfileDraft(userId);
+        const data = await res.data;
 
-      if (data.education.length >= 1) {
-        const findEducation = educationEngList.findIndex(
-          (education: string) => education === data.education[0].status
-        );
+        if (data.education.length >= 1) {
+          const findEducation = educationEngList.findIndex(
+            (education: string) => education === data.education[0].status
+          );
 
-        const educationInit = [
-          {
-            id: data.education[0].id,
-            school: {
-              name: data.education[0].school.name,
-              schoolType: data.education[0].school.schoolType,
-              schoolGubun: data.education[0].school.schoolGubun
-            },
-            major: data.education[0].major,
-            status: educationList[0]
-          }
-        ];
+          const educationInit = [
+            {
+              id: data.education[0].id,
+              school: {
+                name: data.education[0].school.name,
+                schoolType: data.education[0].school.schoolType,
+                schoolGubun: data.education[0].school.schoolGubun
+              },
+              major: data.education[0].major,
+              status: educationList[0]
+            }
+          ];
+          setCompletion({
+            ...completion,
+            schoolName: isValid(data.education[0].school.name),
+            schoolMajor: isValid(data.education[0].major),
+            schoolStatus: isValid(educationList[findEducation])
+          });
+          setEducation(educationInit);
+        }
+
         setCompletion({
           ...completion,
-          schoolName: isValid(data.education[0].school.name),
-          schoolMajor: isValid(data.education[0].major),
-          schoolStatus: isValid(educationList[findEducation])
+          name: isValid(data.info.name),
+          birth: isValid(data.info.bornYear),
+          height: data.info.height > 0 ? true : false,
+          weight: data.info.weight > 0 ? true : false,
+          contact: isValid(data.info.contact),
+          email: isValid(data.info.email),
+          specialty: isValid(data.specialties),
+          youtube: isValid(data.info.youtubeLink),
+          instagram: isValid(data.info.instagramLink),
+          introduction: isValid(data.info.introduction),
+          profilePhoto: isValid(data.photos),
+          stillcutPhoto: isValid(data.stillCuts),
+          recentPhoto: isValid(data.recentPhotos),
+          filmography: isValid(data.filmos),
+          video: isValid(data.videos)
         });
-        setEducation(educationInit);
+
+        setInfoInputs({
+          ...infoInputs,
+          name: data.info.name,
+          bornYear: data.info.bornYear,
+          height: data.info.height,
+          weight: data.info.weight,
+          contact: data.info.contact,
+          email: data.info.email,
+          instagram: data.info.instagramLink,
+          youtube: data.info.youtubeLink,
+          introduction: data.info.introduction
+        });
       }
-
-      setCompletion({
-        ...completion,
-        name: isValid(data.info.name),
-        birth: isValid(data.info.bornYear),
-        height: data.info.height > 0 ? true : false,
-        weight: data.info.weight > 0 ? true : false,
-        contact: isValid(data.info.contact),
-        email: isValid(data.info.email),
-        specialty: isValid(data.specialties),
-        youtube: isValid(data.info.youtubeLink),
-        instagram: isValid(data.info.instagramLink),
-        introduction: isValid(data.info.introduction),
-        profilePhoto: isValid(data.photos),
-        stillcutPhoto: isValid(data.stillCuts),
-        recentPhoto: isValid(data.recentPhotos),
-        filmography: isValid(data.filmos),
-        video: isValid(data.videos)
-      });
-
-      setInfoInputs({
-        ...infoInputs,
-        name: data.info.name,
-        bornYear: data.info.bornYear,
-        height: data.info.height,
-        weight: data.info.weight,
-        contact: data.info.contact,
-        email: data.info.email,
-        instagram: data.info.instagramLink,
-        youtube: data.info.youtubeLink,
-        introduction: data.info.introduction
-      });
     };
     getProfileData();
-  }, [isDraftState]);
+  }, [isDraftLoading]);
+
+  console.log(isDraftLoading);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

@@ -97,3 +97,8 @@ export const isDraft = atom({
   key: "isDraft",
   default: false
 });
+
+export const isDraftComplete = atom({
+  key: "isDraftComplete",
+  default: false
+});

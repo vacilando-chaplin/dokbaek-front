@@ -12,6 +12,7 @@ import {
   filmoCategory,
   filmoRole,
   isDraft,
+  isDraftComplete,
   toastMessage
 } from "@/lib/atoms";
 import {
@@ -42,7 +43,7 @@ import { getProfileDraft } from "../../api";
 
 const Filmography = () => {
   const userId = useRecoilValue(defaultId);
-  const isDraftState = useRecoilValue(isDraft);
+  const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -389,16 +390,18 @@ const Filmography = () => {
   // 필모그래피 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfileDraft(userId);
-      const data = await res.data;
+      if (isDraftLoading) {
+        const res = await getProfileDraft(userId);
+        const data = await res.data;
 
-      isValid(data.filmos)
-        ? setCompletion({ ...completion, filmography: true })
-        : setCompletion({ ...completion, filmography: false });
-      setFilmoList(data.filmos);
+        isValid(data.filmos)
+          ? setCompletion({ ...completion, filmography: true })
+          : setCompletion({ ...completion, filmography: false });
+        setFilmoList(data.filmos);
+      }
     };
     getProfileData();
-  }, [isDraftState]);
+  }, [isDraftLoading]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

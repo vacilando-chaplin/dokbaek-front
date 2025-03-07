@@ -4,15 +4,20 @@ import { base64ToBlob } from "@/lib/utils";
 export const getProfileDraft = async (profileId: number) => {
   try {
     const res = await api.get(`/profile/${profileId}/draft`);
-    return res.data;
-  } catch (error) {
-    throw error;
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      throw error;
+    }
   }
 };
 
 export const postProfileDraft = async (profileId: number) => {
   try {
     const res = await api.post(`/profile/${profileId}/draft`);
+    console.log(res.status);
     return res;
   } catch (error) {
     throw error;
