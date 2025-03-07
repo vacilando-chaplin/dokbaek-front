@@ -17,7 +17,6 @@ export const getProfileDraft = async (profileId: number) => {
 export const postProfileDraft = async (profileId: number) => {
   try {
     const res = await api.post(`/profile/${profileId}/draft`);
-    console.log(res.status);
     return res;
   } catch (error) {
     throw error;

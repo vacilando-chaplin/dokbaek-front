@@ -66,6 +66,11 @@ const Info = () => {
   });
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
 
+  // const [selectedGender, setSelectedGender] = useState("");
+  // const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSelectedGender(e.target.id);
+  // };
+
   // 내 정보 입력
   const onInputChange = (
     e:
@@ -470,14 +475,14 @@ const Info = () => {
     getProfileData();
   }, [isDraftLoading]);
 
-  console.log(isDraftLoading);
-
   return (
     <div className="flex w-[65vw] flex-col gap-3">
       <InfoMain
         infoInputs={infoInputs}
         infoActives={infoActives}
         specialties={specialties}
+        // selectedGender={selectedGender}
+        // onSelectGender={onSelectGender}
         onInputChange={onInputChange}
         onNumberChange={onNumberChange}
         onBirthChange={onBirthChange}
