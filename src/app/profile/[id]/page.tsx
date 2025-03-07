@@ -356,7 +356,7 @@ const Profile = () => {
           onMainPhotoEditModalOpen={onMainPhotoEditModalOpen}
           onMainPhotoDeleteModalOpen={onMainPhotoDeleteModalActive}
           education={
-            profileData.education.length >= 1 ? profileData.education[0] : []
+            profileData.education.length >= 1 ? profileData.education : []
           }
         />
       </div>

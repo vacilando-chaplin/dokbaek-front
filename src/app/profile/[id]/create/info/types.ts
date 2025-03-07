@@ -12,14 +12,17 @@ export interface InfoInputType {
 
 export interface InfoActiveType {
   bornYear: boolean;
-  school: boolean;
-  education: boolean;
 }
 
 export interface InfoEducationType {
   school: string;
   major: string;
   education: string;
+}
+
+export interface InfoEducationActiveType {
+  school: boolean;
+  education: boolean;
 }
 
 export interface InfoDataType {

@@ -76,7 +76,6 @@ const SelectDropdown = ({
                 selected={selected}
                 onClick={onClick}
                 onActive={onActive}
-                onSave={onSave}
               />
             );
           })}

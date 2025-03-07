@@ -21,7 +21,7 @@ import {
   SchoolType,
   SpecialtyType
 } from "./types";
-import { educationInputInit, infoActiveInit, infoInputInit } from "./data";
+import { infoActiveInit, infoInputInit } from "./data";
 import {
   deleteEducation,
   getSchoolName,
@@ -60,6 +60,10 @@ const Info = () => {
   // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
   const [education, setEducation] = useState<EducationWithIdType[]>([]);
+  const [educationActives, setEducationActives] = useState({
+    school: false,
+    education: false
+  });
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
 
   // 내 정보 입력
@@ -217,13 +221,19 @@ const Info = () => {
   // 학교 검색
   const onSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEducation(
-      education.map((item) =>
-        item.id === Number(name) ? { ...item, [name]: value } : item
-      )
-    );
-    if (value && !infoActives.school) {
-      setInfoActives({ ...infoActives, [name]: true });
+
+    setEducation((prev) => [
+      {
+        ...prev[0],
+        school: {
+          ...prev[0].school,
+          [name]: value
+        }
+      }
+    ]);
+
+    if (value && !educationActives.school) {
+      setEducationActives({ ...educationActives, school: true });
     }
     isValid(value)
       ? setCompletion({ ...completion, [name]: true })
@@ -231,19 +241,8 @@ const Info = () => {
   };
 
   // 학교검색 딜레이 적용(0.3초)
-  // const debounceSearch: string = useDebounce(educationInputs.school, 300);
-
-  const onMajorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setEducation(
-      education.map((item) =>
-        item.id === Number(name) ? { ...item, [name]: value } : item
-      )
-    );
-    isValid(value)
-      ? setCompletion({ ...completion, [name]: true })
-      : setCompletion({ ...completion, [name]: false });
-  };
+  // const debounceSearch: string =
+  //   education.length >= 1 ? useDebounce(education[0].school.name, 300) : "";
 
   // useEffect(() => {
   //   const getSearchSchool = async (name: string) => {
@@ -255,6 +254,77 @@ const Info = () => {
   //   };
   //   getSearchSchool(debounceSearch);
   // }, [debounceSearch]);
+
+  useEffect(() => {
+    if (education.length >= 1) {
+      const getSearchSchool = async (name: string) => {
+        const data = await getSchoolName(name);
+        const filteredSchoolName = data.map(
+          (school: SchoolType) => school.schoolName
+        );
+        setSchoolList(filteredSchoolName);
+      };
+      getSearchSchool(education[0].school.name);
+    }
+  }, [education]);
+
+  const onSchoolDropdownActive = () => {
+    setEducationActives({
+      ...educationActives,
+      school: !educationActives.school
+    });
+  };
+
+  const onEducationDropdownActive = () => {
+    setEducationActives({
+      ...educationActives,
+      education: !educationActives.education
+    });
+  };
+
+  const onSchoolDropdownClick = (name: string, item: string) => {
+    setEducation((prev) => [
+      {
+        ...prev[0],
+        school: {
+          ...prev[0].school,
+          name: item
+        }
+      }
+    ]);
+    setEducationActives({
+      ...educationActives,
+      school: !educationActives.school
+    });
+    onSaveEducation(education[0].id);
+  };
+
+  const onEducationDropdownClick = (name: string, item: string) => {
+    setEducation((prev) => [
+      {
+        ...prev[0],
+        status: item
+      }
+    ]);
+    setEducationActives({
+      ...educationActives,
+      education: !educationActives.education
+    });
+    onSaveEducation(education[0].id);
+  };
+
+  const onMajorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEducation([
+      {
+        ...education[0],
+        [name]: value
+      }
+    ]);
+    isValid(value)
+      ? setCompletion({ ...completion, [name]: true })
+      : setCompletion({ ...completion, [name]: false });
+  };
 
   const onCreateEducation = async () => {
     const educationData = {
@@ -269,7 +339,20 @@ const Info = () => {
     const res = await postEducation(userId, educationData);
     const data = res.data;
 
-    setEducation([data, ...education]);
+    const educationInit = [
+      {
+        id: data.id,
+        school: {
+          name: data.school.name,
+          schoolType: data.school.schoolType,
+          schoolGubun: data.school.schoolGubun
+        },
+        major: data.major,
+        status: educationList[0]
+      }
+    ];
+
+    setEducation(educationInit);
   };
 
   const onDeleteEducation = async (educationId: number) => {
@@ -308,17 +391,14 @@ const Info = () => {
     await putEducation(userId, education[0].id, educationData);
   };
 
-  const onEducationClick = (name: string, item: string) => {
-    setEducation({ ...education, [name]: item });
-    setCompletion({ ...completion, [name]: true });
-  };
-
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
   useEffect(() => {
     if (infoInputs.name !== "") {
       onSaveInfo();
     }
-    // onSaveEducation();
+    if (education.length >= 1) {
+      onSaveEducation(education[0].id);
+    }
   }, [stepper]);
 
   // 내 정보 업데이트
@@ -331,13 +411,26 @@ const Info = () => {
         const findEducation = educationEngList.findIndex(
           (education: string) => education === data.education[0].status
         );
+
+        const educationInit = [
+          {
+            id: data.education[0].id,
+            school: {
+              name: data.education[0].school.name,
+              schoolType: data.education[0].school.schoolType,
+              schoolGubun: data.education[0].school.schoolGubun
+            },
+            major: data.education[0].major,
+            status: educationList[0]
+          }
+        ];
         setCompletion({
           ...completion,
           schoolName: isValid(data.education[0].school.name),
           schoolMajor: isValid(data.education[0].major),
           schoolStatus: isValid(educationList[findEducation])
         });
-        setEducation(data.education);
+        setEducation(educationInit);
       }
 
       setCompletion({
@@ -393,12 +486,14 @@ const Info = () => {
       />
       <InfoSub
         education={education}
-        infoActives={infoActives}
+        educationActives={educationActives}
         schoolList={schoolList}
-        onInputChange={onMajorChange}
         onSchoolChange={onSchoolChange}
-        onInfoDropdownActive={onInfoDropdownActive}
-        onItemClick={onEducationClick}
+        onMajorChange={onMajorChange}
+        onSchoolDropdownActive={onSchoolDropdownActive}
+        onEducationDropdownActive={onEducationDropdownActive}
+        onSchoolDropdownClick={onSchoolDropdownClick}
+        onEducationDropdownClick={onEducationDropdownClick}
         onBlurEducation={onSaveEducation}
         onCreateEducation={onCreateEducation}
         onDeleteEducation={onDeleteEducation}

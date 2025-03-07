@@ -241,8 +241,8 @@ const ProfileMain = ({
           </span>
           {education.length >= 1 && (
             <span>
-              {education.school.name}{" "}
-              {education.major && education.major + " 전공"}{" "}
+              {education[0].school.name}{" "}
+              {education[0].major && education[0].major + " 전공"}{" "}
               {educationList[statusIndex]}
             </span>
           )}
