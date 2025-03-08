@@ -14,6 +14,7 @@ export interface sizeStyleType {
 
 export interface CompletionProgressType {
   name: boolean;
+  gender: boolean;
   birth: boolean;
   height: boolean;
   weight: boolean;

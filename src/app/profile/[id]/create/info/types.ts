@@ -1,5 +1,6 @@
 export interface InfoInputType {
   name: string;
+  gender: string;
   bornYear: string;
   height: string;
   weight: string;
@@ -27,6 +28,7 @@ export interface InfoEducationActiveType {
 
 export interface InfoDataType {
   name: string;
+  gender: string;
   bornYear: number;
   height: number;
   weight: number;

@@ -66,10 +66,11 @@ const Info = () => {
   });
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
 
-  // const [selectedGender, setSelectedGender] = useState("");
-  // const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSelectedGender(e.target.id);
-  // };
+  const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInfoInputs({ ...infoInputs, gender: e.target.id });
+    setCompletion({ ...completion, gender: true });
+    onSaveInfo();
+  };
 
   // 내 정보 입력
   const onInputChange = (
@@ -110,7 +111,7 @@ const Info = () => {
     ) {
       setInfoActives({ ...infoActives, [name]: false });
     }
-    isValid(value)
+    value.length >= 4
       ? setCompletion({ ...completion, [name]: true })
       : setCompletion({ ...completion, [name]: false });
   };
@@ -211,6 +212,7 @@ const Info = () => {
   const onSaveInfo = async () => {
     const infoData: InfoDataType = {
       name: infoInputs.name,
+      gender: infoInputs.gender,
       bornYear: Number(infoInputs.bornYear),
       height: Number(infoInputs.height),
       weight: Number(infoInputs.weight),
@@ -442,6 +444,7 @@ const Info = () => {
         setCompletion({
           ...completion,
           name: isValid(data.info.name),
+          gender: isValid(data.info.gender),
           birth: isValid(data.info.bornYear),
           height: data.info.height > 0 ? true : false,
           weight: data.info.weight > 0 ? true : false,
@@ -461,6 +464,7 @@ const Info = () => {
         setInfoInputs({
           ...infoInputs,
           name: data.info.name,
+          gender: data.info.gender,
           bornYear: data.info.bornYear,
           height: data.info.height,
           weight: data.info.weight,
@@ -481,8 +485,7 @@ const Info = () => {
         infoInputs={infoInputs}
         infoActives={infoActives}
         specialties={specialties}
-        // selectedGender={selectedGender}
-        // onSelectGender={onSelectGender}
+        onSelectGender={onSelectGender}
         onInputChange={onInputChange}
         onNumberChange={onNumberChange}
         onBirthChange={onBirthChange}

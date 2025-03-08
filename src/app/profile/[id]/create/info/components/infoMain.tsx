@@ -12,8 +12,7 @@ interface InfoMainProps {
   infoInputs: InfoInputType;
   infoActives: InfoActiveType;
   specialties: SpecialtyType[];
-  // selectedGender: string;
-  // onSelectGender: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSelectGender: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onNumberChange: React.ChangeEventHandler<HTMLInputElement>;
   onBirthChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -29,8 +28,7 @@ const InfoMain = ({
   infoInputs,
   infoActives,
   specialties,
-  // selectedGender,
-  // onSelectGender,
+  onSelectGender,
   onInputChange,
   onNumberChange,
   onBirthChange,
@@ -79,24 +77,24 @@ const InfoMain = ({
               onSave={onBlurInfo}
             />
           </div>
-          {/* <div className="flex w-full flex-col">
+          <div className="flex w-full flex-col">
             <Label label="성별" required />
             <div className="typography-body2 flex h-10 w-full flex-row items-center gap-4 rounded-xl border border-border-default-light bg-background-surface-light px-4 font-normal text-content-primary-light">
               <div className="flex h-auto w-auto flex-row gap-2">
                 <input
                   type="radio"
-                  id="female"
+                  id="F"
                   name="customRadio"
-                  checked={selectedGender === "female"}
+                  checked={infoInputs.gender === "F"}
                   className="hidden"
                   onChange={onSelectGender}
                 />
                 <label
-                  htmlFor="female"
+                  htmlFor="F"
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`flex h-4 w-4 items-center justify-center rounded-full ${selectedGender === "female" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                    className={`flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "F" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>
@@ -106,18 +104,18 @@ const InfoMain = ({
               <div className="flex h-auto w-auto flex-row gap-2">
                 <input
                   type="radio"
-                  id="male"
+                  id="M"
                   name="customRadio"
-                  checked={selectedGender === "male"}
+                  checked={infoInputs.gender === "M"}
                   className="hidden"
                   onChange={onSelectGender}
                 />
                 <label
-                  htmlFor="male"
+                  htmlFor="M"
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`flex h-4 w-4 items-center justify-center rounded-full ${selectedGender === "male" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                    className={`flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "M" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>
@@ -125,7 +123,7 @@ const InfoMain = ({
                 </label>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
           <div className="flex w-full flex-col">

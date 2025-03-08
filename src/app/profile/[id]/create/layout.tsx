@@ -25,7 +25,8 @@ import Cookies from "js-cookie";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const userId = useRecoilValue(defaultId);
   const jwt = Cookies.get("jwt");
-  const { name, birth, contact } = useRecoilValue(completionProgress);
+
+  const { name, gender, birth, contact } = useRecoilValue(completionProgress);
   const [isDraftState, setIsDraftState] = useRecoilState(isDraft);
   const setIsDraftLoading = useSetRecoilState(isDraftComplete);
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -89,7 +90,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       setCompletion({
         ...completion,
         name: isValid(data.info.name),
-        birth: isValid(data.info.bornYear),
+        gender: isValid(data.info.gender),
+        birth: data.info.bornYear >= 4 ? true : false,
         height: data.info.height > 0 ? true : false,
         weight: data.info.weight > 0 ? true : false,
         contact: isValid(data.info.contact),
@@ -123,7 +125,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     ).length;
     const resultProgress = Math.floor((completedItems / totalItems) * 100);
     setProgress(resultProgress);
-  }, [completion]);
+  }, [completion, birth]);
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
@@ -133,7 +135,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         progress={progress}
         onBack={onBackProfileClick}
         onSave={onSaveProfileClick}
-        disabled={!(name && birth && contact)}
+        disabled={!(name && gender && birth && contact)}
       />
       {isDraftState && (
         <ConfirmModal

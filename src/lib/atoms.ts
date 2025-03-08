@@ -26,6 +26,7 @@ export const completionProgress = atom<CompletionProgressType>({
   key: "completionProgress",
   default: {
     name: false,
+    gender: false,
     birth: false,
     height: false,
     weight: false,

@@ -1,5 +1,6 @@
 export const infoInputInit = {
   name: "",
+  gender: "M",
   bornYear: "",
   height: "",
   weight: "",
