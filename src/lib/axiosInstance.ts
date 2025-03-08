@@ -9,8 +9,7 @@ const api = axios.create({
   baseURL: baseURL,
   headers: {
     Authorization: `Bearer ${token}`
-  },
-  withCredentials: true
+  }
 });
 
 const refreshToken = async () => {
