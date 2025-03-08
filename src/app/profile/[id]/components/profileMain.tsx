@@ -11,6 +11,8 @@ import Plus from "../../../../../public/icons/Plus.svg";
 import Download from "../../../../../public/icons/Download.svg";
 import Copy from "../../../../../public/icons/Copy.svg";
 import Edit from "../../../../../public/icons/Edit.svg";
+import InstagramIcon from "../../../../../public/icons/InstagramIcon.svg";
+import YoutubeIcon from "../../../../../public/icons/YoutubeIcon.svg";
 import { InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
@@ -269,12 +271,7 @@ const ProfileMain = ({
                 className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
                 target="_blank"
               >
-                <Image
-                  src="/icons/instagramIcon.svg"
-                  alt="instagram"
-                  width={14}
-                  height={14}
-                />
+                <InstagramIcon />
               </Link>
             )}
             {isValidYoutubeChannelUrl(youtubeLink) && (
@@ -283,12 +280,7 @@ const ProfileMain = ({
                 className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
                 target="_blank"
               >
-                <Image
-                  src="/icons/youtubeIcon.svg"
-                  alt="youtube"
-                  width={16}
-                  height={16}
-                />
+                <YoutubeIcon />
               </Link>
             )}
           </div>

@@ -303,20 +303,6 @@ const Profile = () => {
       }
     };
     getProfileData();
-
-    // const getFilmoCategoryList = async () => {
-    //   const res = await getFilmoCategories();
-    //   const data = res.data;
-    //   setFilmoCategoryList(data);
-    // };
-
-    // const getFilmoRoleList = async () => {
-    //   const res = await getFilmoRoles();
-    //   const data = res.data;
-    //   setFilmoRoleList(data);
-    // };
-    // getFilmoCategoryList();
-    // getFilmoRoleList();
   }, [pathName]);
 
   useEffect(() => {
