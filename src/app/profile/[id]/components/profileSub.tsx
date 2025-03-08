@@ -44,7 +44,7 @@ const ProfileSub = ({
   onFilmoLinkModalOpen
 }: PropfileSubProps) => {
   const repFilmoList = filmographyList.filter(
-    (filmo: FilmoResponseType) => filmo.is_featured === true
+    (filmo: FilmoResponseType) => filmo.isFeatured === true
   );
 
   const [photoSlider, setPhotoSlider] = useState(0);
@@ -171,15 +171,17 @@ const ProfileSub = ({
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title name="작품 활동" />
-          <button
-            type="button"
-            className="flex gap-1 rounded"
-            onClick={onFilmoModalActive}
-          >
-            <span className="typography-body2 font-medium text-content-tertiary-light">
-              모두 보기
-            </span>
-          </button>
+          {filmographyList.length >= 1 && (
+            <button
+              type="button"
+              className="flex gap-1 rounded"
+              onClick={onFilmoModalActive}
+            >
+              <span className="typography-body2 font-medium text-content-tertiary-light">
+                모두 보기
+              </span>
+            </button>
+          )}
         </div>
         {filmographyList.length >= 1 && repFilmoList.length < 6 && (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">

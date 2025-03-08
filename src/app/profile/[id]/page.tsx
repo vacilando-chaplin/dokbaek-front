@@ -288,7 +288,7 @@ const Profile = () => {
     const getProfileData = async () => {
       if (userId !== Number(pathUserId)) {
         setOtherUser(true);
-        const res = await getProfileOtherUser(userId);
+        const res = await getProfileOtherUser(Number(pathUserId));
         const data = res.data;
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
