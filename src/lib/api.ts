@@ -1,6 +1,7 @@
 import { base64ToBlob } from "@/lib/utils";
 import axios from "axios";
 import { api } from "./axiosInstance";
+import { profileInit } from "./data";
 
 export const convertImageToBase64 = async (imageUrl: string) => {
   try {
@@ -67,8 +68,10 @@ export const getProfile = async (id: number) => {
   try {
     const res = await api.get(`/profile/${id}`);
     return res.data;
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      return profileInit;
+    }
   }
 };
 
@@ -78,8 +81,10 @@ export const getProfileOtherUser = async (id: number) => {
       `${process.env.NEXT_PUBLIC_BASEURL}/profile/${id}`
     );
     return res.data;
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      return profileInit;
+    }
   }
 };
 

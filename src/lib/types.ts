@@ -144,6 +144,7 @@ export interface ProfileResponseType {
 export interface InfoResponseType {
   status: string;
   name: string;
+  gender: string;
   bornYear: number;
   height: number;
   weight: number;

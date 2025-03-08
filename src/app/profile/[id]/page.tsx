@@ -6,7 +6,6 @@ import {
   categoryData,
   defaultId,
   filmoCategory,
-  filmoRole,
   stepperInit,
   toastMessage
 } from "@/lib/atoms";
@@ -51,9 +50,7 @@ const Profile = () => {
   const userId = useRecoilValue(defaultId);
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
-  const [filmoCategoryList, setFilmoCategoryList] =
-    useRecoilState(filmoCategory);
-  const setFilmoRoleList = useSetRecoilState(filmoRole);
+  const filmoCategoryList = useRecoilValue(filmoCategory);
   const setStepper = useSetRecoilState(stepperInit);
 
   // main, sub 구분선

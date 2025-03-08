@@ -46,6 +46,7 @@ export const profileResponseInit = {
   status: "",
   info: {
     name: "",
+    gender: "M",
     bornYear: 0,
     height: 0,
     weight: 0,
@@ -148,6 +149,40 @@ export const profileResponseInit = {
   viewsCount: 0,
   createdAt: "",
   updatedAt: ""
+};
+
+export const profileInit = {
+  data: {
+    id: 0,
+    userId: 0,
+    status: "",
+    info: {
+      name: "",
+      gender: "M",
+      bornYear: 0,
+      height: 0,
+      weight: 0,
+      email: "",
+      contact: "",
+      instagramLink: "",
+      youtubeLink: "",
+      introduction: ""
+    },
+    mainPhotoPath: "",
+    mainPhotoPreviewPath: "",
+    education: [],
+    photos: [],
+    recentPhotos: [],
+    stillCuts: [],
+    filmos: [],
+    videos: [],
+    specialties: [],
+    likesCount: 0,
+    likedByMe: true,
+    viewsCount: 0,
+    createdAt: "",
+    updatedAt: ""
+  }
 };
 
 export const imageCompressionOptions = {

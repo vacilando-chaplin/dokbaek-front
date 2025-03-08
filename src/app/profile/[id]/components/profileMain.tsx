@@ -60,6 +60,7 @@ const ProfileMain = ({
 
   const {
     name,
+    gender,
     bornYear,
     height,
     weight,
@@ -210,24 +211,25 @@ const ProfileMain = ({
               <Edit width="14" height="14" fill="#212529" />
               프로필 편집
             </button>
-            {bornYear === 0 ||
-              (contact.length === 0 && (
-                <div className="absolute -top-10">
-                  <Tooltip placement="top" text="프로필을 완성하세요." />
-                </div>
-              ))}
+            {(bornYear === 0 || contact.length === 0) && (
+              <div className="absolute -top-10">
+                <Tooltip placement="top" text="프로필을 완성하세요." />
+              </div>
+            )}
           </div>
         </div>
       )}
       <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
         <div className="flex flex-row items-center gap-3">
           <span className="typography-body1 font-semibold">{name}</span>
-          <div className="typography-caption1 flex flex-row gap-1 font-medium text-content-tertiary-light">
-            <span>최근 업데이트</span>
-            <span>
-              {year}.{month}.{day}
-            </span>
-          </div>
+          {updated && (
+            <div className="typography-caption1 flex flex-row gap-1 font-medium text-content-tertiary-light">
+              <span>최근 업데이트</span>
+              <span>
+                {year}.{month}.{day}
+              </span>
+            </div>
+          )}
         </div>
         <span className="typography-body2 font-medium">배우</span>
       </div>
@@ -286,7 +288,7 @@ const ProfileMain = ({
           </div>
         </ProfileInfoContainer>
       )}
-      {profileSpecialties.length >= 1 && (
+      {profileSpecialties.length >= 1 && profileSpecialties[0].id !== 0 && (
         <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
           <div className="mb-2 text-body2 font-semibold">특기</div>
           <div className="flex gap-1">
