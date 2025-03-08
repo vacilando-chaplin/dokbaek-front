@@ -67,13 +67,29 @@ export const categoryData = atom<string[]>({
 
 export const filmoCategory = atom<FilmoCategoryType[]>({
   key: "filmoCategory",
-  default: [],
+  default: [
+    { id: 1, name: "장편상업영화" },
+    { id: 2, name: "장편독립영화" },
+    { id: 3, name: "단편영화" },
+    { id: 4, name: "TV드라마" },
+    { id: 5, name: "웹드라마" },
+    { id: 6, name: "광고" },
+    { id: 7, name: "뮤직비디오" },
+    { id: 8, name: "연극" },
+    { id: 9, name: "기타" }
+  ],
   effects_UNSTABLE: [persistAtom]
 });
 
 export const filmoRole = atom<FilmoRoleType[]>({
   key: "filmoRole",
-  default: [],
+  default: [
+    { id: 0, name: "" },
+    { id: 1, name: "주연" },
+    { id: 2, name: "조연" },
+    { id: 3, name: "단역" },
+    { id: 4, name: "직접 입력" }
+  ],
   effects_UNSTABLE: [persistAtom]
 });
 

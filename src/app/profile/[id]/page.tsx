@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  getFilmoCategories,
-  getFilmoRoles,
-  getProfile,
-  getProfileOtherUser
-} from "@/lib/api";
+import { getProfile, getProfileOtherUser } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
@@ -49,10 +44,11 @@ import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
 
 const Profile = () => {
   const router = useRouter();
-
-  const userId = useRecoilValue(defaultId);
   const pathName = usePathname();
-  const pathUserId = pathName.split("/").filter(Boolean).pop();
+  const pathParts = pathName.split("/").filter((part) => part.length > 0);
+  const pathUserId =
+    pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
+  const userId = useRecoilValue(defaultId);
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const [filmoCategoryList, setFilmoCategoryList] =
@@ -286,7 +282,7 @@ const Profile = () => {
     }
 
     const getProfileData = async () => {
-      if (userId !== Number(pathUserId)) {
+      if (pathName && userId !== Number(pathUserId)) {
         setOtherUser(true);
         const res = await getProfileOtherUser(Number(pathUserId));
         const data = res.data;
@@ -295,7 +291,7 @@ const Profile = () => {
         setMainPhotoOrigin(data.mainPhotoPath);
         setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
-      } else {
+      } else if (pathName && userId === Number(pathUserId)) {
         setOtherUser(false);
         const res = await getProfile(userId);
         const data = res.data;
@@ -308,20 +304,20 @@ const Profile = () => {
     };
     getProfileData();
 
-    const getFilmoCategoryList = async () => {
-      const res = await getFilmoCategories();
-      const data = res.data;
-      setFilmoCategoryList(data);
-    };
+    // const getFilmoCategoryList = async () => {
+    //   const res = await getFilmoCategories();
+    //   const data = res.data;
+    //   setFilmoCategoryList(data);
+    // };
 
-    const getFilmoRoleList = async () => {
-      const res = await getFilmoRoles();
-      const data = res.data;
-      setFilmoRoleList(data);
-    };
-    getFilmoCategoryList();
-    getFilmoRoleList();
-  }, []);
+    // const getFilmoRoleList = async () => {
+    //   const res = await getFilmoRoles();
+    //   const data = res.data;
+    //   setFilmoRoleList(data);
+    // };
+    // getFilmoCategoryList();
+    // getFilmoRoleList();
+  }, [pathName]);
 
   useEffect(() => {
     const filteredCategoryList = filmoCategoryList.filter(

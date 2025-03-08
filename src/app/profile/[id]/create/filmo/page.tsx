@@ -1,6 +1,5 @@
 "use client";
 
-import { getFilmoCategories, getFilmoRoles } from "@/lib/api";
 import ConfirmModal from "@/components/organisms/confirmModal";
 import FilmoMain from "./components/filmoMain";
 import FilmoModal from "./components/filmoModal";
@@ -76,20 +75,20 @@ const Filmography = () => {
   const [representativeCount, setRepresentativeCount] = useState(0);
 
   // 필모그래피 분류, 출연 형태 GET
-  useEffect(() => {
-    const getFilmoCategoryList = async () => {
-      const res = await getFilmoCategories();
-      const data = await res.data;
-      setFilmoCategoryList(data);
-    };
-    const getFilmoRoleList = async () => {
-      const res = await getFilmoRoles();
-      const data = await res.data;
-      setFilmoRoleList(data);
-    };
-    getFilmoCategoryList();
-    getFilmoRoleList();
-  }, []);
+  // useEffect(() => {
+  //   const getFilmoCategoryList = async () => {
+  //     const res = await getFilmoCategories();
+  //     const data = await res.data;
+  //     setFilmoCategoryList(data);
+  //   };
+  //   const getFilmoRoleList = async () => {
+  //     const res = await getFilmoRoles();
+  //     const data = await res.data;
+  //     setFilmoRoleList(data);
+  //   };
+  //   getFilmoCategoryList();
+  //   getFilmoRoleList();
+  // }, []);
 
   // 필모그래피 모달 필모그래피 추가
   const onFilmographySave = async () => {
