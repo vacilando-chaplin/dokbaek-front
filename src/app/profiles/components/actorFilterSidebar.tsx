@@ -12,11 +12,13 @@ import {
 import RangeSlider from "@/components/molecules/rangeSlider";
 import SearchInput from "./searchInput";
 import { useRouter } from "next/navigation";
+import RadioGroup from "@/components/organisms/radioGroup";
 
 interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];
   profilesData: ProfilesResponseType | undefined;
   currKeyword?: string;
+  currGender?: string;
   currMinBornYear: number;
   currMaxBornYear: number;
   currMinHeight: number;
@@ -25,6 +27,7 @@ interface ActorFilterSidebarProps {
   currMaxWeight: number;
   handleSubmit: (data: {
     keyword: string;
+    gender: string;
     minBornYear: number;
     maxBornYear: number;
     minHeight: number;
@@ -39,6 +42,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     profiles: [],
     profilesData,
     currKeyword,
+    currGender,
     currMinBornYear,
     currMaxBornYear,
     currMinHeight,
@@ -51,6 +55,14 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const [shouldSubmit, setShouldSubmit] = useState(false);
 
   const [keyword, setKeyword] = useState("");
+  const [gender, setGender] = useState("U");
+
+  const genderOptions = [
+    { label: "전체", value: "U" },
+    { label: "여성", value: "F" },
+    { label: "남성", value: "M" }
+  ];
+
   const [minBornYear, setMinBornYear] = useState(0);
   const [maxBornYear, setMaxBornYear] = useState(0);
   const [bornYearRange, setBornYearRange] = useState<[number, number]>([
@@ -70,12 +82,14 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     maxWeight
   ]);
 
+  const [isGenderOpen, setIsGenderOpen] = useState(true);
   const [isBornYearOpen, setIsBornYearOpen] = useState(true);
   const [isHeightOpen, setIsHeightOpen] = useState(true);
   const [isWeightOpen, setIsWeightOpen] = useState(true);
 
   useEffect(() => {
     if (currKeyword) setKeyword(currKeyword);
+    if (currGender) setGender(currGender);
     if (currMinBornYear) setMinBornYear(currMinBornYear);
     if (currMaxBornYear) setMaxBornYear(currMaxBornYear);
     if (currMinHeight) setMinHeight(currMinHeight);
@@ -84,6 +98,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     if (currMaxWeight) setMaxWeight(currMaxWeight);
   }, [
     currKeyword,
+    currGender,
     currMinBornYear,
     currMaxBornYear,
     currMinHeight,
@@ -95,6 +110,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const onSubmit = () => {
     handleSubmit({
       keyword,
+      gender,
       minBornYear,
       maxBornYear,
       minHeight,
@@ -106,6 +122,10 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
 
   const handleKeywordChange = (keyword: string) => {
     setKeyword(keyword.trim());
+  };
+
+  const handleGenderChange = (gender: string) => {
+    setGender(gender);
   };
 
   const handleMinBornYearChange = (
@@ -143,6 +163,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
 
   const onClickFilterReset = () => {
     setKeyword("");
+    setGender("U");
     setMinBornYear(0);
     setMaxBornYear(0);
     setMinHeight(0);
@@ -171,8 +192,13 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     setMaxWeight(newRange[1]);
   };
 
-  const getTypeRange = (type: string) => {
+  const getTypeLabel = (type: string) => {
     switch (type) {
+      case "gender":
+        return (
+          genderOptions.find((option) => option.value === gender)?.label ||
+          "전체"
+        );
       case "bornYear":
         if (minBornYear === 0 && maxBornYear === 0) {
           return "전체";
@@ -193,6 +219,10 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
         }
     }
   };
+
+  useEffect(() => {
+    onSubmit();
+  }, [gender]);
 
   useEffect(() => {
     setBornYearRange([minBornYear, maxBornYear]);
@@ -272,9 +302,57 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
       <div className="border-b-[1px] border-border-default-light px-5 py-4">
         <div className="flex items-center justify-between">
           <div className="typography-body3 text-content-secondary-light">
+            성별
+            <span className="ml-2 text-accent-primary-light">
+              {getTypeLabel("gender")}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setGender("U");
+              }}
+              className="flex items-center gap-1"
+            >
+              <Reset width="12" height="12" fill="#ADB5BD" />
+              <label
+                style={{ wordBreak: "keep-all" }}
+                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+              >
+                초기화
+              </label>
+            </button>
+            <button
+              onClick={() => setIsGenderOpen((prev) => !prev)}
+              className="transition-transform duration-200"
+            >
+              <ArrowChevronDownGray
+                width="20"
+                height="20"
+                className={isGenderOpen ? "rotate-180" : "rotate-0"}
+              />
+            </button>
+          </div>
+        </div>
+        {isGenderOpen && (
+          <div className="mt-4">
+            <div className="flex items-center gap-2">
+              <RadioGroup
+                name="example"
+                options={genderOptions}
+                value={gender}
+                onChange={handleGenderChange}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="border-b-[1px] border-border-default-light px-5 py-4">
+        <div className="flex items-center justify-between">
+          <div className="typography-body3 text-content-secondary-light">
             나이(년생)
             <span className="ml-2 text-accent-primary-light">
-              {getTypeRange("bornYear")}
+              {getTypeLabel("bornYear")}
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -340,12 +418,13 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           </div>
         )}
       </div>
+
       <div className="border-b-[1px] border-border-default-light px-5 py-4">
         <div className="flex items-center justify-between">
           <div className="typography-body3 text-content-secondary-light">
             키
             <span className="ml-2 text-accent-primary-light">
-              {getTypeRange("height")}
+              {getTypeLabel("height")}
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -418,7 +497,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           <div className="typography-body3 text-content-secondary-light">
             몸무게
             <span className="ml-2 text-accent-primary-light">
-              {getTypeRange("weight")}
+              {getTypeLabel("weight")}
             </span>
           </div>
           <div className="flex items-center gap-2">

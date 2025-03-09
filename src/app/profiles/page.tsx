@@ -15,6 +15,7 @@ const Page = () => {
   const { replace } = useRouter();
 
   const currKeyword = useRef("");
+  const currGender = useRef("");
   const currMinBornYear = useRef(0);
   const currMaxBornYear = useRef(0);
   const currMinHeight = useRef(0);
@@ -30,6 +31,7 @@ const Page = () => {
   };
 
   const keyword = searchParams.get("keyword") ?? "";
+  const gender = searchParams.get("gender") ?? "";
   const minBornYear = getParam("minBornYear");
   const maxBornYear = getParam("maxBornYear");
   const minHeight = getParam("minHeight");
@@ -38,6 +40,7 @@ const Page = () => {
   const maxWeight = getParam("maxWeight");
 
   if (keyword) currKeyword.current = keyword;
+  if (gender) currGender.current = gender;
   if (!isNaN(minBornYear)) currMinBornYear.current = minBornYear;
   if (!isNaN(maxBornYear)) currMaxBornYear.current = maxBornYear;
   if (!isNaN(minHeight)) currMinHeight.current = minHeight;
@@ -47,6 +50,7 @@ const Page = () => {
 
   const onSubmit = ({
     keyword,
+    gender,
     minBornYear,
     maxBornYear,
     minHeight,
@@ -55,6 +59,7 @@ const Page = () => {
     maxWeight
   }: {
     keyword: string;
+    gender: string;
     minBornYear: number;
     maxBornYear: number;
     minHeight: number;
@@ -63,6 +68,7 @@ const Page = () => {
     maxWeight: number;
   }) => {
     currKeyword.current = keyword.trim();
+    currGender.current = gender;
     currMinBornYear.current = minBornYear;
     currMaxBornYear.current = maxBornYear;
     currMinHeight.current = minHeight;
@@ -74,6 +80,7 @@ const Page = () => {
 
     const params = new URLSearchParams();
     params.set("keyword", keyword);
+    params.set("gender", gender);
     params.set("page", String(0));
     params.set("size", String(10));
     params.set("sort", "RECENT_UPDATED");
@@ -92,6 +99,7 @@ const Page = () => {
   const getSearchParams = () => {
     const params = new URLSearchParams();
     if (keyword) params.set("keyword", keyword);
+    if (gender) params.set("gender", gender);
     params.set("page", String(0));
     params.set("size", String(10));
     params.set("sort", "RECENT_UPDATED");
@@ -129,6 +137,7 @@ const Page = () => {
         <div className="mb-4 flex flex-row justify-center gap-6">
           <ActorFilterSidebar
             currKeyword={currKeyword.current}
+            currGender={currGender.current}
             currMinBornYear={currMinBornYear.current}
             currMaxBornYear={currMaxBornYear.current}
             currMinHeight={currMinHeight.current}
