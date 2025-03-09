@@ -117,16 +117,16 @@ const FilmoItem = ({
         )}
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
-        {production.thumbnailUrl ? (
+        {filmo.thumbnailPath.endsWith("null") ? (
+          <LogoHorizontalSmall width="20" height="20" fill="#ADB5BD" />
+        ) : (
           <Image
-            src={production.thumbnailUrl}
+            src={filmo.thumbnailPath}
             alt={production.title}
             width={76}
             height={114}
             className="h-[114px] w-[76px] rounded-lg bg-gray-100"
           />
-        ) : (
-          <LogoHorizontalSmall width="20" height="20" fill="#ADB5BD" />
         )}
       </div>
     </div>

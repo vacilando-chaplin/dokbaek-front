@@ -274,6 +274,7 @@ export interface FilmoResponseType {
     videoUrl: string;
     thumbnailUrl: string;
   };
+  thumbnailPath: string;
   displayOrder: number;
 }
 

@@ -98,6 +98,7 @@ const Filmography = () => {
       (category: FilmoCategoryType) =>
         category.name === filmoInputs.classification
     );
+
     const filmo = {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
@@ -109,7 +110,7 @@ const Filmography = () => {
         title: filmoInputs.title,
         description: filmoInputs.description,
         videoUrl: filmoInputs.link,
-        thumbnailUrl: filmoInputs.thumbnail
+        thumbnailUrl: ""
       },
       displayOrder: 0
     };
@@ -117,11 +118,13 @@ const Filmography = () => {
     const filmoRes = await postFilmography(profileId, filmo);
     const filmoData = await filmoRes.data;
 
-    await postFilmographyThumbnail(
-      profileId,
-      filmoData.id,
-      filmoData.thumbnailUrl
-    );
+    if (filmoInputs.thumbnail !== "") {
+      await postFilmographyThumbnail(
+        profileId,
+        filmoData.id,
+        filmoInputs.thumbnail
+      );
+    }
 
     const res = await getProfileDraft(profileId);
     const data = await res.data;
@@ -189,7 +192,7 @@ const Filmography = () => {
   const onFilmoRepSave = async () => {
     for (const filmo of filmoRepEditList) {
       if (filmo.isFeatured) {
-        await putFilmography(profileId, filmo.id, {
+        const filmoData = {
           roleId: filmo.role.id,
           customRole: filmo.customRole,
           character: filmo.character,
@@ -200,10 +203,11 @@ const Filmography = () => {
             title: filmo.production.title,
             description: filmo.production.description,
             videoUrl: filmo.production.videoUrl,
-            thumbnailUrl: filmo.production.thumbnailUrl
+            thumbnailUrl: filmo.thumbnailPath
           },
           displayOrder: filmo.displayOrder
-        });
+        };
+        await putFilmography(profileId, filmo.id, filmoData);
       }
     }
 
@@ -318,7 +322,7 @@ const Filmography = () => {
       casting: filmo.character,
       description: filmo.production.description,
       link: filmo.production.videoUrl,
-      thumbnail: filmo.production.thumbnailUrl,
+      thumbnail: filmo.thumbnailPath,
       representative: filmo.isFeatured,
       id: filmo.id,
       displayOrder: filmo.displayOrder
