@@ -16,6 +16,15 @@ export const educationEngList = [
   "DROPPED_OUT"
 ];
 
+export const educationEnum = {
+  GRADUATED: "졸업",
+  PENDING: "졸업 예정",
+  ENROLLED: "재학 중",
+  LEAVE_OF_ABSENCE: "휴학",
+  COMPLETION: "수료",
+  DROPPED_OUT: "중퇴"
+};
+
 export const classificationList = [
   "장편상업영화",
   "장편독립영화",
@@ -31,31 +40,61 @@ export const classificationList = [
 
 export const castList = ["주연", "조연", "단역", "직접 입력"];
 
-export const profileInit = {
+export const profileResponseInit = {
   id: 0,
   userId: 0,
   status: "",
   info: {
     name: "",
+    gender: "M",
     bornYear: 0,
     height: 0,
     weight: 0,
     email: "",
     contact: "",
-    specialty: "",
     instagramLink: "",
     youtubeLink: "",
     introduction: ""
   },
-  education: [],
+  mainPhotoPath: "",
+  mainPhotoPreviewPath: "",
+  education: [
+    {
+      school: {
+        name: "",
+        schoolType: "",
+        schoolGubun: ""
+      },
+      major: "",
+      status: ""
+    }
+  ],
   photos: [
     {
       id: "",
-      userProfileId: 0,
       path: "",
       previewPath: "",
       displayOrder: 0,
-      isDefault: false,
+      createdAt: "",
+      updatedAt: ""
+    }
+  ],
+  recentPhotos: [
+    {
+      id: "",
+      photoType: "",
+      path: "",
+      previewPath: "",
+      createdAt: "",
+      updatedAt: ""
+    }
+  ],
+  stillCuts: [
+    {
+      id: "",
+      path: "",
+      previewPath: "",
+      displayOrder: 0,
       createdAt: "",
       updatedAt: ""
     }
@@ -69,7 +108,7 @@ export const profileInit = {
       },
       customRole: "",
       character: "",
-      is_featured: false,
+      isFeatured: true,
       production: {
         category: {
           id: 0,
@@ -87,13 +126,68 @@ export const profileInit = {
   videos: [
     {
       id: 0,
-      userProfileId: 0,
       url: "",
       displayOrder: 0
     }
   ],
+  specialties: [
+    {
+      id: 0,
+      specialty: {
+        id: 0,
+        specialtyName: ""
+      },
+      imageUrl: "",
+      mediaUrl: "",
+      displayOrder: 0,
+      createdAt: "",
+      updatedAt: ""
+    }
+  ],
+  likesCount: 0,
+  likedByMe: true,
+  viewsCount: 0,
   createdAt: "",
   updatedAt: ""
+};
+
+export const profileInit = {
+  data: {
+    id: 0,
+    userId: 0,
+    status: "",
+    info: {
+      name: "",
+      gender: "M",
+      bornYear: 0,
+      height: 0,
+      weight: 0,
+      email: "",
+      contact: "",
+      instagramLink: "",
+      youtubeLink: "",
+      introduction: ""
+    },
+    mainPhotoPath: "",
+    mainPhotoPreviewPath: "",
+    education: [],
+    photos: [],
+    recentPhotos: [],
+    stillCuts: [],
+    filmos: [],
+    videos: [],
+    specialties: [],
+    likesCount: 0,
+    likedByMe: true,
+    viewsCount: 0,
+    createdAt: "",
+    updatedAt: ""
+  }
+};
+
+export const imageCompressionOptions = {
+  maxSizeMB: 0.5,
+  useWebWorker: true
 };
 
 export const year = new Date().getFullYear();

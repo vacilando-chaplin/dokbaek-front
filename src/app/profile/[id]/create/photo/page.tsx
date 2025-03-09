@@ -1,17 +1,16 @@
 "use client";
 
+import { deletePhoto, postPhoto, patchPhoto } from "@/lib/api";
 import {
-  convertImageToBase64,
-  deletePhoto,
-  getProfile,
-  postPhoto,
-  patchPhoto
-} from "@/lib/api";
-import { completionProgress, defaultId, toastMessage } from "@/lib/atoms";
+  completionProgress,
+  defaultId,
+  isDraft,
+  isDraftComplete,
+  toastMessage
+} from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { PhotoModalType, SelectedImagesType } from "./types";
 import { photoModalInit } from "./data";
 import PhotoModal from "./components/photoModal";
 import PhotoProfile from "./components/photoProfile";
@@ -20,16 +19,16 @@ import PhotoRecent from "./components/photoRecent";
 import imageCompression from "browser-image-compression";
 import { convertToBase64, getFileMimeTypeFromUrl, isValid } from "@/lib/utils";
 import { postRecentPhoto, postRecentPhotoEdit } from "./api";
+import { getProfileDraft } from "../../api";
+import { CropDataType, PhotoModalType, SelectedImagesType } from "../../types";
+import { imageCompressionOptions } from "@/lib/data";
+import { cropDataInit } from "../../data";
 
 const Photo = () => {
   const userId = useRecoilValue(defaultId);
+  const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
   const [completion, setCompletion] = useRecoilState(completionProgress);
-
-  const options = {
-    maxSizeMB: 0.5,
-    useWebWorker: true
-  };
 
   const [photoList, setPhotoList] = useState<PhotoResponseType[]>([]);
   const [stillCutList, setStillCutList] = useState<PhotoResponseType[]>([]);
@@ -41,10 +40,15 @@ const Photo = () => {
   const [selectImage, setSelectImage] = useState("");
   const [cropImage, setCropImage] = useState("");
   const [selectedPhotoId, setSelectedPhotoId] = useState(0);
-  const [cropData, setCropData] = useState<any>({});
-  const [selectedImages, setSelectedImages] = useState<SelectedImagesType[]>(
-    []
-  );
+  const [cropData, setCropData] = useState<CropDataType>(cropDataInit);
+  const [selectedImages, setSelectedImages] = useState<SelectedImagesType[]>([
+    {
+      origin: "",
+      preview: "",
+      originImage: "",
+      cropData: cropDataInit
+    }
+  ]);
 
   const [photoModal, setPhotoModal] = useState<PhotoModalType>(photoModalInit);
   const [photoDeleteActive, setPhotoDeleteActive] = useState(false);
@@ -58,7 +62,10 @@ const Photo = () => {
     let fileData: any = [];
 
     for (const file of images) {
-      const downSizedFile = await imageCompression(file, options);
+      const downSizedFile = await imageCompression(
+        file,
+        imageCompressionOptions
+      );
       const downSizedImage = await convertToBase64(downSizedFile);
 
       fileData = fileData.concat([
@@ -66,7 +73,7 @@ const Photo = () => {
           origin: downSizedImage,
           preview: downSizedImage,
           originImage: downSizedImage,
-          cropData: {}
+          cropData: cropDataInit
         }
       ]);
     }
@@ -93,7 +100,10 @@ const Photo = () => {
     let fileData: any = [];
 
     for (const file of images) {
-      const downSizedFile = await imageCompression(file, options);
+      const downSizedFile = await imageCompression(
+        file,
+        imageCompressionOptions
+      );
       const downSizedImage = await convertToBase64(downSizedFile);
 
       fileData = fileData.concat([
@@ -101,7 +111,7 @@ const Photo = () => {
           origin: downSizedImage,
           preview: downSizedImage,
           originImage: downSizedImage,
-          cropData: {}
+          cropData: cropDataInit
         }
       ]);
     }
@@ -177,7 +187,7 @@ const Photo = () => {
       }
       setCompletion({ ...completion, stillcutPhoto: true });
     }
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -194,7 +204,7 @@ const Photo = () => {
   const onEditPhoto = async () => {
     await patchPhoto(userId, cropImage, photoModal.id, photoModal.category);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -209,7 +219,7 @@ const Photo = () => {
   const onAddRecentPhoto = async () => {
     await postRecentPhoto(userId, selectImage, cropImage, photoModal.category);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setCompletion({ ...completion, recentPhoto: true });
@@ -222,15 +232,9 @@ const Photo = () => {
 
   // 최근 사진 편집 모달 완료
   const onEditRecentPhoto = async () => {
-    await postRecentPhotoEdit(
-      userId,
-      selectImage,
-      cropImage,
-      photoModal.id,
-      photoModal.category
-    );
+    await postRecentPhotoEdit(userId, selectImage, cropImage, photoModal.id);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     setRecentPhotoList(data.recentPhotos);
@@ -244,7 +248,7 @@ const Photo = () => {
   const onDeletePhoto = async (id: string, category: string) => {
     await deletePhoto(userId, id, category);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = res.data;
 
     isValid(data.photos)
@@ -283,7 +287,14 @@ const Photo = () => {
   const onPhotoModalClose = (e: any) => {
     setCropImage("");
     setSelectImage("");
-    setSelectedImages([]);
+    setSelectedImages([
+      {
+        origin: "",
+        preview: "",
+        originImage: "",
+        cropData: cropDataInit
+      }
+    ]);
     setPhotoModal(photoModalInit);
   };
 
@@ -297,7 +308,7 @@ const Photo = () => {
     const blob = await response.blob();
     const file = new File([blob], "image", { type: mimeType });
 
-    const downSizedFile = await imageCompression(file, options);
+    const downSizedFile = await imageCompression(file, imageCompressionOptions);
     const downSizedImage = await convertToBase64(downSizedFile);
 
     setCropImage(downSizedImage);
@@ -307,7 +318,7 @@ const Photo = () => {
         origin: downSizedImage,
         preview: downSizedImage,
         originImage: downSizedImage,
-        cropData: {}
+        cropData: cropDataInit
       }
     ]);
     setPhotoModal({
@@ -330,7 +341,10 @@ const Photo = () => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const originImage = await convertToBase64(file);
-      const downSizedFile = await imageCompression(file, options);
+      const downSizedFile = await imageCompression(
+        file,
+        imageCompressionOptions
+      );
       const downSizedImage = await convertToBase64(downSizedFile);
 
       setSelectImage(downSizedImage);
@@ -340,7 +354,7 @@ const Photo = () => {
           origin: originImage,
           preview: downSizedImage,
           originImage: selectImage,
-          cropData: {}
+          cropData: cropDataInit
         }
       ]);
     }
@@ -350,27 +364,29 @@ const Photo = () => {
   // 사진 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId);
-      const data = await res.data;
+      if (isDraftLoading) {
+        const res = await getProfileDraft(userId);
+        const data = await res.data;
 
-      isValid(data.photos)
-        ? setCompletion({ ...completion, profilePhoto: true })
-        : setCompletion({ ...completion, profilePhoto: false });
+        isValid(data.photos)
+          ? setCompletion({ ...completion, profilePhoto: true })
+          : setCompletion({ ...completion, profilePhoto: false });
 
-      isValid(data.stillCuts)
-        ? setCompletion({ ...completion, stillcutPhoto: true })
-        : setCompletion({ ...completion, stillcutPhoto: false });
+        isValid(data.stillCuts)
+          ? setCompletion({ ...completion, stillcutPhoto: true })
+          : setCompletion({ ...completion, stillcutPhoto: false });
 
-      isValid(data.recentPhotos)
-        ? setCompletion({ ...completion, recentPhoto: true })
-        : setCompletion({ ...completion, recentPhoto: false });
+        isValid(data.recentPhotos)
+          ? setCompletion({ ...completion, recentPhoto: true })
+          : setCompletion({ ...completion, recentPhoto: false });
 
-      setPhotoList(data.photos);
-      setStillCutList(data.stillCuts);
-      setRecentPhotoList(data.recentPhotos);
+        setPhotoList(data.photos);
+        setStillCutList(data.stillCuts);
+        setRecentPhotoList(data.recentPhotos);
+      }
     };
     getProfileData();
-  }, []);
+  }, [isDraftLoading]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-4">

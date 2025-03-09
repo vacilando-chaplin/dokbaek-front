@@ -5,8 +5,10 @@ import Plus from "../../../public/icons/Plus.svg";
 interface EmptyStateProps {
   text: string;
   button?: boolean;
+  buttonSize: string;
   buttonText: string;
   buttonType: string;
+  otherUser?: boolean;
   icon?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -14,13 +16,17 @@ interface EmptyStateProps {
 const EmptyState = ({
   text,
   button,
+  buttonSize,
   buttonText,
   buttonType,
+  otherUser,
   icon,
   onClick
 }: EmptyStateProps) => {
   return (
-    <div className="h-auto w-full rounded-lg border border-border-default-light bg-gray-50 py-12">
+    <div
+      className={`h-auto w-full rounded-lg border border-border-default-light bg-gray-50 ${otherUser === false ? "py-12" : "py-20"}`}
+    >
       <div className="flex flex-col items-center justify-center gap-4">
         <div className="flex flex-col items-center justify-center gap-2">
           {icon && <InfoCircle width="20" height="20" fill="#868E96" />}
@@ -28,8 +34,8 @@ const EmptyState = ({
             {text}
           </label>
         </div>
-        {button && (
-          <BoxButton type={buttonType} size="medium" onClick={onClick}>
+        {button && otherUser === false && (
+          <BoxButton type={buttonType} size={buttonSize} onClick={onClick}>
             <Plus width="12" height="12" fill="#212529" />
             {buttonText}
           </BoxButton>

@@ -7,6 +7,7 @@ interface TextAreaProps {
   limit?: number;
   placeholder?: string;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onSave?: () => void;
 }
 
 const TextArea = ({
@@ -15,7 +16,8 @@ const TextArea = ({
   value,
   limit,
   placeholder,
-  onChange
+  onChange,
+  onSave
 }: TextAreaProps) => {
   const sizeStyle: sizeStyleType = {
     large: "rounded-[14px] py-3 px-4",
@@ -32,6 +34,7 @@ const TextArea = ({
         placeholder={placeholder}
         autoComplete="off"
         onChange={onChange}
+        onBlur={onSave}
         className={`scrollbar interaction-default typography-body3 h-[140px] w-full resize-none items-start gap-1 border border-border-default-light bg-background-surface-light font-normal text-content-primary-light placeholder-content-tertiary-light outline-none focus-within:border-border-active-light hover:border-border-active-light ${sizeStyle[size]}`}
       />
       {limit && (

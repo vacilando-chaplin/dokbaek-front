@@ -1,6 +1,5 @@
 "use client";
 
-import { getFilmoCategories, getFilmoRoles, getProfile } from "@/lib/api";
 import ConfirmModal from "@/components/organisms/confirmModal";
 import FilmoMain from "./components/filmoMain";
 import FilmoModal from "./components/filmoModal";
@@ -11,6 +10,8 @@ import {
   defaultId,
   filmoCategory,
   filmoRole,
+  isDraft,
+  isDraftComplete,
   toastMessage
 } from "@/lib/atoms";
 import {
@@ -32,13 +33,16 @@ import {
 import { videoLinkInit } from "../../data";
 import {
   deleteFilmography,
+  deleteFilmographyThumbnail,
   postFilmography,
   postFilmographyThumbnail,
   putFilmography
 } from "./api";
+import { getProfileDraft } from "../../api";
 
 const Filmography = () => {
   const userId = useRecoilValue(defaultId);
+  const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -71,20 +75,20 @@ const Filmography = () => {
   const [representativeCount, setRepresentativeCount] = useState(0);
 
   // 필모그래피 분류, 출연 형태 GET
-  useEffect(() => {
-    const getFilmoCategoryList = async () => {
-      const res = await getFilmoCategories();
-      const data = await res.data;
-      setFilmoCategoryList(data);
-    };
-    const getFilmoRoleList = async () => {
-      const res = await getFilmoRoles();
-      const data = await res.data;
-      setFilmoRoleList(data);
-    };
-    getFilmoCategoryList();
-    getFilmoRoleList();
-  }, []);
+  // useEffect(() => {
+  //   const getFilmoCategoryList = async () => {
+  //     const res = await getFilmoCategories();
+  //     const data = await res.data;
+  //     setFilmoCategoryList(data);
+  //   };
+  //   const getFilmoRoleList = async () => {
+  //     const res = await getFilmoRoles();
+  //     const data = await res.data;
+  //     setFilmoRoleList(data);
+  //   };
+  //   getFilmoCategoryList();
+  //   getFilmoRoleList();
+  // }, []);
 
   // 필모그래피 모달 필모그래피 추가
   const onFilmographySave = async () => {
@@ -99,7 +103,7 @@ const Filmography = () => {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      is_featured: false,
+      isFeatured: false,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -111,9 +115,16 @@ const Filmography = () => {
       displayOrder: 0
     };
 
-    await postFilmography(userId, filmo);
+    const filmoRes = await postFilmography(userId, filmo);
+    const filmoData = await filmoRes.data;
 
-    const res = await getProfile(userId);
+    await postFilmographyThumbnail(
+      userId,
+      filmoData.id,
+      filmoData.thumbnailUrl
+    );
+
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setCompletion({ ...completion, filmography: true });
@@ -137,7 +148,7 @@ const Filmography = () => {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      is_featured: filmoInputs.representative,
+      isFeatured: filmoInputs.representative,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -151,7 +162,7 @@ const Filmography = () => {
 
     await putFilmography(userId, filmoInputs.id, editFilmo);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -177,14 +188,13 @@ const Filmography = () => {
 
   // 필모그래피 대표작 설정 완료
   const onFilmoRepSave = async () => {
-    filmoRepEditList.map(
-      async (filmo: FilmoResponseType) =>
-        filmo.is_featured === true &&
-        (await putFilmography(userId, filmo.id, {
+    for (const filmo of filmoRepEditList) {
+      if (filmo.isFeatured) {
+        await putFilmography(userId, filmo.id, {
           roleId: filmo.role.id,
           customRole: filmo.customRole,
           character: filmo.character,
-          is_featured: true,
+          isFeatured: true,
           production: {
             categoryId: filmo.production.category.id,
             productionYear: filmo.production.productionYear,
@@ -194,9 +204,11 @@ const Filmography = () => {
             thumbnailUrl: filmo.production.thumbnailUrl
           },
           displayOrder: filmo.displayOrder
-        }))
-    );
-    const res = await getProfile(userId);
+        });
+      }
+    }
+
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -207,7 +219,7 @@ const Filmography = () => {
   // 필모그래피 대표작 설정 체크
   const onFilmoRepCheck = (id: number) => {
     const checkFilmoRep = filmoRepEditList.map((item: FilmoResponseType) =>
-      item.id === id ? { ...item, is_featured: !item.is_featured } : item
+      item.id === id ? { ...item, isFeatured: !item.isFeatured } : item
     );
     setFilmoRepEditList(checkFilmoRep);
   };
@@ -282,9 +294,7 @@ const Filmography = () => {
         const imageUrl = reader.result?.toString() || "";
         imageElement.src = imageUrl;
 
-        const res = await postFilmographyThumbnail(imageUrl);
-        const data = await res.data;
-        setFilmoInputs({ ...filmoInputs, thumbnail: data });
+        setFilmoInputs({ ...filmoInputs, thumbnail: imageUrl });
       });
 
       reader.readAsDataURL(e.target.files[0]);
@@ -310,7 +320,7 @@ const Filmography = () => {
       description: filmo.production.description,
       link: filmo.production.videoUrl,
       thumbnail: filmo.production.thumbnailUrl,
-      representative: filmo.is_featured,
+      representative: filmo.isFeatured,
       id: filmo.id,
       displayOrder: filmo.displayOrder
     });
@@ -336,9 +346,10 @@ const Filmography = () => {
 
   // 필모그래피 삭제 모달 삭제 버튼 클릭
   const onFilmoDeleteClick = async () => {
+    await deleteFilmographyThumbnail(userId, filmoDelete.id);
     await deleteFilmography(userId, filmoDelete.id);
 
-    const res = await getProfile(userId);
+    const res = await getProfileDraft(userId);
     const data = await res.data;
 
     isValid(data.filmos)
@@ -351,10 +362,10 @@ const Filmography = () => {
 
   useEffect(() => {
     const filmoCount = filmoList.filter(
-      (filmo: FilmoResponseType) => filmo.is_featured === true
+      (filmo: FilmoResponseType) => filmo.isFeatured === true
     );
     const filmoRepEditCount = filmoRepEditList.filter(
-      (filmo: FilmoResponseType) => filmo.is_featured === true
+      (filmo: FilmoResponseType) => filmo.isFeatured === true
     );
     const combineCount = filmoCount.length + filmoRepEditCount.length;
     setRepresentativeCount(combineCount);
@@ -378,16 +389,18 @@ const Filmography = () => {
   // 필모그래피 리스트 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId);
-      const data = await res.data;
+      if (isDraftLoading) {
+        const res = await getProfileDraft(userId);
+        const data = await res.data;
 
-      isValid(data.filmos)
-        ? setCompletion({ ...completion, filmography: true })
-        : setCompletion({ ...completion, filmography: false });
-      setFilmoList(data.filmos);
+        isValid(data.filmos)
+          ? setCompletion({ ...completion, filmography: true })
+          : setCompletion({ ...completion, filmography: false });
+        setFilmoList(data.filmos);
+      }
     };
     getProfileData();
-  }, []);
+  }, [isDraftLoading]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
@@ -425,6 +438,11 @@ const Filmography = () => {
         <ConfirmModal
           dense={false}
           resizing="fixed"
+          titleText="작품 활동을 삭제할까요?"
+          cancelText="취소"
+          confirmText="삭제"
+          cancelButtonType="secondaryOutlined"
+          confirmButtonType="negative"
           onCancel={onFilmoDeleteModalClose}
           onConfirm={onFilmoDeleteClick}
         />

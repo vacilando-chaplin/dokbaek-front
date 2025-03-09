@@ -1,23 +1,15 @@
 import ArrowDirectionLeft from "../../../../../../public/icons/ArrowDirectionLeft.svg";
 import BoxButton from "@/components/atoms/boxButton";
 import ProgressBar from "./progressBar";
-import { useRecoilValue } from "recoil";
-import { completionProgress } from "@/lib/atoms";
 
 interface BottomBarProps {
+  progress: number;
   disabled: boolean;
   onBack: React.MouseEventHandler<HTMLButtonElement>;
   onSave: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const BottomBar = ({ disabled, onBack, onSave }: BottomBarProps) => {
-  const completion = useRecoilValue(completionProgress);
-  const totalItems = Object.keys(completion).length;
-  const completedItems = Object.values(completion).filter(
-    (value) => value === true
-  ).length;
-  const progress = Math.floor((completedItems / totalItems) * 100);
-
+const BottomBar = ({ progress, disabled, onBack, onSave }: BottomBarProps) => {
   return (
     <section className="fixed bottom-0 z-50 flex h-auto w-full items-center justify-between border-t-[1px] bg-background-elevated-light px-6 py-3 shadow-low">
       <div className="flex gap-4">

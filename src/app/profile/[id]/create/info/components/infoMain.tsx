@@ -12,6 +12,7 @@ interface InfoMainProps {
   infoInputs: InfoInputType;
   infoActives: InfoActiveType;
   specialties: SpecialtyType[];
+  onSelectGender: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onNumberChange: React.ChangeEventHandler<HTMLInputElement>;
   onBirthChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -20,12 +21,14 @@ interface InfoMainProps {
   onItemClick: (name: string, item: string) => void;
   onSpecialtyFormModalOpen: React.MouseEventHandler<HTMLButtonElement>;
   onDeleteSpecialty: (specialtyId: number) => () => void;
+  onBlurInfo: () => void;
 }
 
 const InfoMain = ({
   infoInputs,
   infoActives,
   specialties,
+  onSelectGender,
   onInputChange,
   onNumberChange,
   onBirthChange,
@@ -33,9 +36,10 @@ const InfoMain = ({
   onInfoDropdownActive,
   onItemClick,
   onSpecialtyFormModalOpen,
-  onDeleteSpecialty
+  onDeleteSpecialty,
+  onBlurInfo
 }: InfoMainProps) => {
-  const { name, birth, height, weight, contact, email, instagram, youtube } =
+  const { name, bornYear, height, weight, contact, email, instagram, youtube } =
     infoInputs;
 
   return (
@@ -53,23 +57,72 @@ const InfoMain = ({
               maxLength={10}
               placeholder="이름을 입력해주세요."
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
           </div>
           <div className="flex w-full flex-col">
             <Label label="출생연도" required />
             <SearchDropdown
               size="medium"
-              name="birth"
+              name="bornYear"
               list={yearList}
-              value={birth}
-              active={infoActives.birth}
-              selected={birth}
+              value={bornYear}
+              active={infoActives.bornYear}
+              selected={bornYear}
               maxLength={4}
               placeholder="출생연도를 선택해주세요."
               onClick={onItemClick}
               onActive={onInfoDropdownActive}
               onChange={onBirthChange}
+              onSave={onBlurInfo}
             />
+          </div>
+          <div className="flex w-full flex-col">
+            <Label label="성별" required />
+            <div className="typography-body2 flex h-10 w-full flex-row items-center gap-4 rounded-xl border border-border-default-light bg-background-surface-light px-4 font-normal text-content-primary-light">
+              <div className="flex h-auto w-auto flex-row gap-2">
+                <input
+                  type="radio"
+                  id="F"
+                  name="customRadio"
+                  checked={infoInputs.gender === "F"}
+                  className="hidden"
+                  onChange={onSelectGender}
+                />
+                <label
+                  htmlFor="F"
+                  className="flex cursor-pointer items-center space-x-2"
+                >
+                  <span
+                    className={`flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "F" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                  >
+                    <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
+                  </span>
+                  <span>여성</span>
+                </label>
+              </div>
+              <div className="flex h-auto w-auto flex-row gap-2">
+                <input
+                  type="radio"
+                  id="M"
+                  name="customRadio"
+                  checked={infoInputs.gender === "M"}
+                  className="hidden"
+                  onChange={onSelectGender}
+                />
+                <label
+                  htmlFor="M"
+                  className="flex cursor-pointer items-center space-x-2"
+                >
+                  <span
+                    className={`flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "M" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                  >
+                    <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
+                  </span>
+                  <span>남성</span>
+                </label>
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex h-auto w-full flex-row gap-4">
@@ -84,6 +137,7 @@ const InfoMain = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
+              onBlur={onBlurInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -97,6 +151,7 @@ const InfoMain = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
+              onBlur={onBlurInfo}
             />
           </div>
         </div>
@@ -110,6 +165,7 @@ const InfoMain = ({
               value={contact}
               maxLength={13}
               onChange={onContactChange}
+              onBlur={onBlurInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -121,6 +177,7 @@ const InfoMain = ({
               value={email}
               maxLength={40}
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
           </div>
         </div>
@@ -164,6 +221,7 @@ const InfoMain = ({
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
             <TextInput
               type="link"
@@ -174,6 +232,7 @@ const InfoMain = ({
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
+              onBlur={onBlurInfo}
             />
           </div>
         </div>

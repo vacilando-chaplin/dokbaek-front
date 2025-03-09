@@ -1,8 +1,8 @@
 import ImageCropper from "@/components/molecules/imageCropper";
 import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
-import { PhotoModalType, SelectedImagesType } from "../types";
 import Image from "next/image";
+import { PhotoModalType, SelectedImagesType } from "../../../types";
 
 interface PhotoModalProps {
   selectImage: string;
@@ -37,10 +37,7 @@ const PhotoModal = ({
           className={`flex w-full flex-col items-center justify-center ${selectedImages.length >= 2 ? "h-[60vh] max-h-[60vh]" : "h-[70vh] max-h-[70vh]"}`}
         >
           <ImageCropper
-            cropData={
-              selectedImages.length >= 1 &&
-              selectedImages[selectedPhotoId].cropData
-            }
+            cropData={selectedImages[selectedPhotoId].cropData}
             cropType={photoModal.category}
             selectImage={selectImage}
             setCropData={setCropData}

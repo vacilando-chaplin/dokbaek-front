@@ -3,6 +3,11 @@ import BoxButton from "../atoms/boxButton";
 interface ConfirmModalProps {
   dense: boolean;
   resizing: string;
+  titleText: string;
+  cancelText: string;
+  confirmText: string;
+  cancelButtonType: string;
+  confirmButtonType: string;
   bodyText?: string;
   onCancel: React.MouseEventHandler<HTMLButtonElement>;
   onConfirm: React.MouseEventHandler<HTMLButtonElement>;
@@ -12,6 +17,11 @@ const ConfirmModal = ({
   dense,
   resizing,
   bodyText,
+  titleText,
+  cancelText,
+  confirmText,
+  cancelButtonType,
+  confirmButtonType,
   onCancel,
   onConfirm
 }: ConfirmModalProps) => {
@@ -22,18 +32,18 @@ const ConfirmModal = ({
       >
         <div className="flex flex-col gap-2 text-content-primary-light">
           <label className="typography-heading3 flex h-auto w-full gap-2 font-semibold">
-            작품 활동을 삭제할까요?
+            {titleText}
           </label>
           {bodyText && (
             <p className="typography-body3 font-regular">{bodyText}</p>
           )}
         </div>
         <div className="flex h-auto w-full flex-row justify-end gap-2">
-          <BoxButton type="secondaryOutlined" size="medium" onClick={onCancel}>
-            취소
+          <BoxButton type={cancelButtonType} size="medium" onClick={onCancel}>
+            {cancelText}
           </BoxButton>
-          <BoxButton type="negative" size="medium" onClick={onConfirm}>
-            삭제
+          <BoxButton type={confirmButtonType} size="medium" onClick={onConfirm}>
+            {confirmText}
           </BoxButton>
         </div>
       </div>

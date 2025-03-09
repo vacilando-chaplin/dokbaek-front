@@ -1,79 +1,74 @@
-import Label from "@/components/atoms/label";
-import TextInput from "@/components/atoms/textInput";
 import Title from "@/components/atoms/title";
-import SearchDropdown from "@/components/molecules/searchDropdown";
-import SelectDropdown from "@/components/molecules/selectDropdown";
-import { educationList } from "@/lib/data";
-import { InfoActiveType, InfoInputType } from "../types";
+import { InfoEducationActiveType } from "../types";
+import Plus from "../../../../../../../public/icons/Plus.svg";
+import { EducationWithIdType } from "@/lib/types";
+import EducationForm from "./educationForm";
 
 interface infoSubProps {
-  infoInputs: InfoInputType;
-  infoActives: InfoActiveType;
+  education: EducationWithIdType[];
+  educationActives: InfoEducationActiveType;
   schoolList: string[];
-  onInputChange: React.ChangeEventHandler<HTMLInputElement>;
-  onSchoolChange: React.ChangeEventHandler<HTMLInputElement>;
-  onInfoDropdownActive: (name: string, state: boolean) => void;
-  onItemClick: (name: string, item: string) => void;
+  onSchoolChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onMajorChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSchoolDropdownActive: () => void;
+  onEducationDropdownActive: () => void;
+  onSchoolDropdownClick: (name: string, item: string) => void;
+  onEducationDropdownClick: (name: string, item: string) => void;
+  onBlurEducation: (educationId: number) => void;
+  onCreateEducation: () => void;
+  onDeleteEducation: (educationId: number) => void;
 }
 
 const InfoSub = ({
-  infoInputs,
-  infoActives,
+  education,
+  educationActives,
   schoolList,
-  onInputChange,
   onSchoolChange,
-  onInfoDropdownActive,
-  onItemClick
+  onMajorChange,
+  onSchoolDropdownActive,
+  onEducationDropdownActive,
+  onSchoolDropdownClick,
+  onEducationDropdownClick,
+  onBlurEducation,
+  onCreateEducation,
+  onDeleteEducation
 }: infoSubProps) => {
-  const { school, major, education } = infoInputs;
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
-      <Title name="학력" />
-      <div className="flex h-auto w-full flex-col gap-4">
-        <div className="flex h-auto w-full">
-          <SearchDropdown
-            size="medium"
-            name="school"
-            list={schoolList}
-            value={school}
-            active={infoActives.school}
-            selected={school}
-            isEmpty={infoActives.school && schoolList.length === 0}
-            maxLength={20}
-            placeholder="학교 이름을 검색해보세요."
-            onClick={onItemClick}
-            onActive={onInfoDropdownActive}
-            onChange={onSchoolChange}
+      <div className="flex flex-row items-center justify-between">
+        <Title name="학력" />
+        <button
+          type="button"
+          className="flex h-8 w-8 items-center justify-center gap-2.5 rounded-lg"
+          disabled={education.length >= 1}
+          onClick={onCreateEducation}
+        >
+          <Plus
+            width="16"
+            height="16"
+            fill={education.length >= 1 ? "#CED4DA" : "#212529"}
           />
-        </div>
-        <div className="flex h-auto w-full flex-col">
-          <Label label="전공" />
-          <div className="flex h-auto w-full flex-row gap-4">
-            <div className="flex w-full flex-[1_1_75%]">
-              <TextInput
-                type="text"
-                size="medium"
-                name="major"
-                value={major}
-                maxLength={20}
-                onChange={onInputChange}
-              />
-            </div>
-            <div className="flex flex-[1_1_25%]">
-              <SelectDropdown
-                name="education"
-                list={educationList}
-                size="medium"
-                value={education}
-                active={infoActives.education}
-                selected={education}
-                onClick={onItemClick}
-                onActive={onInfoDropdownActive}
-              />
-            </div>
-          </div>
-        </div>
+        </button>
       </div>
+      {education.length >= 1 &&
+        education.map((item: EducationWithIdType) => {
+          return (
+            <EducationForm
+              key={item.id}
+              item={item}
+              educationActives={educationActives}
+              schoolList={schoolList}
+              onSchoolChange={onSchoolChange}
+              onMajorChange={onMajorChange}
+              onSchoolDropdownActive={onSchoolDropdownActive}
+              onEducationDropdownActive={onEducationDropdownActive}
+              onSchoolDropdownClick={onSchoolDropdownClick}
+              onEducationDropdownClick={onEducationDropdownClick}
+              onBlurEducation={onBlurEducation}
+              onDelete={() => onDeleteEducation(item.id)}
+            />
+          );
+        })}
     </section>
   );
 };

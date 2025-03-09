@@ -1,6 +1,7 @@
 export const infoInputInit = {
   name: "",
-  birth: "",
+  gender: "M",
+  bornYear: "",
   height: "",
   weight: "",
   contact: "",
@@ -8,14 +9,28 @@ export const infoInputInit = {
   specialty: "",
   instagram: "",
   youtube: "",
-  introduction: "",
+  introduction: ""
+};
+
+export const infoActiveInit = {
+  bornYear: false,
+  school: false,
+  education: false
+};
+
+export const educationInputInit = {
+  name: 0,
   school: "",
   major: "",
   education: "졸업"
 };
 
-export const infoActiveInit = {
-  birth: false,
-  school: false,
-  education: false
+export const educationInit = {
+  school: {
+    name: "",
+    schoolType: "",
+    schoolGubun: ""
+  },
+  major: "",
+  status: "졸업"
 };

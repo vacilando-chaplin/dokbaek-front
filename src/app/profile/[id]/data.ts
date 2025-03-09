@@ -4,11 +4,21 @@ export const videoLinkInit = {
 };
 
 export const selectedPhotoInit = {
-  origin: "",
-  blur: ""
+  index: 0,
+  photoId: "",
+  origin: ""
 };
 
-export const profileModalInit = {
+export const profilePhotoModalInit = {
   state: "",
-  active: false
+  active: false,
+  name: "",
+  buttonText: ""
+};
+
+export const cropDataInit = {
+  top: 0,
+  left: 0,
+  width: 0,
+  height: 0
 };

@@ -15,6 +15,7 @@ interface SelectDropdownProps {
   helperText?: string;
   onClick: (name: string, item: string) => void;
   onActive: (name: string, state: boolean) => void;
+  onSave?: () => void;
 }
 
 const SelectDropdown = ({
@@ -28,7 +29,8 @@ const SelectDropdown = ({
   placeholder,
   helperText,
   onClick,
-  onActive
+  onActive,
+  onSave
 }: SelectDropdownProps) => {
   const sizeStyle: sizeStyleType = {
     large: "rounded-[14px]",

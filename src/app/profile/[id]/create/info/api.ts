@@ -1,5 +1,6 @@
-import { api, multipartAPI } from "@/lib/axiosInstance";
-import { base64ToBlob } from "@/lib/utils";
+import { api } from "@/lib/axiosInstance";
+import { EducationInitType } from "@/lib/types";
+import { InfoDataType } from "./types";
 
 // 커리어넷 학교 검색 api
 export const getSchoolName = async (search: string) => {
@@ -21,30 +22,9 @@ export const getSchoolName = async (search: string) => {
   return await data;
 };
 
-export const putInfo = async (id: number, data: any) => {
+export const putInfoDraft = async (id: number, data: InfoDataType) => {
   try {
-    const res = await api.put(`/profile/${id}`, data);
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const postProfilePhotoMain = async (
-  id: number,
-  origin: string,
-  preview: string
-) => {
-  try {
-    const formData = new FormData();
-
-    const imageOrigin = base64ToBlob(origin);
-    const imagePreview = base64ToBlob(preview);
-
-    formData.append("origin", imageOrigin);
-    formData.append("preview", imagePreview);
-
-    const res = await multipartAPI.post(`/profile/${id}/photo/main`, formData);
+    const res = await api.put(`/profile/${id}/draft/info`, data);
     return res.data;
   } catch (error) {
     throw error;
@@ -81,11 +61,56 @@ export const postUserProfileSpecialty = async (
   mediaUrl: string
 ) => {
   try {
-    const res = await api.post(`/profile/${profileId}/specialty`, {
+    const res = await api.post(`/profile/${profileId}/draft/specialty`, {
       specialtyId,
       mediaUrl
     });
     return res.data.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postEducation = async (
+  profileId: number,
+  educationDto: EducationInitType
+) => {
+  try {
+    const res = await api.post(
+      `/profile/${profileId}/draft/education`,
+      educationDto
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const putEducation = async (
+  profileId: number,
+  educationId: number,
+  educationDto: EducationInitType
+) => {
+  try {
+    const res = await api.put(
+      `/profile/${profileId}/draft/education/${educationId}`,
+      educationDto
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteEducation = async (
+  profileId: number,
+  educationId: number
+) => {
+  try {
+    const res = await api.delete(
+      `/profile/${profileId}/draft/education/${educationId}`
+    );
+    return res.data;
   } catch (error) {
     throw error;
   }

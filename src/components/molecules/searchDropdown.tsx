@@ -17,6 +17,7 @@ interface SearchDropdownProps {
   onClick: (name: string, item: string) => void;
   onActive: (name: string, state: boolean) => void;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSave?: () => void;
 }
 
 const SearchDropdown = ({
@@ -32,7 +33,8 @@ const SearchDropdown = ({
   placeholder,
   onClick,
   onActive,
-  onChange
+  onChange,
+  onSave
 }: SearchDropdownProps) => {
   const sizeStyle: sizeStyleType = {
     large: "rounded-[14px]",
@@ -54,6 +56,7 @@ const SearchDropdown = ({
           autoComplete="off"
           value={value}
           onChange={onChange}
+          onBlur={onSave}
         />
         <button
           type="button"

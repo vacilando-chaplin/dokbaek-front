@@ -1,15 +1,16 @@
 "use client";
 
+import { CropDataType } from "@/app/profile/[id]/types";
 import { useEffect, useRef, useState } from "react";
-import { Cropper, CropperRef } from "react-advanced-cropper";
+import { Coordinates, Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 
 interface ImageCropperProps {
   selectImage: string;
   setCropImage: any;
+  cropData: any;
+  setCropData: React.Dispatch<React.SetStateAction<Coordinates | null>>;
   cropType: string;
-  cropData?: any;
-  setCropData?: any;
 }
 
 const ImageCropper = ({
@@ -25,25 +26,27 @@ const ImageCropper = ({
 
   const onCropEnd = () => {
     if (cropperRef.current) {
-      const cropData = cropperRef.current.getCoordinates();
-      const cropImagetoString = cropperRef.current.getCanvas()?.toDataURL();
+      const cropper = cropperRef.current;
+      const cropCoordinates = cropper.getCoordinates();
+      const cropCanvas = cropper.getCanvas();
+      const cropImagetoString = cropCanvas?.toDataURL();
 
-      setCropData(cropData);
+      setCropData(cropCoordinates);
       setCropImage(cropImagetoString);
     }
   };
 
   const defaultSize = ({ imageSize }: any) => {
     if (cropType === "stillcut") {
-      const stillcutWidth = imageSize.width * 0.8;
-      const stillcutHeight = stillcutWidth * (9 / 16);
+      const stillcutWidth = imageSize.width * 0.4;
+      const stillcutHeight = stillcutWidth * (160 / 204);
 
       return {
         width: stillcutWidth,
         height: stillcutHeight
       };
     } else {
-      const width = imageSize.width * 0.6;
+      const width = imageSize.width * 0.2;
       const height = width * (16 / 9);
 
       return {
@@ -55,13 +58,13 @@ const ImageCropper = ({
 
   useEffect(() => {
     if (selectImage) {
-      setIsLoading(true);
       const img = new Image();
       img.src = selectImage;
       img.onload = () => {
         setTimeout(() => {
+          setIsLoading(true);
           onCropEnd();
-        }, 200);
+        }, 500);
       };
     }
     return () => {};
@@ -74,9 +77,14 @@ const ImageCropper = ({
           ref={cropperRef}
           src={selectImage}
           defaultSize={
-            Object.keys(cropData).length >= 1 ? cropData : defaultSize
+            cropData.top === 0 && cropData.left === 0 ? defaultSize : cropData
           }
-          defaultPosition={Object.keys(cropData).length >= 1 && cropData}
+          defaultPosition={
+            cropData.top !== 0 && cropData.left !== 0 ? cropData : undefined
+          }
+          stencilProps={{
+            aspectRatio: cropType === "stillcut" ? 16 / 9 : 160 / 204
+          }}
           onInteractionEnd={onCropEnd}
           className="h-full w-full"
         />

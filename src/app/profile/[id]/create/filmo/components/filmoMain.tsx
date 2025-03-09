@@ -38,7 +38,7 @@ const FilmoMain = ({
   onLinkModalOpen
 }: FilmoMainProps) => {
   const repFilmoList = filmoList.filter(
-    (filmo: FilmoResponseType) => filmo.is_featured === true
+    (filmo: FilmoResponseType) => filmo.isFeatured === true
   );
 
   return (
@@ -94,7 +94,7 @@ const FilmoMain = ({
       </div>
       {/* 대표작 */}
       {filmoList.findIndex(
-        (filmo: FilmoResponseType) => filmo.is_featured === true
+        (filmo: FilmoResponseType) => filmo.isFeatured === true
       ) >= 1 && (
         <div className="flex h-auto w-full flex-col gap-2">
           <label className="typography-body2 font-semibold text-accent-primary-light">

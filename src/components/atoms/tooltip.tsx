@@ -17,7 +17,7 @@ const Tooltip = ({ placement, text }: TooltipProps) => {
           className="absolute bottom-[-12px]"
         />
       )}
-      <label className="typography-body2 text-left font-semibold text-content-on_color-light">
+      <label className="typography-body2 whitespace-nowrap text-left font-semibold text-content-on_color-light">
         {text}
       </label>
       {placement === "bottom" && (

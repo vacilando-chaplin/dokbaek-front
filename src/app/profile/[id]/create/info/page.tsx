@@ -1,8 +1,12 @@
 "use client";
 
-import { getProfile } from "@/lib/api";
-import { completionProgress, defaultId, stepperInit } from "@/lib/atoms";
-import { educationEngList, educationList } from "@/lib/data";
+import {
+  completionProgress,
+  defaultId,
+  isDraftComplete,
+  stepperInit
+} from "@/lib/atoms";
+import { educationEngList, educationEnum, educationList } from "@/lib/data";
 import { useDebounce } from "@/lib/hooks";
 import { contactFormat, isValid, setOnlyNumber } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -12,23 +16,30 @@ import InfoSub from "./components/infoSub";
 import InfoThird from "./components/infoThird";
 import {
   InfoActiveType,
+  InfoDataType,
   InfoInputType,
   SchoolType,
   SpecialtyType
 } from "./types";
 import { infoActiveInit, infoInputInit } from "./data";
 import {
+  deleteEducation,
   getSchoolName,
+  postEducation,
   postSpecialty,
   postUserProfileSpecialty,
-  putInfo
+  putEducation,
+  putInfoDraft
 } from "./api";
 import { specialtyData } from "../../../../../lib/atoms";
 import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal";
+import { getProfileDraft } from "../../api";
+import { EducationWithIdType } from "@/lib/types";
 
 const Info = () => {
   const userId = useRecoilValue(defaultId);
   const stepper = useRecoilValue(stepperInit);
+  const isDraftLoading = useRecoilValue(isDraftComplete);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
 
@@ -45,9 +56,22 @@ const Info = () => {
     imageUrl: "",
     mediaUrl: ""
   });
+
   // 학교 검색 시 보일 학교 리스트(최대 10개)
   const [schoolList, setSchoolList] = useState<string[]>([]);
+  const [education, setEducation] = useState<EducationWithIdType[]>([]);
+  const [educationActives, setEducationActives] = useState({
+    school: false,
+    education: false
+  });
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
+
+  const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInfoInputs({ ...infoInputs, gender: e.target.id });
+    setCompletion({ ...completion, gender: true });
+    onSaveInfo();
+  };
+
   // 내 정보 입력
   const onInputChange = (
     e:
@@ -79,15 +103,15 @@ const Info = () => {
     const { name, value } = e.target;
     const changeNumber = setOnlyNumber(value);
     setInfoInputs({ ...infoInputs, [name]: changeNumber });
-    if (value && !infoActives.birth) {
+    if (value && !infoActives.bornYear) {
       setInfoActives({ ...infoActives, [name]: true });
     } else if (
       value.length === 4 ||
-      (value.length === 0 && infoActives.birth)
+      (value.length === 0 && infoActives.bornYear)
     ) {
       setInfoActives({ ...infoActives, [name]: false });
     }
-    isValid(value)
+    value.length >= 4
       ? setCompletion({ ...completion, [name]: true })
       : setCompletion({ ...completion, [name]: false });
   };
@@ -102,21 +126,6 @@ const Info = () => {
       : setCompletion({ ...completion, [name]: false });
   };
 
-  // 학교 검색
-  const onSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInfoInputs({
-      ...infoInputs,
-      [name]: value
-    });
-    if (value && !infoActives.school) {
-      setInfoActives({ ...infoActives, [name]: true });
-    }
-    isValid(value)
-      ? setCompletion({ ...completion, [name]: true })
-      : setCompletion({ ...completion, [name]: false });
-  };
-
   // 드랍다운 수동 액티브
   const onInfoDropdownActive = (name: string, state: boolean) => {
     setInfoActives({ ...infoActives, [name]: !state });
@@ -126,10 +135,8 @@ const Info = () => {
   const onItemClick = (name: string, item: string) => {
     setInfoInputs({ ...infoInputs, [name]: item });
     setCompletion({ ...completion, [name]: true });
+    onSaveInfo();
   };
-
-  // 학교검색 딜레이 적용(0.3초)
-  const debounceSearch: any = useDebounce(infoInputs.school, 300);
 
   const onSpecialtyFormModalClose = () => {
     setProfileSpecialtyModal(false);
@@ -202,117 +209,275 @@ const Info = () => {
     };
   };
 
-  useEffect(() => {
-    const getSearchSchool = async (name: string) => {
-      const data = await getSchoolName(name);
-      const filteredSchoolName = data.map(
-        (school: SchoolType) => school.schoolName
-      );
-      setSchoolList(filteredSchoolName);
-    };
-    getSearchSchool(debounceSearch);
-  }, [debounceSearch]);
-
   const onSaveInfo = async () => {
-    const educationIndex = educationList.indexOf(infoInputs.education);
-    const educationStatus = educationEngList[educationIndex];
-
-    const infoData: any = {
-      status: "PUBLIC",
-      info: {
-        name: infoInputs.name,
-        bornYear: Number(infoInputs.birth),
-        height: Number(infoInputs.height),
-        weight: Number(infoInputs.weight),
-        email: infoInputs.email,
-        contact: infoInputs.contact,
-        instagramLink: infoInputs.instagram,
-        youtubeLink: infoInputs.youtube,
-        introduction: infoInputs.introduction
-      },
-      education: [],
-      specialties: specialties
+    const infoData: InfoDataType = {
+      name: infoInputs.name,
+      gender: infoInputs.gender,
+      bornYear: Number(infoInputs.bornYear),
+      height: Number(infoInputs.height),
+      weight: Number(infoInputs.weight),
+      email: infoInputs.email,
+      contact: infoInputs.contact,
+      instagramLink: infoInputs.instagram,
+      youtubeLink: infoInputs.youtube,
+      introduction: infoInputs.introduction
     };
-    infoInputs.school
-      ? (infoData.education = [
-          {
-            school: {
-              name: infoInputs.school,
-              schoolType: "",
-              schoolGubun: ""
-            },
-            major: infoInputs.major,
-            status: educationStatus
-          }
-        ])
-      : (infoData.education = []);
-
-    await putInfo(userId, infoData);
+    await putInfoDraft(userId, infoData);
   };
+
+  // 학교 검색
+  const onSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setEducation((prev) => [
+      {
+        ...prev[0],
+        school: {
+          ...prev[0].school,
+          [name]: value
+        }
+      }
+    ]);
+
+    if (value && !educationActives.school) {
+      setEducationActives({ ...educationActives, school: true });
+    }
+    isValid(value)
+      ? setCompletion({ ...completion, [name]: true })
+      : setCompletion({ ...completion, [name]: false });
+  };
+
+  // 학교검색 딜레이 적용(0.3초)
+  // const debounceSearch: string =
+  //   education.length >= 1 ? useDebounce(education[0].school.name, 300) : "";
+
+  // useEffect(() => {
+  //   const getSearchSchool = async (name: string) => {
+  //     const data = await getSchoolName(name);
+  //     const filteredSchoolName = data.map(
+  //       (school: SchoolType) => school.schoolName
+  //     );
+  //     setSchoolList(filteredSchoolName);
+  //   };
+  //   getSearchSchool(debounceSearch);
+  // }, [debounceSearch]);
+
+  useEffect(() => {
+    if (education.length >= 1) {
+      const getSearchSchool = async (name: string) => {
+        const data = await getSchoolName(name);
+        const filteredSchoolName = data.map(
+          (school: SchoolType) => school.schoolName
+        );
+        setSchoolList(filteredSchoolName);
+      };
+      getSearchSchool(education[0].school.name);
+    }
+  }, [education]);
+
+  const onSchoolDropdownActive = () => {
+    setEducationActives({
+      ...educationActives,
+      school: !educationActives.school
+    });
+  };
+
+  const onEducationDropdownActive = () => {
+    setEducationActives({
+      ...educationActives,
+      education: !educationActives.education
+    });
+  };
+
+  const onSchoolDropdownClick = (name: string, item: string) => {
+    setEducation((prev) => [
+      {
+        ...prev[0],
+        school: {
+          ...prev[0].school,
+          name: item
+        }
+      }
+    ]);
+    setEducationActives({
+      ...educationActives,
+      school: !educationActives.school
+    });
+    onSaveEducation(education[0].id);
+  };
+
+  const onEducationDropdownClick = (name: string, item: string) => {
+    setEducation((prev) => [
+      {
+        ...prev[0],
+        status: item
+      }
+    ]);
+    setEducationActives({
+      ...educationActives,
+      education: !educationActives.education
+    });
+    onSaveEducation(education[0].id);
+  };
+
+  const onMajorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEducation([
+      {
+        ...education[0],
+        [name]: value
+      }
+    ]);
+    isValid(value)
+      ? setCompletion({ ...completion, [name]: true })
+      : setCompletion({ ...completion, [name]: false });
+  };
+
+  const onCreateEducation = async () => {
+    const educationData = {
+      school: {
+        name: "",
+        schoolType: "",
+        schoolGubun: ""
+      },
+      major: "",
+      status: "GRADUATED"
+    };
+    const res = await postEducation(userId, educationData);
+    const data = res.data;
+
+    const educationInit = [
+      {
+        id: data.id,
+        school: {
+          name: data.school.name,
+          schoolType: data.school.schoolType,
+          schoolGubun: data.school.schoolGubun
+        },
+        major: data.major,
+        status: educationList[0]
+      }
+    ];
+
+    setEducation(educationInit);
+  };
+
+  const onDeleteEducation = async (educationId: number) => {
+    await deleteEducation(userId, educationId);
+
+    const res = await getProfileDraft(userId);
+    const data = await res.data;
+
+    setEducation(data.education);
+  };
+
+  const onSaveEducation = async (educationId: number) => {
+    const educationIndex = education.findIndex(
+      (item) => item.id === educationId
+    );
+    const educationStatus = education[educationIndex].status;
+
+    const status = () => {
+      for (const [key, value] of Object.entries(educationEnum)) {
+        if (value === educationStatus) {
+          return key;
+        }
+      }
+      return "GRADUATED";
+    };
+
+    const educationData = {
+      school: {
+        name: education[educationIndex].school.name,
+        schoolType: education[educationIndex].school.schoolType,
+        schoolGubun: education[educationIndex].school.schoolGubun
+      },
+      major: education[educationIndex].major,
+      status: status()
+    };
+    await putEducation(userId, education[0].id, educationData);
+  };
+
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
   useEffect(() => {
-    onSaveInfo();
-  }, [stepper]);
-
-  useEffect(() => {
-    setTimeout(() => {
+    if (infoInputs.name !== "") {
       onSaveInfo();
-    }, 1000);
-  }, [infoInputs]);
+    }
+    if (education.length >= 1) {
+      onSaveEducation(education[0].id);
+    }
+  }, [stepper]);
 
   // 내 정보 업데이트
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile(userId);
-      const data = await res.data;
+      if (isDraftLoading) {
+        const res = await getProfileDraft(userId);
+        const data = await res.data;
 
-      if (data.education.length >= 1) {
-        const findEducation = educationEngList.findIndex(
-          (education: string) => education === data.education[0].status
-        );
+        if (data.education.length >= 1) {
+          const findEducation = educationEngList.findIndex(
+            (education: string) => education === data.education[0].status
+          );
+
+          const educationInit = [
+            {
+              id: data.education[0].id,
+              school: {
+                name: data.education[0].school.name,
+                schoolType: data.education[0].school.schoolType,
+                schoolGubun: data.education[0].school.schoolGubun
+              },
+              major: data.education[0].major,
+              status: educationList[0]
+            }
+          ];
+          setCompletion({
+            ...completion,
+            schoolName: isValid(data.education[0].school.name),
+            schoolMajor: isValid(data.education[0].major),
+            schoolStatus: isValid(educationList[findEducation])
+          });
+          setEducation(educationInit);
+        }
+
         setCompletion({
           ...completion,
-          schoolName: isValid(data.education[0].school.name),
-          schoolMajor: isValid(data.education[0].major),
-          schoolStatus: isValid(educationList[findEducation])
+          name: isValid(data.info.name),
+          gender: isValid(data.info.gender),
+          birth: isValid(data.info.bornYear),
+          height: data.info.height > 0 ? true : false,
+          weight: data.info.weight > 0 ? true : false,
+          contact: isValid(data.info.contact),
+          email: isValid(data.info.email),
+          specialty: isValid(data.specialties),
+          youtube: isValid(data.info.youtubeLink),
+          instagram: isValid(data.info.instagramLink),
+          introduction: isValid(data.info.introduction),
+          profilePhoto: isValid(data.photos),
+          stillcutPhoto: isValid(data.stillCuts),
+          recentPhoto: isValid(data.recentPhotos),
+          filmography: isValid(data.filmos),
+          video: isValid(data.videos)
         });
+
         setInfoInputs({
           ...infoInputs,
-          education: educationList[findEducation],
-          school: data.education[0].school.name,
-          major: data.education[0].major
+          name: data.info.name,
+          gender: data.info.gender,
+          bornYear: data.info.bornYear,
+          height: data.info.height,
+          weight: data.info.weight,
+          contact: data.info.contact,
+          email: data.info.email,
+          instagram: data.info.instagramLink,
+          youtube: data.info.youtubeLink,
+          introduction: data.info.introduction
         });
       }
-
-      setCompletion({
-        ...completion,
-        name: isValid(data.info.name),
-        birth: isValid(data.info.bornYear),
-        height: isValid(data.info.height),
-        weight: isValid(data.info.weight),
-        contact: isValid(data.info.contact),
-        email: isValid(data.info.email),
-        specialty: isValid(data.specialties),
-        youtube: isValid(data.info.youtubeLink),
-        instagram: isValid(data.info.instagramLink),
-        introduction: isValid(data.info.introduction)
-      });
-
-      setInfoInputs({
-        ...infoInputs,
-        name: data.info.name,
-        birth: data.info.bornYear,
-        height: data.info.height,
-        weight: data.info.weight,
-        contact: data.info.contact,
-        email: data.info.email,
-        instagram: data.info.instagramLink,
-        youtube: data.info.youtubeLink,
-        introduction: data.info.introduction
-      });
     };
     getProfileData();
-  }, []);
+  }, [isDraftLoading]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
@@ -320,6 +485,7 @@ const Info = () => {
         infoInputs={infoInputs}
         infoActives={infoActives}
         specialties={specialties}
+        onSelectGender={onSelectGender}
         onInputChange={onInputChange}
         onNumberChange={onNumberChange}
         onBirthChange={onBirthChange}
@@ -328,17 +494,27 @@ const Info = () => {
         onItemClick={onItemClick}
         onSpecialtyFormModalOpen={onSpecialtyFormModalOpen}
         onDeleteSpecialty={onDeleteSpecialty}
+        onBlurInfo={onSaveInfo}
       />
       <InfoSub
-        infoInputs={infoInputs}
-        infoActives={infoActives}
+        education={education}
+        educationActives={educationActives}
         schoolList={schoolList}
-        onInputChange={onInputChange}
         onSchoolChange={onSchoolChange}
-        onInfoDropdownActive={onInfoDropdownActive}
-        onItemClick={onItemClick}
+        onMajorChange={onMajorChange}
+        onSchoolDropdownActive={onSchoolDropdownActive}
+        onEducationDropdownActive={onEducationDropdownActive}
+        onSchoolDropdownClick={onSchoolDropdownClick}
+        onEducationDropdownClick={onEducationDropdownClick}
+        onBlurEducation={onSaveEducation}
+        onCreateEducation={onCreateEducation}
+        onDeleteEducation={onDeleteEducation}
       />
-      <InfoThird infoInputs={infoInputs} onInputChange={onInputChange} />
+      <InfoThird
+        infoInputs={infoInputs}
+        onInputChange={onInputChange}
+        onSaveInfo={onSaveInfo}
+      />
       {profileSpecialtyModal && (
         <ProfileSpecialtyFormModal
           type="add"

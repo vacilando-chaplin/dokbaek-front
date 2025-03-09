@@ -27,8 +27,8 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/jsx-runtime",
-    "prettier",
-    "next"
+    "plugin:next/recommended",
+    "prettier"
   ],
   "rules": {
     "indent": ["error", 2],

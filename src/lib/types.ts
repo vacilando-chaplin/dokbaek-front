@@ -14,6 +14,7 @@ export interface sizeStyleType {
 
 export interface CompletionProgressType {
   name: boolean;
+  gender: boolean;
   birth: boolean;
   height: boolean;
   weight: boolean;
@@ -44,11 +45,12 @@ export interface ProfileResponseType {
     weight: number;
     email: string;
     contact: string;
-    specialty: string;
     instagramLink: string;
     youtubeLink: string;
     introduction: string;
   };
+  mainPhotoPath: string;
+  mainPhotoPreviewPath: string;
   education: [
     {
       school: {
@@ -63,11 +65,29 @@ export interface ProfileResponseType {
   photos: [
     {
       id: string;
-      userProfileId: number;
       path: string;
       previewPath: string;
       displayOrder: number;
-      isDefault: true;
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
+  recentPhotos: [
+    {
+      id: string;
+      photoType: string;
+      path: string;
+      previewPath: string;
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
+  stillCuts: [
+    {
+      id: string;
+      path: string;
+      previewPath: string;
+      displayOrder: number;
       createdAt: string;
       updatedAt: string;
     }
@@ -81,7 +101,7 @@ export interface ProfileResponseType {
       };
       customRole: string;
       character: string;
-      is_featured: true;
+      isFeatured: true;
       production: {
         category: {
           id: number;
@@ -99,9 +119,22 @@ export interface ProfileResponseType {
   videos: [
     {
       id: number;
-      userProfileId: number;
       url: string;
       displayOrder: number;
+    }
+  ];
+  specialties: [
+    {
+      id: number;
+      specialty: {
+        id: number;
+        specialtyName: string;
+      };
+      imageUrl: string;
+      mediaUrl: string;
+      displayOrder: number;
+      createdAt: string;
+      updatedAt: string;
     }
   ];
   createdAt: string;
@@ -111,6 +144,7 @@ export interface ProfileResponseType {
 export interface InfoResponseType {
   status: string;
   name: string;
+  gender: string;
   bornYear: number;
   height: number;
   weight: number;
@@ -133,12 +167,39 @@ export interface InfoResponseType {
   ];
 }
 
-export interface EducationType {
+export interface EducationEnumType {
+  GRADUATED: string;
+  PENDING: string;
+  ENROLLED: string;
+  LEAVE_OF_ABSENCE: string;
+  COMPLETION: string;
+  DROPPED_OUT: string;
+}
+
+export interface EducationInitType {
   school: {
     name: string;
     schoolType: string;
     schoolGubun: string;
   };
+  major: string;
+  status: string;
+}
+
+export interface EducationWithIdType {
+  id: number;
+  school: {
+    name: string;
+    schoolType: string;
+    schoolGubun: string;
+  };
+  major: string;
+  status: string;
+}
+
+export interface EducationInputsType {
+  name: number;
+  school: string;
   major: string;
   status: string;
 }
@@ -181,7 +242,7 @@ export interface FilmoRequestType {
   roleId: number;
   customRole: string;
   character: string;
-  is_featured: boolean;
+  isFeatured: boolean;
   production: {
     categoryId: number;
     productionYear: number;
@@ -201,7 +262,7 @@ export interface FilmoResponseType {
   };
   customRole: string;
   character: string;
-  is_featured: boolean;
+  isFeatured: boolean;
   production: {
     category: {
       id: number;
@@ -218,7 +279,6 @@ export interface FilmoResponseType {
 
 export interface VideoResponseType {
   id: number;
-  userProfileId: number;
   url: string;
   displayOrder: number;
 }

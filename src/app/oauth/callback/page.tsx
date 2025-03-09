@@ -66,7 +66,7 @@ const Callback = () => {
       };
       getGoogleAccessToken();
     }
-  }, []);
+  }, [urlParams]);
 
   useEffect(() => {
     if (kakaoToken) {

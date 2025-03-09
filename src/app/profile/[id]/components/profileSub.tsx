@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   FilmoResponseType,
   PhotoResponseType,
@@ -15,34 +14,37 @@ import YoutubeVideo from "@/components/atoms/youtubeVideo";
 import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
+import ChipItem from "@/components/atoms/chipItem";
 
 interface PropfileSubProps {
   linear: string;
-  userId: number;
-  photoList: PhotoResponseType[];
+  otherUser: boolean;
+  photoLabel: string;
+  selectedPhotoList: PhotoResponseType[];
   filmographyList: FilmoResponseType[];
   videoList: VideoResponseType[];
-  setStepper: React.Dispatch<React.SetStateAction<number>>;
-  onPhotoModalOpen: (photo: string) => void;
+  onMoveToCreate: (stepper: number) => void;
+  onSwitchPhotoLabel: (label: string) => void;
+  onPhotoModalOpen: (photo: string, photoId: string, index: number) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoLinkModalOpen: (link: string) => void;
 }
 
 const ProfileSub = ({
   linear,
-  userId,
-  photoList,
+  otherUser,
+  photoLabel,
+  selectedPhotoList,
   filmographyList,
   videoList,
-  setStepper,
+  onMoveToCreate,
+  onSwitchPhotoLabel,
   onPhotoModalOpen,
   onFilmoModalActive,
   onFilmoLinkModalOpen
 }: PropfileSubProps) => {
-  const router = useRouter();
-
   const repFilmoList = filmographyList.filter(
-    (filmo: FilmoResponseType) => filmo.is_featured === true
+    (filmo: FilmoResponseType) => filmo.isFeatured === true
   );
 
   const [photoSlider, setPhotoSlider] = useState(0);
@@ -53,9 +55,13 @@ const ProfileSub = ({
 
   const onSliderNext = (slides: number) => {
     setPhotoSlider((prev) =>
-      prev <= Math.floor(slides / 5) - 1 ? prev + 1 : prev
+      prev <= Math.floor(slides / 4) - 1 ? prev + 1 : prev
     );
   };
+
+  useEffect(() => {
+    setPhotoSlider(0);
+  }, [photoLabel]);
 
   return (
     <section
@@ -63,9 +69,29 @@ const ProfileSub = ({
     >
       {/* photo */}
       <div className="flex h-auto w-full flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <Title name="사진" />
-          {photoList.length > 4 && (
+        <Title name="사진" />
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row gap-2">
+            <ChipItem
+              state={photoLabel === "profilePhoto" ? "selected" : "default"}
+              onClick={() => onSwitchPhotoLabel("profilePhoto")}
+            >
+              프로필 사진
+            </ChipItem>
+            <ChipItem
+              state={photoLabel === "stillcutPhoto" ? "selected" : "default"}
+              onClick={() => onSwitchPhotoLabel("stillcutPhoto")}
+            >
+              스틸컷
+            </ChipItem>
+            <ChipItem
+              state={photoLabel === "recentPhoto" ? "selected" : "default"}
+              onClick={() => onSwitchPhotoLabel("recentPhoto")}
+            >
+              최근 사진
+            </ChipItem>
+          </div>
+          {selectedPhotoList.length > 4 && (
             <div className="flex gap-1">
               {/* PrevButton */}
               <button
@@ -78,17 +104,19 @@ const ProfileSub = ({
               </button>
               {/* NextButton */}
               <button
-                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(photoList.length / 5) && "opacity-40"}`}
+                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(selectedPhotoList.length / 5) && "opacity-40"}`}
                 type="button"
-                disabled={photoSlider === Math.floor(photoList.length / 5)}
-                onClick={() => onSliderNext(photoList.length)}
+                disabled={
+                  photoSlider === Math.floor(selectedPhotoList.length / 5)
+                }
+                onClick={() => onSliderNext(selectedPhotoList.length)}
               >
                 <ArrowChevronRight width="16" height="16" fill="#5E656C" />
               </button>
             </div>
           )}
         </div>
-        {photoList.length >= 1 && photoList[0].isDefault === false ? (
+        {selectedPhotoList.length >= 1 ? (
           <div className="relative overflow-hidden">
             <div
               className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
@@ -96,13 +124,15 @@ const ProfileSub = ({
                 transform: `translateX(-${photoSlider * 100}%)`
               }}
             >
-              {photoList.map((photo: PhotoResponseType) => {
-                return (
-                  <Fragment key={photo.id}>
-                    {photo.isDefault === false && (
+              {selectedPhotoList.map(
+                (photo: PhotoResponseType, index: number) => {
+                  return (
+                    <Fragment key={photo.id}>
                       <figure
-                        className="relative flex w-[20%] min-w-[20%] cursor-pointer items-center justify-center rounded-[18px]"
-                        onClick={() => onPhotoModalOpen(photo.path)}
+                        className="relative flex w-[24.4%] min-w-[24.4%] cursor-pointer items-center justify-center rounded-[18px]"
+                        onClick={() =>
+                          onPhotoModalOpen(photo.path, photo.id, index)
+                        }
                       >
                         <Image
                           src={photo.previewPath}
@@ -110,7 +140,7 @@ const ProfileSub = ({
                           width={0}
                           height={0}
                           sizes="100vw"
-                          className="h-[40vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
+                          className="aspect-[258/330] h-auto max-h-[50vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
                         />
                         <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                           <PlusCircle width="20" height="20" fill="#ffffff" />
@@ -119,23 +149,21 @@ const ProfileSub = ({
                           </span>
                         </div>
                       </figure>
-                    )}
-                  </Fragment>
-                );
-              })}
+                    </Fragment>
+                  );
+                }
+              )}
             </div>
           </div>
         ) : (
           <EmptyState
             text="사진이 없어요."
             button
-            buttonText="사진 추가"
+            buttonSize="small"
+            buttonText="추가"
             buttonType="secondaryOutlined"
-            onClick={() => {
-              router.prefetch(`/profile/${userId}/create/photo`);
-              router.push(`/profile/${userId}/create/photo`);
-              setStepper(1);
-            }}
+            otherUser={otherUser}
+            onClick={() => onMoveToCreate(1)}
           />
         )}
       </div>
@@ -143,7 +171,7 @@ const ProfileSub = ({
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title name="작품 활동" />
-          {filmographyList.length > 6 && (
+          {filmographyList.length >= 1 && (
             <button
               type="button"
               className="flex gap-1 rounded"
@@ -199,13 +227,11 @@ const ProfileSub = ({
           <EmptyState
             text="작품 활동이 없어요."
             button
-            buttonText="작품 활동 추가"
+            buttonSize="small"
+            buttonText="추가"
             buttonType="secondaryOutlined"
-            onClick={() => {
-              router.prefetch(`/profile/${userId}/create/filmo`);
-              router.push(`/profile/${userId}/create/filmo`);
-              setStepper(2);
-            }}
+            otherUser={otherUser}
+            onClick={() => onMoveToCreate(2)}
           />
         )}
       </div>
@@ -222,12 +248,11 @@ const ProfileSub = ({
           <EmptyState
             text="영상이 없어요."
             button
-            buttonText="영상 추가"
+            buttonSize="small"
+            buttonText="추가"
             buttonType="secondaryOutlined"
-            onClick={() => {
-              router.prefetch(`/profile/${userId}/create/video`);
-              router.push(`/profile/${userId}/create/video`);
-            }}
+            otherUser={otherUser}
+            onClick={() => onMoveToCreate(3)}
           />
         )}
       </div>

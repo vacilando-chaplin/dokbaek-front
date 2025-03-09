@@ -112,3 +112,13 @@ export const convertToBase64 = (file: File): Promise<string> => {
     reader.readAsDataURL(file); // 파일을 base64로 변환
   });
 };
+
+export const isValidInstagramUrl = (url: string) => {
+  const regex = /^https:\/\/(www\.)?instagram\.com\/([a-zA-Z0-9_]+)\/?$/;
+  return regex.test(url);
+};
+
+export const isValidYoutubeChannelUrl = (url: string) => {
+  const regex = /^(https:\/\/(www\.)?youtube\.com\/@([a-zA-Z0-9_-]+))$/;
+  return regex.test(url);
+};
