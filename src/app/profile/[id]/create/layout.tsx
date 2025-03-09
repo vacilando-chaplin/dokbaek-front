@@ -20,11 +20,9 @@ import {
 import ConfirmModal from "@/components/organisms/confirmModal";
 import { useEffect, useState } from "react";
 import { isValid } from "@/lib/utils";
-import Cookies from "js-cookie";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const userId = useRecoilValue(defaultId);
-  const jwt = Cookies.get("jwt");
 
   const { name, gender, birth, contact } = useRecoilValue(completionProgress);
   const [isDraftState, setIsDraftState] = useRecoilState(isDraft);
@@ -72,11 +70,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    if (jwt === undefined) {
-      router.prefetch("/login");
-      router.push("/login");
-    }
-
     const onCheckIsDraft = async () => {
       const res = await postProfileDraft(userId);
       const data = await res.data.data;
