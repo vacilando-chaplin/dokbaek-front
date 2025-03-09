@@ -2,8 +2,8 @@
 
 import {
   completionProgress,
-  defaultId,
   isDraftComplete,
+  profileIdInit,
   stepperInit
 } from "@/lib/atoms";
 import { educationEngList, educationEnum, educationList } from "@/lib/data";
@@ -37,7 +37,7 @@ import { getProfileDraft } from "../../api";
 import { EducationWithIdType } from "@/lib/types";
 
 const Info = () => {
-  const userId = useRecoilValue(defaultId);
+  const profileId = useRecoilValue(profileIdInit);
   const stepper = useRecoilValue(stepperInit);
   const isDraftLoading = useRecoilValue(isDraftComplete);
 
@@ -164,8 +164,6 @@ const Info = () => {
     onSpecialtyFormModalClose();
 
     if (specialties && specialties.length > 0) {
-      const profileId = userId;
-
       for (const specialty of specialties) {
         const specialtyId = specialty.id;
         const mediaUrl = specialty.mediaUrl ?? "";
@@ -222,7 +220,7 @@ const Info = () => {
       youtubeLink: infoInputs.youtube,
       introduction: infoInputs.introduction
     };
-    await putInfoDraft(userId, infoData);
+    await putInfoDraft(profileId, infoData);
   };
 
   // 학교 검색
@@ -343,7 +341,7 @@ const Info = () => {
       major: "",
       status: "GRADUATED"
     };
-    const res = await postEducation(userId, educationData);
+    const res = await postEducation(profileId, educationData);
     const data = res.data;
 
     const educationInit = [
@@ -363,9 +361,9 @@ const Info = () => {
   };
 
   const onDeleteEducation = async (educationId: number) => {
-    await deleteEducation(userId, educationId);
+    await deleteEducation(profileId, educationId);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setEducation(data.education);
@@ -395,7 +393,7 @@ const Info = () => {
       major: education[educationIndex].major,
       status: status()
     };
-    await putEducation(userId, education[0].id, educationData);
+    await putEducation(profileId, education[0].id, educationData);
   };
 
   // 내 정보 탭에서 다른 탭으로 이동 시 내 정보 업데이트
@@ -412,7 +410,7 @@ const Info = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(userId);
+        const res = await getProfileDraft(profileId);
         const data = await res.data;
 
         if (data.education.length >= 1) {
@@ -445,7 +443,7 @@ const Info = () => {
           ...completion,
           name: isValid(data.info.name),
           gender: isValid(data.info.gender),
-          birth: isValid(data.info.bornYear),
+          bornYear: isValid(data.info.bornYear),
           height: data.info.height > 0 ? true : false,
           weight: data.info.weight > 0 ? true : false,
           contact: isValid(data.info.contact),

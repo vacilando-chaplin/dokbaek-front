@@ -3,9 +3,8 @@
 import LinkModal from "@/components/organisms/linkModal";
 import {
   completionProgress,
-  defaultId,
-  isDraft,
   isDraftComplete,
+  profileIdInit,
   toastMessage
 } from "@/lib/atoms";
 import { VideoResponseType } from "@/lib/types";
@@ -22,7 +21,7 @@ import { isValid } from "@/lib/utils";
 import { getProfileDraft } from "../../api";
 
 const Video = () => {
-  const userId = useRecoilValue(defaultId);
+  const profileId = useRecoilValue(profileIdInit);
   const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -60,9 +59,9 @@ const Video = () => {
 
   // 비디오 모달 저장 버튼 클릭
   const onVideoModalSave = async () => {
-    await postVideo(userId, videoInputs);
+    await postVideo(profileId, videoInputs);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setCompletion({ ...completion, video: true });
@@ -86,9 +85,9 @@ const Video = () => {
 
   // 비디오 편집 모달 편집 완료
   const onVideoModalEdit = async () => {
-    await putVideo(userId, videoModal.id, videoInputs);
+    await putVideo(profileId, videoModal.id, videoInputs);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setVideoList(data.videos);
@@ -110,9 +109,9 @@ const Video = () => {
 
   // 비디오 삭제 버튼 클릭
   const onVideoDeleteClick = async () => {
-    await deleteVideo(userId, videoModal.id);
+    await deleteVideo(profileId, videoModal.id);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     isValid(data.videos)
@@ -137,7 +136,7 @@ const Video = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(userId);
+        const res = await getProfileDraft(profileId);
         const data = await res.data;
 
         isValid(data.videos)

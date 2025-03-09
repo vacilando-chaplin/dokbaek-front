@@ -7,11 +7,10 @@ import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
   completionProgress,
-  defaultId,
   filmoCategory,
   filmoRole,
-  isDraft,
   isDraftComplete,
+  profileIdInit,
   toastMessage
 } from "@/lib/atoms";
 import {
@@ -41,7 +40,7 @@ import {
 import { getProfileDraft } from "../../api";
 
 const Filmography = () => {
-  const userId = useRecoilValue(defaultId);
+  const profileId = useRecoilValue(profileIdInit);
   const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -115,16 +114,16 @@ const Filmography = () => {
       displayOrder: 0
     };
 
-    const filmoRes = await postFilmography(userId, filmo);
+    const filmoRes = await postFilmography(profileId, filmo);
     const filmoData = await filmoRes.data;
 
     await postFilmographyThumbnail(
-      userId,
+      profileId,
       filmoData.id,
       filmoData.thumbnailUrl
     );
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setCompletion({ ...completion, filmography: true });
@@ -160,9 +159,9 @@ const Filmography = () => {
       displayOrder: filmoInputs.displayOrder
     };
 
-    await putFilmography(userId, filmoInputs.id, editFilmo);
+    await putFilmography(profileId, filmoInputs.id, editFilmo);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -190,7 +189,7 @@ const Filmography = () => {
   const onFilmoRepSave = async () => {
     for (const filmo of filmoRepEditList) {
       if (filmo.isFeatured) {
-        await putFilmography(userId, filmo.id, {
+        await putFilmography(profileId, filmo.id, {
           roleId: filmo.role.id,
           customRole: filmo.customRole,
           character: filmo.character,
@@ -208,7 +207,7 @@ const Filmography = () => {
       }
     }
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -346,10 +345,10 @@ const Filmography = () => {
 
   // 필모그래피 삭제 모달 삭제 버튼 클릭
   const onFilmoDeleteClick = async () => {
-    await deleteFilmographyThumbnail(userId, filmoDelete.id);
-    await deleteFilmography(userId, filmoDelete.id);
+    await deleteFilmographyThumbnail(profileId, filmoDelete.id);
+    await deleteFilmography(profileId, filmoDelete.id);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     isValid(data.filmos)
@@ -390,7 +389,7 @@ const Filmography = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(userId);
+        const res = await getProfileDraft(profileId);
         const data = await res.data;
 
         isValid(data.filmos)

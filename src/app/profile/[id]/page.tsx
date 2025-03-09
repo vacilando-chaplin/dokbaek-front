@@ -1,11 +1,12 @@
 "use client";
 
-import { getProfile, getProfileOtherUser } from "@/lib/api";
+import { getProfile, getProfileMe, getProfileOtherUser } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
   defaultId,
   filmoCategory,
+  profileIdInit,
   stepperInit,
   toastMessage
 } from "@/lib/atoms";
@@ -48,6 +49,7 @@ const Profile = () => {
   const pathUserId =
     pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
   const userId = useRecoilValue(defaultId);
+  const [profileId, setProfileId] = useRecoilState(profileIdInit);
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const filmoCategoryList = useRecoilValue(filmoCategory);
@@ -278,6 +280,13 @@ const Profile = () => {
       mainHeight >= subHeight ? setLinear("main") : setLinear("sub");
     }
 
+    const getProfileId = async () => {
+      const res = await getProfileMe();
+      const data = res.data;
+      setProfileId(data.id);
+    };
+    getProfileId();
+
     const getProfileData = async () => {
       if (pathName && userId !== Number(pathUserId)) {
         setOtherUser(true);
@@ -290,7 +299,7 @@ const Profile = () => {
         setProfileSpecialties(data.specialties);
       } else if (pathName && userId === Number(pathUserId)) {
         setOtherUser(false);
-        const res = await getProfile(userId);
+        const res = await getProfile(profileId);
         const data = res.data;
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);

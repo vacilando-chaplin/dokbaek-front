@@ -17,6 +17,12 @@ export const defaultId = atom<number>({
   effects_UNSTABLE: [persistAtom]
 });
 
+export const profileIdInit = atom<number>({
+  key: "profileIdInit",
+  default: 0,
+  effects_UNSTABLE: [persistAtom]
+});
+
 export const stepperInit = atom<number>({
   key: "stepperInit",
   default: 0
@@ -27,7 +33,7 @@ export const completionProgress = atom<CompletionProgressType>({
   default: {
     name: false,
     gender: false,
-    birth: false,
+    bornYear: false,
     height: false,
     weight: false,
     contact: false,

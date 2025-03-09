@@ -3,9 +3,8 @@
 import { deletePhoto, postPhoto, patchPhoto } from "@/lib/api";
 import {
   completionProgress,
-  defaultId,
-  isDraft,
   isDraftComplete,
+  profileIdInit,
   toastMessage
 } from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
@@ -25,7 +24,7 @@ import { imageCompressionOptions } from "@/lib/data";
 import { cropDataInit } from "../../data";
 
 const Photo = () => {
-  const userId = useRecoilValue(defaultId);
+  const profileId = useRecoilValue(profileIdInit);
   const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -157,21 +156,26 @@ const Photo = () => {
       if (selectedImages.length > 1) {
         for (const [index, images] of selectedImages.entries()) {
           await postPhoto(
-            userId,
+            profileId,
             images.origin,
             selectedPhotoId === index ? cropImage : images.preview,
             "photo"
           );
         }
       } else {
-        await postPhoto(userId, selectedImages[0].origin, cropImage, "photo");
+        await postPhoto(
+          profileId,
+          selectedImages[0].origin,
+          cropImage,
+          "photo"
+        );
       }
       setCompletion({ ...completion, profilePhoto: true });
     } else if (photoModal.category === "stillcut") {
       if (selectedImages.length > 1) {
         for (const [index, images] of selectedImages.entries()) {
           await postPhoto(
-            userId,
+            profileId,
             images.origin,
             selectedPhotoId === index ? cropImage : images.preview,
             "stillcut"
@@ -179,7 +183,7 @@ const Photo = () => {
         }
       } else {
         await postPhoto(
-          userId,
+          profileId,
           selectedImages[0].origin,
           cropImage,
           "stillcut"
@@ -187,7 +191,7 @@ const Photo = () => {
       }
       setCompletion({ ...completion, stillcutPhoto: true });
     }
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -202,9 +206,9 @@ const Photo = () => {
 
   // 사진 편집 모달 완료
   const onEditPhoto = async () => {
-    await patchPhoto(userId, cropImage, photoModal.id, photoModal.category);
+    await patchPhoto(profileId, cropImage, photoModal.id, photoModal.category);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -217,9 +221,14 @@ const Photo = () => {
 
   // 최근 사진 추가 모달 저장
   const onAddRecentPhoto = async () => {
-    await postRecentPhoto(userId, selectImage, cropImage, photoModal.category);
+    await postRecentPhoto(
+      profileId,
+      selectImage,
+      cropImage,
+      photoModal.category
+    );
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = res.data;
 
     setCompletion({ ...completion, recentPhoto: true });
@@ -232,9 +241,9 @@ const Photo = () => {
 
   // 최근 사진 편집 모달 완료
   const onEditRecentPhoto = async () => {
-    await postRecentPhotoEdit(userId, selectImage, cropImage, photoModal.id);
+    await postRecentPhotoEdit(profileId, selectImage, cropImage, photoModal.id);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = res.data;
 
     setRecentPhotoList(data.recentPhotos);
@@ -246,9 +255,9 @@ const Photo = () => {
 
   // 사진 삭제 모달 버튼 클릭
   const onDeletePhoto = async (id: string, category: string) => {
-    await deletePhoto(userId, id, category);
+    await deletePhoto(profileId, id, category);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = res.data;
 
     isValid(data.photos)
@@ -365,7 +374,7 @@ const Photo = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(userId);
+        const res = await getProfileDraft(profileId);
         const data = await res.data;
 
         isValid(data.photos)
