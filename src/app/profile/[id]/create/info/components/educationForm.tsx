@@ -47,9 +47,15 @@ const EducationForm = ({
         <button
           type="button"
           className="flex h-5 w-5 items-center justify-center rounded-md border border-border-default-light bg-background-surface-light p-1"
+          disabled={item.school.name === ""}
           onClick={onDelete}
         >
-          <X width="12" height="12" fill="#FB3E34" />
+          <X
+            width="12"
+            height="12"
+            fill="#FB3E34"
+            className={`${item.school.name === "" && "opacity-40"}`}
+          />
         </button>
       </div>
       <div className="flex h-auto w-full flex-col">
