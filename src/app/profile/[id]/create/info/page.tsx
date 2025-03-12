@@ -360,13 +360,39 @@ const Info = () => {
     setEducation(educationInit);
   };
 
-  const onDeleteEducation = async (educationId: number) => {
-    await deleteEducation(profileId, educationId);
+  // const onDeleteEducation = async (educationId: number) => {
+  //   await deleteEducation(profileId, educationId);
 
-    const res = await getProfileDraft(profileId);
+  //   const res = await getProfileDraft(profileId);
+  //   const data = await res.data;
+
+  //   setEducation(data.education);
+  // };
+
+  const onDeleteEducation = async (educationId: number) => {
+    const educationData = {
+      school: {
+        name: "",
+        schoolType: "",
+        schoolGubun: ""
+      },
+      major: "",
+      status: "GRADUATED"
+    };
+    const res = await putEducation(profileId, educationId, educationData);
     const data = await res.data;
 
-    setEducation(data.education);
+    const tempEducation = {
+      id: data.id,
+      school: {
+        name: data.school.name,
+        schoolType: data.school.schoolType,
+        schoolGubun: data.school.schoolGubun
+      },
+      major: data.major,
+      status: "졸업"
+    };
+    setEducation([tempEducation]);
   };
 
   const onSaveEducation = async (educationId: number) => {
