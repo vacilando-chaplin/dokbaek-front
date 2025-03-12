@@ -117,7 +117,8 @@ const FilmoItem = ({
         )}
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
-        {filmo.thumbnailPath.endsWith("null") ? (
+        {filmo.thumbnailPath === null ||
+        filmo.thumbnailPath.endsWith("null") ? (
           <LogoHorizontalSmall width="20" height="20" fill="#ADB5BD" />
         ) : (
           <Image

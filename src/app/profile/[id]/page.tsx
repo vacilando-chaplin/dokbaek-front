@@ -223,7 +223,7 @@ const Profile = () => {
   };
 
   const onAddMainPhoto = async () => {
-    const res = await postProfilePhotoMain(userId, mainPhotoTemp, cropImage);
+    const res = await postProfilePhotoMain(profileId, mainPhotoTemp, cropImage);
     const data = res.data;
 
     setSelectImage("");
@@ -236,9 +236,9 @@ const Profile = () => {
   };
 
   const onChangeMainPhoto = async () => {
-    await deleteProfilePhotoMain(userId);
+    await deleteProfilePhotoMain(profileId);
 
-    const res = await postProfilePhotoMain(userId, mainPhotoTemp, cropImage);
+    const res = await postProfilePhotoMain(profileId, mainPhotoTemp, cropImage);
     const data = res.data;
 
     setSelectImage("");
@@ -251,7 +251,7 @@ const Profile = () => {
   };
 
   const onEditMainPhoto = async () => {
-    const res = await patchProfilePhotoMain(userId, cropImage);
+    const res = await patchProfilePhotoMain(profileId, cropImage);
     const data = res.data;
 
     setMainPhoto(data.mainPhotoPreviewPath);
@@ -264,7 +264,7 @@ const Profile = () => {
   };
 
   const onDeleteMainPhoto = async () => {
-    await deleteProfilePhotoMain(userId);
+    await deleteProfilePhotoMain(profileId);
 
     setMainPhoto("");
     setMainPhotoOrigin("");
@@ -286,7 +286,9 @@ const Profile = () => {
       setProfileId(data.id);
     };
     getProfileId();
+  }, []);
 
+  useEffect(() => {
     const getProfileData = async () => {
       if (pathName && userId !== Number(pathUserId)) {
         setOtherUser(true);
@@ -297,7 +299,7 @@ const Profile = () => {
         setMainPhotoOrigin(data.mainPhotoPath);
         setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
-      } else if (pathName && userId === Number(pathUserId)) {
+      } else if (pathName && userId === Number(pathUserId) && profileId) {
         setOtherUser(false);
         const res = await getProfile(profileId);
         const data = res.data;
@@ -309,7 +311,7 @@ const Profile = () => {
       }
     };
     getProfileData();
-  }, [pathName]);
+  }, [pathName, profileId]);
 
   useEffect(() => {
     const filteredCategoryList = filmoCategoryList.filter(
