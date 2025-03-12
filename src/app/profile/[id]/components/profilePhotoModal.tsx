@@ -4,12 +4,12 @@ import Image from "next/image";
 import X from "../../../../../public/icons/X.svg";
 import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
-import { SelectedPhotoType } from "../types";
+import { PhotoLabelType, SelectedPhotoType } from "../types";
 import { PhotoResponseType } from "@/lib/types";
 import { useState } from "react";
 
 interface ProfilePhotoModalProps {
-  photoLabel: string;
+  photoLabel: PhotoLabelType;
   selectedPhoto: SelectedPhotoType;
   selectedPhotoList: PhotoResponseType[];
   onPhotoModalClose: React.MouseEventHandler<HTMLButtonElement>;
