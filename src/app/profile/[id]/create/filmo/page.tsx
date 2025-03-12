@@ -7,11 +7,10 @@ import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
   completionProgress,
-  defaultId,
   filmoCategory,
   filmoRole,
-  isDraft,
   isDraftComplete,
+  profileIdInit,
   toastMessage
 } from "@/lib/atoms";
 import {
@@ -33,15 +32,17 @@ import {
 import { videoLinkInit } from "../../data";
 import {
   deleteFilmography,
+  deleteFilmographyFeatured,
   deleteFilmographyThumbnail,
   postFilmography,
   postFilmographyThumbnail,
-  putFilmography
+  putFilmography,
+  putFilmographyFeatured
 } from "./api";
 import { getProfileDraft } from "../../api";
 
 const Filmography = () => {
-  const userId = useRecoilValue(defaultId);
+  const profileId = useRecoilValue(profileIdInit);
   const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -99,6 +100,7 @@ const Filmography = () => {
       (category: FilmoCategoryType) =>
         category.name === filmoInputs.classification
     );
+
     const filmo = {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
@@ -110,21 +112,23 @@ const Filmography = () => {
         title: filmoInputs.title,
         description: filmoInputs.description,
         videoUrl: filmoInputs.link,
-        thumbnailUrl: filmoInputs.thumbnail
+        thumbnailUrl: ""
       },
       displayOrder: 0
     };
 
-    const filmoRes = await postFilmography(userId, filmo);
+    const filmoRes = await postFilmography(profileId, filmo);
     const filmoData = await filmoRes.data;
 
-    await postFilmographyThumbnail(
-      userId,
-      filmoData.id,
-      filmoData.thumbnailUrl
-    );
+    if (filmoInputs.thumbnail !== "") {
+      await postFilmographyThumbnail(
+        profileId,
+        filmoData.id,
+        filmoInputs.thumbnail
+      );
+    }
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setCompletion({ ...completion, filmography: true });
@@ -145,7 +149,7 @@ const Filmography = () => {
     );
 
     const editFilmo = {
-      roleId: filmoInputs.cast ? roleId : 0,
+      roleId: roleId !== -1 ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
       isFeatured: filmoInputs.representative,
@@ -155,14 +159,30 @@ const Filmography = () => {
         title: filmoInputs.title,
         description: filmoInputs.description,
         videoUrl: filmoInputs.link,
-        thumbnailUrl: filmoInputs.thumbnail
+        thumbnailUrl: ""
       },
       displayOrder: filmoInputs.displayOrder
     };
 
-    await putFilmography(userId, filmoInputs.id, editFilmo);
+    const filmoData = await putFilmography(
+      profileId,
+      filmoInputs.id,
+      editFilmo
+    );
+    const filmoRes = await filmoData.data;
 
-    const res = await getProfileDraft(userId);
+    if (
+      filmoInputs.thumbnail !== "" ||
+      filmoInputs.thumbnail.endsWith("null")
+    ) {
+      await postFilmographyThumbnail(
+        profileId,
+        filmoRes.id,
+        filmoInputs.thumbnail
+      );
+    }
+
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -189,26 +209,15 @@ const Filmography = () => {
   // 필모그래피 대표작 설정 완료
   const onFilmoRepSave = async () => {
     for (const filmo of filmoRepEditList) {
-      if (filmo.isFeatured) {
-        await putFilmography(userId, filmo.id, {
-          roleId: filmo.role.id,
-          customRole: filmo.customRole,
-          character: filmo.character,
-          isFeatured: true,
-          production: {
-            categoryId: filmo.production.category.id,
-            productionYear: filmo.production.productionYear,
-            title: filmo.production.title,
-            description: filmo.production.description,
-            videoUrl: filmo.production.videoUrl,
-            thumbnailUrl: filmo.production.thumbnailUrl
-          },
-          displayOrder: filmo.displayOrder
-        });
+      const findFilmo = filmoList.find((item) => item.id === filmo.id);
+      if (filmo.isFeatured && findFilmo?.isFeatured === false) {
+        await putFilmographyFeatured(profileId, filmo.id);
+      } else if (filmo.isFeatured === false && findFilmo?.isFeatured) {
+        await deleteFilmographyFeatured(profileId, filmo.id);
       }
     }
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -319,7 +328,7 @@ const Filmography = () => {
       casting: filmo.character,
       description: filmo.production.description,
       link: filmo.production.videoUrl,
-      thumbnail: filmo.production.thumbnailUrl,
+      thumbnail: filmo.thumbnailPath,
       representative: filmo.isFeatured,
       id: filmo.id,
       displayOrder: filmo.displayOrder
@@ -346,10 +355,10 @@ const Filmography = () => {
 
   // 필모그래피 삭제 모달 삭제 버튼 클릭
   const onFilmoDeleteClick = async () => {
-    await deleteFilmographyThumbnail(userId, filmoDelete.id);
-    await deleteFilmography(userId, filmoDelete.id);
+    await deleteFilmographyThumbnail(profileId, filmoDelete.id);
+    await deleteFilmography(profileId, filmoDelete.id);
 
-    const res = await getProfileDraft(userId);
+    const res = await getProfileDraft(profileId);
     const data = await res.data;
 
     isValid(data.filmos)
@@ -390,7 +399,7 @@ const Filmography = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(userId);
+        const res = await getProfileDraft(profileId);
         const data = await res.data;
 
         isValid(data.filmos)

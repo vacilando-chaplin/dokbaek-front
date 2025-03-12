@@ -120,6 +120,7 @@ export const profileResponseInit = {
         videoUrl: "",
         thumbnailUrl: ""
       },
+      thumbnailPath: null,
       displayOrder: 0
     }
   ],

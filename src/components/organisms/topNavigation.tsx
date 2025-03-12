@@ -43,6 +43,7 @@ const TopNavigation = () => {
       await deleteSignOut(refreshToken);
       Cookies.remove("jwt", { path: "/" });
       Cookies.remove("refresh_token", { path: "/" });
+      localStorage.removeItem("recoil-persist");
       router.prefetch("/");
       router.push("/");
     }

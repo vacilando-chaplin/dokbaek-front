@@ -15,7 +15,7 @@ export interface sizeStyleType {
 export interface CompletionProgressType {
   name: boolean;
   gender: boolean;
-  birth: boolean;
+  bornYear: boolean;
   height: boolean;
   weight: boolean;
   contact: boolean;
@@ -274,6 +274,7 @@ export interface FilmoResponseType {
     videoUrl: string;
     thumbnailUrl: string;
   };
+  thumbnailPath: string;
   displayOrder: number;
 }
 

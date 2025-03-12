@@ -1,11 +1,12 @@
 "use client";
 
-import { getProfile, getProfileOtherUser } from "@/lib/api";
+import { getProfile, getProfileMe, getProfileOtherUser } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
   defaultId,
   filmoCategory,
+  profileIdInit,
   stepperInit,
   toastMessage
 } from "@/lib/atoms";
@@ -36,7 +37,11 @@ import {
 } from "./api";
 import ConfirmModal from "@/components/organisms/confirmModal";
 import { photoModalInit } from "./create/photo/data";
-import { ProfileModalType, ProfilePhotoModalType } from "./types";
+import {
+  PhotoLabelType,
+  ProfileModalType,
+  ProfilePhotoModalType
+} from "./types";
 import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import imageCompression from "browser-image-compression";
 import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
@@ -48,6 +53,7 @@ const Profile = () => {
   const pathUserId =
     pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
   const userId = useRecoilValue(defaultId);
+  const [profileId, setProfileId] = useRecoilState(profileIdInit);
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const filmoCategoryList = useRecoilValue(filmoCategory);
@@ -63,7 +69,7 @@ const Profile = () => {
   const [profileSpecialties, setProfileSpecialties] = useState<
     SpecialtyItemType[]
   >([]);
-  const [photoLabel, setPhotoLabel] = useState("profilePhoto");
+  const [photoLabel, setPhotoLabel] = useState<PhotoLabelType>("profilePhoto");
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
   const [selectedPhotoList, setSelectedPhotoList] = useState<
     PhotoResponseType[]
@@ -102,7 +108,7 @@ const Profile = () => {
 
   // ProfileSub
 
-  const onSwitchPhotoLabel = (label: string) => {
+  const onSwitchPhotoLabel = (label: PhotoLabelType) => {
     setPhotoLabel(label);
     if (label === "profilePhoto") {
       setSelectedPhotoList(profileData.photos);
@@ -221,7 +227,7 @@ const Profile = () => {
   };
 
   const onAddMainPhoto = async () => {
-    const res = await postProfilePhotoMain(userId, mainPhotoTemp, cropImage);
+    const res = await postProfilePhotoMain(profileId, mainPhotoTemp, cropImage);
     const data = res.data;
 
     setSelectImage("");
@@ -234,9 +240,9 @@ const Profile = () => {
   };
 
   const onChangeMainPhoto = async () => {
-    await deleteProfilePhotoMain(userId);
+    await deleteProfilePhotoMain(profileId);
 
-    const res = await postProfilePhotoMain(userId, mainPhotoTemp, cropImage);
+    const res = await postProfilePhotoMain(profileId, mainPhotoTemp, cropImage);
     const data = res.data;
 
     setSelectImage("");
@@ -249,7 +255,7 @@ const Profile = () => {
   };
 
   const onEditMainPhoto = async () => {
-    const res = await patchProfilePhotoMain(userId, cropImage);
+    const res = await patchProfilePhotoMain(profileId, cropImage);
     const data = res.data;
 
     setMainPhoto(data.mainPhotoPreviewPath);
@@ -262,7 +268,7 @@ const Profile = () => {
   };
 
   const onDeleteMainPhoto = async () => {
-    await deleteProfilePhotoMain(userId);
+    await deleteProfilePhotoMain(profileId);
 
     setMainPhoto("");
     setMainPhotoOrigin("");
@@ -278,6 +284,15 @@ const Profile = () => {
       mainHeight >= subHeight ? setLinear("main") : setLinear("sub");
     }
 
+    const getProfileId = async () => {
+      const res = await getProfileMe();
+      const data = res.data;
+      setProfileId(data.id);
+    };
+    getProfileId();
+  }, []);
+
+  useEffect(() => {
     const getProfileData = async () => {
       if (pathName && userId !== Number(pathUserId)) {
         setOtherUser(true);
@@ -288,9 +303,9 @@ const Profile = () => {
         setMainPhotoOrigin(data.mainPhotoPath);
         setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
-      } else if (pathName && userId === Number(pathUserId)) {
+      } else if (pathName && userId === Number(pathUserId) && profileId) {
         setOtherUser(false);
-        const res = await getProfile(userId);
+        const res = await getProfile(profileId);
         const data = res.data;
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
@@ -300,7 +315,7 @@ const Profile = () => {
       }
     };
     getProfileData();
-  }, [pathName]);
+  }, [pathName, profileId]);
 
   useEffect(() => {
     const filteredCategoryList = filmoCategoryList.filter(

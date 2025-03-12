@@ -154,7 +154,12 @@ const FilmoModalContents = ({
         </div>
         <div className="flex h-auto w-full flex-col">
           <Label label="썸네일 이미지" />
-          {thumbnail ? (
+          {thumbnail === "" || thumbnail.endsWith("null") ? (
+            <ThumbnailFrame
+              style="w-[100px] h-[150px]"
+              onChange={onSelectThumbnail}
+            />
+          ) : (
             <Image
               src={thumbnail}
               alt="thumbnail"
@@ -162,11 +167,6 @@ const FilmoModalContents = ({
               height={150}
               priority
               className="h-[150px] w-[100px] rounded-lg bg-gray-100"
-            />
-          ) : (
-            <ThumbnailFrame
-              style="w-[100px] h-[150px]"
-              onChange={onSelectThumbnail}
             />
           )}
         </div>

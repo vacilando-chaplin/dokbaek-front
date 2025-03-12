@@ -15,16 +15,17 @@ import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import ChipItem from "@/components/atoms/chipItem";
+import { PhotoLabelType } from "../types";
 
 interface PropfileSubProps {
   linear: string;
   otherUser: boolean;
-  photoLabel: string;
+  photoLabel: PhotoLabelType;
   selectedPhotoList: PhotoResponseType[];
   filmographyList: FilmoResponseType[];
   videoList: VideoResponseType[];
   onMoveToCreate: (stepper: number) => void;
-  onSwitchPhotoLabel: (label: string) => void;
+  onSwitchPhotoLabel: (label: PhotoLabelType) => void;
   onPhotoModalOpen: (photo: string, photoId: string, index: number) => void;
   onFilmoModalActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoLinkModalOpen: (link: string) => void;

@@ -38,3 +38,5 @@ export interface ProfilePhotoModalType {
   name: string;
   buttonText: string;
 }
+
+export type PhotoLabelType = "profilePhoto" | "stillcutPhoto" | "recentPhoto";

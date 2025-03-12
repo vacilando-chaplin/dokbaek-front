@@ -7,6 +7,7 @@ import {
   defaultId,
   isDraft,
   isDraftComplete,
+  profileIdInit,
   stepperInit
 } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
@@ -20,11 +21,16 @@ import {
 import ConfirmModal from "@/components/organisms/confirmModal";
 import { useEffect, useState } from "react";
 import { isValid } from "@/lib/utils";
+import Cookies from "js-cookie";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const userId = useRecoilValue(defaultId);
+  const profileId = useRecoilValue(profileIdInit);
 
-  const { name, gender, birth, contact } = useRecoilValue(completionProgress);
+  const jwt = Cookies.get("jwt");
+
+  const { name, gender, bornYear, contact } =
+    useRecoilValue(completionProgress);
   const [isDraftState, setIsDraftState] = useRecoilState(isDraft);
   const setIsDraftLoading = useSetRecoilState(isDraftComplete);
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -41,7 +47,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   };
 
   const onSaveProfileClick = async () => {
-    await postProfileDraftPublish(userId);
+    await postProfileDraftPublish(profileId);
 
     setIsDraftLoading(false);
     setStepper(0);
@@ -57,8 +63,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   };
 
   const onProfileDraftRejected = async () => {
-    await deleteProfileDraft(userId);
-    await postProfileDraft(userId);
+    await deleteProfileDraft(profileId);
+    await postProfileDraft(profileId);
 
     setIsDraftState(false);
     setIsDraftLoading(true);
@@ -71,8 +77,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const onCheckIsDraft = async () => {
-      const res = await postProfileDraft(userId);
+      const res = await postProfileDraft(profileId);
       const data = await res.data.data;
+
+      if (jwt === undefined) {
+        router.prefetch("/landing");
+        router.push("/landing");
+      }
 
       if (res.status === 200) {
         setIsDraftState(true);
@@ -80,11 +91,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         setIsDraftLoading(true);
       }
 
-      setCompletion({
-        ...completion,
+      const tempCompletion = {
         name: isValid(data.info.name),
         gender: isValid(data.info.gender),
-        birth: data.info.bornYear >= 4 ? true : false,
+        bornYear: data.info.bornYear >= 4 ? true : false,
         height: data.info.height > 0 ? true : false,
         weight: data.info.weight > 0 ? true : false,
         contact: isValid(data.info.contact),
@@ -97,16 +107,19 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         stillcutPhoto: isValid(data.stillCuts),
         recentPhoto: isValid(data.recentPhotos),
         filmography: isValid(data.filmos),
-        video: isValid(data.videos)
-      });
+        video: isValid(data.videos),
+        schoolName: false,
+        schoolMajor: false,
+        schoolStatus: false
+      };
+
       if (data.education.length >= 1) {
-        setCompletion({
-          ...completion,
-          schoolName: isValid(data.education[0].school.name),
-          schoolMajor: isValid(data.education[0].major),
-          schoolStatus: true
-        });
+        tempCompletion.schoolName = isValid(data.education[0].school.name);
+        tempCompletion.schoolMajor = isValid(data.education[0].major);
+        tempCompletion.schoolStatus = true;
       }
+
+      setCompletion(tempCompletion);
     };
     onCheckIsDraft();
   }, []);
@@ -118,7 +131,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     ).length;
     const resultProgress = Math.floor((completedItems / totalItems) * 100);
     setProgress(resultProgress);
-  }, [completion, birth]);
+  }, [completion]);
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
@@ -128,7 +141,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         progress={progress}
         onBack={onBackProfileClick}
         onSave={onSaveProfileClick}
-        disabled={!(name && gender && birth && contact)}
+        disabled={!(name && gender && bornYear && contact)}
       />
       {isDraftState && (
         <ConfirmModal
