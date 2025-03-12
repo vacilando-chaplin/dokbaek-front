@@ -37,7 +37,11 @@ import {
 } from "./api";
 import ConfirmModal from "@/components/organisms/confirmModal";
 import { photoModalInit } from "./create/photo/data";
-import { ProfileModalType, ProfilePhotoModalType } from "./types";
+import {
+  PhotoLabelType,
+  ProfileModalType,
+  ProfilePhotoModalType
+} from "./types";
 import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import imageCompression from "browser-image-compression";
 import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
@@ -65,7 +69,7 @@ const Profile = () => {
   const [profileSpecialties, setProfileSpecialties] = useState<
     SpecialtyItemType[]
   >([]);
-  const [photoLabel, setPhotoLabel] = useState("profilePhoto");
+  const [photoLabel, setPhotoLabel] = useState<PhotoLabelType>("profilePhoto");
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
   const [selectedPhotoList, setSelectedPhotoList] = useState<
     PhotoResponseType[]
@@ -104,7 +108,7 @@ const Profile = () => {
 
   // ProfileSub
 
-  const onSwitchPhotoLabel = (label: string) => {
+  const onSwitchPhotoLabel = (label: PhotoLabelType) => {
     setPhotoLabel(label);
     if (label === "profilePhoto") {
       setSelectedPhotoList(profileData.photos);
