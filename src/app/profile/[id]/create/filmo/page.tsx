@@ -32,10 +32,12 @@ import {
 import { videoLinkInit } from "../../data";
 import {
   deleteFilmography,
+  deleteFilmographyFeatured,
   deleteFilmographyThumbnail,
   postFilmography,
   postFilmographyThumbnail,
-  putFilmography
+  putFilmography,
+  putFilmographyFeatured
 } from "./api";
 import { getProfileDraft } from "../../api";
 
@@ -147,7 +149,7 @@ const Filmography = () => {
     );
 
     const editFilmo = {
-      roleId: filmoInputs.cast ? roleId : 0,
+      roleId: roleId !== -1 ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
       isFeatured: filmoInputs.representative,
@@ -157,12 +159,28 @@ const Filmography = () => {
         title: filmoInputs.title,
         description: filmoInputs.description,
         videoUrl: filmoInputs.link,
-        thumbnailUrl: filmoInputs.thumbnail
+        thumbnailUrl: ""
       },
       displayOrder: filmoInputs.displayOrder
     };
 
-    await putFilmography(profileId, filmoInputs.id, editFilmo);
+    const filmoData = await putFilmography(
+      profileId,
+      filmoInputs.id,
+      editFilmo
+    );
+    const filmoRes = await filmoData.data;
+
+    if (
+      filmoInputs.thumbnail !== "" ||
+      filmoInputs.thumbnail.endsWith("null")
+    ) {
+      await postFilmographyThumbnail(
+        profileId,
+        filmoRes.id,
+        filmoInputs.thumbnail
+      );
+    }
 
     const res = await getProfileDraft(profileId);
     const data = await res.data;
@@ -191,23 +209,11 @@ const Filmography = () => {
   // 필모그래피 대표작 설정 완료
   const onFilmoRepSave = async () => {
     for (const filmo of filmoRepEditList) {
-      if (filmo.isFeatured) {
-        const filmoData = {
-          roleId: filmo.role.id,
-          customRole: filmo.customRole,
-          character: filmo.character,
-          isFeatured: true,
-          production: {
-            categoryId: filmo.production.category.id,
-            productionYear: filmo.production.productionYear,
-            title: filmo.production.title,
-            description: filmo.production.description,
-            videoUrl: filmo.production.videoUrl,
-            thumbnailUrl: filmo.thumbnailPath
-          },
-          displayOrder: filmo.displayOrder
-        };
-        await putFilmography(profileId, filmo.id, filmoData);
+      const findFilmo = filmoList.find((item) => item.id === filmo.id);
+      if (filmo.isFeatured && findFilmo?.isFeatured === false) {
+        await putFilmographyFeatured(profileId, filmo.id);
+      } else if (filmo.isFeatured === false && findFilmo?.isFeatured) {
+        await deleteFilmographyFeatured(profileId, filmo.id);
       }
     }
 

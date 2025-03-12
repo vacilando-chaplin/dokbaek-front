@@ -68,3 +68,31 @@ export const deleteFilmography = async (id: number, filmoId: number) => {
     throw error;
   }
 };
+
+export const putFilmographyFeatured = async (
+  profileId: number,
+  filmoId: number
+) => {
+  try {
+    const res = await api.put(
+      `/profile/${profileId}/draft/filmo/${filmoId}/featured`
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteFilmographyFeatured = async (
+  profileId: number,
+  filmoId: number
+) => {
+  try {
+    const res = await api.delete(
+      `/profile/${profileId}/draft/filmo/${filmoId}/featured`
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
