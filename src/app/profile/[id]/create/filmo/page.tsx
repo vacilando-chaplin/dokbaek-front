@@ -170,10 +170,14 @@ const Filmography = () => {
     );
     const filmoRes = await filmoData.data;
 
-    if (
-      filmoInputs.thumbnail !== "" ||
-      filmoInputs.thumbnail.endsWith("null")
-    ) {
+    if (filmoInputs.thumbnail.endsWith("null")) {
+      await postFilmographyThumbnail(
+        profileId,
+        filmoRes.id,
+        filmoInputs.thumbnail
+      );
+    } else if (filmoInputs.thumbnail.includes("base64")) {
+      await deleteFilmographyThumbnail(profileId, filmoRes.id);
       await postFilmographyThumbnail(
         profileId,
         filmoRes.id,
@@ -307,13 +311,13 @@ const Filmography = () => {
   const onSelectThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener("load", async () => {
+      reader.onload = () => {
         const imageElement = new Image();
         const imageUrl = reader.result?.toString() || "";
         imageElement.src = imageUrl;
 
         setFilmoInputs({ ...filmoInputs, thumbnail: imageUrl });
-      });
+      };
 
       reader.readAsDataURL(e.target.files[0]);
       e.currentTarget.value = "";

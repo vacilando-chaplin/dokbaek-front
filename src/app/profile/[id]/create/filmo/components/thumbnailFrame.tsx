@@ -1,26 +1,22 @@
-import Plus from "../../../../../../../public/icons/Plus.svg";
-
 interface ThumbnailFrameProps {
-  style: string;
-  onClick?: React.MouseEventHandler<HTMLInputElement>;
+  image: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  children: React.ReactNode;
 }
 
-const ThumbnailFrame = ({ style, onClick, onChange }: ThumbnailFrameProps) => {
+const ThumbnailFrame = ({ image, onChange, children }: ThumbnailFrameProps) => {
   return (
     <label
-      className={`flex ${style} typography-caption1 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-default-light bg-gray-50 font-medium text-content-tertiary-light`}
+      className={`typography-caption1 flex h-[150px] w-[100px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg bg-gray-50 font-medium text-content-tertiary-light ${!image && "border border-dashed border-border-default-light"}`}
     >
       <input
         id="upload"
         type="file"
         accept="image/*"
         className="hidden"
-        onClick={onClick}
         onChange={onChange}
       />
-      <Plus width="16" height="16" fill="#868E96" />
-      추가
+      {children}
     </label>
   );
 };
