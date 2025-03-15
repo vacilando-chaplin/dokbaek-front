@@ -11,7 +11,6 @@ interface FilmoMainProps {
   filmoRepEditList: FilmoResponseType[];
   categoryList: string[];
   filmoRepresentActive: boolean;
-  representativeCount: number;
   onFilmoRepActive: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoRepCancel: React.MouseEventHandler<HTMLButtonElement>;
   onFilmoRepSave: React.MouseEventHandler<HTMLButtonElement>;
@@ -27,7 +26,6 @@ const FilmoMain = ({
   filmoRepEditList,
   categoryList,
   filmoRepresentActive,
-  representativeCount,
   onFilmoRepActive,
   onFilmoRepCancel,
   onFilmoRepSave,

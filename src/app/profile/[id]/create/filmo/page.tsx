@@ -73,7 +73,6 @@ const Filmography = () => {
     []
   );
   const [filmoRepresentActive, setFilmoRepresentActive] = useState(false);
-  const [representativeCount, setRepresentativeCount] = useState(0);
 
   // 필모그래피 분류, 출연 형태 GET
   // useEffect(() => {
@@ -379,17 +378,6 @@ const Filmography = () => {
     setToastMessage("작품 활동을 삭제했어요.");
   };
 
-  useEffect(() => {
-    const filmoCount = filmoList.filter(
-      (filmo: FilmoResponseType) => filmo.featured === true
-    );
-    const filmoRepEditCount = filmoRepEditList.filter(
-      (filmo: FilmoResponseType) => filmo.featured === true
-    );
-    const combineCount = filmoCount.length + filmoRepEditCount.length;
-    setRepresentativeCount(combineCount);
-  }, [filmoRepEditList]);
-
   // 필모그래피 카테고리 리스트 업데이트
   useEffect(() => {
     const filteredCategoryList = filmoCategoryList.filter(
@@ -429,7 +417,6 @@ const Filmography = () => {
         filmoRepEditList={filmoRepEditList}
         categoryList={categoryList}
         filmoRepresentActive={filmoRepresentActive}
-        representativeCount={representativeCount}
         onFilmoRepActive={onFilmoRepActive}
         onFilmoRepCancel={onFilmoRepCancel}
         onFilmoRepSave={onFilmoRepSave}
