@@ -45,6 +45,7 @@ import {
 import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import imageCompression from "browser-image-compression";
 import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
+import { useGetBlurPhoto } from "@/lib/hooks";
 
 const Profile = () => {
   const router = useRouter();
@@ -66,18 +67,26 @@ const Profile = () => {
 
   const [profileData, setProfileData] = useState<any>(profileResponseInit);
   const [otherUser, setOtherUser] = useState(false);
+
   const [profileSpecialties, setProfileSpecialties] = useState<
     SpecialtyItemType[]
   >([]);
+
+  // profileSub 사진
   const [photoLabel, setPhotoLabel] = useState<PhotoLabelType>("profilePhoto");
   const [selectedPhoto, setSelectedPhoto] = useState(selectedPhotoInit);
   const [selectedPhotoList, setSelectedPhotoList] = useState<
     PhotoResponseType[]
   >([]);
+  const [blurPhotoList, setBlurPhotoList] = useState<string[]>([]);
+
+  // profileSub 모달
   const [profileModal, setProfileModal] = useState<ProfileModalType>({
     state: "",
     active: false
   });
+
+  // video 모달
   const [videoLink, setVideoLink] = useState(videoLinkInit);
 
   // 대표 사진 데이터
@@ -108,13 +117,26 @@ const Profile = () => {
 
   // ProfileSub
 
-  const onSwitchPhotoLabel = (label: PhotoLabelType) => {
+  const onSwitchPhotoLabel = async (label: PhotoLabelType) => {
     setPhotoLabel(label);
+
     if (label === "profilePhoto") {
+      if (profileData.photos.length >= 1) {
+        const photoList = await useGetBlurPhoto(profileData.photos);
+        setBlurPhotoList(photoList);
+      }
       setSelectedPhotoList(profileData.photos);
     } else if (label === "stillcutPhoto") {
+      if (profileData.stillCuts.length >= 1) {
+        const stillCutList = await useGetBlurPhoto(profileData.stillCuts);
+        setBlurPhotoList(stillCutList);
+      }
       setSelectedPhotoList(profileData.stillCuts);
     } else if (label === "recentPhoto") {
+      if (profileData.recentPhotos.length >= 1) {
+        const recentList = await useGetBlurPhoto(profileData.recentPhotos);
+        setBlurPhotoList(recentList);
+      }
       setSelectedPhotoList(profileData.recentPhotos);
     }
   };
@@ -298,6 +320,12 @@ const Profile = () => {
         setOtherUser(true);
         const res = await getProfileOtherUser(Number(pathUserId));
         const data = res.data;
+
+        if (data.photos.length >= 1) {
+          const photoList = await useGetBlurPhoto(data.photos);
+          setBlurPhotoList(photoList);
+        }
+
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
         setMainPhotoOrigin(data.mainPhotoPath);
@@ -307,6 +335,12 @@ const Profile = () => {
         setOtherUser(false);
         const res = await getProfile(profileId);
         const data = res.data;
+
+        if (data.photos.length >= 1) {
+          const photoList = await useGetBlurPhoto(data.photos);
+          setBlurPhotoList(photoList);
+        }
+
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
         setMainPhotoOrigin(data.mainPhotoPath);
@@ -398,6 +432,7 @@ const Profile = () => {
       {profileModal.state === "photo" && profileModal.active && (
         <ProfilePhotoModal
           photoLabel={photoLabel}
+          blurPhotoList={blurPhotoList}
           selectedPhoto={selectedPhoto}
           selectedPhotoList={selectedPhotoList}
           onPhotoModalClose={onPhotoModalClose}

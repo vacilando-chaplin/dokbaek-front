@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { PhotoResponseType } from "./types";
+import { convertToBase64, getFileMimeTypeFromUrl } from "./utils";
 
 export const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -21,4 +23,18 @@ export const useSetToken = (name: string, token: string) => {
     path: "/",
     sameSite: "Strict"
   });
+};
+
+export const useGetBlurPhoto = async (photoList: PhotoResponseType[]) => {
+  const blurImages = [];
+  for (const photo of photoList) {
+    const mimeType = await getFileMimeTypeFromUrl(photo.path);
+    const response = await fetch(photo.path);
+    const blob = await response.blob();
+    const file = new File([blob], "image", { type: mimeType });
+    const image = await convertToBase64(file);
+
+    blurImages.push(image);
+  }
+  return blurImages;
 };

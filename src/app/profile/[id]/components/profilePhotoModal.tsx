@@ -10,6 +10,7 @@ import { useState } from "react";
 
 interface ProfilePhotoModalProps {
   photoLabel: PhotoLabelType;
+  blurPhotoList: string[];
   selectedPhoto: SelectedPhotoType;
   selectedPhotoList: PhotoResponseType[];
   onPhotoModalClose: React.MouseEventHandler<HTMLButtonElement>;
@@ -17,6 +18,7 @@ interface ProfilePhotoModalProps {
 
 const ProfilePhotoModal = ({
   photoLabel,
+  blurPhotoList,
   selectedPhoto,
   selectedPhotoList,
   onPhotoModalClose
@@ -59,7 +61,8 @@ const ProfilePhotoModal = ({
           width={0}
           height={0}
           sizes="100vw"
-          placeholder="empty"
+          placeholder="blur"
+          blurDataURL={blurPhotoList[currentIndex]}
           priority
           className={`max-h-[80vh] rounded-2xl object-fill ${photoLabel === "stillcutPhoto" ? "w-[100vh]" : "w-[60vh] max-w-[80vh]"}`}
           onClick={(e) => e.stopPropagation()}
