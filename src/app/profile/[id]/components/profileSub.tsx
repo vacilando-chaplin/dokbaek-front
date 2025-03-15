@@ -48,6 +48,10 @@ const ProfileSub = ({
     (filmo: FilmoResponseType) => filmo.featured === true
   );
 
+  const nonRepFilmoList = filmographyList.filter(
+    (filmo) => filmo.featured === false
+  );
+
   const [photoSlider, setPhotoSlider] = useState(0);
 
   const onSliderPrev = () => {
@@ -184,7 +188,7 @@ const ProfileSub = ({
             </button>
           )}
         </div>
-        {filmographyList.length >= 1 && repFilmoList.length < 6 && (
+        {filmographyList.length >= 1 && repFilmoList.length === 0 && (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">
             {filmographyList.map((filmo: FilmoResponseType, index: number) => {
               return (
@@ -204,7 +208,40 @@ const ProfileSub = ({
             })}
           </div>
         )}
-        {filmographyList.length >= 1 && repFilmoList.length === 6 && (
+        {repFilmoList.length >= 1 && repFilmoList.length < 6 && (
+          <div className="grid h-auto w-auto grid-cols-3 gap-2">
+            {repFilmoList.map((filmo: FilmoResponseType) => {
+              return (
+                <div key={filmo.id} className="grid gap-2">
+                  <FilmoItem
+                    filmo={filmo}
+                    canEdit={false}
+                    onLink={() =>
+                      onFilmoLinkModalOpen(filmo.production.videoUrl)
+                    }
+                  />
+                </div>
+              );
+            })}
+            {nonRepFilmoList.map((filmo: FilmoResponseType, index: number) => {
+              return (
+                <div
+                  key={filmo.id}
+                  className={`grid gap-2 ${repFilmoList.length + index > 5 && "hidden"}`}
+                >
+                  <FilmoItem
+                    filmo={filmo}
+                    canEdit={false}
+                    onLink={() =>
+                      onFilmoLinkModalOpen(filmo.production.videoUrl)
+                    }
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {repFilmoList.length >= 6 && (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">
             {repFilmoList.map((filmo: FilmoResponseType, index: number) => {
               return (

@@ -93,7 +93,7 @@ const FilmoMain = ({
         </div>
       </div>
       {/* 대표작 */}
-      {filmoRepresentActive && filmoList.length >= 1 && (
+      {filmoRepresentActive && repFilmoList.length >= 1 && (
         <div className="flex h-auto w-full flex-col gap-2">
           <label className="typography-body2 font-semibold text-accent-primary-light">
             대표작
