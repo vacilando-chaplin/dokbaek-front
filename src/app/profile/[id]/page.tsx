@@ -333,7 +333,7 @@ const Profile = () => {
 
   return (
     <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light">
-      <div ref={mainRef} className="flex-[1_1_30%]">
+      <div ref={mainRef} className="min-w-[500px] flex-[1_1_30%]">
         <ProfileMain
           info={profileData.info}
           linear={linear}
