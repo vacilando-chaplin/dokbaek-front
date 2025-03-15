@@ -3,16 +3,17 @@
 import { FilmoResponseType } from "@/lib/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Edit from "../../../public/icons/Edit.svg";
-import X from "../../../public/icons/X.svg";
-import PlayCircle from "../../../public/icons/PlayCircle.svg";
-import LogoHorizontalSmall from "../../../public/icons/LogoHorizontalSmall.svg";
-import Checkbox from "../atoms/checkbox";
+import Edit from "../../../../../public/icons/Edit.svg";
+import X from "../../../../../public/icons/X.svg";
+import PlayCircle from "../../../../../public/icons/PlayCircle.svg";
+import LogoHorizontalSmall from "../../../../../public/icons/LogoHorizontalSmall.svg";
+import Checkbox from "@/components/atoms/checkbox";
 
 interface FilmoItemProps {
   filmo: FilmoResponseType;
+  checked?: boolean;
+  checkDisabled?: boolean;
   filmoRepresentActive?: boolean;
-  representativeCount?: number;
   canEdit: boolean;
   onEdit?: any;
   onDelete?: any;
@@ -22,42 +23,30 @@ interface FilmoItemProps {
 
 const FilmoItem = ({
   filmo,
+  checked,
+  checkDisabled,
   filmoRepresentActive,
-  representativeCount,
   canEdit,
   onEdit,
   onDelete,
   onCheck,
   onLink
 }: FilmoItemProps) => {
-  const { id, role, customRole, character, isFeatured, production } = filmo;
+  const { id, role, customRole, character, production } = filmo;
 
   const checkYoutube =
     (production.videoUrl &&
       production.videoUrl.includes("https://www.youtube.com")) ||
     production.videoUrl.includes("https://youtu.be/");
 
-  const [disabled, setDisabled] = useState(false);
-
-  useEffect(() => {
-    if (representativeCount && representativeCount >= 6) {
-      if (isFeatured) {
-        setDisabled(false);
-      }
-      if (isFeatured === false) {
-        setDisabled(true);
-      }
-    } else {
-      setDisabled(false);
-    }
-  }, [representativeCount]);
-
   return (
-    <div className="flex h-[154px] w-full animate-enter gap-4 rounded-2xl border border-border-default-light p-5">
+    <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5">
       {filmoRepresentActive && (
         <Checkbox
           type="checkboxInput"
           size="medium"
+          checked={checked}
+          disabled={checkDisabled && !checked}
           onChange={() => onCheck(id)}
         />
       )}

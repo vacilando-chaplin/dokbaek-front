@@ -1,10 +1,10 @@
 import { FilmoResponseType } from "@/lib/types";
 import Title from "@/components/atoms/title";
 import BoxButton from "@/components/atoms/boxButton";
-import FilmoItem from "@/components/molecules/filmoItem";
 import EmptyFrame from "@/components/atoms/emptyFrame";
 import InfoCircle from "../../../../../../../public/icons/InfoCircle.svg";
 import Plus from "../../../../../../../public/icons/Plus.svg";
+import FilmoItem from "../../../components/filmoItem";
 
 interface FilmoMainProps {
   filmoList: FilmoResponseType[];
@@ -38,8 +38,10 @@ const FilmoMain = ({
   onLinkModalOpen
 }: FilmoMainProps) => {
   const repFilmoList = filmoList.filter(
-    (filmo: FilmoResponseType) => filmo.isFeatured === true
+    (filmo: FilmoResponseType) => filmo.featured === true
   );
+
+  const checkRep = filmoRepEditList.length >= 6;
 
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
@@ -93,9 +95,31 @@ const FilmoMain = ({
         </div>
       </div>
       {/* 대표작 */}
-      {filmoList.findIndex(
-        (filmo: FilmoResponseType) => filmo.isFeatured === true
-      ) >= 1 && (
+      {filmoRepresentActive && filmoList.length >= 1 && (
+        <div className="flex h-auto w-full flex-col gap-2">
+          <label className="typography-body2 font-semibold text-accent-primary-light">
+            대표작
+          </label>
+          {repFilmoList.map((filmo: FilmoResponseType) => {
+            const checked =
+              filmoRepEditList.find((item) => item.id === filmo.id) !==
+              undefined;
+            return (
+              <FilmoItem
+                key={filmo.id}
+                filmo={filmo}
+                checked={checked}
+                checkDisabled={checkRep}
+                filmoRepresentActive={filmoRepresentActive}
+                canEdit={true}
+                onCheck={onFilmoRepCheck}
+                onLink={onLinkModalOpen}
+              />
+            );
+          })}
+        </div>
+      )}
+      {!filmoRepresentActive && repFilmoList.length >= 1 && (
         <div className="flex h-auto w-full flex-col gap-2">
           <label className="typography-body2 font-semibold text-accent-primary-light">
             대표작
@@ -105,27 +129,25 @@ const FilmoMain = ({
               <FilmoItem
                 key={filmo.id}
                 filmo={filmo}
+                checkDisabled={checkRep}
                 filmoRepresentActive={filmoRepresentActive}
-                representativeCount={representativeCount}
                 canEdit={true}
                 onEdit={onFilmoEditModalOpen}
                 onDelete={onFilmoDeleteModalOpen}
-                onCheck={onFilmoRepCheck}
                 onLink={onLinkModalOpen}
               />
             );
           })}
         </div>
       )}
-      {filmoList.length >= 1 ? (
+      {!filmoRepresentActive &&
+        filmoList.length >= 1 &&
+        filmoList.length !== repFilmoList.length &&
         categoryList.map((category: string, index: number) => {
           const filteredFilmoList = filmoList.filter(
             (item: FilmoResponseType) =>
-              item.production.category.name === category
-          );
-          const filteredFilmoRepEditList = filmoRepEditList.filter(
-            (item: FilmoResponseType) =>
-              item.production.category.name === category
+              item.production.category.name === category &&
+              item.featured === false
           );
           return (
             <div
@@ -135,38 +157,61 @@ const FilmoMain = ({
               <label className="typography-body2 font-medium text-content-secondary-light">
                 {category}
               </label>
-              {filmoRepresentActive
-                ? filteredFilmoRepEditList.map((filmo: FilmoResponseType) => {
-                    return (
-                      <FilmoItem
-                        key={filmo.id}
-                        filmo={filmo}
-                        filmoRepresentActive={filmoRepresentActive}
-                        representativeCount={representativeCount}
-                        canEdit={true}
-                        onCheck={onFilmoRepCheck}
-                        onLink={onLinkModalOpen}
-                      />
-                    );
-                  })
-                : filteredFilmoList.map((filmo: FilmoResponseType) => {
-                    return (
-                      <FilmoItem
-                        key={filmo.id}
-                        filmo={filmo}
-                        filmoRepresentActive={filmoRepresentActive}
-                        representativeCount={representativeCount}
-                        canEdit={true}
-                        onEdit={onFilmoEditModalOpen}
-                        onDelete={onFilmoDeleteModalOpen}
-                        onLink={onLinkModalOpen}
-                      />
-                    );
-                  })}
+              {filteredFilmoList.map((filmo: FilmoResponseType) => {
+                return (
+                  <FilmoItem
+                    key={filmo.id}
+                    filmo={filmo}
+                    checkDisabled={checkRep}
+                    filmoRepresentActive={filmoRepresentActive}
+                    canEdit={true}
+                    onEdit={onFilmoEditModalOpen}
+                    onDelete={onFilmoDeleteModalOpen}
+                    onLink={onLinkModalOpen}
+                  />
+                );
+              })}
             </div>
           );
-        })
-      ) : (
+        })}
+      {filmoRepresentActive &&
+        filmoList.length >= 1 &&
+        filmoList.length !== repFilmoList.length &&
+        categoryList.map((category: string, index: number) => {
+          const filteredFilmoList = filmoList.filter(
+            (item: FilmoResponseType) =>
+              item.production.category.name === category &&
+              item.featured === false
+          );
+          return (
+            <div
+              className="flex h-auto w-full flex-col gap-2"
+              key={category + index}
+            >
+              <label className="typography-body2 font-medium text-content-secondary-light">
+                {category}
+              </label>
+              {filteredFilmoList.map((filmo: FilmoResponseType) => {
+                const checked =
+                  filmoRepEditList.find((item) => item.id === filmo.id) !==
+                  undefined;
+                return (
+                  <FilmoItem
+                    key={filmo.id}
+                    filmo={filmo}
+                    checked={checked}
+                    checkDisabled={checkRep}
+                    filmoRepresentActive={filmoRepresentActive}
+                    canEdit={true}
+                    onCheck={onFilmoRepCheck}
+                    onLink={onLinkModalOpen}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
+      {filmoList.length === 0 && (
         <EmptyFrame text="작품 활동을 추가해주세요." />
       )}
     </section>

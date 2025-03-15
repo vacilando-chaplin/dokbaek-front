@@ -4,11 +4,18 @@ import Check from "../../../public/icons/Check.svg";
 interface CheckboxProps {
   type: string;
   size: string;
+  checked: boolean | undefined;
   disabled?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Checkbox = ({ type, size, disabled, onChange }: CheckboxProps) => {
+const Checkbox = ({
+  type,
+  size,
+  checked,
+  disabled,
+  onChange
+}: CheckboxProps) => {
   const checkIconSize: sizeStyleType = {
     large: "22",
     medium: "18",
@@ -22,21 +29,24 @@ const Checkbox = ({ type, size, disabled, onChange }: CheckboxProps) => {
   };
 
   return (
-    <label className="inline-flex h-fit w-fit cursor-pointer">
+    <label
+      className={`inline-flex h-fit w-fit ${!disabled && "cursor-pointer"}`}
+    >
       <input
         type="checkbox"
         disabled={disabled}
+        checked={checked}
         className="peer hidden"
         onChange={onChange}
       />
       <span
-        className={`interaction-default relative flex appearance-none items-center justify-center border-[1.5px] border-border-default-light hover:border-accent-primary-light focus:outline-none focus:ring-2 focus:ring-accent-primary-light peer-checked:border-accent-primary-light peer-checked:bg-accent-primary-light ${checkboxSize[size]} ${disabled && "border-border-disabled-light bg-background-disabled-light"}`}
+        className={`interaction-default relative flex appearance-none items-center justify-center border-[1.5px] border-border-default-light focus:outline-none focus:ring-2 focus:ring-accent-primary-light peer-checked:border-accent-primary-light peer-checked:bg-accent-primary-light ${checkboxSize[size]} ${disabled ? "border-border-disabled-light bg-background-disabled-light" : "hover:border-accent-primary-light"}`}
       >
         <Check
           width="14"
           height="16"
           fill="#FFFFFF"
-          className="absolute h-fit w-fit peer-checked:block"
+          className={`absolute h-fit w-fit ${checked ? "block" : "hidden"}`}
         />
       </span>
     </label>

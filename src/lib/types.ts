@@ -101,7 +101,7 @@ export interface ProfileResponseType {
       };
       customRole: string;
       character: string;
-      isFeatured: true;
+      featured: true;
       production: {
         category: {
           id: number;
@@ -242,7 +242,7 @@ export interface FilmoRequestType {
   roleId: number;
   customRole: string;
   character: string;
-  isFeatured: boolean;
+  featured: boolean;
   production: {
     categoryId: number;
     productionYear: number;
@@ -262,7 +262,7 @@ export interface FilmoResponseType {
   };
   customRole: string;
   character: string;
-  isFeatured: boolean;
+  featured: boolean;
   production: {
     category: {
       id: number;

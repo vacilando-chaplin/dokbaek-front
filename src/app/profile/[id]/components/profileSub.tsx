@@ -9,13 +9,13 @@ import {
 } from "@/lib/types";
 import Title from "@/components/atoms/title";
 import EmptyState from "@/components/molecules/emptyState";
-import FilmoItem from "@/components/molecules/filmoItem";
 import YoutubeVideo from "@/components/atoms/youtubeVideo";
 import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import ChipItem from "@/components/atoms/chipItem";
 import { PhotoLabelType } from "../types";
+import FilmoItem from "./filmoItem";
 
 interface PropfileSubProps {
   linear: string;
@@ -45,7 +45,7 @@ const ProfileSub = ({
   onFilmoLinkModalOpen
 }: PropfileSubProps) => {
   const repFilmoList = filmographyList.filter(
-    (filmo: FilmoResponseType) => filmo.isFeatured === true
+    (filmo: FilmoResponseType) => filmo.featured === true
   );
 
   const [photoSlider, setPhotoSlider] = useState(0);

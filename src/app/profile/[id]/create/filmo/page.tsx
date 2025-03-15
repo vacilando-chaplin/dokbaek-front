@@ -105,7 +105,7 @@ const Filmography = () => {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      isFeatured: false,
+      featured: false,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -152,7 +152,7 @@ const Filmography = () => {
       roleId: roleId !== -1 ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      isFeatured: filmoInputs.representative,
+      featured: filmoInputs.representative,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -195,25 +195,28 @@ const Filmography = () => {
 
   // 필모그래피 대표작 설정 액티브
   const onFilmoRepActive = () => {
-    setFilmoRepEditList(filmoList);
+    const checkedFilmoList = filmoList.filter((filmo) => filmo.featured);
+    setFilmoRepEditList(checkedFilmoList);
     setFilmoRepresentActive(!filmoRepresentActive);
   };
 
   // 필모그래피 대표작 설정 취소
   const onFilmoRepCancel = () => {
-    setFilmoList(filmoRepEditList);
     setFilmoRepEditList([]);
     setFilmoRepresentActive(!filmoRepresentActive);
   };
 
   // 필모그래피 대표작 설정 완료
   const onFilmoRepSave = async () => {
-    for (const filmo of filmoRepEditList) {
-      const findFilmo = filmoList.find((item) => item.id === filmo.id);
-      if (filmo.isFeatured && findFilmo?.isFeatured === false) {
-        await putFilmographyFeatured(profileId, filmo.id);
-      } else if (filmo.isFeatured === false && findFilmo?.isFeatured) {
+    for (const filmo of filmoList) {
+      const findFilmo = filmoRepEditList.findIndex(
+        (item) => item.id === filmo.id
+      );
+
+      if (filmo.featured && findFilmo === -1) {
         await deleteFilmographyFeatured(profileId, filmo.id);
+      } else if (!filmo.featured && findFilmo >= 0) {
+        await putFilmographyFeatured(profileId, filmo.id);
       }
     }
 
@@ -227,10 +230,17 @@ const Filmography = () => {
 
   // 필모그래피 대표작 설정 체크
   const onFilmoRepCheck = (id: number) => {
-    const checkFilmoRep = filmoRepEditList.map((item: FilmoResponseType) =>
-      item.id === id ? { ...item, isFeatured: !item.isFeatured } : item
-    );
-    setFilmoRepEditList(checkFilmoRep);
+    const check: any = filmoList.find((item) => item.id === id);
+    const checkList = filmoRepEditList.find((item) => item.id === check?.id);
+
+    if (checkList === undefined) {
+      setFilmoRepEditList([...filmoRepEditList, check]);
+    } else {
+      const checkedFilmoList = filmoRepEditList.filter(
+        (filmo) => filmo.id !== id
+      );
+      setFilmoRepEditList(checkedFilmoList);
+    }
   };
 
   // 필모그래피 모달 액티브
@@ -329,7 +339,7 @@ const Filmography = () => {
       description: filmo.production.description,
       link: filmo.production.videoUrl,
       thumbnail: filmo.thumbnailPath,
-      representative: filmo.isFeatured,
+      representative: filmo.featured,
       id: filmo.id,
       displayOrder: filmo.displayOrder
     });
@@ -371,10 +381,10 @@ const Filmography = () => {
 
   useEffect(() => {
     const filmoCount = filmoList.filter(
-      (filmo: FilmoResponseType) => filmo.isFeatured === true
+      (filmo: FilmoResponseType) => filmo.featured === true
     );
     const filmoRepEditCount = filmoRepEditList.filter(
-      (filmo: FilmoResponseType) => filmo.isFeatured === true
+      (filmo: FilmoResponseType) => filmo.featured === true
     );
     const combineCount = filmoCount.length + filmoRepEditCount.length;
     setRepresentativeCount(combineCount);
@@ -386,7 +396,8 @@ const Filmography = () => {
       (category: FilmoCategoryType) =>
         filmoList.findIndex(
           (filmo: FilmoResponseType) =>
-            filmo.production.category.name === category.name
+            filmo.production.category.name === category.name &&
+            filmo.featured === false
         ) >= 0
     );
     const resultCategoryList = filteredCategoryList.map(
