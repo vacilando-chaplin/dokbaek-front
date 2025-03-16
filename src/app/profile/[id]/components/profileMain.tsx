@@ -60,7 +60,6 @@ const ProfileMain = ({
 
   const {
     name,
-    gender,
     bornYear,
     height,
     weight,
@@ -211,7 +210,7 @@ const ProfileMain = ({
               <Edit width="14" height="14" fill="#212529" />
               프로필 편집
             </button>
-            {(bornYear === 0 || contact.length === 0) && (
+            {(bornYear === 0 || contact === null) && (
               <div className="absolute -top-10">
                 <Tooltip placement="top" text="프로필을 완성하세요." />
               </div>

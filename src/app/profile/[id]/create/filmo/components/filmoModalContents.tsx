@@ -7,6 +7,7 @@ import ThumbnailFrame from "./thumbnailFrame";
 import { castList, classificationList, yearList } from "@/lib/data";
 import Image from "next/image";
 import { FilmoActiveType, FilmoInputType } from "../types";
+import Plus from "../../../../../../../public/icons/Plus.svg";
 
 interface FilmoModalContentsProps {
   filmoInputs: FilmoInputType;
@@ -154,21 +155,28 @@ const FilmoModalContents = ({
         </div>
         <div className="flex h-auto w-full flex-col">
           <Label label="썸네일 이미지" />
-          {thumbnail === "" || thumbnail.endsWith("null") ? (
-            <ThumbnailFrame
-              style="w-[100px] h-[150px]"
-              onChange={onSelectThumbnail}
-            />
-          ) : (
-            <Image
-              src={thumbnail}
-              alt="thumbnail"
-              width={100}
-              height={150}
-              priority
-              className="h-[150px] w-[100px] rounded-lg bg-gray-100"
-            />
-          )}
+          <ThumbnailFrame
+            image={
+              thumbnail === "" || thumbnail.endsWith("null") ? false : true
+            }
+            onChange={onSelectThumbnail}
+          >
+            {thumbnail === "" || thumbnail.endsWith("null") ? (
+              <>
+                <Plus width="16" height="16" fill="#868E96" />
+                추가
+              </>
+            ) : (
+              <Image
+                src={thumbnail}
+                alt="thumbnail"
+                width={100}
+                height={150}
+                priority
+                className="h-[150px] w-[100px] rounded-lg bg-gray-100"
+              />
+            )}
+          </ThumbnailFrame>
         </div>
       </div>
     </div>

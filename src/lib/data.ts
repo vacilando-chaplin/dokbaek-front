@@ -32,7 +32,6 @@ export const classificationList = [
   "TV드라마",
   "웹드라마",
   "광고",
-  "뮤지컬",
   "뮤직비디오",
   "연극",
   "기타"

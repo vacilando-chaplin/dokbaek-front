@@ -9,13 +9,13 @@ import {
 } from "@/lib/types";
 import Title from "@/components/atoms/title";
 import EmptyState from "@/components/molecules/emptyState";
-import FilmoItem from "@/components/molecules/filmoItem";
 import YoutubeVideo from "@/components/atoms/youtubeVideo";
 import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import ChipItem from "@/components/atoms/chipItem";
 import { PhotoLabelType } from "../types";
+import FilmoItem from "./filmoItem";
 
 interface PropfileSubProps {
   linear: string;
@@ -45,7 +45,11 @@ const ProfileSub = ({
   onFilmoLinkModalOpen
 }: PropfileSubProps) => {
   const repFilmoList = filmographyList.filter(
-    (filmo: FilmoResponseType) => filmo.isFeatured === true
+    (filmo: FilmoResponseType) => filmo.featured === true
+  );
+
+  const nonRepFilmoList = filmographyList.filter(
+    (filmo) => filmo.featured === false
   );
 
   const [photoSlider, setPhotoSlider] = useState(0);
@@ -184,7 +188,7 @@ const ProfileSub = ({
             </button>
           )}
         </div>
-        {filmographyList.length >= 1 && repFilmoList.length < 6 && (
+        {filmographyList.length >= 1 && repFilmoList.length === 0 && (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">
             {filmographyList.map((filmo: FilmoResponseType, index: number) => {
               return (
@@ -204,7 +208,40 @@ const ProfileSub = ({
             })}
           </div>
         )}
-        {filmographyList.length >= 1 && repFilmoList.length === 6 && (
+        {repFilmoList.length >= 1 && repFilmoList.length < 6 && (
+          <div className="grid h-auto w-auto grid-cols-3 gap-2">
+            {repFilmoList.map((filmo: FilmoResponseType) => {
+              return (
+                <div key={filmo.id} className="grid gap-2">
+                  <FilmoItem
+                    filmo={filmo}
+                    canEdit={false}
+                    onLink={() =>
+                      onFilmoLinkModalOpen(filmo.production.videoUrl)
+                    }
+                  />
+                </div>
+              );
+            })}
+            {nonRepFilmoList.map((filmo: FilmoResponseType, index: number) => {
+              return (
+                <div
+                  key={filmo.id}
+                  className={`grid gap-2 ${repFilmoList.length + index > 5 && "hidden"}`}
+                >
+                  <FilmoItem
+                    filmo={filmo}
+                    canEdit={false}
+                    onLink={() =>
+                      onFilmoLinkModalOpen(filmo.production.videoUrl)
+                    }
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {repFilmoList.length >= 6 && (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">
             {repFilmoList.map((filmo: FilmoResponseType, index: number) => {
               return (

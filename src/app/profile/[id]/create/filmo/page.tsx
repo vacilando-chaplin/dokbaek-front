@@ -73,7 +73,6 @@ const Filmography = () => {
     []
   );
   const [filmoRepresentActive, setFilmoRepresentActive] = useState(false);
-  const [representativeCount, setRepresentativeCount] = useState(0);
 
   // 필모그래피 분류, 출연 형태 GET
   // useEffect(() => {
@@ -105,7 +104,7 @@ const Filmography = () => {
       roleId: filmoInputs.cast ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      isFeatured: false,
+      featured: false,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -152,7 +151,7 @@ const Filmography = () => {
       roleId: roleId !== -1 ? roleId : 0,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
-      isFeatured: filmoInputs.representative,
+      featured: filmoInputs.representative,
       production: {
         categoryId: filmoCategoryList[categoryId].id,
         productionYear: Number(filmoInputs.production),
@@ -171,10 +170,14 @@ const Filmography = () => {
     );
     const filmoRes = await filmoData.data;
 
-    if (
-      filmoInputs.thumbnail !== "" ||
-      filmoInputs.thumbnail.endsWith("null")
-    ) {
+    if (filmoInputs.thumbnail.endsWith("null")) {
+      await postFilmographyThumbnail(
+        profileId,
+        filmoRes.id,
+        filmoInputs.thumbnail
+      );
+    } else if (filmoInputs.thumbnail.includes("base64")) {
+      await deleteFilmographyThumbnail(profileId, filmoRes.id);
       await postFilmographyThumbnail(
         profileId,
         filmoRes.id,
@@ -195,25 +198,28 @@ const Filmography = () => {
 
   // 필모그래피 대표작 설정 액티브
   const onFilmoRepActive = () => {
-    setFilmoRepEditList(filmoList);
+    const checkedFilmoList = filmoList.filter((filmo) => filmo.featured);
+    setFilmoRepEditList(checkedFilmoList);
     setFilmoRepresentActive(!filmoRepresentActive);
   };
 
   // 필모그래피 대표작 설정 취소
   const onFilmoRepCancel = () => {
-    setFilmoList(filmoRepEditList);
     setFilmoRepEditList([]);
     setFilmoRepresentActive(!filmoRepresentActive);
   };
 
   // 필모그래피 대표작 설정 완료
   const onFilmoRepSave = async () => {
-    for (const filmo of filmoRepEditList) {
-      const findFilmo = filmoList.find((item) => item.id === filmo.id);
-      if (filmo.isFeatured && findFilmo?.isFeatured === false) {
-        await putFilmographyFeatured(profileId, filmo.id);
-      } else if (filmo.isFeatured === false && findFilmo?.isFeatured) {
+    for (const filmo of filmoList) {
+      const findFilmo = filmoRepEditList.findIndex(
+        (item) => item.id === filmo.id
+      );
+
+      if (filmo.featured && findFilmo === -1) {
         await deleteFilmographyFeatured(profileId, filmo.id);
+      } else if (!filmo.featured && findFilmo >= 0) {
+        await putFilmographyFeatured(profileId, filmo.id);
       }
     }
 
@@ -227,10 +233,17 @@ const Filmography = () => {
 
   // 필모그래피 대표작 설정 체크
   const onFilmoRepCheck = (id: number) => {
-    const checkFilmoRep = filmoRepEditList.map((item: FilmoResponseType) =>
-      item.id === id ? { ...item, isFeatured: !item.isFeatured } : item
-    );
-    setFilmoRepEditList(checkFilmoRep);
+    const check: any = filmoList.find((item) => item.id === id);
+    const checkList = filmoRepEditList.find((item) => item.id === check?.id);
+
+    if (checkList === undefined) {
+      setFilmoRepEditList([...filmoRepEditList, check]);
+    } else {
+      const checkedFilmoList = filmoRepEditList.filter(
+        (filmo) => filmo.id !== id
+      );
+      setFilmoRepEditList(checkedFilmoList);
+    }
   };
 
   // 필모그래피 모달 액티브
@@ -298,13 +311,13 @@ const Filmography = () => {
   const onSelectThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener("load", async () => {
+      reader.onload = () => {
         const imageElement = new Image();
         const imageUrl = reader.result?.toString() || "";
         imageElement.src = imageUrl;
 
         setFilmoInputs({ ...filmoInputs, thumbnail: imageUrl });
-      });
+      };
 
       reader.readAsDataURL(e.target.files[0]);
       e.currentTarget.value = "";
@@ -329,7 +342,7 @@ const Filmography = () => {
       description: filmo.production.description,
       link: filmo.production.videoUrl,
       thumbnail: filmo.thumbnailPath,
-      representative: filmo.isFeatured,
+      representative: filmo.featured,
       id: filmo.id,
       displayOrder: filmo.displayOrder
     });
@@ -369,24 +382,14 @@ const Filmography = () => {
     setToastMessage("작품 활동을 삭제했어요.");
   };
 
-  useEffect(() => {
-    const filmoCount = filmoList.filter(
-      (filmo: FilmoResponseType) => filmo.isFeatured === true
-    );
-    const filmoRepEditCount = filmoRepEditList.filter(
-      (filmo: FilmoResponseType) => filmo.isFeatured === true
-    );
-    const combineCount = filmoCount.length + filmoRepEditCount.length;
-    setRepresentativeCount(combineCount);
-  }, [filmoRepEditList]);
-
   // 필모그래피 카테고리 리스트 업데이트
   useEffect(() => {
     const filteredCategoryList = filmoCategoryList.filter(
       (category: FilmoCategoryType) =>
         filmoList.findIndex(
           (filmo: FilmoResponseType) =>
-            filmo.production.category.name === category.name
+            filmo.production.category.name === category.name &&
+            filmo.featured === false
         ) >= 0
     );
     const resultCategoryList = filteredCategoryList.map(
@@ -418,7 +421,6 @@ const Filmography = () => {
         filmoRepEditList={filmoRepEditList}
         categoryList={categoryList}
         filmoRepresentActive={filmoRepresentActive}
-        representativeCount={representativeCount}
         onFilmoRepActive={onFilmoRepActive}
         onFilmoRepCancel={onFilmoRepCancel}
         onFilmoRepSave={onFilmoRepSave}
