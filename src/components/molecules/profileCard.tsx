@@ -65,7 +65,23 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
       className="w-[100%] cursor-pointer rounded-[16px] border border-gray-100 bg-background-base-light p-4 hover:border-gray-300"
     >
       <div className="relative">
-        <Image src={Profile} alt="photo" className="w-[100%] rounded-[16px]" />
+        {profile.mainPhotoPreviewPath ? (
+          <Image
+            src={profile.mainPhotoPreviewPath}
+            alt="photo"
+            width={212}
+            height={271}
+            className="h-full w-full rounded-2xl"
+          />
+        ) : (
+          <Image
+            src={Profile}
+            alt="photo"
+            width={212}
+            height={271}
+            className="h-full w-full rounded-2xl"
+          />
+        )}
         <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-[4px] rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1">
           <div className="flex items-center gap-[2px]">
             <HeartWhite width="14" height="14" fill="#ffffff" />
