@@ -62,7 +62,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
   return (
     <div
       onClick={onClickProfile}
-      className="w-[100%] cursor-pointer rounded-[16px] border border-gray-100 bg-background-base-light p-4 hover:border-gray-300"
+      className="w-[100%] cursor-pointer rounded-[16px] border border-gray-150 bg-background-base-light p-4"
     >
       <div className="relative">
         {profile.mainPhotoPreviewPath ? (
@@ -71,7 +71,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             alt="photo"
             width={212}
             height={271}
-            className="h-full w-full rounded-2xl"
+            className="h-full w-full rounded-[8px]"
           />
         ) : (
           <Image
@@ -79,7 +79,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             alt="photo"
             width={212}
             height={271}
-            className="h-full w-full rounded-2xl"
+            className="h-full w-full rounded-[8px]"
           />
         )}
         <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-[4px] rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1">

@@ -1,4 +1,3 @@
-import React from "react";
 interface RadioInputProps {
   id: string;
   name: string;
