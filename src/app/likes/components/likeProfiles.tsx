@@ -5,30 +5,22 @@ import {
   ProfilesResponseType
 } from "@/app/landing/types";
 import InfoCircle from "../../../../public/icons/InfoCircle.svg";
-import Pagination from "@/components/atoms/pagination";
 import { getLikedProfiles } from "@/app/likes/api";
 
 const LikeProfiles = () => {
   const [profiles, setProfiles] = useState<ProfileShowcaseResponseType[]>([]);
+
   const fetchProfiles = async () => {
     const page = 0;
     const size = 10;
     try {
       const res = await getLikedProfiles(page, size);
-      console.log(res);
       setProfiles(res.content);
-      console.log(res);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const totalPage = 0;
-  const [currentPage, setCurrentPage] = useState<number>(0);
-
-  const handlePageChange = (selectedItem: { selected: number }) => {
-    setCurrentPage(selectedItem.selected);
-  };
   useEffect(() => {
     fetchProfiles();
   }, []);
@@ -51,15 +43,6 @@ const LikeProfiles = () => {
                 fetchProfiles={fetchProfiles}
               />
             ))}
-          </div>
-          <div className="mt-6">
-            {totalPage > 0 && (
-              <Pagination
-                totalPage={Math.max(1, totalPage - 1)}
-                onPageChange={handlePageChange}
-                currentPage={currentPage}
-              />
-            )}
           </div>
         </div>
       ) : (

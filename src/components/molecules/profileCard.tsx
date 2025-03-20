@@ -35,8 +35,6 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
     const currentYear = new Date().getFullYear();
     return profile?.bornYear ? currentYear - profile?.bornYear + 1 : "-";
   };
-  interface OnClickProfileLikeEvent
-    extends React.MouseEvent<HTMLButtonElement> {}
 
   const onClickProfileLike = async () => {
     if (!jwt || !profile.id) {
