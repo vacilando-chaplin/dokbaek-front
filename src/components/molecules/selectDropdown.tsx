@@ -15,7 +15,6 @@ interface SelectDropdownProps {
   helperText?: string;
   onClick: (name: string, item: string) => void;
   onActive: (name: string, state: boolean) => void;
-  onSave?: () => void;
 }
 
 const SelectDropdown = ({
@@ -29,8 +28,7 @@ const SelectDropdown = ({
   placeholder,
   helperText,
   onClick,
-  onActive,
-  onSave
+  onActive
 }: SelectDropdownProps) => {
   const sizeStyle: sizeStyleType = {
     large: "rounded-[14px]",
@@ -41,11 +39,11 @@ const SelectDropdown = ({
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
-        className={`${sizeStyle[size]} interaction-default flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light ${active && "focus-within:border-border-active-light"}`}
+        className={`${sizeStyle[size]} interaction-default flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light dark:border-border-default-dark dark:bg-background-surface-dark dark:focus-within:border-border-active-dark dark:hover:border-border-active-dark`}
         onClick={() => onActive(name, active)}
       >
         <input
-          className={`typography-body3 w-full cursor-pointer text-content-primary-light outline-none placeholder:text-content-alternative-light`}
+          className={`typography-body3 w-full cursor-pointer bg-background-surface-light text-content-primary-light outline-none placeholder:text-content-alternative-light dark:bg-background-surface-dark dark:text-content-primary-dark dark:placeholder:text-content-alternative-dark`}
           type="text"
           placeholder={placeholder}
           maxLength={maxLength}
@@ -63,7 +61,7 @@ const SelectDropdown = ({
       {helperText && <HelperText type="info" text={helperText} />}
       {active && (
         <ul
-          className={`scrollbar interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low ${sizeStyle[size]}`}
+          className={`scrollbar interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
         >
           {list.map((item: string, index: number) => {
             return (

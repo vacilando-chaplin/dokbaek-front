@@ -17,10 +17,10 @@ const ProfileFilmoModal = ({
   onFilmoLinkModalOpen
 }: ProfileFilmoModalProps) => {
   return (
-    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40">
-      <div className="interaction-default relative my-20 flex h-auto w-full max-w-[1024px] animate-enter flex-col items-center justify-center rounded-3xl bg-static-white shadow-medium">
+    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark">
+      <div className="interaction-default relative my-20 flex h-auto w-full max-w-[1024px] animate-enter flex-col items-center justify-center rounded-3xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
         <ModalHeader name="작품 활동" onClick={onFilmoModalActive} />
-        <div className="scrollbar flex h-full max-h-[80vh] w-full flex-col overflow-auto overscroll-contain rounded-3xl">
+        <div className="scrollbar dark:dark-scrollbar flex h-full max-h-[80vh] w-full flex-col overflow-auto overscroll-contain rounded-3xl">
           {categoryList.map((category: string) => {
             const filmo = filmoList.filter(
               (filmo: FilmoResponseType) =>
@@ -29,7 +29,7 @@ const ProfileFilmoModal = ({
             return (
               <div
                 key={category}
-                className="flex h-full w-full flex-col gap-6 bg-background-surface-light p-6"
+                className="flex h-full w-full flex-col gap-6 p-6"
               >
                 <Title name={category} />
                 <div className="grid h-auto w-full grid-flow-row grid-cols-3 gap-2">

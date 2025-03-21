@@ -8,11 +8,11 @@ interface LinkModalProps {
 
 const LinkModal = ({ link, onLinkModalClose }: LinkModalProps) => {
   return (
-    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-50 backdrop-blur-[100px] md:inset-0">
+    <section className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-auto bg-background-surface-light bg-opacity-50 backdrop-blur-[100px] md:inset-0 dark:bg-background-surface-dark">
       <div className="relative flex w-[60vw] animate-enter flex-col items-center justify-center gap-6">
         <button
           type="button"
-          className="rounded-full bg-static-black p-2"
+          className="rounded-full bg-static-black p-2 dark:bg-static-white"
           onClick={onLinkModalClose}
         >
           <X width="20" height="20" fill="#ffffff" />

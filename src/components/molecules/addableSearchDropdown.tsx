@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
 import Option from "../atoms/option";
 import { sizeStyleType } from "@/lib/types";
-import Plus from "../../../public/icons/Plus.svg"
+import Plus from "../../../public/icons/Plus.svg";
 
 export interface SpecialtyType {
   id: number;
@@ -44,13 +44,12 @@ const AddableSearchDropdown = ({
   };
 
   useEffect(() => {
-    if(value.length > 0) {
-      setActive(true)
+    if (value.length > 0) {
+      setActive(true);
     } else {
-      setActive(false)
+      setActive(false);
     }
   }, [value]);
-
 
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
@@ -80,14 +79,12 @@ const AddableSearchDropdown = ({
             <label>{value}</label>
             <button
               type="button"
-              className="right-4 absolute text-primary-light"
+              className="text-primary-light absolute right-4"
               onClick={() => onAdd(value)}
             >
               <div className="flex items-center gap-1">
                 <Plus width="12" height="12" fill="#868E96" />
-                <span className="text-content-tertiary-light">
-                  새로등록
-                </span>
+                <span className="text-content-tertiary-light">새로등록</span>
               </div>
             </button>
           </div>

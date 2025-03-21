@@ -36,7 +36,7 @@ const EducationForm = ({
   onDelete
 }: EducationFormProps) => {
   return (
-    <div className="flex h-auto w-full flex-col gap-4 rounded-lg border border-border-default-light bg-background-surface-light p-6">
+    <div className="flex h-auto w-full flex-col gap-4 rounded-lg border border-border-default-light bg-background-surface-light p-6 dark:border-border-default-dark dark:bg-background-surface-dark">
       <div className="flex h-auto w-full items-center justify-between">
         <div className="flex flex-row items-center justify-center gap-1.5">
           {/* <ThreeBars width="14" height="14" color="#ADB5BD" /> */}
@@ -46,7 +46,7 @@ const EducationForm = ({
         </div>
         <button
           type="button"
-          className="flex h-5 w-5 items-center justify-center rounded-md border border-border-default-light bg-background-surface-light p-1"
+          className="flex h-5 w-5 items-center justify-center rounded-md border border-border-default-light bg-background-surface-light p-1 dark:border-border-default-dark dark:bg-background-surface-dark"
           disabled={item.school.name === ""}
           onClick={onDelete}
         >
@@ -100,7 +100,6 @@ const EducationForm = ({
               selected={item.status}
               onClick={onEducationDropdownClick}
               onActive={onEducationDropdownActive}
-              onSave={() => onBlurEducation(item.id)}
             />
           </div>
         </div>

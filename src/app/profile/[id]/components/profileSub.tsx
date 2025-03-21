@@ -70,7 +70,7 @@ const ProfileSub = ({
 
   return (
     <section
-      className={`flex h-full w-full flex-col gap-10 p-8 ${linear === "sub" && "border-l-[1px] border-border-default-light"}`}
+      className={`flex h-full w-full flex-col gap-10 p-8 ${linear === "sub" && "border-l-[1px] border-border-default-light dark:border-border-default-dark"}`}
     >
       {/* photo */}
       <div className="flex h-auto w-full flex-col gap-3">
@@ -147,7 +147,7 @@ const ProfileSub = ({
                           sizes="100vw"
                           className="aspect-[258/330] h-auto max-h-[50vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
                         />
-                        <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
+                        <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-[14.8px] bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                           <PlusCircle width="20" height="20" fill="#ffffff" />
                           <span className="typography-body2 font-semibold">
                             크게 보기
@@ -182,7 +182,7 @@ const ProfileSub = ({
               className="flex gap-1 rounded"
               onClick={onFilmoModalActive}
             >
-              <span className="typography-body2 font-medium text-content-tertiary-light">
+              <span className="typography-body2 font-medium text-content-tertiary-light dark:text-content-tertiary-dark">
                 모두 보기
               </span>
             </button>

@@ -29,7 +29,7 @@ const VideoMain = ({
   onVideoLinkModalOpen
 }: VideoMainProps) => {
   return (
-    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
+    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
       <div className="flex w-full flex-row justify-between">
         <Title name="영상" />
         <BoxButton
@@ -62,7 +62,7 @@ const VideoMain = ({
                   <div className="pointer-events-auto absolute z-10 h-full w-full opacity-0 hover:opacity-100">
                     {/* edit */}
                     <button
-                      className="absolute right-8 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                      className="absolute right-8 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -73,7 +73,7 @@ const VideoMain = ({
                     </button>
                     {/* delete */}
                     <button
-                      className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                      className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -87,6 +87,7 @@ const VideoMain = ({
                       <DeleteModal
                         text="이 영상을 삭제할까요?"
                         id={video.id}
+                        category=""
                         onCancel={(e) => {
                           e.stopPropagation();
                           onVideoDeleteModalClose(e);

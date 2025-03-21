@@ -32,7 +32,7 @@ const PhotoStillCut = ({
   onDrop
 }: PhotoStillCutProps) => {
   return (
-    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
+    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
       <div className="flex w-full flex-row items-start justify-between">
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-2">
@@ -72,14 +72,14 @@ const PhotoStillCut = ({
                 <div className="absolute h-full w-full opacity-0 hover:opacity-100">
                   {/* edit */}
                   <label
-                    className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                    className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                     onClick={() => onPhotoEditModalOpen(photoItem, "stillcut")}
                   >
                     <Edit width="12" height="12" fill="#212529" />
                   </label>
                   {/* delete */}
                   <button
-                    className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                    className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                     type="button"
                     onClick={onDeletePhotoActive}
                   >

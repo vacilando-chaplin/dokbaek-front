@@ -40,7 +40,7 @@ const Checkbox = ({
         onChange={onChange}
       />
       <span
-        className={`interaction-default relative flex appearance-none items-center justify-center border-[1.5px] border-border-default-light focus:outline-none focus:ring-2 focus:ring-accent-primary-light peer-checked:border-accent-primary-light peer-checked:bg-accent-primary-light ${checkboxSize[size]} ${disabled ? "border-border-disabled-light bg-background-disabled-light" : "hover:border-accent-primary-light"}`}
+        className={`interaction-default relative flex appearance-none items-center justify-center border-[1.5px] border-border-default-light focus:outline-none focus:ring-2 focus:ring-accent-primary-light peer-checked:border-accent-primary-light peer-checked:bg-accent-primary-light dark:border-border-default-dark dark:focus:ring-accent-primary-dark dark:peer-checked:border-accent-primary-dark dark:peer-checked:bg-accent-primary-dark ${checkboxSize[size]} ${disabled ? "border-border-disabled-light bg-background-disabled-light dark:border-border-disabled-dark dark:bg-background-disabled-dark" : "hover:border-accent-primary-light dark:hover:border-accent-primary-dark"}`}
       >
         <Check
           width="14"

@@ -11,7 +11,7 @@ interface BottomBarProps {
 
 const BottomBar = ({ progress, disabled, onBack, onSave }: BottomBarProps) => {
   return (
-    <section className="fixed bottom-0 z-50 flex h-auto w-full items-center justify-between border-t-[1px] bg-background-elevated-light px-6 py-3 shadow-low">
+    <section className="fixed bottom-0 z-50 flex h-auto w-full items-center justify-between border-t-[1px] border-border-default-light bg-background-elevated-light px-6 py-3 shadow-low dark:border-border-default-dark dark:bg-background-elevated-dark">
       <div className="flex gap-4">
         <BoxButton type="secondaryOutlined" size="medium" onClick={onBack}>
           <ArrowDirectionLeft width="14" height="14" fill="#212529" />

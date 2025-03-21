@@ -26,11 +26,11 @@ const ConfirmModal = ({
   onConfirm
 }: ConfirmModalProps) => {
   return (
-    <section className="fixed inset-0 z-[999] flex max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
+    <section className="fixed inset-0 z-[999] flex max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0 dark:bg-background-scrim-dark">
       <div
-        className={`interaction-default relative flex h-auto max-w-[480px] animate-enter flex-col rounded-3xl bg-background-elevated-light shadow-medium ${dense ? "gap-8 p-6" : "gap-10 p-8"} ${resizing === "fixed" ? "w-[480px]" : "w-full"}`}
+        className={`interaction-default relative flex h-auto max-w-[480px] animate-enter flex-col rounded-3xl bg-background-elevated-light shadow-medium dark:bg-background-elevated-dark ${dense ? "gap-8 p-6" : "gap-10 p-8"} ${resizing === "fixed" ? "w-[480px]" : "w-full"}`}
       >
-        <div className="flex flex-col gap-2 text-content-primary-light">
+        <div className="flex flex-col gap-2 text-content-primary-light dark:text-content-primary-dark">
           <label className="typography-heading3 flex h-auto w-full gap-2 font-semibold">
             {titleText}
           </label>

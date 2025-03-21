@@ -4,7 +4,7 @@ import { SpecialtyType } from "@/app/profile/[id]/create/info/types";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import XCircleFill from "../../../../../public/icons/XCircleFill.svg";
 import XCircleFillBlack from "../../../../../public/icons/XCircleFillBlack.svg";
-import { getSpecialty } from '../create/info/api';
+import { getSpecialty } from "../create/info/api";
 import { useDebounce } from "@/lib/hooks";
 import ProfileSpecialtyMediaModal from "./profileSpecialtyMediaModal";
 
@@ -20,20 +20,26 @@ interface ProfileSpecialtyEditorProps {
   onDeleteSpecialty: (specialtyId: number) => () => void;
 }
 const ProfileSpecialtyEditor = ({
-  specialties, 
+  specialties,
   setSpecialties,
   specialty,
   setSearchSpecialty,
   searchSpecialty,
   onAddSpecialty,
-  onSpecialtyDropdownClick, 
+  onSpecialtyDropdownClick,
   onSpecialtyChange,
   onDeleteSpecialty
 }: ProfileSpecialtyEditorProps) => {
-  const [profileSpecialtyMediaModal, setProfileSpecialtyMediaModal] = useState(false);
-  const [selectedSpecialtyId, setSelectedSpecialtyId] = useState<number | null>(null);
+  const [profileSpecialtyMediaModal, setProfileSpecialtyMediaModal] =
+    useState(false);
+  const [selectedSpecialtyId, setSelectedSpecialtyId] = useState<number | null>(
+    null
+  );
 
-  const onChangeProfileSpecialtyPhoto = (e: React.ChangeEvent<HTMLInputElement>, specialtyId:number) => {
+  const onChangeProfileSpecialtyPhoto = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    specialtyId: number
+  ) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -41,8 +47,11 @@ const ProfileSpecialtyEditor = ({
       reader.addEventListener("load", async () => {
         const imageUrl = reader.result?.toString() || "";
 
-        const updatedSpecialties = specialties.map((specialty: SpecialtyType) =>
-          specialty.id === specialtyId ? { ...specialty, imageUrl: imageUrl } : specialty
+        const updatedSpecialties = specialties.map(
+          (specialty: SpecialtyType) =>
+            specialty.id === specialtyId
+              ? { ...specialty, imageUrl: imageUrl }
+              : specialty
         );
         setSpecialties(updatedSpecialties);
 
@@ -51,23 +60,23 @@ const ProfileSpecialtyEditor = ({
 
       reader.readAsDataURL(file);
     }
-  }
+  };
 
-  const onDeleteSpecialtyPhoto = (specialtyId: number) => { 
+  const onDeleteSpecialtyPhoto = (specialtyId: number) => {
     const updatedSpecialties = specialties.map((specialty: SpecialtyType) =>
       specialty.id === specialtyId ? { ...specialty, imageUrl: "" } : specialty
     );
     setSpecialties(updatedSpecialties);
-  }
+  };
 
   const onProfileSpecialtyMediaModalOpen = (specialtyId: number) => {
-    setSelectedSpecialtyId(specialtyId)
+    setSelectedSpecialtyId(specialtyId);
     setProfileSpecialtyMediaModal(true);
   };
   const onProfileSpecialtyMediaModalClose = () => {
     setSelectedSpecialtyId(null);
     setProfileSpecialtyMediaModal(false);
-  }
+  };
   const debounceSearch: any = useDebounce(specialty?.specialtyName, 500);
 
   const fetchSpecialty = async (keyword: string) => {
@@ -79,44 +88,44 @@ const ProfileSpecialtyEditor = ({
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   const onSaveSpecialtyMedia = (media: string) => {
-    if (selectedSpecialtyId === null) return; 
-    
+    if (selectedSpecialtyId === null) return;
+
     const updatedSpecialties = specialties.map((specialty: SpecialtyType) =>
-      specialty.id === selectedSpecialtyId ? { ...specialty, mediaUrl: media } : specialty
+      specialty.id === selectedSpecialtyId
+        ? { ...specialty, mediaUrl: media }
+        : specialty
     );
     setSpecialties(updatedSpecialties);
-    onProfileSpecialtyMediaModalClose()
-  }
+    onProfileSpecialtyMediaModalClose();
+  };
   const onDeleteSpecialtyMedia = (specialtyId: number) => {
     const updatedSpecialties = specialties.map((specialty: SpecialtyType) =>
       specialty.id === specialtyId ? { ...specialty, mediaUrl: "" } : specialty
     );
     setSpecialties(updatedSpecialties);
-  }
+  };
 
   useEffect(() => {
-    if(specialty.specialtyName) {
-      fetchSpecialty(debounceSearch)
+    if (specialty.specialtyName) {
+      fetchSpecialty(debounceSearch);
     }
-  }, [debounceSearch])
+  }, [debounceSearch]);
   return (
     <div className="w-full">
-      {
-        specialty && (
-          <AddableSearchDropdown
-            name="specialty"
-            list={searchSpecialty}
-            value={specialty.specialtyName}
-            selected={specialty.specialtyName}
-            onAdd={onAddSpecialty}
-            onClick={onSpecialtyDropdownClick}
-            onChange={onSpecialtyChange}
-            placeholder="특기를 검색해보세요."
-          />
-        )
-      }
+      {specialty && (
+        <AddableSearchDropdown
+          name="specialty"
+          list={searchSpecialty}
+          value={specialty.specialtyName}
+          selected={specialty.specialtyName}
+          onAdd={onAddSpecialty}
+          onClick={onSpecialtyDropdownClick}
+          onChange={onSpecialtyChange}
+          placeholder="특기를 검색해보세요."
+        />
+      )}
       {specialties && (
         <div className="scrollbar mt-4 max-h-80">
           <ul>
@@ -130,14 +139,16 @@ const ProfileSpecialtyEditor = ({
                   <div className="flex gap-2">
                     <label
                       htmlFor={`upload-${specialty.id}`}
-                      className="flex items-center font-medium text-content-tertiary-light cursor-pointer"
+                      className="flex cursor-pointer items-center font-medium text-content-tertiary-light"
                     >
                       <input
                         id={`upload-${specialty.id}`}
                         type="file"
                         accept="image/*"
                         className="hidden"
-                        onChange={(e) => onChangeProfileSpecialtyPhoto(e, specialty.id)}
+                        onChange={(e) =>
+                          onChangeProfileSpecialtyPhoto(e, specialty.id)
+                        }
                       />
                       <PlusCircle width="12" height="12" fill="#ADB5BD" />
                       <span style={{ marginLeft: "2px" }}>사진</span>
@@ -145,7 +156,9 @@ const ProfileSpecialtyEditor = ({
                     <button
                       type="button"
                       className="flex items-center font-medium text-content-tertiary-light"
-                      onClick={() => onProfileSpecialtyMediaModalOpen(specialty.id)}
+                      onClick={() =>
+                        onProfileSpecialtyMediaModalOpen(specialty.id)
+                      }
                     >
                       <PlusCircle width="12" height="12" fill="#ADB5BD" />
                       <span style={{ marginLeft: "2px" }}>영상</span>
@@ -159,7 +172,9 @@ const ProfileSpecialtyEditor = ({
                     </button>
                   </div>
                 </div>
-                <div className={`flex items-center gap-2 ${(specialty.imageUrl || specialty.mediaUrl) && "mt-2"}`} >
+                <div
+                  className={`flex items-center gap-2 ${(specialty.imageUrl || specialty.mediaUrl) && "mt-2"}`}
+                >
                   {specialty.imageUrl && (
                     <div className="relative">
                       <img
@@ -167,7 +182,12 @@ const ProfileSpecialtyEditor = ({
                         alt="Image Preview"
                         className="h-[80px] w-[fit] rounded-lg border border-gray-400"
                       />
-                      <button type="button" className="absolute top-1 right-1" aria-label="사진 삭제" onClick={() => onDeleteSpecialtyPhoto(specialty.id)}>
+                      <button
+                        type="button"
+                        className="absolute right-1 top-1"
+                        aria-label="사진 삭제"
+                        onClick={() => onDeleteSpecialtyPhoto(specialty.id)}
+                      >
                         <XCircleFillBlack />
                       </button>
                     </div>
@@ -176,14 +196,21 @@ const ProfileSpecialtyEditor = ({
                     <div className="relative">
                       <img
                         src={`https://img.youtube.com/vi/${
-                          specialty.mediaUrl.includes("https://www.youtube.com/watch?v=")
+                          specialty.mediaUrl.includes(
+                            "https://www.youtube.com/watch?v="
+                          )
                             ? specialty.mediaUrl.slice(32, 43)
                             : specialty.mediaUrl.slice(17, 48)
                         }/maxresdefault.jpg`}
                         alt="YouTube Thumbnail"
                         className="h-[80px] w-[142px] rounded-lg"
                       />
-                      <button type="button" className="absolute top-1 right-1" aria-label="영상 삭제" onClick={() => onDeleteSpecialtyMedia(specialty.id)}>
+                      <button
+                        type="button"
+                        className="absolute right-1 top-1"
+                        aria-label="영상 삭제"
+                        onClick={() => onDeleteSpecialtyMedia(specialty.id)}
+                      >
                         <XCircleFillBlack />
                       </button>
                     </div>
@@ -197,7 +224,9 @@ const ProfileSpecialtyEditor = ({
       {profileSpecialtyMediaModal && selectedSpecialtyId !== null && (
         <ProfileSpecialtyMediaModal
           specialtyId={selectedSpecialtyId}
-          onSpecialtyMediaModalClose={() => setProfileSpecialtyMediaModal(false)}
+          onSpecialtyMediaModalClose={() =>
+            setProfileSpecialtyMediaModal(false)
+          }
           onSaveSpecialtyMedia={onSaveSpecialtyMedia}
         />
       )}

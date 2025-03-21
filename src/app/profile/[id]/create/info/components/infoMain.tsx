@@ -43,7 +43,7 @@ const InfoMain = ({
     infoInputs;
 
   return (
-    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
+    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
       <Title name="기본 정보" />
       <div className="flex h-auto w-full flex-col gap-4">
         <div className="flex h-auto w-full flex-row gap-4">
@@ -79,14 +79,14 @@ const InfoMain = ({
           </div>
           <div className="flex w-full flex-col">
             <Label label="성별" required />
-            <div className="typography-body2 flex h-10 w-full flex-row items-center gap-4 rounded-xl border border-border-default-light bg-background-surface-light px-4 font-normal text-content-primary-light">
+            <div className="typography-body2 flex h-10 w-full flex-row items-center gap-4 rounded-xl border border-border-default-light bg-background-surface-light px-4 font-normal text-content-primary-light dark:border-border-default-dark dark:bg-background-surface-dark dark:text-content-primary-dark">
               <div className="flex h-auto w-auto flex-row gap-2">
                 <input
                   type="radio"
                   id="F"
                   name="customRadio"
                   checked={infoInputs.gender === "F"}
-                  className="hidden"
+                  className="peer hidden"
                   onChange={onSelectGender}
                 />
                 <label
@@ -94,7 +94,7 @@ const InfoMain = ({
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "F" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "F" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>
@@ -107,7 +107,7 @@ const InfoMain = ({
                   id="M"
                   name="customRadio"
                   checked={infoInputs.gender === "M"}
-                  className="hidden"
+                  className="peer hidden"
                   onChange={onSelectGender}
                 />
                 <label
@@ -115,7 +115,7 @@ const InfoMain = ({
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "M" ? "border-[4px] border-accent-primary-light" : "border-[1.5px] border-border-default-light"}`}
+                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "M" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>

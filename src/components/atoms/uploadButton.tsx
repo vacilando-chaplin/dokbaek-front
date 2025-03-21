@@ -37,15 +37,17 @@ const UploadButton = ({
 
   const typeStyle: typeStyleType = {
     primary:
-      "bg-accent-primary-light hover:bg-hover-primary active:bg-pressed-primary text-static-white",
+      "bg-accent-primary-light dark:bg-accent-primary-dark hover:brightness-[93%] active:brightness-[86%] text-static-white",
     primaryOutlined:
-      "bg-background-surface-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined text-accent-primary-light border border-accent-primary-light",
+      "bg-background-surface-light hover:brightness-[97%] active:brightness-[94%] text-accent-primary-light border border-accent-primary-light dark:bg-background-surface-dark dark:text-accent-primary-dark dark:border-accent-primary-dark",
     secondaryOutlined:
-      "bg-background-surface-light hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined text-content-primary-light border border-border-default-light",
+      "bg-background-surface-light hover:brightness-[97%] active:brightness-[94%] text-content-primary-light border border-border-default-light dark:bg-background-surface-dark dark:text-content-primary-dark dark:border-border-default-dark",
     negative:
-      "bg-state-negative-light hover:bg-hover-negative active:bg-pressed-negative text-static-white",
-    negativeOutlined: "bg-state-negative-light text-state-negative-light",
-    black: "bg-content-primary-light text-static-white"
+      "bg-state-negative-light hover:brightness-[93%] active:brightness-[86%] text-static-white dark:bg-state-negative-dark",
+    negativeOutlined:
+      "bg-state-negative-light text-state-negative-light hover:brightness-[97%] active:brightness-[94%] dark:text-state-negative-dark",
+    black:
+      "bg-content-primary-light text-static-white hover:brightness-[97%] active:brightness-[94%] dark:bg-content-primary-dark dark:text-static-black"
   };
 
   return (

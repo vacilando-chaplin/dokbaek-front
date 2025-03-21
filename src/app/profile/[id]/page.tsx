@@ -366,7 +366,7 @@ const Profile = () => {
   }, [profileData]);
 
   return (
-    <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light">
+    <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light dark:bg-background-surface-dark">
       <div ref={mainRef} className="min-w-[500px] flex-[1_1_30%]">
         <ProfileMain
           info={profileData.info}

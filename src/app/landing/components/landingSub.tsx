@@ -17,7 +17,7 @@ const LandingSub = () => {
           <div className="absolute top-[80px]">
             <p
               style={{ lineHeight: "40px" }}
-              className="text-display font-bold text-accent-primary-light"
+              className="text-display font-bold text-accent-primary-light dark:text-accent-primary-dark"
             >
               프로필은
             </p>
@@ -25,7 +25,7 @@ const LandingSub = () => {
           <div className="absolute left-[169px] top-[120px]">
             <p
               style={{ lineHeight: "40px" }}
-              className="text-display font-bold text-accent-primary-light"
+              className="text-display font-bold text-accent-primary-light dark:text-accent-primary-dark"
             >
               필로그램
             </p>

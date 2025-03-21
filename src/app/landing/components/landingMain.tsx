@@ -26,7 +26,7 @@ const LandingMain = () => {
     <section className={`mx-[auto] flex w-[100%] flex-col gap-2`}>
       <div className="my-16">
         <div className="mb-6 flex items-center justify-between">
-          <p className="text-heading2 font-semibold text-content-primary-light">
+          <p className="text-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
             새로 올라온 프로필
           </p>
           <TextButton

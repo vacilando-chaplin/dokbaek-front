@@ -38,11 +38,11 @@ const ProfilePhotoModal = ({
 
   return (
     <section
-      className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-hidden bg-background-scrim-light bg-opacity-50 backdrop-blur-[20px] md:inset-0"
+      className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-hidden bg-background-scrim-light bg-opacity-50 backdrop-blur-[20px] md:inset-0 dark:bg-background-scrim-dark"
       onClick={onPhotoModalClose}
     >
       <button
-        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 ${currentIndex === 0 && "opacity-40"}`}
+        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${currentIndex === 0 && "opacity-40"}`}
         type="button"
         disabled={currentIndex === 0}
         onClick={(e) => {
@@ -69,7 +69,7 @@ const ProfilePhotoModal = ({
         />
       </div>
       <button
-        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 ${currentIndex === selectedPhotoList.length - 1 && "opacity-40"}`}
+        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${currentIndex === selectedPhotoList.length - 1 && "opacity-40"}`}
         type="button"
         disabled={currentIndex === selectedPhotoList.length - 1}
         onClick={(e) => {
@@ -81,7 +81,7 @@ const ProfilePhotoModal = ({
       </button>
       <button
         type="button"
-        className="absolute right-12 top-12 rounded-full bg-static-black p-2"
+        className="absolute right-12 top-12 rounded-full bg-static-black p-2 dark:bg-static-white"
         onClick={onPhotoModalClose}
       >
         <X width="20" height="20" fill="#ffffff" />

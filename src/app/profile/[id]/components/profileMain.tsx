@@ -91,7 +91,7 @@ const ProfileMain = ({
 
   return (
     <section
-      className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light"}`}
+      className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light dark:border-border-default-dark"}`}
     >
       {mainPhoto ? (
         <div
@@ -109,7 +109,7 @@ const ProfileMain = ({
           {otherUser === false && (
             <div className="absolute right-1 top-1">
               <button
-                className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none"
+                className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                 type="button"
                 onClick={onMainPhotoMenuActive}
               >
@@ -118,8 +118,8 @@ const ProfileMain = ({
             </div>
           )}
           {mainPhotoMenuActive && (
-            <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low">
-              <label className="typography-body3 flex h-[38px] w-full cursor-pointer gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light">
+            <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark">
+              <label className="typography-body3 flex h-[38px] w-full cursor-pointer gap-2 rounded-md px-3 py-2 font-regular text-content-primary-light hover:bg-gray-50 active:bg-gray-150 dark:text-content-primary-dark dark:hover:bg-background-surface-dark dark:active:bg-background-surface-dark">
                 <input
                   type="file"
                   accept="image/*"
@@ -134,7 +134,7 @@ const ProfileMain = ({
               </label>
               <button
                 type="button"
-                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
+                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md px-3 py-2 font-regular text-content-primary-light hover:bg-gray-50 active:bg-gray-150 dark:text-content-primary-dark dark:hover:bg-background-surface-dark dark:active:bg-background-surface-dark"
                 onClick={() => {
                   onMainPhotoMenuActive();
                   onMainPhotoEditModalOpen();
@@ -144,7 +144,7 @@ const ProfileMain = ({
               </button>
               <button
                 type="button"
-                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md bg-background-surface-light px-3 py-2 font-regular text-content-primary-light"
+                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md px-3 py-2 font-regular text-content-primary-light hover:bg-gray-50 active:bg-gray-150 dark:text-content-primary-dark dark:hover:bg-background-surface-dark dark:active:bg-background-surface-dark"
                 onClick={() => {
                   onMainPhotoMenuActive();
                   onMainPhotoDeleteModalOpen();
@@ -160,7 +160,7 @@ const ProfileMain = ({
           className="relative w-full"
           style={{ paddingBottom: `${(532 / 416) * 100}%` }}
         >
-          <div className="absolute flex h-full w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light bg-gray-50">
+          <div className="absolute flex h-full w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light dark:border-border-default-dark">
             <Image
               src="/icons/Account.svg"
               alt="account"
@@ -204,7 +204,7 @@ const ProfileMain = ({
           <div className="relative flex justify-center">
             <button
               type="button"
-              className="interaction-default typography-body3 flex h-auto w-full items-center justify-center gap-1.5 rounded-xl border border-border-default-light bg-background-surface-light px-5 py-[11px] font-medium text-content-primary-light outline-none hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined"
+              className="interaction-default typography-body3 flex h-auto w-full items-center justify-center gap-1.5 rounded-xl border border-border-default-light bg-background-surface-light px-5 py-[11px] font-medium text-content-primary-light outline-none hover:brightness-[97%] active:brightness-[94%] dark:border-border-default-dark dark:bg-background-surface-dark dark:text-content-primary-dark"
               onClick={() => onMoveToCreate(0)}
             >
               <Edit width="14" height="14" fill="#212529" />
@@ -218,11 +218,11 @@ const ProfileMain = ({
           </div>
         </div>
       )}
-      <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light">
+      <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light dark:bg-background-base_inverse-dark dark:text-static-black">
         <div className="flex flex-row items-center gap-3">
           <span className="typography-body1 font-semibold">{name}</span>
           {updated && (
-            <div className="typography-caption1 flex flex-row gap-1 font-medium text-content-tertiary-light">
+            <div className="typography-caption1 flex flex-row gap-1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark">
               <span>최근 업데이트</span>
               <span>
                 {year}.{month}.{day}
@@ -288,13 +288,13 @@ const ProfileMain = ({
         </ProfileInfoContainer>
       )}
       {profileSpecialties.length >= 1 && profileSpecialties[0].id !== 0 && (
-        <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light">
+        <div className="typography-body2 flex h-auto w-full flex-col gap-2 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-4 font-normal text-content-primary-light dark:border-gray-900 dark:bg-gray-950 dark:text-content-primary-dark">
           <div className="mb-2 text-body2 font-semibold">특기</div>
           <div className="flex gap-1">
             {profileSpecialties.map((item) => (
               <span
                 key={item.id}
-                className="rounded-[8px] bg-accent-light-light px-2 py-[5px] text-accent-primary-light"
+                className="rounded-[8px] bg-accent-light-light px-2 py-[5px] text-accent-primary-light dark:bg-accent-light-dark dark:text-accent-primary-dark"
               >
                 피아노
               </span>

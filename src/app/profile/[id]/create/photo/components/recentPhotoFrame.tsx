@@ -34,7 +34,7 @@ const RecentPhotoFrame = ({
           className="rotate-[-45deg]"
         />
       )}
-      <label className="typography-caption1 font-medium text-content-tertiary-light">
+      <label className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark">
         {text}
       </label>
       <UploadButton

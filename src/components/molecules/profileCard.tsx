@@ -62,7 +62,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
   return (
     <div
       onClick={onClickProfile}
-      className="w-[100%] cursor-pointer rounded-[16px] border border-gray-100 bg-background-base-light p-4 hover:border-gray-300"
+      className="w-[100%] cursor-pointer rounded-[16px] border border-gray-100 bg-background-base-light p-4 hover:border-gray-300 dark:border-gray-900 dark:bg-background-base-dark dark:hover:border-gray-700"
     >
       <div className="relative">
         {profile.mainPhotoPreviewPath ? (
@@ -82,7 +82,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             className="h-full w-full rounded-2xl"
           />
         )}
-        <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-[4px] rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1">
+        <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-[4px] rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1 dark:bg-background-scrim-dark">
           <div className="flex items-center gap-[2px]">
             <HeartWhite width="14" height="14" fill="#ffffff" />
             <div className="typography-caption2 text-static-white">
@@ -99,7 +99,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
       </div>
       <div className="mt-3">
         <div className="flex items-center justify-between">
-          <p className="typography-body2 mb-1 font-semibold text-content-primary-light">
+          <p className="typography-body2 mb-1 font-semibold text-content-primary-light dark:text-content-primary-dark">
             {profile.name ? profile.name : "-"}
           </p>
           <button
@@ -117,7 +117,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             )}
           </button>
         </div>
-        <div className="typography-caption1 flex font-regular text-content-tertiary-light">
+        <div className="typography-caption1 flex font-regular text-content-tertiary-light dark:text-content-primary-dark">
           {profile.height}cm
           <span className="mx-1">·</span>
           {profile.weight}kg

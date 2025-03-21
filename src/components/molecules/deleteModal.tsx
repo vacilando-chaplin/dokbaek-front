@@ -24,8 +24,8 @@ const DeleteModal = ({
         fill="#ffffff"
         className="absolute -top-3.5 right-3.5"
       />
-      <div className="flex h-auto w-60 flex-col gap-4 rounded-2xl bg-background-elevated-light p-4">
-        <label className="typography-body2 font-semibold text-content-primary-light">
+      <div className="flex h-auto w-60 flex-col gap-4 rounded-2xl bg-background-elevated-light p-4 dark:bg-background-elevated-dark">
+        <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
           {text}
         </label>
         <div className="flex flex-row items-center justify-end gap-1">
