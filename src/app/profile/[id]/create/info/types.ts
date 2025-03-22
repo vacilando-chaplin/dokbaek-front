@@ -65,6 +65,6 @@ export interface SpecialtyItemType {
   id: number | null;
   imageUrl: string | null;
   mediaUrl: string | null;
-  specialtyId: number | null;
+  specialty: { id: number; specialtyName: string } | null;
   updatedAt: string | null;
 }

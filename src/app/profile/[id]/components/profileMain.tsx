@@ -90,6 +90,7 @@ const ProfileMain = ({
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
+  console.log(profileSpecialties);
   return (
     <section
       className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light dark:border-border-default-dark"}`}
@@ -319,7 +320,7 @@ const ProfileMain = ({
                 key={item.id}
                 className="rounded-[8px] bg-accent-light-light px-2 py-[5px] text-accent-primary-light dark:bg-accent-light-dark dark:text-accent-primary-dark"
               >
-                피아노
+                {item.specialty?.specialtyName}
               </span>
             ))}
           </div>
