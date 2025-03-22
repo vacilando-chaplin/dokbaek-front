@@ -419,8 +419,6 @@ const Filmography = () => {
     getProfileData();
   }, [isDraftLoading]);
 
-  console.log(filmoList);
-
   return (
     <div className="flex w-[65vw] flex-col gap-3">
       <FilmoMain
