@@ -62,12 +62,12 @@ const PhotoStillCut = ({
             return (
               <figure
                 key={photoItem.id}
-                className="relative flex aspect-[160/204] h-full w-full rounded-lg"
+                className="relative flex aspect-video w-full rounded-lg"
               >
                 <Image
                   src={photoItem.previewPath}
                   alt="사진 미리보기"
-                  sizes="(max-width: 768px) 100vw"
+                  sizes="100vw"
                   fill
                   priority
                   className="rounded-lg"

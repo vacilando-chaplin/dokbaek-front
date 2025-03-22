@@ -65,7 +65,7 @@ const PhotoRecent = ({
                     <Image
                       src={recentPhoto.previewPath}
                       alt="사진 미리보기"
-                      sizes="(max-width: 768px) 100vw"
+                      sizes="100vw"
                       fill
                       priority
                       className="rounded-lg"

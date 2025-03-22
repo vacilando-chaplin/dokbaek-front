@@ -153,7 +153,7 @@ const ProfileSub = ({
                           width={0}
                           height={0}
                           sizes="100vw"
-                          className={`${photoLabel !== "stillcutPhoto" && "aspect-[258/330]"} h-auto max-h-[50vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30`}
+                          className={`${photoLabel === "stillcutPhoto" ? "aspect-video" : "aspect-[258/330]"} h-auto max-h-[50vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30`}
                         />
                         <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-[14.8px] bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                           <PlusCircle
