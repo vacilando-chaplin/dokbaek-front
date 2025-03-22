@@ -14,9 +14,9 @@ interface EducationFormProps {
   schoolList: string[];
   onSchoolChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onMajorChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSchoolDropdownActive: () => void;
+  // onSchoolDropdownActive: () => void;
   onEducationDropdownActive: () => void;
-  onSchoolDropdownClick: (name: string, item: string) => void;
+  // onSchoolDropdownClick: (name: string, item: string) => void;
   onEducationDropdownClick: (name: string, item: string) => void;
   onBlurEducation: (educationId: number) => void;
   onDelete: () => void;
@@ -28,9 +28,9 @@ const EducationForm = ({
   schoolList,
   onSchoolChange,
   onMajorChange,
-  onSchoolDropdownActive,
+  // onSchoolDropdownActive,
   onEducationDropdownActive,
-  onSchoolDropdownClick,
+  // onSchoolDropdownClick,
   onEducationDropdownClick,
   onBlurEducation,
   onDelete
@@ -69,8 +69,10 @@ const EducationForm = ({
           isEmpty={educationActives.school && schoolList.length === 0}
           maxLength={20}
           placeholder="학교 이름을 검색해보세요."
-          onClick={onSchoolDropdownClick}
-          onActive={onSchoolDropdownActive}
+          // onClick={onSchoolDropdownClick}
+          // onActive={onSchoolDropdownActive}
+          onClick={() => {}}
+          onActive={() => {}}
           onChange={onSchoolChange}
           onSave={() => onBlurEducation(item.id)}
         />

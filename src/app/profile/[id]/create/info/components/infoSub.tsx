@@ -10,9 +10,9 @@ interface infoSubProps {
   schoolList: string[];
   onSchoolChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onMajorChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSchoolDropdownActive: () => void;
+  // onSchoolDropdownActive: () => void;
   onEducationDropdownActive: () => void;
-  onSchoolDropdownClick: (name: string, item: string) => void;
+  // onSchoolDropdownClick: (name: string, item: string) => void;
   onEducationDropdownClick: (name: string, item: string) => void;
   onBlurEducation: (educationId: number) => void;
   onCreateEducation: () => void;
@@ -25,9 +25,9 @@ const InfoSub = ({
   schoolList,
   onSchoolChange,
   onMajorChange,
-  onSchoolDropdownActive,
+  // onSchoolDropdownActive,
   onEducationDropdownActive,
-  onSchoolDropdownClick,
+  // onSchoolDropdownClick,
   onEducationDropdownClick,
   onBlurEducation,
   onCreateEducation,
@@ -60,9 +60,9 @@ const InfoSub = ({
               schoolList={schoolList}
               onSchoolChange={onSchoolChange}
               onMajorChange={onMajorChange}
-              onSchoolDropdownActive={onSchoolDropdownActive}
+              // onSchoolDropdownActive={onSchoolDropdownActive}
               onEducationDropdownActive={onEducationDropdownActive}
-              onSchoolDropdownClick={onSchoolDropdownClick}
+              // onSchoolDropdownClick={onSchoolDropdownClick}
               onEducationDropdownClick={onEducationDropdownClick}
               onBlurEducation={onBlurEducation}
               onDelete={() => onDeleteEducation(item.id)}
