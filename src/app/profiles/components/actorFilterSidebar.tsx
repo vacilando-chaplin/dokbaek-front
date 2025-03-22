@@ -2,7 +2,7 @@ import BoxButton from "@/components/atoms/boxButton";
 import React, { useEffect, useState } from "react";
 
 import TextInput from "@/components/atoms/textInput";
-import ArrowChevronDownGray from "../../../../public/icons/ArrowChevronDownGray.svg";
+import ArrowChevronDown from "../../../../public/icons/ArrowChevronDown.svg";
 import Reset from "../../../../public/icons/Reset.svg";
 
 import {
@@ -264,23 +264,31 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   ]);
 
   return (
-    <aside className="h-fit w-[320px] rounded-2xl border bg-background-surface-light">
-      <div className="border-b py-4">
+    <aside className="h-fit w-[320px] rounded-2xl border border-border-default-light bg-background-surface-light dark:border-border-default-dark dark:bg-background-surface-dark">
+      <div className="border-b border-border-default-light py-4 dark:border-border-default-dark">
         <div className="flex items-center justify-between px-5">
-          <div>{profilesData?.numberOfElements}명</div>
+          <div className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
+            {profilesData?.numberOfElements}명
+          </div>
           <BoxButton
             type="secondaryOutlined"
             size="small"
             onClick={onClickFilterReset}
           >
-            <Reset width="14" height="14" fill="#212529" />
-            <label>필터 초기화</label>
+            <Reset
+              width="14"
+              height="14"
+              className="fill-current text-content-primary-light dark:text-content-primary-dark"
+            />
+            <span className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
+              필터 초기화
+            </span>
           </BoxButton>
         </div>
       </div>
-      <div className="border-b-[1px] border-border-default-light py-4">
+      <div className="border-b-[1px] border-border-default-light py-4 dark:border-border-default-dark">
         <div className="px-5">
-          <div className="typography-body3 mb-2 text-content-secondary-light">
+          <div className="typography-body3 mb-2 font-medium text-content-primary-light dark:text-content-primary-dark">
             키워드
           </div>
           <div className="flex items-center gap-2">
@@ -299,11 +307,11 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           </div>
         </div>
       </div>
-      <div className="border-b-[1px] border-border-default-light px-5 py-4">
+      <div className="border-b-[1px] border-border-default-light px-5 py-4 dark:border-border-default-dark">
         <div className="flex items-center justify-between">
-          <div className="typography-body3 text-content-secondary-light">
+          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
             성별
-            <span className="ml-2 text-accent-primary-light">
+            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
               {getTypeLabel("gender")}
             </span>
           </div>
@@ -314,22 +322,26 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               }}
               className="flex items-center gap-1"
             >
-              <Reset width="12" height="12" fill="#ADB5BD" />
-              <label
+              <Reset
+                width="12"
+                height="12"
+                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+              />
+              <span
                 style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+                className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
               >
                 초기화
-              </label>
+              </span>
             </button>
             <button
               onClick={() => setIsGenderOpen((prev) => !prev)}
               className="transition-transform duration-200"
             >
-              <ArrowChevronDownGray
-                width="20"
-                height="20"
-                className={isGenderOpen ? "rotate-180" : "rotate-0"}
+              <ArrowChevronDown
+                width="16"
+                height="16"
+                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isGenderOpen ? "rotate-180" : "rotate-0"}`}
               />
             </button>
           </div>
@@ -347,11 +359,11 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           </div>
         )}
       </div>
-      <div className="border-b-[1px] border-border-default-light px-5 py-4">
+      <div className="border-b-[1px] border-border-default-light px-5 py-4 dark:border-border-default-dark">
         <div className="flex items-center justify-between">
-          <div className="typography-body3 text-content-secondary-light">
+          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
             나이(년생)
-            <span className="ml-2 text-accent-primary-light">
+            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
               {getTypeLabel("bornYear")}
             </span>
           </div>
@@ -364,22 +376,26 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               }}
               className="flex items-center gap-1"
             >
-              <Reset width="12" height="12" fill="#ADB5BD" />
-              <label
+              <Reset
+                width="12"
+                height="12"
+                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+              />
+              <span
                 style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+                className="typography-caption1 font-medium text-content-tertiary-light"
               >
                 초기화
-              </label>
+              </span>
             </button>
             <button
               onClick={() => setIsBornYearOpen((prev) => !prev)}
               className="transition-transform duration-200"
             >
-              <ArrowChevronDownGray
-                width="20"
-                height="20"
-                className={isBornYearOpen ? "rotate-180" : "rotate-0"}
+              <ArrowChevronDown
+                width="16"
+                height="16"
+                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isBornYearOpen ? "rotate-180" : "rotate-0"}`}
               />
             </button>
           </div>
@@ -419,11 +435,11 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
         )}
       </div>
 
-      <div className="border-b-[1px] border-border-default-light px-5 py-4">
+      <div className="border-b-[1px] border-border-default-light px-5 py-4 dark:border-border-default-dark">
         <div className="flex items-center justify-between">
-          <div className="typography-body3 text-content-secondary-light">
+          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
             키
-            <span className="ml-2 text-accent-primary-light">
+            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
               {getTypeLabel("height")}
             </span>
           </div>
@@ -436,22 +452,26 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               }}
               className="flex items-center gap-1"
             >
-              <Reset width="12" height="12" fill="#ADB5BD" />
-              <label
+              <Reset
+                width="12"
+                height="12"
+                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+              />
+              <span
                 style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+                className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
               >
                 초기화
-              </label>
+              </span>
             </button>
             <button
               onClick={() => setIsHeightOpen((prev) => !prev)}
               className="transition-transform duration-200"
             >
-              <ArrowChevronDownGray
-                width="20"
-                height="20"
-                className={isHeightOpen ? "rotate-180" : "rotate-0"}
+              <ArrowChevronDown
+                width="16"
+                height="16"
+                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isHeightOpen ? "rotate-180" : "rotate-0"}`}
               />
             </button>
           </div>
@@ -494,9 +514,9 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
       </div>
       <div className="px-5 py-4">
         <div className="flex items-center justify-between">
-          <div className="typography-body3 text-content-secondary-light">
+          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
             몸무게
-            <span className="ml-2 text-accent-primary-light">
+            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
               {getTypeLabel("weight")}
             </span>
           </div>
@@ -509,22 +529,26 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               }}
               className="flex items-center gap-1"
             >
-              <Reset width="12" height="12" fill="#ADB5BD" />
-              <label
+              <Reset
+                width="12"
+                height="12"
+                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+              />
+              <span
                 style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 text-content-tertiary-light hover:text-content-primary-light"
+                className="typography-caption1 font-medium text-content-tertiary-light"
               >
                 초기화
-              </label>
+              </span>
             </button>
             <button
               onClick={() => setIsWeightOpen((prev) => !prev)}
               className="transition-transform duration-200"
             >
-              <ArrowChevronDownGray
-                width="20"
-                height="20"
-                className={isWeightOpen ? "rotate-180" : "rotate-0"}
+              <ArrowChevronDown
+                width="16"
+                height="16"
+                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isWeightOpen ? "rotate-180" : "rotate-0"}`}
               />
             </button>
           </div>

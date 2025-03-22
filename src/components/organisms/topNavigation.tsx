@@ -97,17 +97,25 @@ const TopNavigation = () => {
               내 프로필
             </Link>
             <Link href={`/likes`} className="flex items-center">
-              <Heart width="20" height="20" fill="#5E656C" />
+              <Heart
+                width="20"
+                height="20"
+                className="fill-current text-content-secondary-light dark:text-content-secondary-dark"
+              />
             </Link>
             {/* <button type="button">
-              <Bell width="20" height="20" fill="#5E656C" />
+              <Bell width="20" height="20" className="fill-current text-content-secondary-light dark:text-content-secondary-dark" />
             </button> */}
             <button
               type="button"
-              className="relative flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50 dark:border-border-default-dark"
+              className="relative flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50 dark:border-border-default-dark dark:bg-gray-900"
               onClick={onUserMenuClick}
             >
-              <Person width="20" height="20" fill="#5E656C" />
+              <Person
+                width="20"
+                height="20"
+                className="fill-current text-content-secondary-light dark:text-content-secondary-dark"
+              />
             </button>
             {userMenuActive && (
               <div className="scrollbar interaction-default absolute right-6 top-11 z-10 flex h-auto max-h-[332px] w-[120px] animate-enter list-none flex-col rounded-xl bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark">

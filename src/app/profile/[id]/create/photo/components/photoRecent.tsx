@@ -78,14 +78,22 @@ const PhotoRecent = ({
                           onPhotoEditModalOpen(recentPhoto, "recent")
                         }
                       >
-                        <Edit width="12" height="12" fill="#212529" />
+                        <Edit
+                          width="12"
+                          height="12"
+                          className="fill-current text-content-primary-light dark:text-content-primary-dark"
+                        />
                       </label>
                       <button
                         className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                         type="button"
                         onClick={onDeletePhotoActive}
                       >
-                        <X width="12" height="12" fill="#FB3E34" />
+                        <X
+                          width="12"
+                          height="12"
+                          className="fill-current text-state-negative-light dark:text-state-negative-dark"
+                        />
                       </button>
                       {photoDeleteActive && (
                         <DeleteModal

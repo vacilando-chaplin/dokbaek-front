@@ -38,7 +38,7 @@ const ProfilePhotoModal = ({
 
   return (
     <section
-      className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-hidden bg-background-scrim-light bg-opacity-50 backdrop-blur-[20px] md:inset-0 dark:bg-background-scrim-dark"
+      className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-hidden bg-background-scrim-light bg-opacity-50 backdrop-blur-[20px] dark:bg-background-scrim-dark md:inset-0"
       onClick={onPhotoModalClose}
     >
       <button
@@ -50,7 +50,11 @@ const ProfilePhotoModal = ({
           e.stopPropagation();
         }}
       >
-        <ArrowChevronLeft width="16" height="16" fill="#FFFFFF" />
+        <ArrowChevronLeft
+          width="16"
+          height="16"
+          className="fill-current text-content-on_color-light dark:text-static-black"
+        />
       </button>
       <div
         className={`flex h-full max-h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center gap-6`}
@@ -77,14 +81,22 @@ const ProfilePhotoModal = ({
           e.stopPropagation();
         }}
       >
-        <ArrowChevronRight width="16" height="16" fill="#FFFFFF" />
+        <ArrowChevronRight
+          width="16"
+          height="16"
+          className="fill-current text-content-on_color-light dark:text-static-black"
+        />
       </button>
       <button
         type="button"
         className="absolute right-12 top-12 rounded-full bg-static-black p-2 dark:bg-static-white"
         onClick={onPhotoModalClose}
       >
-        <X width="20" height="20" fill="#ffffff" />
+        <X
+          width="20"
+          height="20"
+          className="fill-current text-content-on_color-light dark:text-static-black"
+        />
       </button>
     </section>
   );

@@ -35,7 +35,7 @@ const TextArea = ({
         autoComplete="off"
         onChange={onChange}
         onBlur={onSave}
-        className={`scrollbar interaction-default typography-body3 h-[140px] w-full resize-none items-start gap-1 border border-border-default-light bg-background-surface-light font-normal text-content-primary-light placeholder-content-tertiary-light outline-none focus-within:border-border-active-light hover:border-border-active-light dark:border-border-default-dark dark:bg-background-surface-dark dark:text-content-primary-dark dark:placeholder-content-tertiary-dark dark:focus-within:border-border-active-dark dark:hover:border-border-active-dark ${sizeStyle[size]}`}
+        className={`scrollbar dark:dark-scrollbar interaction-default typography-body3 h-[140px] w-full resize-none items-start gap-1 border border-border-default-light bg-background-surface-light font-normal text-content-primary-light placeholder-content-tertiary-light outline-none focus-within:border-border-active-light hover:border-border-active-light dark:border-border-default-dark dark:bg-background-surface-dark dark:text-content-primary-dark dark:placeholder-content-tertiary-dark dark:focus-within:border-border-active-dark dark:hover:border-border-active-dark ${sizeStyle[size]}`}
       />
       {limit && (
         <label className="typography-caption1 flex h-fit w-full justify-end gap-1 font-normal text-content-secondary-light dark:text-content-secondary-dark">

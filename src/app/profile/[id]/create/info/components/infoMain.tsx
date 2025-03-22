@@ -190,7 +190,11 @@ const InfoMain = ({
                 size="medium"
                 onClick={onSpecialtyFormModalOpen}
               >
-                <Plus width="12" height="12" fill="#212529" />
+                <Plus
+                  width="12"
+                  height="12"
+                  className="fill-current text-content-primary-light dark:text-content-primary-dark"
+                />
                 추가/수정
               </BoxButton>
             </div>

@@ -53,11 +53,15 @@ const FilmoItem = ({
         <div className="flex flex-col gap-1">
           {/* edit */}
           <button
-            className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:to-background-surface-dark"
+            className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
             type="button"
             onClick={() => onEdit(filmo)}
           >
-            <Edit width="12" height="12" fill="#212529" />
+            <Edit
+              width="12"
+              height="12"
+              className="fill-current text-content-primary-light dark:text-content-primary-dark"
+            />
           </button>
           {/* delete */}
           <button
@@ -65,7 +69,11 @@ const FilmoItem = ({
             type="button"
             onClick={() => onDelete(id)}
           >
-            <X width="12" height="12" fill="#FB3E34" />
+            <X
+              width="12"
+              height="12"
+              className="fill-current text-state-negative-light dark:text-state-negative-dark"
+            />
           </button>
         </div>
       )}
@@ -90,24 +98,27 @@ const FilmoItem = ({
           </div>
         </div>
         {/* link */}
-        {checkYoutube && (
-          <button
-            type="button"
-            className="w-fit"
-            onClick={() => onLink(production.videoUrl)}
-          >
-            <PlayCircle
-              width="16"
-              height="16"
-              fill={checkYoutube ? "#212529" : "#ADB5BD"}
-            />
-          </button>
-        )}
+        <button
+          type="button"
+          className="w-fit"
+          disabled={!checkYoutube}
+          onClick={() => onLink(production.videoUrl)}
+        >
+          <PlayCircle
+            width="16"
+            height="16"
+            className={`fill-current ${checkYoutube ? "text-content-primary-light dark:text-content-primary-dark" : "text-content-alternative-light dark:text-content-alternative-dark"}`}
+          />
+        </button>
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
         {filmo.thumbnailPath === null ||
         filmo.thumbnailPath.endsWith("null") ? (
-          <LogoHorizontalSmall width="20" height="20" fill="#ADB5BD" />
+          <LogoHorizontalSmall
+            width="20"
+            height="20"
+            className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+          />
         ) : (
           <Image
             src={filmo.thumbnailPath}

@@ -55,13 +55,17 @@ const SelectDropdown = ({
           type="button"
           className={`interaction-default ml-auto flex ${active && "rotate-180 transform"}`}
         >
-          <ArrowTriangleDown width="16" height="16" fill="#212529" />
+          <ArrowTriangleDown
+            width="16"
+            height="16"
+            className="fill-current text-content-primary-light dark:text-content-primary-dark"
+          />
         </button>
       </div>
       {helperText && <HelperText type="info" text={helperText} />}
       {active && (
         <ul
-          className={`scrollbar interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
+          className={`scrollbar dark:dark-scrollbar-dropdown interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
         >
           {list.map((item: string, index: number) => {
             return (

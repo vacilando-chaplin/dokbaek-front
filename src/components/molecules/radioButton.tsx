@@ -35,13 +35,13 @@ const RadioButton = ({
         onChange={onChange}
       />
       <div
-        className={`flex h-5 w-5 items-center justify-center rounded-full border-2 border-border-default-light hover:border-blue-600 peer-checked:border-[5px] peer-checked:border-blue-600`}
+        className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border-2 border-border-default-light hover:border-accent-primary-light peer-checked:border-[5px] peer-checked:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark dark:peer-checked:border-accent-primary-dark`}
       >
         {checked && (
-          <div className="h-2.5 w-2.5 rounded-full bg-background-surface-light" />
+          <div className="h-2 w-2 rounded-full bg-background-surface-light dark:bg-background-surface-dark" />
         )}
       </div>
-      <span className="typography-body3 text-content-primary-light">
+      <span className="typography-body3 text-content-primary-light dark:text-content-primary-dark">
         {label}
       </span>
     </label>

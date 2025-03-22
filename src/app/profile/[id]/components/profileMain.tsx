@@ -11,6 +11,7 @@ import Plus from "../../../../../public/icons/Plus.svg";
 import Download from "../../../../../public/icons/Download.svg";
 import Copy from "../../../../../public/icons/Copy.svg";
 import Edit from "../../../../../public/icons/Edit.svg";
+import Account from "../../../../../public/icons/Account.svg";
 import InstagramIcon from "../../../../../public/icons/InstagramIcon.svg";
 import YoutubeIcon from "../../../../../public/icons/YoutubeIcon.svg";
 import { InfoResponseType } from "@/lib/types";
@@ -113,7 +114,11 @@ const ProfileMain = ({
                 type="button"
                 onClick={onMainPhotoMenuActive}
               >
-                <DotsVertical width="20" height="20" fill="#212529" />
+                <DotsVertical
+                  width="20"
+                  height="20"
+                  className="fill-current text-content-primary-light dark:text-content-primary-dark"
+                />
               </button>
             </div>
           )}
@@ -161,11 +166,10 @@ const ProfileMain = ({
           style={{ paddingBottom: `${(532 / 416) * 100}%` }}
         >
           <div className="absolute flex h-full w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light dark:border-border-default-dark">
-            <Image
-              src="/icons/Account.svg"
-              alt="account"
-              width={40}
-              height={40}
+            <Account
+              width="40"
+              height="40"
+              className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
             />
             {otherUser === false && (
               <div className="relative flex justify-center">
@@ -175,7 +179,11 @@ const ProfileMain = ({
                   onClick={onMainPhotoModalOpen}
                   onChange={onMainPhotoSelectFile}
                 >
-                  <Plus width="14" height="14" fill="#212529" />
+                  <Plus
+                    width="14"
+                    height="14"
+                    className="fill-current text-content-primary-light dark:text-content-primary-dark"
+                  />
                   대표 사진 추가
                 </UploadButton>
                 <div className="absolute -top-10">
@@ -188,17 +196,29 @@ const ProfileMain = ({
       )}
       {otherUser ? (
         <BoxButton type="secondaryOutlined" size="medium" onClick={onCopyUrl}>
-          <Copy width="14" height="14" fill="#212529" />
+          <Copy
+            width="14"
+            height="14"
+            className="fill-current text-content-primary-light dark:text-content-primary-dark"
+          />
           링크 복사
         </BoxButton>
       ) : (
         <div className="relative grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
           <BoxButton type="secondaryOutlined" size="medium">
-            <Download width="14" height="14" fill="#212529" />
+            <Download
+              width="14"
+              height="14"
+              className="fill-current text-content-primary-light dark:text-content-primary-dark"
+            />
             PDF 다운로드
           </BoxButton>
           <BoxButton type="secondaryOutlined" size="medium" onClick={onCopyUrl}>
-            <Copy width="14" height="14" fill="#212529" />
+            <Copy
+              width="14"
+              height="14"
+              className="fill-current text-content-primary-light dark:text-content-primary-dark"
+            />
             링크 복사
           </BoxButton>
           <div className="relative flex justify-center">
@@ -207,7 +227,11 @@ const ProfileMain = ({
               className="interaction-default typography-body3 flex h-auto w-full items-center justify-center gap-1.5 rounded-xl border border-border-default-light bg-background-surface-light px-5 py-[11px] font-medium text-content-primary-light outline-none hover:brightness-[97%] active:brightness-[94%] dark:border-border-default-dark dark:bg-background-surface-dark dark:text-content-primary-dark"
               onClick={() => onMoveToCreate(0)}
             >
-              <Edit width="14" height="14" fill="#212529" />
+              <Edit
+                width="14"
+                height="14"
+                className="fill-current text-content-primary-light dark:text-content-primary-dark"
+              />
               프로필 편집
             </button>
             {(bornYear === 0 || contact === null) && (
@@ -254,7 +278,6 @@ const ProfileMain = ({
       ) : (
         <EmptyState
           text="정보가 없어요."
-          icon
           button={false}
           buttonSize=""
           buttonText=""

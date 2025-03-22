@@ -41,11 +41,11 @@ const FilmoModalContents = ({
   } = filmoInputs;
 
   return (
-    <div className="scrollbar flex h-full max-h-[80vh] w-full gap-4 overflow-auto overscroll-contain bg-background-surface-light p-6 dark:bg-background-surface-dark">
+    <div className="scrollbar dark:dark-scrollbar flex h-full max-h-[80vh] w-full gap-4 overflow-auto overscroll-contain bg-background-surface-light p-6 dark:bg-background-surface-dark">
       <div className="flex h-auto w-full flex-col gap-4">
-        <div className="flex w-full flex-col">
-          <Label label="분류" required />
-          <div className="flex flex-row gap-4">
+        <div className="flex flex-row gap-4">
+          <div className="flex w-full flex-col">
+            <Label label="분류" required />
             <SelectDropdown
               name="classification"
               list={classificationList}
@@ -56,6 +56,9 @@ const FilmoModalContents = ({
               onClick={onFilmoDropdownClick}
               onActive={onFilmoDropdownActive}
             />
+          </div>
+          <div className="flex w-full flex-col">
+            <Label label="제작연도" />
             <SearchDropdown
               size="medium"
               name="production"

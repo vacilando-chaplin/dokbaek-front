@@ -68,7 +68,11 @@ const FilmoMain = ({
                   onClick={onFilmoRepActive}
                 >
                   대표작 설정
-                  <InfoCircle width="12" height="12" fill="#868E96" />
+                  <InfoCircle
+                    width="12"
+                    height="12"
+                    className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+                  />
                 </BoxButton>
               ))}
             {filmoRepresentActive ? (
@@ -85,7 +89,11 @@ const FilmoMain = ({
                 size="small"
                 onClick={onFilmoModalOpen}
               >
-                <Plus width="12" height="12" fill="#1E85EF" />
+                <Plus
+                  width="12"
+                  height="12"
+                  className="fill-current text-accent-primary-light dark:text-accent-primary-dark"
+                />
                 추가
               </BoxButton>
             )}

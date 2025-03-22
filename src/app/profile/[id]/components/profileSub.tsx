@@ -100,23 +100,31 @@ const ProfileSub = ({
             <div className="flex gap-1">
               {/* PrevButton */}
               <button
-                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === 0 && "opacity-40"}`}
+                className={`rounded-full bg-gray-150 p-1.5 dark:bg-gray-800 ${photoSlider === 0 && "opacity-40"}`}
                 type="button"
                 disabled={photoSlider === 0}
                 onClick={onSliderPrev}
               >
-                <ArrowChevronLeft width="16" height="16" fill="#5E656C" />
+                <ArrowChevronLeft
+                  width="16"
+                  height="16"
+                  className="fill-current text-content-secondary-light dark:text-content-secondary-dark"
+                />
               </button>
               {/* NextButton */}
               <button
-                className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(selectedPhotoList.length / 5) && "opacity-40"}`}
+                className={`rounded-full bg-gray-150 p-1.5 dark:bg-gray-800 ${photoSlider === Math.floor(selectedPhotoList.length / 5) && "opacity-40"}`}
                 type="button"
                 disabled={
                   photoSlider === Math.floor(selectedPhotoList.length / 5)
                 }
                 onClick={() => onSliderNext(selectedPhotoList.length)}
               >
-                <ArrowChevronRight width="16" height="16" fill="#5E656C" />
+                <ArrowChevronRight
+                  width="16"
+                  height="16"
+                  className="fill-current text-content-secondary-light dark:text-content-secondary-dark"
+                />
               </button>
             </div>
           )}
@@ -148,7 +156,11 @@ const ProfileSub = ({
                           className="aspect-[258/330] h-auto max-h-[50vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30"
                         />
                         <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-[14.8px] bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
-                          <PlusCircle width="20" height="20" fill="#ffffff" />
+                          <PlusCircle
+                            width="20"
+                            height="20"
+                            className="fill-current text-content-on_color-light dark:text-content-on_color-dark"
+                          />
                           <span className="typography-body2 font-semibold">
                             크게 보기
                           </span>

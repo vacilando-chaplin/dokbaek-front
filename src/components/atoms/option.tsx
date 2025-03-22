@@ -27,7 +27,7 @@ const Option = ({
 
   return (
     <li
-      className={`flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-50${sizeStyle[size]} ${selected === item ? "bg-gray-50 hover:bg-gray-50 dark:bg-gray-950 dark:hover:bg-gray-950" : "dark:hover:bg-background-surface-dark"}`}
+      className={`flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-50 ${sizeStyle[size]} ${selected === item ? "bg-gray-50 hover:bg-gray-50 dark:bg-gray-950 dark:hover:bg-gray-950" : "dark:hover:bg-background-surface-dark"}`}
       onClick={() => {
         onClick(name, item);
         onActive(name, active);

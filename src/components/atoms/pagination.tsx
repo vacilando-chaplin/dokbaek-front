@@ -17,11 +17,11 @@ const Pagination: React.FC<PaginationProps> = ({
       pageCount={totalPage}
       onPageChange={onPageChange}
       containerClassName="flex gap-2 justify-center"
-      pageClassName="flex items-center justify-center w-8 h-8 text-content-primary-light"
-      breakClassName="flex items-center justify-center w-8 h-8 text-content-primary-light"
-      activeClassName="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-primary-light hover:bg-hover-primary active:bg-pressed-primary text-static-white"
-      previousClassName="flex items-center justify-center w-8 h-8 text-content-primary-light"
-      nextClassName="flex items-center justify-center w-8 h-8 text-content-primary-light"
+      pageClassName="flex items-center justify-center w-8 h-8 text-content-primary-light dark:text-content-primary-dark"
+      breakClassName="flex items-center justify-center w-8 h-8 text-content-primary-light dark:text-content-primary-dark"
+      activeClassName="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-primary-light dark:bg-accent-primary-dark hover:bg-hover-primary active:bg-pressed-primary text-static-white typography-body3 font-semibold"
+      previousClassName="flex items-center justify-center w-8 h-8 text-content-primary-light dark:text-content-primary-dark"
+      nextClassName="flex items-center justify-center w-8 h-8 text-content-primary-light dark:text-content-primary-dark"
       previousLabel="<"
       nextLabel=">"
     />

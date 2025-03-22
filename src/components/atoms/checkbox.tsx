@@ -45,8 +45,7 @@ const Checkbox = ({
         <Check
           width="14"
           height="16"
-          fill="#FFFFFF"
-          className={`absolute h-fit w-fit ${checked ? "block" : "hidden"}`}
+          className={`fill-current absolute h-fit w-fit text-content-on_color-light dark:text-content-on_color-dark ${checked ? "block" : "hidden"}`}
         />
       </span>
     </label>

@@ -10,7 +10,7 @@ const VideoModalContents = ({
   onVideoInputChange
 }: VideoModalContentsProps) => {
   return (
-    <div className="flex h-auto w-full gap-4 bg-background-surface-light p-6">
+    <div className="flex h-auto w-full gap-4 bg-background-surface-light p-6 dark:bg-background-surface-dark">
       <div className="flex h-auto w-full flex-row gap-4">
         <TextInput
           type="link"

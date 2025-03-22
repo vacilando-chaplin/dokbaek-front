@@ -21,8 +21,7 @@ const DeleteModal = ({
       <ArrowTriangleUp
         width="24"
         height="24"
-        fill="#ffffff"
-        className="absolute -top-3.5 right-3.5"
+        className="fill-current absolute -top-3.5 right-3.5 text-background-elevated-light dark:text-background-elevated-dark"
       />
       <div className="flex h-auto w-60 flex-col gap-4 rounded-2xl bg-background-elevated-light p-4 dark:bg-background-elevated-dark">
         <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">

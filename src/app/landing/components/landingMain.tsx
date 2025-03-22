@@ -37,7 +37,11 @@ const LandingMain = () => {
             }}
           >
             더 많은 프로필 보기
-            <ArrowDirectionRight width="16" height="16" fill="#868E96" />
+            <ArrowDirectionRight
+              width="16"
+              height="16"
+              className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+            />
           </TextButton>
         </div>
         <div

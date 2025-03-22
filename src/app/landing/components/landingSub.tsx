@@ -34,7 +34,11 @@ const LandingSub = () => {
         <div className="absolute right-[100px] top-[95px]">
           <BoxButton type="primary" size="large">
             프로필 만들기
-            <ArrowDirectionRight width="16" height="16" fill="#ffffff" />
+            <ArrowDirectionRight
+              width="16"
+              height="16"
+              className="fill-current text-content-on_color-light dark:text-content-on_color-dark"
+            />
           </BoxButton>
         </div>
       </div>

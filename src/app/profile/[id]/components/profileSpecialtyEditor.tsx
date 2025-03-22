@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { SpecialtyType } from "@/app/profile/[id]/create/info/types";
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import XCircleFill from "../../../../../public/icons/XCircleFill.svg";
-import XCircleFillBlack from "../../../../../public/icons/XCircleFillBlack.svg";
 import { getSpecialty } from "../create/info/api";
 import { useDebounce } from "@/lib/hooks";
 import ProfileSpecialtyMediaModal from "./profileSpecialtyMediaModal";
@@ -127,19 +126,21 @@ const ProfileSpecialtyEditor = ({
         />
       )}
       {specialties && (
-        <div className="scrollbar mt-4 max-h-80">
+        <div className="scrollbar dark:dark-scrollbar-dropdown mt-4 max-h-80">
           <ul>
             {specialties.map((specialty) => (
               <li
                 key={specialty.id}
-                className="mb-1 rounded-lg bg-gray-100 p-3 text-sm"
+                className="mb-1 rounded-lg bg-gray-100 p-3 text-sm dark:bg-gray-800"
               >
                 <div className="flex items-center justify-between">
-                  <div>{specialty.specialtyName}</div>
+                  <div className="text-content-primary-light dark:text-content-primary-dark">
+                    {specialty.specialtyName}
+                  </div>
                   <div className="flex gap-2">
                     <label
                       htmlFor={`upload-${specialty.id}`}
-                      className="flex cursor-pointer items-center font-medium text-content-tertiary-light"
+                      className="flex cursor-pointer items-center font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
                     >
                       <input
                         id={`upload-${specialty.id}`}
@@ -150,25 +151,37 @@ const ProfileSpecialtyEditor = ({
                           onChangeProfileSpecialtyPhoto(e, specialty.id)
                         }
                       />
-                      <PlusCircle width="12" height="12" fill="#ADB5BD" />
+                      <PlusCircle
+                        width="12"
+                        height="12"
+                        className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+                      />
                       <span style={{ marginLeft: "2px" }}>사진</span>
                     </label>
                     <button
                       type="button"
-                      className="flex items-center font-medium text-content-tertiary-light"
+                      className="flex items-center font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
                       onClick={() =>
                         onProfileSpecialtyMediaModalOpen(specialty.id)
                       }
                     >
-                      <PlusCircle width="12" height="12" fill="#ADB5BD" />
+                      <PlusCircle
+                        width="12"
+                        height="12"
+                        className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+                      />
                       <span style={{ marginLeft: "2px" }}>영상</span>
                     </button>
                     <button
                       type="button"
-                      className="flex items-center font-medium text-content-tertiary-light"
+                      className="flex items-center font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
                       onClick={onDeleteSpecialty(specialty.id)}
                     >
-                      <XCircleFill width="15" height="15" fill="#ADB5BD" />
+                      <XCircleFill
+                        width="16"
+                        height="16"
+                        className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+                      />
                     </button>
                   </div>
                 </div>
@@ -188,7 +201,11 @@ const ProfileSpecialtyEditor = ({
                         aria-label="사진 삭제"
                         onClick={() => onDeleteSpecialtyPhoto(specialty.id)}
                       >
-                        <XCircleFillBlack />
+                        <XCircleFill
+                          width="16"
+                          height="16"
+                          className="fill-current text-content-primary-light"
+                        />
                       </button>
                     </div>
                   )}
@@ -211,7 +228,11 @@ const ProfileSpecialtyEditor = ({
                         aria-label="영상 삭제"
                         onClick={() => onDeleteSpecialtyMedia(specialty.id)}
                       >
-                        <XCircleFillBlack />
+                        <XCircleFill
+                          width="16"
+                          height="16"
+                          className="fill-current text-content-primary-light"
+                        />
                       </button>
                     </div>
                   )}

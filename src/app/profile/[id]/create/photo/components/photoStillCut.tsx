@@ -48,7 +48,11 @@ const PhotoStillCut = ({
           onClick={() => onPhotoModalOpen("stillcut")}
           onChange={onSelectFile}
         >
-          <Plus width="12" height="12" fill="#1E85EF" />
+          <Plus
+            width="12"
+            height="12"
+            className="fill-current text-accent-primary-light dark:text-accent-primary-dark"
+          />
           추가
         </UploadButton>
       </div>
@@ -75,7 +79,11 @@ const PhotoStillCut = ({
                     className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                     onClick={() => onPhotoEditModalOpen(photoItem, "stillcut")}
                   >
-                    <Edit width="12" height="12" fill="#212529" />
+                    <Edit
+                      width="12"
+                      height="12"
+                      className="fill-current text-content-primary-light dark:text-content-primary-dark"
+                    />
                   </label>
                   {/* delete */}
                   <button
@@ -83,7 +91,11 @@ const PhotoStillCut = ({
                     type="button"
                     onClick={onDeletePhotoActive}
                   >
-                    <X width="12" height="12" fill="#FB3E34" />
+                    <X
+                      width="12"
+                      height="12"
+                      className="fill-current text-state-negative-light dark:text-state-negative-dark"
+                    />
                   </button>
                   {/* deleteModal */}
                   {photoDeleteActive && (

@@ -40,21 +40,20 @@ const EducationForm = ({
       <div className="flex h-auto w-full items-center justify-between">
         <div className="flex flex-row items-center justify-center gap-1.5">
           {/* <ThreeBars width="14" height="14" color="#ADB5BD" /> */}
-          <label className="typography-body2 font-semibold text-content-primary-light">
+          <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
             학교 정보
           </label>
         </div>
         <button
           type="button"
-          className="flex h-5 w-5 items-center justify-center rounded-md border border-border-default-light bg-background-surface-light p-1 dark:border-border-default-dark dark:bg-background-surface-dark"
+          className={`flex h-5 w-5 items-center justify-center rounded-md border bg-background-surface-light p-1 dark:bg-background-surface-dark ${item.school.name === "" ? "border-border-disabled-light dark:border-border-disabled-dark" : "border-border-default-light dark:border-border-default-dark"}`}
           disabled={item.school.name === ""}
           onClick={onDelete}
         >
           <X
             width="12"
             height="12"
-            fill="#FB3E34"
-            className={`${item.school.name === "" && "opacity-40"}`}
+            className={`fill-current ${item.school.name === "" ? "text-state-negative_disabled-light dark:text-state-negative_disabled-dark" : "text-state-negative-light dark:text-state-negative-dark"}`}
           />
         </button>
       </div>

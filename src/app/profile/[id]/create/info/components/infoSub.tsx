@@ -46,7 +46,7 @@ const InfoSub = ({
           <Plus
             width="16"
             height="16"
-            fill={education.length >= 1 ? "#CED4DA" : "#212529"}
+            className={`fill-current ${education.length >= 1 ? "text-content-disabled-light dark:text-content-disabled-dark" : "text-content-primary-light dark:text-content-primary-dark"}`}
           />
         </button>
       </div>

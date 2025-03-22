@@ -1,15 +1,13 @@
 import BoxButton from "../atoms/boxButton";
-import InfoCircle from "../../../public/icons/InfoCircle.svg";
 import Plus from "../../../public/icons/Plus.svg";
 
 interface EmptyStateProps {
   text: string;
-  button?: boolean;
+  button: boolean;
   buttonSize: string;
   buttonText: string;
   buttonType: string;
   otherUser?: boolean;
-  icon?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -20,7 +18,6 @@ const EmptyState = ({
   buttonText,
   buttonType,
   otherUser,
-  icon,
   onClick
 }: EmptyStateProps) => {
   return (
@@ -29,14 +26,17 @@ const EmptyState = ({
     >
       <div className="flex flex-col items-center justify-center gap-4">
         <div className="flex flex-col items-center justify-center gap-2">
-          {icon && <InfoCircle width="20" height="20" fill="#868E96" />}
           <label className="typography-body2 font-medium text-content-tertiary-light dark:text-content-tertiary-dark">
             {text}
           </label>
         </div>
         {button && otherUser === false && (
           <BoxButton type={buttonType} size={buttonSize} onClick={onClick}>
-            <Plus width="12" height="12" fill="#212529" />
+            <Plus
+              width="12"
+              height="12"
+              className="fill-current text-content-primary-light dark:text-content-primary-dark"
+            />
             {buttonText}
           </BoxButton>
         )}

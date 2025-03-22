@@ -3,7 +3,7 @@ import Image from "next/image";
 import Profile from "../../../public/images/samples/profile.png";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
 import { deleteProfileLike, postProfileLike } from "@/app/profiles/api";
-import HeartWhite from "../../../public/icons/HeartWhite.svg";
+import Heart from "../../../public/icons/Heart.svg";
 import Like from "../../../public/icons/Like.svg";
 import LikeRed from "../../../public/icons/LikeRed.svg";
 import EyeOn from "../../../public/icons/EyeOn.svg";
@@ -84,13 +84,21 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
         )}
         <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-[4px] rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1 dark:bg-background-scrim-dark">
           <div className="flex items-center gap-[2px]">
-            <HeartWhite width="14" height="14" fill="#ffffff" />
+            <Heart
+              width="14"
+              height="14"
+              className="fill-current text-static-white"
+            />
             <div className="typography-caption2 text-static-white">
               {profile.likesCount}
             </div>
           </div>
           <div className="flex items-center gap-[2px]">
-            <EyeOn width="14" height="14" fill="#ffffff" />
+            <EyeOn
+              width="14"
+              height="14"
+              className="fill-current text-static-white"
+            />
             <div className="typography-caption2 text-static-white">
               {profile.viewCount}
             </div>
@@ -104,17 +112,17 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
           </p>
           <button
             type="button"
-            className="p-0.5 hover:rounded-2xl hover:bg-gray-200"
+            className="p-0.5 hover:rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-800"
             onClick={(e) => {
               e.stopPropagation();
               onClickProfileLike();
             }}
           >
-            {liked ? (
-              <LikeRed width="16" height="16" />
-            ) : (
-              <Like width="16" height="16" />
-            )}
+            <Like
+              width="16"
+              height="16"
+              className={`fill-current ${liked ? "text-state-negative-light dark:text-state-negative-dark" : "text-content-alternative-light dark:text-content-alternative-dark"}`}
+            />
           </button>
         </div>
         <div className="typography-caption1 flex font-regular text-content-tertiary-light dark:text-content-primary-dark">
