@@ -15,7 +15,7 @@ const Page = () => {
   const { replace } = useRouter();
 
   const currKeyword = useRef("");
-  const currGender = useRef("");
+  const currGender = useRef<string | null>(null);
   const currMinBornYear = useRef(0);
   const currMaxBornYear = useRef(0);
   const currMinHeight = useRef(0);
@@ -59,7 +59,7 @@ const Page = () => {
     maxWeight
   }: {
     keyword: string;
-    gender: string;
+    gender: string | null;
     minBornYear: number;
     maxBornYear: number;
     minHeight: number;
@@ -68,7 +68,6 @@ const Page = () => {
     maxWeight: number;
   }) => {
     currKeyword.current = keyword.trim();
-    currGender.current = gender;
     currMinBornYear.current = minBornYear;
     currMaxBornYear.current = maxBornYear;
     currMinHeight.current = minHeight;
@@ -76,11 +75,17 @@ const Page = () => {
     currMinWeight.current = minWeight;
     currMaxWeight.current = maxWeight;
 
+    if (gender === "F" || gender === "M") {
+      currGender.current = gender;
+    }
+
     fetchProfiles();
 
     const params = new URLSearchParams();
     params.set("keyword", keyword);
-    params.set("gender", gender);
+    if (gender === "F" || gender === "M") {
+      params.set("gender", gender);
+    }
     params.set("page", String(0));
     params.set("size", String(10));
     params.set("sort", "RECENT_UPDATED");

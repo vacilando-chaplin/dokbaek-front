@@ -18,7 +18,7 @@ interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];
   profilesData: ProfilesResponseType | undefined;
   currKeyword?: string;
-  currGender?: string;
+  currGender?: string | null;
   currMinBornYear: number;
   currMaxBornYear: number;
   currMinHeight: number;
@@ -27,7 +27,7 @@ interface ActorFilterSidebarProps {
   currMaxWeight: number;
   handleSubmit: (data: {
     keyword: string;
-    gender: string;
+    gender: string | null;
     minBornYear: number;
     maxBornYear: number;
     minHeight: number;
@@ -338,7 +338,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           <div className="mt-4">
             <div className="flex items-center gap-2">
               <RadioGroup
-                name="example"
+                name="성별"
+                size="medium"
                 options={genderOptions}
                 value={gender}
                 onChange={handleGenderChange}

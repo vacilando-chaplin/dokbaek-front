@@ -6,6 +6,8 @@ export interface ProfileShowcaseResponseType {
   height?: number | null;
   weight?: number | null;
   photoPreviewPaths?: string | null;
+  mainPhotoPath?: string | null;
+  mainPhotoPreviewPath?: string | null;
   createdAt?: string | null;
   updatedAt?: string | null;
   likesCount?: number | null;

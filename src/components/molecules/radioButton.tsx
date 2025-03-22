@@ -1,6 +1,10 @@
+import { sizeStyleType } from "@/lib/types";
 import RadioInput from "../atoms/radioInput";
 
+type RadioSizeStyleType = Pick<sizeStyleType, "large" | "medium">;
+
 interface RadioButtonProps {
+  size?: "large" | "medium";
   label: string;
   id: string;
   value: string;
@@ -11,6 +15,7 @@ interface RadioButtonProps {
 }
 
 const RadioButton = ({
+  size = "medium",
   label,
   id,
   value,
@@ -19,10 +24,20 @@ const RadioButton = ({
   disabled,
   onChange
 }: RadioButtonProps) => {
+  const inputSizeStyle: RadioSizeStyleType = {
+    large: "h-[22px] w-[22px] mr-[10px]",
+    medium: "h-[18px] w-[18px] mr-[8px]"
+  };
+
+  const getBorderClasses = (checked: boolean) =>
+    checked
+      ? "border-[5px] border-blue-600"
+      : "border-2 border-border-default-light hover:border-blue-600";
+
   return (
     <label
       htmlFor={id}
-      className={`flex cursor-pointer items-center gap-2 ${
+      className={`flex cursor-pointer items-center${
         disabled ? "cursor-not-allowed opacity-50" : ""
       }`}
     >
@@ -35,12 +50,9 @@ const RadioButton = ({
         onChange={onChange}
       />
       <div
-        className={`flex h-5 w-5 items-center justify-center rounded-full border-2 border-border-default-light hover:border-blue-600 peer-checked:border-[5px] peer-checked:border-blue-600`}
-      >
-        {checked && (
-          <div className="h-2.5 w-2.5 rounded-full bg-background-surface-light" />
-        )}
-      </div>
+        className={`flex items-center rounded-full ${inputSizeStyle[size]} ${getBorderClasses(checked ?? false)}`}
+      ></div>
+
       <span className="typography-body3 text-content-primary-light">
         {label}
       </span>
