@@ -125,7 +125,7 @@ const FilmoItem = ({
             alt={production.title}
             width={76}
             height={114}
-            className="h-[114px] w-[76px] rounded-lg bg-gray-100"
+            className="aspect-[76/114] rounded-lg bg-gray-100"
           />
         )}
       </div>

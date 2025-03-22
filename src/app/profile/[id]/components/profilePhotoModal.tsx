@@ -60,7 +60,11 @@ const ProfilePhotoModal = ({
         className={`flex h-full max-h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center gap-6`}
       >
         <Image
-          src={selectedPhotoList[currentIndex].path}
+          src={
+            photoLabel === "profilePhoto"
+              ? selectedPhotoList[currentIndex].path
+              : selectedPhotoList[currentIndex].previewPath
+          }
           alt="photo"
           width={0}
           height={0}
@@ -68,7 +72,7 @@ const ProfilePhotoModal = ({
           placeholder="blur"
           blurDataURL={blurPhotoList[currentIndex]}
           priority
-          className={`max-h-[80vh] rounded-2xl object-fill ${photoLabel === "stillcutPhoto" ? "w-[100vh]" : "w-[60vh] max-w-[80vh]"}`}
+          className={`max-h-[80vh] rounded-2xl ${photoLabel === "profilePhoto" ? "w-[60vh] max-w-[80vh]" : "w-auto"}`}
           onClick={(e) => e.stopPropagation()}
         />
       </div>
