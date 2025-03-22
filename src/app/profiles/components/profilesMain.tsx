@@ -4,7 +4,9 @@ import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
 } from "@/app/landing/types";
-import Pagination from "@/components/atoms/pagination";
+import { useSearchParams } from "next/navigation";
+import Pagination from "@/components/organisms/pagination";
+
 interface ProfilesMainProps {
   profiles: ProfileShowcaseResponseType[];
   profilesData: ProfilesResponseType | undefined;
@@ -15,12 +17,8 @@ const ProfilesMain = ({
   profilesData,
   fetchProfiles
 }: ProfilesMainProps) => {
-  const totalPage = profilesData?.totalPages || 0;
-  const [currentPage, setCurrentPage] = useState<number>(0);
-
-  const handlePageChange = (selectedItem: { selected: number }) => {
-    setCurrentPage(selectedItem.selected);
-  };
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 0;
 
   return (
     <section className="grid w-[100%] max-w-[928px]">
@@ -42,11 +40,10 @@ const ProfilesMain = ({
             ))}
           </div>
           <div className="mt-6">
-            {totalPage > 0 && (
+            {profilesData && (
               <Pagination
-                totalPage={Math.max(1, totalPage - 1)}
-                onPageChange={handlePageChange}
                 currentPage={currentPage}
+                totalPages={profilesData?.totalPages ?? 0}
               />
             )}
           </div>

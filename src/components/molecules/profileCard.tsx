@@ -35,8 +35,6 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
     const currentYear = new Date().getFullYear();
     return profile?.bornYear ? currentYear - profile?.bornYear + 1 : "-";
   };
-  interface OnClickProfileLikeEvent
-    extends React.MouseEvent<HTMLButtonElement> {}
 
   const onClickProfileLike = async () => {
     if (!jwt || !profile.id) {
@@ -71,7 +69,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             alt="photo"
             width={212}
             height={271}
-            className="h-full w-full rounded-2xl"
+            className="h-full w-full rounded-[8px]"
           />
         ) : (
           <Image
@@ -79,7 +77,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             alt="photo"
             width={212}
             height={271}
-            className="h-full w-full rounded-2xl"
+            className="h-full w-full rounded-[8px]"
           />
         )}
         <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-[4px] rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1 dark:bg-background-scrim-dark">
