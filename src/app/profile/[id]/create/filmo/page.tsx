@@ -57,6 +57,7 @@ const Filmography = () => {
   const [filmoList, setFilmoList] = useState<FilmoResponseType[]>([]);
   const [filmoInputs, setFilmoInputs] = useState(filmographyInputInit);
   const [filmoActives, setFilmoActives] = useState(filmographyActiveInit);
+  const [filmoThumbnail, setFilmoThumbnail] = useState("");
 
   // 모달
   const [filmoModal, setFilmoModal] = useState(filmoModalInit);
@@ -170,19 +171,21 @@ const Filmography = () => {
     );
     const filmoRes = await filmoData.data;
 
-    if (filmoInputs.thumbnail.endsWith("null")) {
-      await postFilmographyThumbnail(
-        profileId,
-        filmoRes.id,
-        filmoInputs.thumbnail
-      );
-    } else if (filmoInputs.thumbnail.includes("base64")) {
-      await deleteFilmographyThumbnail(profileId, filmoRes.id);
-      await postFilmographyThumbnail(
-        profileId,
-        filmoRes.id,
-        filmoInputs.thumbnail
-      );
+    if (filmoInputs.thumbnail.includes("base64")) {
+      if (filmoThumbnail.endsWith("null")) {
+        await postFilmographyThumbnail(
+          profileId,
+          filmoRes.id,
+          filmoInputs.thumbnail
+        );
+      } else {
+        await deleteFilmographyThumbnail(profileId, filmoRes.id);
+        await postFilmographyThumbnail(
+          profileId,
+          filmoRes.id,
+          filmoInputs.thumbnail
+        );
+      }
     }
 
     const res = await getProfileDraft(profileId);
@@ -190,6 +193,7 @@ const Filmography = () => {
 
     setFilmoList(data.filmos);
     setFilmoInputs(filmographyInputInit);
+    setFilmoThumbnail("");
     setFilmoModal({ ...filmoModal, active: false });
     setToastMessage("작품 활동을 수정했어요.");
   };
@@ -352,6 +356,7 @@ const Filmography = () => {
       name: "작품 활동 수정",
       buttonText: "저장"
     });
+    setFilmoThumbnail(filmo.thumbnailPath);
   };
 
   // filmographyDeleteModal

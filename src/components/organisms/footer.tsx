@@ -6,7 +6,7 @@ import FooterCopyright from "../molecules/footerCopyright";
 
 const Footer = () => {
   return (
-    <div className="mt-16 flex w-[100%] justify-center bg-background-base-light">
+    <div className="mt-16 flex w-[100%] justify-center bg-background-base-light dark:bg-background-base-dark">
       <div
         className="container-max w-[90%] items-center sm:w-[90%] md:w-[85%] lg:w-[70%]"
         style={{ margin: "50px auto" }}

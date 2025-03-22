@@ -42,12 +42,12 @@ const FilmoMain = ({
   const checkRep = filmoRepEditList.length >= 6;
 
   return (
-    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
+    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
       <div className="flex w-full flex-row justify-between">
         <Title name="작품 활동" />
         <div className="flex flex-row items-center gap-4">
           {filmoRepresentActive && (
-            <label className="typography-body2 font-medium text-accent-primary-light">
+            <label className="typography-body2 font-medium text-accent-primary-light dark:text-accent-primary-dark">
               프로필 메인에 표시할 대표작을 선택해주세요. (최대6개)
             </label>
           )}
@@ -68,7 +68,11 @@ const FilmoMain = ({
                   onClick={onFilmoRepActive}
                 >
                   대표작 설정
-                  <InfoCircle width="12" height="12" fill="#868E96" />
+                  <InfoCircle
+                    width="12"
+                    height="12"
+                    className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+                  />
                 </BoxButton>
               ))}
             {filmoRepresentActive ? (
@@ -85,7 +89,11 @@ const FilmoMain = ({
                 size="small"
                 onClick={onFilmoModalOpen}
               >
-                <Plus width="12" height="12" fill="#1E85EF" />
+                <Plus
+                  width="12"
+                  height="12"
+                  className="fill-current text-accent-primary-light dark:text-accent-primary-dark"
+                />
                 추가
               </BoxButton>
             )}
@@ -95,7 +103,7 @@ const FilmoMain = ({
       {/* 대표작 */}
       {filmoRepresentActive && repFilmoList.length >= 1 && (
         <div className="flex h-auto w-full flex-col gap-2">
-          <label className="typography-body2 font-semibold text-accent-primary-light">
+          <label className="typography-body2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
             대표작
           </label>
           {repFilmoList.map((filmo: FilmoResponseType) => {
@@ -119,7 +127,7 @@ const FilmoMain = ({
       )}
       {!filmoRepresentActive && repFilmoList.length >= 1 && (
         <div className="flex h-auto w-full flex-col gap-2">
-          <label className="typography-body2 font-semibold text-accent-primary-light">
+          <label className="typography-body2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
             대표작
           </label>
           {repFilmoList.map((filmo: FilmoResponseType) => {
@@ -152,7 +160,7 @@ const FilmoMain = ({
               className="flex h-auto w-full flex-col gap-2"
               key={category + index}
             >
-              <label className="typography-body2 font-medium text-content-secondary-light">
+              <label className="typography-body2 font-medium text-content-secondary-light dark:text-content-secondary-dark">
                 {category}
               </label>
               {filteredFilmoList.map((filmo: FilmoResponseType) => {
@@ -186,7 +194,7 @@ const FilmoMain = ({
               className="flex h-auto w-full flex-col gap-2"
               key={category + index}
             >
-              <label className="typography-body2 font-medium text-content-secondary-light">
+              <label className="typography-body2 font-medium text-content-secondary-light dark:text-content-secondary-dark">
                 {category}
               </label>
               {filteredFilmoList.map((filmo: FilmoResponseType) => {

@@ -12,9 +12,9 @@ interface TypeStyleType {
 
 const HelperText = ({ type, text }: HelperTextProps) => {
   const typeStyle: TypeStyleType = {
-    info: "text-content-secondary-light",
-    success: "text-state-positive-light",
-    error: "text-state-negative-light"
+    info: "text-content-secondary-light dark:text-content-secondary-dark",
+    success: "text-state-positive-light dark:text-state-positive-dark",
+    error: "text-state-negative-light dark:text-state-negative-dark"
   };
 
   return (

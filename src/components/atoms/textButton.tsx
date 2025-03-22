@@ -29,9 +29,9 @@ const TextButton = ({
 
   const typeStyle: typeStyleType = {
     primary:
-      "text-accent-primary-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined",
+      "text-accent-primary-light hover:bg-hover-primaryOutlined active:bg-pressed-primaryOutlined dark:text-accent-primary-dark",
     secondary:
-      "text-content-tertiary-light hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined"
+      "text-content-tertiary-light hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined dark:text-content-tertiary-dark"
   };
 
   return (

@@ -17,7 +17,7 @@ const LandingSub = () => {
           <div className="absolute top-[80px]">
             <p
               style={{ lineHeight: "40px" }}
-              className="text-display font-bold text-accent-primary-light"
+              className="text-display font-bold text-accent-primary-light dark:text-accent-primary-dark"
             >
               프로필은
             </p>
@@ -25,7 +25,7 @@ const LandingSub = () => {
           <div className="absolute left-[169px] top-[120px]">
             <p
               style={{ lineHeight: "40px" }}
-              className="text-display font-bold text-accent-primary-light"
+              className="text-display font-bold text-accent-primary-light dark:text-accent-primary-dark"
             >
               필로그램
             </p>
@@ -34,7 +34,11 @@ const LandingSub = () => {
         <div className="absolute right-[100px] top-[95px]">
           <BoxButton type="primary" size="large">
             프로필 만들기
-            <ArrowDirectionRight width="16" height="16" fill="#ffffff" />
+            <ArrowDirectionRight
+              width="16"
+              height="16"
+              className="fill-current text-content-on_color-light dark:text-content-on_color-dark"
+            />
           </BoxButton>
         </div>
       </div>

@@ -49,10 +49,12 @@ const ProfilesMain = ({
           </div>
         </div>
       ) : (
-        <div className="h-[293px] w-[100%] rounded-lg border bg-background-base-light">
+        <div className="h-[293px] w-[100%] rounded-lg border border-gray-150 bg-background-base-light dark:border-gray-700 dark:bg-background-base-dark">
           <div className="flex h-full flex-col items-center justify-center">
-            <p className="typography-body1">찾으시는 배우가 없습니다.</p>
-            <p className="typography-body2 text-content-tertiary-light">
+            <p className="typography-body1 text-content-primary-light dark:text-content-primary-dark">
+              찾으시는 배우가 없습니다.
+            </p>
+            <p className="typography-body2 text-content-tertiary-light dark:text-content-tertiary-dark">
               다른 조건으로 검색해보세요.
             </p>
           </div>
