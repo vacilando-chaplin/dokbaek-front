@@ -31,6 +31,7 @@ interface ProfileMainProps {
   profileSpecialties: SpecialtyItemType[];
   education: any;
   mainPhotoMenuActive: boolean;
+  onDownloadPDF: () => void;
   onMoveToCreate: (stepper: number) => void;
   onMainPhotoModalOpen: () => void;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -49,6 +50,7 @@ const ProfileMain = ({
   profileSpecialties,
   education,
   mainPhotoMenuActive,
+  onDownloadPDF,
   onMoveToCreate,
   onMainPhotoSelectFile,
   onMainPhotoModalOpen,
@@ -205,7 +207,11 @@ const ProfileMain = ({
         </BoxButton>
       ) : (
         <div className="relative grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-          <BoxButton type="secondaryOutlined" size="medium">
+          <BoxButton
+            type="secondaryOutlined"
+            size="medium"
+            onClick={onDownloadPDF}
+          >
             <Download
               width="14"
               height="14"
