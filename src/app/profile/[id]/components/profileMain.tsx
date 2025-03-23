@@ -26,6 +26,7 @@ interface ProfileMainProps {
   info: InfoResponseType;
   linear: string;
   updated: string;
+  profileId: number;
   otherUser: boolean;
   mainPhoto: string;
   profileSpecialties: SpecialtyItemType[];
@@ -45,6 +46,7 @@ const ProfileMain = ({
   info,
   linear,
   updated,
+  profileId,
   otherUser,
   mainPhoto,
   profileSpecialties,
@@ -78,7 +80,7 @@ const ProfileMain = ({
   );
 
   const onCopyUrl = async () => {
-    const copyUrl = window.location.href;
+    const copyUrl = `https://filogram.my/profile/${profileId}`;
     try {
       setToast("프로필 링크를 복사 했어요.");
       await navigator.clipboard.writeText(copyUrl);

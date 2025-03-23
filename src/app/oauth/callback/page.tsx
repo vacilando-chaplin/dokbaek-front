@@ -1,9 +1,9 @@
 "use client";
 
-import { currentPath, defaultId } from "@/lib/atoms";
+import { currentPath, defaultId, loginProfileId } from "@/lib/atoms";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useSetToken } from "@/lib/hooks";
 import Check from "../../../../public/icons/Check.svg";
 import { GoogleDataType, KakaoDataType } from "./types";
@@ -13,6 +13,7 @@ import {
   postNaverCode,
   postSignUp
 } from "./api";
+import { getProfileMe } from "@/lib/api";
 
 const Callback = () => {
   const router = useRouter();
@@ -22,6 +23,7 @@ const Callback = () => {
 
   const currentPathName = useRecoilValue(currentPath);
   const [userId, setUserId] = useRecoilState(defaultId);
+  const setLoginProfileId = useSetRecoilState(loginProfileId);
 
   const [form, setForm] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -43,6 +45,14 @@ const Callback = () => {
       const getNaverLoginToken = async () => {
         const res = await postNaverCode(code);
         const data = res.data;
+
+        const getProfileId = async () => {
+          const res = await getProfileMe();
+          const data = res.data;
+          setLoginProfileId(data.id);
+        };
+        getProfileId();
+
         setUserId(data.userId);
         useSetToken("jwt", data.token.jwt);
         useSetToken("refresh_token", data.token.refreshToken);
@@ -77,6 +87,13 @@ const Callback = () => {
         });
         const data = res.resData;
 
+        const getProfileId = async () => {
+          const res = await getProfileMe();
+          const data = res.data;
+          setLoginProfileId(data.id);
+        };
+        getProfileId();
+
         setUserId(data.data.userId);
         useSetToken("jwt", data.data.token.jwt);
         useSetToken("refresh_token", data.data.token.refreshToken);
@@ -97,6 +114,13 @@ const Callback = () => {
           accessToken: googleToken.access_token
         });
         const data = await res.resData;
+
+        const getProfileId = async () => {
+          const res = await getProfileMe();
+          const data = res.data;
+          setLoginProfileId(data.id);
+        };
+        getProfileId();
 
         setUserId(data.data.userId);
         useSetToken("jwt", data.data.token.jwt);

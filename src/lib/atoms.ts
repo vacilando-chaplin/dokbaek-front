@@ -23,6 +23,12 @@ export const profileIdInit = atom<number>({
   effects_UNSTABLE: [persistAtom]
 });
 
+export const loginProfileId = atom<number>({
+  key: "loginProfileId",
+  default: 0,
+  effects_UNSTABLE: [persistAtom]
+});
+
 export const stepperInit = atom<number>({
   key: "stepperInit",
   default: 0

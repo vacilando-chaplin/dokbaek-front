@@ -6,6 +6,7 @@ import {
   categoryData,
   defaultId,
   filmoCategory,
+  loginProfileId,
   profileIdInit,
   stepperInit,
   toastMessage
@@ -53,8 +54,8 @@ const Profile = () => {
   const pathParts = pathName.split("/").filter((part) => part.length > 0);
   const pathUserId =
     pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
-  const userId = useRecoilValue(defaultId);
   const [profileId, setProfileId] = useRecoilState(profileIdInit);
+  const loginProfile = useRecoilValue(loginProfileId);
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const filmoCategoryList = useRecoilValue(filmoCategory);
@@ -111,8 +112,8 @@ const Profile = () => {
     const path = ["info", "photo", "filmo", "video"];
 
     setStepper(stepper);
-    router.prefetch(`/profile/${userId}/create/${path[stepper]}`);
-    router.push(`/profile/${userId}/create/${path[stepper]}`);
+    router.prefetch(`/profile/${profileId}/create/${path[stepper]}`);
+    router.push(`/profile/${profileId}/create/${path[stepper]}`);
   };
 
   // ProfileSub
@@ -316,7 +317,7 @@ const Profile = () => {
 
   useEffect(() => {
     const getProfileData = async () => {
-      if (pathName && userId !== Number(pathUserId)) {
+      if (pathName && loginProfile !== Number(pathUserId)) {
         setOtherUser(true);
         const res = await getProfileOtherUser(Number(pathUserId));
         const data = res.data;
@@ -326,14 +327,19 @@ const Profile = () => {
           setBlurPhotoList(photoList);
         }
 
+        setProfileId(Number(pathUserId));
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
         setMainPhotoOrigin(data.mainPhotoPath);
         setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
-      } else if (pathName && userId === Number(pathUserId) && profileId) {
+      } else if (pathName && loginProfile === Number(pathUserId) && profileId) {
+        const profileRes = await getProfileMe();
+        const profileData = profileRes.data;
+        setProfileId(profileData.id);
+
         setOtherUser(false);
-        const res = await getProfile(profileId);
+        const res = await getProfile(profileData.id);
         const data = res.data;
 
         if (data.photos.length >= 1) {
@@ -376,6 +382,7 @@ const Profile = () => {
         <ProfileMain
           info={profileData.info}
           linear={linear}
+          profileId={profileId}
           otherUser={otherUser}
           mainPhoto={mainPhoto}
           updated={profileData.updatedAt}
