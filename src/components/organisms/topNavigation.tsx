@@ -139,8 +139,8 @@ const TopNavigation = () => {
         ) : (
           <div className="flex flex-row gap-5">
             <Link
-              href="/landing"
-              className="typography-body3 flex items-center font-semibold text-content-secondary-light dark:text-content-secondary-dark"
+              href={`/profiles`}
+              className="typography-body3 flex items-center font-semibold text-content-secondary-light"
             >
               배우 찾기
             </Link>

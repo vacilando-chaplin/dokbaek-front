@@ -1,8 +1,27 @@
 import BoxButton from "@/components/atoms/boxButton";
-import React from "react";
+import React, { useState } from "react";
+import Cookies from "js-cookie";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
+import { useRecoilState } from "recoil";
+import { useRouter } from "next/navigation";
+import { defaultId } from "@/lib/atoms";
+import LoginModal from "@/components/organisms/loginModal";
 
 const LandingSub = () => {
+  const router = useRouter();
+  const [userId, setUserId] = useRecoilState(defaultId);
+  const [loginModal, setLoginModal] = useState(false);
+  const jwt = Cookies.get("jwt");
+
+  const onClickProfileCreate = () => {
+    if (!jwt) {
+      setLoginModal(true);
+      return;
+    } else {
+      router.prefetch(`/profile/${userId}/create/info`);
+      router.push(`/profile/${userId}/create/info`);
+    }
+  };
   return (
     <div className="mx-[auto] mt-[40px] flex w-[100%] flex-col rounded-2xl">
       <div
@@ -32,7 +51,7 @@ const LandingSub = () => {
           </div>
         </div>
         <div className="absolute right-[100px] top-[95px]">
-          <BoxButton type="primary" size="large">
+          <BoxButton onClick={onClickProfileCreate} type="primary" size="large">
             프로필 만들기
             <ArrowDirectionRight
               width="16"
@@ -42,6 +61,9 @@ const LandingSub = () => {
           </BoxButton>
         </div>
       </div>
+      {loginModal && (
+        <LoginModal onLoginModalClose={() => setLoginModal(false)} />
+      )}
     </div>
   );
 };
