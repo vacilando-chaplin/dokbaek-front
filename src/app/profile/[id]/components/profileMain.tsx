@@ -26,6 +26,7 @@ interface ProfileMainProps {
   info: InfoResponseType;
   linear: string;
   updated: string;
+  profileId: number;
   otherUser: boolean;
   mainPhoto: string;
   profileSpecialties: SpecialtyItemType[];
@@ -45,6 +46,7 @@ const ProfileMain = ({
   info,
   linear,
   updated,
+  profileId,
   otherUser,
   mainPhoto,
   profileSpecialties,
@@ -78,7 +80,7 @@ const ProfileMain = ({
   );
 
   const onCopyUrl = async () => {
-    const copyUrl = window.location.href;
+    const copyUrl = `https://filogram.my/profile/${profileId}`;
     try {
       setToast("프로필 링크를 복사 했어요.");
       await navigator.clipboard.writeText(copyUrl);
@@ -333,7 +335,9 @@ const ProfileMain = ({
       )}
       {introduction && (
         <ProfileInfoContainer title="자기소개" introduction>
-          <p className="whitespace-pre break-all">{introduction}</p>
+          <p className="typography-body2 font-regular text-content-primary-light dark:text-content-primary-dark">
+            {introduction}
+          </p>
         </ProfileInfoContainer>
       )}
     </section>

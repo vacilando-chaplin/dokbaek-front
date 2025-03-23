@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { currentPath, defaultId } from "@/lib/atoms";
+import { currentPath, loginProfileId } from "@/lib/atoms";
 import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
@@ -23,7 +23,7 @@ const TopNavigation = () => {
   const pathName = usePathname();
 
   const jwt = Cookies.get("jwt");
-  const userId = useRecoilValue(defaultId);
+  const loginProfile = useRecoilValue(loginProfileId);
   const setPathName = useSetRecoilState(currentPath);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -91,7 +91,7 @@ const TopNavigation = () => {
               배우 찾기
             </Link>
             <Link
-              href={`/profile/${userId}`}
+              href={`/profile/${loginProfile}`}
               className="typography-body3 flex items-center font-semibold text-content-secondary-light hover:text-accent-primary-light dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
             >
               내 프로필

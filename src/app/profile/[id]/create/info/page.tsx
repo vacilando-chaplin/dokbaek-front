@@ -469,39 +469,41 @@ const Info = () => {
           setEducation(educationInit);
         }
 
-        setCompletion({
-          ...completion,
-          name: isValid(data.info.name),
-          gender: isValid(data.info.gender),
-          bornYear: isValid(data.info.bornYear),
-          height: data.info.height > 0 ? true : false,
-          weight: data.info.weight > 0 ? true : false,
-          contact: isValid(data.info.contact),
-          email: isValid(data.info.email),
-          specialty: isValid(data.specialties),
-          youtube: isValid(data.info.youtubeLink),
-          instagram: isValid(data.info.instagramLink),
-          introduction: isValid(data.info.introduction),
-          profilePhoto: isValid(data.photos),
-          stillcutPhoto: isValid(data.stillCuts),
-          recentPhoto: isValid(data.recentPhotos),
-          filmography: isValid(data.filmos),
-          video: isValid(data.videos)
-        });
+        if (data.info !== null) {
+          setCompletion({
+            ...completion,
+            name: isValid(data.info.name),
+            gender: isValid(data.info.gender),
+            bornYear: isValid(data.info.bornYear),
+            height: data.info.height > 0 ? true : false,
+            weight: data.info.weight > 0 ? true : false,
+            contact: isValid(data.info.contact),
+            email: isValid(data.info.email),
+            specialty: isValid(data.specialties),
+            youtube: isValid(data.info.youtubeLink),
+            instagram: isValid(data.info.instagramLink),
+            introduction: isValid(data.info.introduction),
+            profilePhoto: isValid(data.photos),
+            stillcutPhoto: isValid(data.stillCuts),
+            recentPhoto: isValid(data.recentPhotos),
+            filmography: isValid(data.filmos),
+            video: isValid(data.videos)
+          });
 
-        setInfoInputs({
-          ...infoInputs,
-          name: data.info.name,
-          gender: data.info.gender,
-          bornYear: data.info.bornYear,
-          height: data.info.height,
-          weight: data.info.weight,
-          contact: data.info.contact,
-          email: data.info.email,
-          instagram: data.info.instagramLink,
-          youtube: data.info.youtubeLink,
-          introduction: data.info.introduction
-        });
+          setInfoInputs({
+            ...infoInputs,
+            name: data.info.name,
+            gender: data.info.gender,
+            bornYear: data.info.bornYear,
+            height: data.info.height,
+            weight: data.info.weight,
+            contact: data.info.contact,
+            email: data.info.email,
+            instagram: data.info.instagramLink,
+            youtube: data.info.youtubeLink,
+            introduction: data.info.introduction
+          });
+        }
       }
     };
     getProfileData();

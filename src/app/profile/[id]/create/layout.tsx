@@ -4,7 +4,6 @@ import ListMenu from "@/app/profile/[id]/create/components/listMenu";
 import BottomBar from "@/app/profile/[id]/create/components/bottomBar";
 import {
   completionProgress,
-  defaultId,
   isDraft,
   isDraftComplete,
   profileIdInit,
@@ -24,7 +23,6 @@ import { isValid } from "@/lib/utils";
 import Cookies from "js-cookie";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const userId = useRecoilValue(defaultId);
   const profileId = useRecoilValue(profileIdInit);
 
   const jwt = Cookies.get("jwt");
@@ -42,8 +40,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const setStepper = useSetRecoilState(stepperInit);
   const onStepper = (index: number) => {
     setStepper(index);
-    router.prefetch(`/profile/${userId}/create/${stepperList[index].path}`);
-    router.push(`/profile/${userId}/create/${stepperList[index].path}`);
+    router.prefetch(`/profile/${profileId}/create/${stepperList[index].path}`);
+    router.push(`/profile/${profileId}/create/${stepperList[index].path}`);
   };
 
   const onSaveProfileClick = async () => {
@@ -51,15 +49,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     setIsDraftLoading(false);
     setStepper(0);
-    router.prefetch(`/profile/${userId}`);
-    router.push(`/profile/${userId}`);
+    router.prefetch(`/profile/${profileId}`);
+    router.push(`/profile/${profileId}`);
   };
 
   const onBackProfileClick = () => {
     setStepper(0);
     setIsDraftLoading(false);
-    router.prefetch(`/profile/${userId}`);
-    router.push(`/profile/${userId}`);
+    router.prefetch(`/profile/${profileId}`);
+    router.push(`/profile/${profileId}`);
   };
 
   const onProfileDraftRejected = async () => {
