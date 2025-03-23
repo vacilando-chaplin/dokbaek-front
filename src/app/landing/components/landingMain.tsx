@@ -26,7 +26,7 @@ const LandingMain = () => {
     <section className={`mx-[auto] flex w-[100%] flex-col gap-2`}>
       <div className="my-16">
         <div className="mb-6 flex items-center justify-between">
-          <p className="text-heading2 font-semibold text-content-primary-light">
+          <p className="text-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
             새로 올라온 프로필
           </p>
           <TextButton
@@ -37,7 +37,11 @@ const LandingMain = () => {
             }}
           >
             더 많은 프로필 보기
-            <ArrowDirectionRight width="16" height="16" fill="#868E96" />
+            <ArrowDirectionRight
+              width="16"
+              height="16"
+              className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+            />
           </TextButton>
         </div>
         <div

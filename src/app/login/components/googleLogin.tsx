@@ -18,7 +18,7 @@ const GoogleLogin = () => {
   return (
     <button
       type="button"
-      className="interaction-default relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] border border-border-default-light px-6 py-3 hover:bg-gray-100 active:bg-gray-100"
+      className="interaction-default relative flex h-auto w-full flex-row items-center justify-center gap-2 rounded-[14px] border border-border-default-light bg-background-surface-light px-6 py-3 hover:bg-gray-100 active:bg-gray-100"
       onClick={onGoogleLogin}
     >
       <Google

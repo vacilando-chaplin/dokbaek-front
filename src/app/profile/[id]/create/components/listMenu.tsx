@@ -14,7 +14,7 @@ const ListMenu = ({ onStepper }: ListMenuProps) => {
   const activePath = pathName?.split("/")[4];
 
   return (
-    <aside className="sticky top-[104px] h-fit w-[200px] rounded-2xl bg-background-surface-light p-3">
+    <aside className="sticky top-[104px] h-fit w-[200px] rounded-2xl bg-background-surface-light p-3 dark:bg-background-surface-dark">
       {stepperList.map((step: StepperType, index: number) => {
         return (
           <ListItem

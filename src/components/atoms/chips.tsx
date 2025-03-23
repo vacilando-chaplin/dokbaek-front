@@ -9,12 +9,12 @@ interface ChipsProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Chips = ({ 
+const Chips = ({
   size = "medium",
-  text, 
-  icon, 
-  disabled, 
-  onClick 
+  text,
+  icon,
+  disabled,
+  onClick
 }: ChipsProps) => {
   const sizeStyle: sizeStyleType = {
     large: "py-1.5 px-3 gap-1 typography-body2",
@@ -30,17 +30,17 @@ const Chips = ({
 
   return (
     <div
-      className={`flex h-auto w-auto flex-row items-center rounded-lg bg-gray-100 transition-colors duration-100 ease-linear ${disabled && "border border-border-disabled-light"} ${icon ? sizeStyleWithIcon[size] : sizeStyle[size]}`}
+      className={`flex h-auto w-auto flex-row items-center rounded-lg bg-gray-100 transition-colors duration-100 ease-linear dark:bg-gray-700 ${disabled && "border border-border-disabled-light dark:border-border-disabled-dark"} ${icon ? sizeStyleWithIcon[size] : sizeStyle[size]}`}
     >
       <label
-        className={`${disabled ? "text-content-disabled-light" : "text-content-primary-light"}`}
+        className={`${disabled ? "text-content-disabled-light dark:text-content-disabled-dark" : "text-content-primary-light dark:text-content-primary-dark"}`}
       >
         {text}
       </label>
       {icon && (
         <button
           type="button"
-          className={`rounded-[4px] p-0.5 transition-colors duration-100 ease-linear hover:bg-[#f2f2f2] active:bg-[#E6E6E6] ${disabled && "bg-background-disabled-light"}`}
+          className={`rounded-[4px] p-0.5 transition-colors duration-100 ease-linear hover:bg-[#f2f2f2] active:bg-[#E6E6E6] dark:hover:bg-gray-600 dark:active:bg-gray-600 ${disabled && "bg-background-disabled-light dark:bg-background-disabled-dark"}`}
           onClick={onClick}
         >
           <X

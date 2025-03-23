@@ -14,9 +14,9 @@ interface EducationFormProps {
   schoolList: string[];
   onSchoolChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onMajorChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSchoolDropdownActive: () => void;
+  // onSchoolDropdownActive: () => void;
   onEducationDropdownActive: () => void;
-  onSchoolDropdownClick: (name: string, item: string) => void;
+  // onSchoolDropdownClick: (name: string, item: string) => void;
   onEducationDropdownClick: (name: string, item: string) => void;
   onBlurEducation: (educationId: number) => void;
   onDelete: () => void;
@@ -28,33 +28,32 @@ const EducationForm = ({
   schoolList,
   onSchoolChange,
   onMajorChange,
-  onSchoolDropdownActive,
+  // onSchoolDropdownActive,
   onEducationDropdownActive,
-  onSchoolDropdownClick,
+  // onSchoolDropdownClick,
   onEducationDropdownClick,
   onBlurEducation,
   onDelete
 }: EducationFormProps) => {
   return (
-    <div className="flex h-auto w-full flex-col gap-4 rounded-lg border border-border-default-light bg-background-surface-light p-6">
+    <div className="flex h-auto w-full flex-col gap-4 rounded-lg border border-border-default-light bg-background-surface-light p-6 dark:border-border-default-dark dark:bg-background-surface-dark">
       <div className="flex h-auto w-full items-center justify-between">
         <div className="flex flex-row items-center justify-center gap-1.5">
           {/* <ThreeBars width="14" height="14" color="#ADB5BD" /> */}
-          <label className="typography-body2 font-semibold text-content-primary-light">
+          <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
             학교 정보
           </label>
         </div>
         <button
           type="button"
-          className="flex h-5 w-5 items-center justify-center rounded-md border border-border-default-light bg-background-surface-light p-1"
+          className={`flex h-5 w-5 items-center justify-center rounded-md border bg-background-surface-light p-1 dark:bg-background-surface-dark ${item.school.name === "" ? "border-border-disabled-light dark:border-border-disabled-dark" : "border-border-default-light dark:border-border-default-dark"}`}
           disabled={item.school.name === ""}
           onClick={onDelete}
         >
           <X
             width="12"
             height="12"
-            fill="#FB3E34"
-            className={`${item.school.name === "" && "opacity-40"}`}
+            className={`fill-current ${item.school.name === "" ? "text-state-negative_disabled-light dark:text-state-negative_disabled-dark" : "text-state-negative-light dark:text-state-negative-dark"}`}
           />
         </button>
       </div>
@@ -70,8 +69,10 @@ const EducationForm = ({
           isEmpty={educationActives.school && schoolList.length === 0}
           maxLength={20}
           placeholder="학교 이름을 검색해보세요."
-          onClick={onSchoolDropdownClick}
-          onActive={onSchoolDropdownActive}
+          // onClick={onSchoolDropdownClick}
+          // onActive={onSchoolDropdownActive}
+          onClick={() => {}}
+          onActive={() => {}}
           onChange={onSchoolChange}
           onSave={() => onBlurEducation(item.id)}
         />
@@ -100,7 +101,6 @@ const EducationForm = ({
               selected={item.status}
               onClick={onEducationDropdownClick}
               onActive={onEducationDropdownActive}
-              onSave={() => onBlurEducation(item.id)}
             />
           </div>
         </div>

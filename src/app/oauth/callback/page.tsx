@@ -126,17 +126,17 @@ const Callback = () => {
         <div className="flex flex-col items-center justify-center gap-10">
           <div className="flex flex-col items-center gap-2">
             <Check width="40" height="40" fill="#01C043" />
-            <div className="typography-heading3 flex flex-col items-center font-semibold text-content-primary-light">
+            <div className="typography-heading3 flex flex-col items-center font-semibold text-content-primary-light dark:text-content-primary-dark">
               <p>{isLoaded && form} 계정으로</p>
               <p>회원가입이 완료되었어요.</p>
             </div>
-            <label className="typography-body2 items-center font-medium text-content-secondary-light">
+            <label className="typography-body2 items-center font-medium text-content-secondary-light dark:text-content-secondary-dark">
               이제 나만의 프로필을 만들어 보세요.
             </label>
           </div>
           <button
             type="button"
-            className="interaction-default flex h-auto w-[134px] items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5 hover:bg-hover-primary active:bg-pressed-primary"
+            className="interaction-default flex h-auto w-[134px] items-center justify-center gap-2 rounded-[14px] bg-accent-primary-light px-6 py-3.5 hover:brightness-[93%] active:brightness-[86%] dark:bg-accent-primary-dark"
             onClick={onClick}
           >
             <div className="typography-body2 font-medium text-static-white">

@@ -237,9 +237,9 @@ const Info = () => {
       }
     ]);
 
-    if (value && !educationActives.school) {
-      setEducationActives({ ...educationActives, school: true });
-    }
+    // if (value && !educationActives.school) {
+    //   setEducationActives({ ...educationActives, school: true });
+    // }
     isValid(value)
       ? setCompletion({ ...completion, [name]: true })
       : setCompletion({ ...completion, [name]: false });
@@ -260,25 +260,25 @@ const Info = () => {
   //   getSearchSchool(debounceSearch);
   // }, [debounceSearch]);
 
-  useEffect(() => {
-    if (education.length >= 1) {
-      const getSearchSchool = async (name: string) => {
-        const data = await getSchoolName(name);
-        const filteredSchoolName = data.map(
-          (school: SchoolType) => school.schoolName
-        );
-        setSchoolList(filteredSchoolName);
-      };
-      getSearchSchool(education[0].school.name);
-    }
-  }, [education]);
+  // useEffect(() => {
+  //   if (education.length >= 1) {
+  //     const getSearchSchool = async (name: string) => {
+  //       const data = await getSchoolName(name);
+  //       const filteredSchoolName = data.map(
+  //         (school: SchoolType) => school.schoolName
+  //       );
+  //       setSchoolList(filteredSchoolName);
+  //     };
+  //     getSearchSchool(education[0].school.name);
+  //   }
+  // }, [education]);
 
-  const onSchoolDropdownActive = () => {
-    setEducationActives({
-      ...educationActives,
-      school: !educationActives.school
-    });
-  };
+  // const onSchoolDropdownActive = () => {
+  //   setEducationActives({
+  //     ...educationActives,
+  //     school: !educationActives.school
+  //   });
+  // };
 
   const onEducationDropdownActive = () => {
     setEducationActives({
@@ -287,22 +287,22 @@ const Info = () => {
     });
   };
 
-  const onSchoolDropdownClick = (name: string, item: string) => {
-    setEducation((prev) => [
-      {
-        ...prev[0],
-        school: {
-          ...prev[0].school,
-          name: item
-        }
-      }
-    ]);
-    setEducationActives({
-      ...educationActives,
-      school: !educationActives.school
-    });
-    onSaveEducation(education[0].id);
-  };
+  // const onSchoolDropdownClick = (name: string, item: string) => {
+  //   setEducation((prev) => [
+  //     {
+  //       ...prev[0],
+  //       school: {
+  //         ...prev[0].school,
+  //         name: item
+  //       }
+  //     }
+  //   ]);
+  //   setEducationActives({
+  //     ...educationActives,
+  //     school: !educationActives.school
+  //   });
+  //   onSaveEducation(education[0].id);
+  // };
 
   const onEducationDropdownClick = (name: string, item: string) => {
     setEducation((prev) => [
@@ -393,6 +393,10 @@ const Info = () => {
       status: "졸업"
     };
     setEducation([tempEducation]);
+    setEducationActives({
+      ...educationActives,
+      education: false
+    });
   };
 
   const onSaveEducation = async (educationId: number) => {
@@ -526,9 +530,9 @@ const Info = () => {
         schoolList={schoolList}
         onSchoolChange={onSchoolChange}
         onMajorChange={onMajorChange}
-        onSchoolDropdownActive={onSchoolDropdownActive}
+        // onSchoolDropdownActive={onSchoolDropdownActive}
         onEducationDropdownActive={onEducationDropdownActive}
-        onSchoolDropdownClick={onSchoolDropdownClick}
+        // onSchoolDropdownClick={onSchoolDropdownClick}
         onEducationDropdownClick={onEducationDropdownClick}
         onBlurEducation={onSaveEducation}
         onCreateEducation={onCreateEducation}

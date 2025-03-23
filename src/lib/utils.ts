@@ -114,11 +114,13 @@ export const convertToBase64 = (file: File): Promise<string> => {
 };
 
 export const isValidInstagramUrl = (url: string) => {
-  const regex = /^https:\/\/(www\.)?instagram\.com\/([a-zA-Z0-9_]+)\/?$/;
+  const regex =
+    /^https:\/\/(www\.)?instagram\.com\/([a-zA-Z0-9_]+)\/?(\?.*)?(#.*)?$/;
   return regex.test(url);
 };
 
 export const isValidYoutubeChannelUrl = (url: string) => {
-  const regex = /^(https:\/\/(www\.)?youtube\.com\/@([a-zA-Z0-9_-]+))$/;
+  const regex =
+    /^(https:\/\/(www\.)?youtube\.com\/(@[a-zA-Z0-9_-]+|c\/[a-zA-Z0-9_-]+|user\/[a-zA-Z0-9_-]+|channel\/[a-zA-Z0-9_-]{24}))$/;
   return regex.test(url);
 };

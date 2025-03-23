@@ -6,7 +6,7 @@ import { SpecialtyType } from "../create/info/types";
 
 interface ProfileSpecialtyFormModalProps {
   type: "add" | "edit";
-  specialties: SpecialtyType[]
+  specialties: SpecialtyType[];
   setSpecialties: (specialty: SpecialtyType[]) => void;
   setSearchSpecialty: (specialty: SpecialtyType[]) => void;
   searchSpecialty: SpecialtyType[];
@@ -21,26 +21,26 @@ interface ProfileSpecialtyFormModalProps {
 
 const ProfileSpecialtyFormModal = ({
   type,
-  specialties, 
+  specialties,
   setSpecialties,
   specialty,
   setSearchSpecialty,
   searchSpecialty,
   onAddSpecialty,
-  onSpecialtyDropdownClick, 
+  onSpecialtyDropdownClick,
   onSpecialtyChange,
   onDeleteSpecialty,
   onSpecialtyFormModalClose,
-  onSaveSpecialty,
+  onSaveSpecialty
 }: ProfileSpecialtyFormModalProps) => {
   const modalTitle = type === "add" ? "특기 추가" : "특기 추가/수정";
 
   return (
-    <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0">
-      <div className="interaction-default relative flex h-auto w-full max-w-[480px] animate-enter flex-col items-center justify-center rounded-2xl bg-static-white shadow-medium">
+    <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0 dark:bg-background-scrim-dark">
+      <div className="interaction-default relative flex h-auto w-full max-w-[480px] animate-enter flex-col items-center justify-center rounded-2xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
         <ModalHeader name={modalTitle} onClick={onSpecialtyFormModalClose} />
         <div className="w-full p-6">
-          <ProfileSpecialtyEditor 
+          <ProfileSpecialtyEditor
             specialties={specialties}
             setSpecialties={setSpecialties}
             setSearchSpecialty={setSearchSpecialty}

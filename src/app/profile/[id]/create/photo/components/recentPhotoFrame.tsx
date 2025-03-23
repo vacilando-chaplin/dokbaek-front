@@ -16,25 +16,36 @@ const RecentPhotoFrame = ({
   onPhotoModalOpen
 }: RecentPhotoFrameProps) => {
   return (
-    <div className="flex aspect-[160/204] h-full w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted border-gray-150 bg-gray-50">
+    <div className="flex aspect-[160/204] h-full w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800">
       {text === "전신 사진" && (
-        <HumanMale width="16" height="16" fill="#868E96" />
+        <HumanMale
+          width="16"
+          height="16"
+          className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+        />
       )}
       {text === "얼굴 정면 사진" && (
-        <FaceRecognition width="16" height="16" fill="#868E96" />
+        <FaceRecognition
+          width="16"
+          height="16"
+          className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+        />
       )}
       {text === "얼굴 좌측 사진" && (
-        <FaceManProfile width="16" height="16" fill="#868E96" />
+        <FaceManProfile
+          width="16"
+          height="16"
+          className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+        />
       )}
       {text === "얼굴 우측 사진" && (
         <FaceManProfile
           width="16"
           height="16"
-          fill="#868E96"
-          className="rotate-[-45deg]"
+          className="fill-current rotate-[-45deg] text-content-tertiary-light dark:text-content-tertiary-dark"
         />
       )}
-      <label className="typography-caption1 font-medium text-content-tertiary-light">
+      <label className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark">
         {text}
       </label>
       <UploadButton
@@ -43,7 +54,11 @@ const RecentPhotoFrame = ({
         onClick={onPhotoModalOpen}
         onChange={onSelectFile}
       >
-        <Plus width="12" height="12" fill="#212529" />
+        <Plus
+          width="12"
+          height="12"
+          className="fill-current text-content-primary-light dark:text-content-primary-dark"
+        />
         추가
       </UploadButton>
     </div>

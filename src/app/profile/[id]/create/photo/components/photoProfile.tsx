@@ -32,7 +32,7 @@ const PhotoProfile = ({
   onDrop
 }: PhotoProfileProps) => {
   return (
-    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8">
+    <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
       <div className="flex w-full flex-row items-start justify-between">
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-2">
@@ -48,7 +48,11 @@ const PhotoProfile = ({
           onClick={() => onPhotoModalOpen("photo")}
           onChange={onSelectFile}
         >
-          <Plus width="12" height="12" fill="#1E85EF" />
+          <Plus
+            width="12"
+            height="12"
+            className="fill-current text-accent-primary-light dark:text-accent-primary-dark"
+          />
           추가
         </UploadButton>
       </div>
@@ -63,7 +67,7 @@ const PhotoProfile = ({
                 <Image
                   src={photoItem.previewPath}
                   alt="사진 미리보기"
-                  sizes="(max-width: 768px) 100vw"
+                  sizes="100vw"
                   fill
                   priority
                   className="rounded-lg"
@@ -72,18 +76,26 @@ const PhotoProfile = ({
                 <div className="absolute h-full w-full opacity-0 hover:opacity-100">
                   {/* edit */}
                   <label
-                    className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                    className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                     onClick={() => onPhotoEditModalOpen(photoItem, "photo")}
                   >
-                    <Edit width="12" height="12" fill="#212529" />
+                    <Edit
+                      width="12"
+                      height="12"
+                      className="fill-current text-content-primary-light dark:text-content-primary-dark"
+                    />
                   </label>
                   {/* delete */}
                   <button
-                    className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none"
+                    className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
                     type="button"
                     onClick={onDeletePhotoActive}
                   >
-                    <X width="12" height="12" fill="#FB3E34" />
+                    <X
+                      width="12"
+                      height="12"
+                      className="fill-current text-state-negative-light dark:text-state-negative-dark"
+                    />
                   </button>
                   {/* deleteModal */}
                   {photoDeleteActive && (

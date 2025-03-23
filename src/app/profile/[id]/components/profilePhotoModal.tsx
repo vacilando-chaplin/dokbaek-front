@@ -38,11 +38,11 @@ const ProfilePhotoModal = ({
 
   return (
     <section
-      className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-hidden bg-background-scrim-light bg-opacity-50 backdrop-blur-[20px] md:inset-0"
+      className="fixed inset-0 z-[999] flex h-auto w-full items-center justify-center overflow-hidden bg-background-scrim-light bg-opacity-50 backdrop-blur-[20px] dark:bg-background-scrim-dark md:inset-0"
       onClick={onPhotoModalClose}
     >
       <button
-        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 ${currentIndex === 0 && "opacity-40"}`}
+        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${currentIndex === 0 && "opacity-40"}`}
         type="button"
         disabled={currentIndex === 0}
         onClick={(e) => {
@@ -50,13 +50,21 @@ const ProfilePhotoModal = ({
           e.stopPropagation();
         }}
       >
-        <ArrowChevronLeft width="16" height="16" fill="#FFFFFF" />
+        <ArrowChevronLeft
+          width="16"
+          height="16"
+          className="fill-current text-content-on_color-light dark:text-static-black"
+        />
       </button>
       <div
         className={`flex h-full max-h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center gap-6`}
       >
         <Image
-          src={selectedPhotoList[currentIndex].path}
+          src={
+            photoLabel === "profilePhoto"
+              ? selectedPhotoList[currentIndex].path
+              : selectedPhotoList[currentIndex].previewPath
+          }
           alt="photo"
           width={0}
           height={0}
@@ -64,12 +72,12 @@ const ProfilePhotoModal = ({
           placeholder="blur"
           blurDataURL={blurPhotoList[currentIndex]}
           priority
-          className={`max-h-[80vh] rounded-2xl object-fill ${photoLabel === "stillcutPhoto" ? "w-[100vh]" : "w-[60vh] max-w-[80vh]"}`}
+          className={`max-h-[80vh] rounded-2xl ${photoLabel === "profilePhoto" ? "w-[60vh] max-w-[80vh]" : "w-auto"}`}
           onClick={(e) => e.stopPropagation()}
         />
       </div>
       <button
-        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 ${currentIndex === selectedPhotoList.length - 1 && "opacity-40"}`}
+        className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${currentIndex === selectedPhotoList.length - 1 && "opacity-40"}`}
         type="button"
         disabled={currentIndex === selectedPhotoList.length - 1}
         onClick={(e) => {
@@ -77,14 +85,22 @@ const ProfilePhotoModal = ({
           e.stopPropagation();
         }}
       >
-        <ArrowChevronRight width="16" height="16" fill="#FFFFFF" />
+        <ArrowChevronRight
+          width="16"
+          height="16"
+          className="fill-current text-content-on_color-light dark:text-static-black"
+        />
       </button>
       <button
         type="button"
-        className="absolute right-12 top-12 rounded-full bg-static-black p-2"
+        className="absolute right-12 top-12 rounded-full bg-static-black p-2 dark:bg-static-white"
         onClick={onPhotoModalClose}
       >
-        <X width="20" height="20" fill="#ffffff" />
+        <X
+          width="20"
+          height="20"
+          className="fill-current text-content-on_color-light dark:text-static-black"
+        />
       </button>
     </section>
   );

@@ -40,12 +40,28 @@ const TextInput = ({
 
   return (
     <div
-      className={`interaction-default flex w-full border border-border-default-light font-regular focus-within:border-border-active-light hover:border-border-active-light ${disabled ? "bg-background-disabled-light" : "bg-background-surface-light"} ${sizeStyle[size]}`}
+      className={`interaction-default flex w-full border border-border-default-light font-regular focus-within:border-border-active-light hover:border-border-active-light dark:border-border-default-dark dark:focus-within:border-border-active-dark dark:hover:border-border-active-dark ${disabled ? "bg-background-disabled-light dark:bg-background-disabled-dark" : "bg-background-surface-light dark:bg-background-surface-dark"} ${sizeStyle[size]}`}
     >
-      {icon === "search" && <Search width="16" height="16" fill="#ADB5BD" />}
-      {icon === "youtube" && <Youtube width="16" height="16" fill="#ADB5BD" />}
+      {icon === "search" && (
+        <Search
+          width="16"
+          height="16"
+          className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+        />
+      )}
+      {icon === "youtube" && (
+        <Youtube
+          width="16"
+          height="16"
+          className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+        />
+      )}
       {icon === "instagram" && (
-        <Instagram width="16" height="16" fill="#ADB5BD" />
+        <Instagram
+          width="16"
+          height="16"
+          className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+        />
       )}
       <input
         type={type}
@@ -55,15 +71,17 @@ const TextInput = ({
         maxLength={maxLength}
         placeholder={placeholder}
         autoComplete="off"
-        className="h-auto w-full text-content-primary-light placeholder-content-alternative-light outline-none"
+        className="h-auto w-full bg-background-surface-light text-content-primary-light placeholder-content-alternative-light outline-none dark:bg-background-surface-dark dark:text-content-primary-dark dark:placeholder-content-alternative-dark"
         onChange={onChange}
         onBlur={onBlur}
       />
       {parameter && (
-        <div className="text-content-secondary-light">{parameter}</div>
+        <div className="text-content-secondary-light dark:text-content-secondary-dark">
+          {parameter}
+        </div>
       )}
       {limit && (
-        <label className="text-caption1 text-[#787887]">
+        <label className="text-caption1 text-content-secondary-light dark:text-content-secondary-dark">
           {value.length}/{maxLength}
         </label>
       )}
