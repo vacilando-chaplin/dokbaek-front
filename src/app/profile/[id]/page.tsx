@@ -365,7 +365,10 @@ const Profile = () => {
     setCategoryList(resultCategoryList);
   }, [profileData]);
 
-  console.log(profileData.filmos);
+  const onDownloadPDF = () => {
+    const PDFUrl = `https://filogram.my/api/pdf/v1/profile/${profileId}`;
+    window.open(PDFUrl, "_blank");
+  };
 
   return (
     <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light dark:bg-background-surface-dark">
@@ -378,6 +381,7 @@ const Profile = () => {
           updated={profileData.updatedAt}
           profileSpecialties={profileSpecialties}
           mainPhotoMenuActive={mainPhotoMenuActive}
+          onDownloadPDF={onDownloadPDF}
           onMoveToCreate={onMoveToCreate}
           onMainPhotoSelectFile={onMainPhotoSelectFile}
           onMainPhotoModalOpen={onMainPhotoModalOpen}
