@@ -335,7 +335,9 @@ const ProfileMain = ({
       )}
       {introduction && (
         <ProfileInfoContainer title="자기소개" introduction>
-          <p className="whitespace-pre break-all">{introduction}</p>
+          <p className="typography-body2 font-regular text-content-primary-light dark:text-content-primary-dark">
+            {introduction}
+          </p>
         </ProfileInfoContainer>
       )}
     </section>
