@@ -65,6 +65,13 @@ const TopNavigation = () => {
     //   onClick: () => {}
     // },
     {
+      name: "마이 페이지",
+      onClick: () => {
+        router.prefetch("/mypage");
+        router.push("/mypage");
+      }
+    },
+    {
       name: "로그아웃",
       onClick: onLogOut
     }
