@@ -26,11 +26,13 @@ interface ProfileMainProps {
   info: InfoResponseType;
   linear: string;
   updated: string;
+  profileId: number;
   otherUser: boolean;
   mainPhoto: string;
   profileSpecialties: SpecialtyItemType[];
   education: any;
   mainPhotoMenuActive: boolean;
+  onDownloadPDF: () => void;
   onMoveToCreate: (stepper: number) => void;
   onMainPhotoModalOpen: () => void;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -44,11 +46,13 @@ const ProfileMain = ({
   info,
   linear,
   updated,
+  profileId,
   otherUser,
   mainPhoto,
   profileSpecialties,
   education,
   mainPhotoMenuActive,
+  onDownloadPDF,
   onMoveToCreate,
   onMainPhotoSelectFile,
   onMainPhotoModalOpen,
@@ -76,7 +80,7 @@ const ProfileMain = ({
   );
 
   const onCopyUrl = async () => {
-    const copyUrl = window.location.href;
+    const copyUrl = `https://filogram.my/profile/${profileId}`;
     try {
       setToast("프로필 링크를 복사 했어요.");
       await navigator.clipboard.writeText(copyUrl);
@@ -205,7 +209,11 @@ const ProfileMain = ({
         </BoxButton>
       ) : (
         <div className="relative grid h-auto w-full grid-cols-3 flex-row items-center justify-between gap-2">
-          <BoxButton type="secondaryOutlined" size="medium">
+          <BoxButton
+            type="secondaryOutlined"
+            size="medium"
+            onClick={onDownloadPDF}
+          >
             <Download
               width="14"
               height="14"
@@ -327,7 +335,9 @@ const ProfileMain = ({
       )}
       {introduction && (
         <ProfileInfoContainer title="자기소개" introduction>
-          <p className="whitespace-pre break-all">{introduction}</p>
+          <p className="typography-body2 font-regular text-content-primary-light dark:text-content-primary-dark">
+            {introduction}
+          </p>
         </ProfileInfoContainer>
       )}
     </section>
