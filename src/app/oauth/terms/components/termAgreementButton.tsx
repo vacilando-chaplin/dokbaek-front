@@ -3,10 +3,11 @@
 import { TermAgreementsType } from "@/lib/types";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { currentPath, defaultId } from "@/lib/atoms";
+import { currentPath, defaultId, loginProfileId } from "@/lib/atoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useSetToken } from "@/lib/hooks";
 import { postOauthSignUp } from "../../callback/api";
+import { getProfileMe } from "@/lib/api";
 
 const TermAgreementButton = () => {
   const router = useRouter();
@@ -16,6 +17,7 @@ const TermAgreementButton = () => {
 
   const currentPathName = useRecoilValue(currentPath);
   const setUserId = useSetRecoilState(defaultId);
+  const setLoginProfileId = useSetRecoilState(loginProfileId);
 
   const [termAgreements, setTermAgreements] = useState<TermAgreementsType[]>([
     { termId: 1, agreement: true }
@@ -29,6 +31,13 @@ const TermAgreementButton = () => {
         termAgreements: termAgreements
       });
       const data = res.data;
+
+      const getProfileId = async () => {
+        const res = await getProfileMe();
+        const data = res.data;
+        setLoginProfileId(data.id);
+      };
+      getProfileId();
 
       setUserId(data.userId);
       useSetToken("jwt", data.token.jwt);
