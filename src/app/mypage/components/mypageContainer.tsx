@@ -7,7 +7,7 @@ interface MypageContainerProps {
 
 const MypageContainer = ({ name }: MypageContainerProps) => {
   return (
-    <section className="flex h-auto max-w-[560px] flex-col items-center justify-center gap-10">
+    <section className="flex h-auto max-w-[560px] flex-col items-center justify-center gap-10 pb-28 pt-24">
       <h1 className="typography-heading2 font-semibold">
         {name}님, 안녕하세요
       </h1>

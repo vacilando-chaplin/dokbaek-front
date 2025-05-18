@@ -4,6 +4,7 @@ interface BoxButtonProps {
   children: React.ReactNode;
   type: string;
   size: string;
+  width?: string;
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -22,6 +23,7 @@ const BoxButton = ({
   children,
   type,
   size,
+  width,
   disabled,
   onClick
 }: BoxButtonProps) => {
@@ -50,7 +52,7 @@ const BoxButton = ({
     <button
       type="button"
       style={{ wordBreak: "keep-all", lineHeight: "16px" }}
-      className={`interaction-default flex h-auto w-auto items-center justify-center font-medium outline-none ${sizeStyle[size]} ${typeStyle[type]} ${disabled && "opacity-40"}`}
+      className={`interaction-default flex h-auto w-auto items-center justify-center font-medium outline-none ${sizeStyle[size]} ${typeStyle[type]} ${disabled && "opacity-40"} ${width === "full" && "w-full"}`}
       disabled={disabled}
       onClick={onClick}
     >

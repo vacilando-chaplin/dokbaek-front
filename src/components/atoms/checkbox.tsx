@@ -2,11 +2,11 @@ import { sizeStyleType } from "@/lib/types";
 import Check from "../../../public/icons/Check.svg";
 
 interface CheckboxProps {
-  type: string;
+  type?: string;
   size: string;
   checked: boolean | undefined;
   disabled?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Checkbox = ({
