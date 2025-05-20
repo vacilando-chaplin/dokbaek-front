@@ -3,7 +3,7 @@ import AccountListItem from "./accountListItem";
 
 const AccountMainContents = () => {
   return (
-    <AccountContainer>
+    <AccountContainer type="main">
       <span className="typography-body3 pl-4 font-semibold text-content-primary-light dark:text-content-primary-dark">
         법적 정보
       </span>

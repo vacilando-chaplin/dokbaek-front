@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { currentPath, loginProfileId } from "@/lib/atoms";
+import { currentPath, loginProfileId, toastMessage } from "@/lib/atoms";
 import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
@@ -23,11 +23,11 @@ const TopNavigation = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const jwt = Cookies.get("jwt");
   const loginProfile = useRecoilValue(loginProfileId);
   const setPathName = useSetRecoilState(currentPath);
+  const setToastMessage = useSetRecoilState(toastMessage);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [userMenuActive, setUserMenuActive] = useState(false);
 
   const onLogIn = () => {
@@ -40,16 +40,14 @@ const TopNavigation = () => {
   const onLogOut = async () => {
     const refreshToken = Cookies.get("refresh_token");
 
+    setIsLoggedIn(false);
+    setToastMessage("안전하게 로그아웃됐어요.");
+
     if (refreshToken) {
       await deleteSignOut(refreshToken);
-
       removeStorageData();
-
-      router.prefetch("/");
-      router.push("/");
+      router.replace("/");
     }
-
-    setIsLoggedIn(false);
   };
 
   const onUserMenuClick = () => {
@@ -79,18 +77,16 @@ const TopNavigation = () => {
   ];
 
   useEffect(() => {
-    if (jwt) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
+    const jwt = Cookies.get("jwt");
+
+    setIsLoggedIn(jwt ? true : false);
+  }, []);
 
   return (
     <section className="fixed top-0 z-50 flex h-12 w-full items-center border-b-[1px] border-border-default-light bg-background-elevated-light px-6 shadow-drop dark:border-border-default-dark dark:bg-background-elevated-dark">
       <nav className="flex w-full items-center justify-between">
         <Logo />
-        {isLoggedIn ? (
+        {isLoggedIn === true && (
           <div className="flex flex-row gap-5">
             <Link
               href={`/profiles`}
@@ -144,7 +140,8 @@ const TopNavigation = () => {
               </div>
             )}
           </div>
-        ) : (
+        )}
+        {isLoggedIn === false && (
           <div className="flex flex-row gap-5">
             <Link
               href={`/profiles`}

@@ -22,8 +22,8 @@ const config: Config = {
       },
       // toast enter and leave animation
       animation: {
-        "toast-slide-down": "toastSlideDown 100ms ease-out forwards",
-        "toast-slide-up": "toastSlideUp 100ms ease-out forwards",
+        "toast-slide-down": "toastSlideDown 0.3s ease-in-out forwards",
+        "toast-slide-up": "toastSlideUp 0.3s ease-in-out forwards",
         enter: "enter 300ms ease-out",
         leave: "leave 300ms ease-in forwards"
       },

@@ -1,17 +1,32 @@
+"use client";
+
+import { useRecoilState } from "recoil";
 import Check from "../../../public/icons/Check.svg";
 import WarningCircle from "../../../public/icons/WarningCircle.svg";
+import { toastMessage } from "@/lib/atoms";
+import { useEffect } from "react";
 
 interface ToastProps {
-  text: string;
-  kind: string;
+  kind?: string;
   fullWidth: boolean;
   placement: string;
 }
 
-const Toast = ({ text, kind, fullWidth, placement }: ToastProps) => {
+const Toast = ({ kind, fullWidth, placement }: ToastProps) => {
+  const [message, setMessage] = useRecoilState(toastMessage);
+
+  // 토스트 메세지 보이기 딜레이(3초)
+  useEffect(() => {
+    if (!message) return;
+    const timeout = setTimeout(() => setMessage(""), 3000);
+    return () => clearTimeout(timeout);
+  }, [message]);
+
+  if (!message) return;
+
   return (
     <div
-      className={`interaction-default fixed z-[51] flex h-auto animate-toast-slide-down gap-2 rounded-[100px] bg-background-base_inverse-light px-4 py-3 shadow-medium dark:bg-background-base_inverse-dark ${fullWidth ? "w-full" : "w-auto"} ${placement === "top" ? "top-10" : "bottom-10"}`}
+      className={`fixed z-[51] flex h-auto animate-toast-slide-down gap-2 rounded-[100px] bg-background-base_inverse-light px-4 py-3 shadow-medium dark:bg-background-base_inverse-dark ${fullWidth ? "w-full" : "w-auto"} ${placement === "top" ? "top-10" : "bottom-10"}`}
     >
       {kind === "success" && (
         <Check
@@ -28,7 +43,7 @@ const Toast = ({ text, kind, fullWidth, placement }: ToastProps) => {
         />
       )}
       <label className="typography-body2 text-con text-center font-medium text-content-on_color-light dark:text-static-black">
-        {text}
+        {message}
       </label>
     </div>
   );
