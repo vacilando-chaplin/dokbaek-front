@@ -6,7 +6,7 @@ interface CheckboxProps {
   size: string;
   checked: boolean | undefined;
   disabled?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const Checkbox = ({

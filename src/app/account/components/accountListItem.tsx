@@ -3,19 +3,19 @@
 import { useState } from "react";
 import ArrowChevronRight from "../../../../public/icons/ArrowChevronRight.svg";
 
-interface MypageListItemProps {
+interface AccountListItemProps {
   text: string;
   icon?: boolean;
   negative?: boolean;
   onClick?: () => void;
 }
 
-const MypageListItem = ({
+const AccountListItem = ({
   text,
   icon,
   negative,
   onClick
-}: MypageListItemProps) => {
+}: AccountListItemProps) => {
   const [active, setActive] = useState(false);
 
   return (
@@ -39,4 +39,4 @@ const MypageListItem = ({
   );
 };
 
-export default MypageListItem;
+export default AccountListItem;

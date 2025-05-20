@@ -12,6 +12,7 @@ import Bell from "../../../public/icons/Bell.svg";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
 import { useEffect, useState } from "react";
+import { removeStorageData } from "@/lib/utils";
 
 interface UserMenuType {
   name: string;
@@ -41,9 +42,9 @@ const TopNavigation = () => {
 
     if (refreshToken) {
       await deleteSignOut(refreshToken);
-      Cookies.remove("jwt", { path: "/" });
-      Cookies.remove("refresh_token", { path: "/" });
-      localStorage.removeItem("recoil-persist");
+
+      removeStorageData();
+
       router.prefetch("/");
       router.push("/");
     }
@@ -65,10 +66,10 @@ const TopNavigation = () => {
     //   onClick: () => {}
     // },
     {
-      name: "마이 페이지",
+      name: "계정",
       onClick: () => {
-        router.prefetch("/mypage");
-        router.push("/mypage");
+        router.prefetch("/account");
+        router.push("/account");
       }
     },
     {
