@@ -284,9 +284,20 @@ export interface VideoResponseType {
   displayOrder: number;
 }
 
+export interface TermAgreementsType {
+  termId: number;
+  agreement: boolean;
+}
+
 export interface SignUpRequestType {
-  domain: string;
-  accessToken: string;
+  domain: string | null;
+  tempCode: string | null;
+  termAgreements: TermAgreementsType[];
+}
+
+export interface SignInRequestType {
+  domain: string | null;
+  tempCode: string | null;
 }
 
 export interface SignUpResponseType {
