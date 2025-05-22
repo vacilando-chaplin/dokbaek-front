@@ -1,12 +1,19 @@
 "use client";
 
-import { currentPath, defaultId, loginProfileId } from "@/lib/atoms";
+import {
+  currentPath,
+  defaultId,
+  loginErrorState,
+  loginProfileId,
+  toastMessage
+} from "@/lib/atoms";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useSetToken } from "@/lib/hooks";
 import { postOauthSignIn } from "./api";
 import { getProfileMe } from "@/lib/api";
+import { loginErrorMessages } from "@/lib/data";
 
 const Callback = () => {
   const router = useRouter();
@@ -16,6 +23,8 @@ const Callback = () => {
   const currentPathName = useRecoilValue(currentPath);
   const setUserId = useSetRecoilState(defaultId);
   const setLoginProfileId = useSetRecoilState(loginProfileId);
+  const setToastMessage = useSetRecoilState(toastMessage);
+  const setLoginErrorState = useSetRecoilState(loginErrorState);
 
   useEffect(() => {
     const code = urlParams.get("code");
@@ -51,7 +60,12 @@ const Callback = () => {
     };
 
     if (errorCode) {
-      router.replace(`/oauth/error?errorCode=${errorCode}`);
+      const errorMessage = loginErrorMessages[errorCode].message;
+      setToastMessage(errorMessage);
+      setLoginErrorState(true);
+
+      router.replace("/");
+
       return;
     }
 
