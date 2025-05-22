@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export const setOnlyNumber = (value: string) => {
   return value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
 };
@@ -123,4 +125,10 @@ export const isValidYoutubeChannelUrl = (url: string) => {
   const regex =
     /^(https:\/\/(www\.)?youtube\.com\/(@[a-zA-Z0-9_-]+|c\/[a-zA-Z0-9_-]+|user\/[a-zA-Z0-9_-]+|channel\/[a-zA-Z0-9_-]{24}))$/;
   return regex.test(url);
+};
+
+export const removeStorageData = () => {
+  Cookies.remove("jwt", { path: "/" });
+  Cookies.remove("refresh_token", { path: "/" });
+  localStorage.removeItem("recoil-persist");
 };

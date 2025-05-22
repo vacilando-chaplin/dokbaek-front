@@ -117,17 +117,27 @@ export const specialtyData = atom<SpecialtyType[]>({
   effects_UNSTABLE: [persistAtom]
 });
 
-export const currentPath = atom({
+export const currentPath = atom<string>({
   key: "currentPath",
   default: "/"
 });
 
-export const isDraft = atom({
+export const isDraft = atom<boolean>({
   key: "isDraft",
   default: false
 });
 
-export const isDraftComplete = atom({
+export const isDraftComplete = atom<boolean>({
   key: "isDraftComplete",
+  default: false
+});
+
+export const withdrawalReasons = atom<boolean[]>({
+  key: "withdrawalReasons",
+  default: Array(5).fill(false)
+});
+
+export const withdrawalAgreement = atom<boolean>({
+  key: "withdrawalAgreement",
   default: false
 });
