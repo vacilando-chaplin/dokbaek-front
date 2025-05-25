@@ -3,7 +3,7 @@
 import { useRecoilState } from "recoil";
 import Check from "../../../public/icons/Check.svg";
 import WarningCircle from "../../../public/icons/WarningCircle.svg";
-import { toastMessage } from "@/lib/atoms";
+import { loginErrorState, toastMessage } from "@/lib/atoms";
 import { useEffect } from "react";
 
 interface ToastProps {
@@ -14,13 +14,19 @@ interface ToastProps {
 
 const Toast = ({ kind, fullWidth, placement }: ToastProps) => {
   const [message, setMessage] = useRecoilState(toastMessage);
+  const [loginError, setLoginError] = useRecoilState(loginErrorState);
 
   // 토스트 메세지 보이기 딜레이(3초)
   useEffect(() => {
     if (!message) return;
-    const timeout = setTimeout(() => setMessage(""), 3000);
+    const timeout = setTimeout(() => {
+      if (kind === "error" && loginError === true) {
+        setLoginError(false);
+      }
+      setMessage("");
+    }, 3000);
     return () => clearTimeout(timeout);
-  }, [message]);
+  }, [message, loginError]);
 
   if (!message) return;
 

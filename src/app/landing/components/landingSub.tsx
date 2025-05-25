@@ -4,12 +4,12 @@ import Cookies from "js-cookie";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
-import { defaultId } from "@/lib/atoms";
+import { loginProfileId } from "@/lib/atoms";
 import LoginModal from "@/components/organisms/loginModal";
 
 const LandingSub = () => {
   const router = useRouter();
-  const [userId, setUserId] = useRecoilState(defaultId);
+  const [userId, setUserId] = useRecoilState(loginProfileId);
   const [loginModal, setLoginModal] = useState(false);
   const jwt = Cookies.get("jwt");
 
