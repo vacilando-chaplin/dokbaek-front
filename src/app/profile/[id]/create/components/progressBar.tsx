@@ -1,8 +1,11 @@
-interface ProgressBarProps {
-  progress: number;
-}
+"use client";
 
-const ProgressBar = ({ progress }: ProgressBarProps) => {
+import { profileProgress } from "@/lib/recoil/profile/common/selector";
+import { useRecoilValue } from "recoil";
+
+const ProgressBar = () => {
+  const progress = useRecoilValue(profileProgress);
+
   return (
     <div className="flex h-auto w-40 flex-col gap-1">
       <div className="typography-caption2 flex w-full flex-row items-center justify-between font-semibold">

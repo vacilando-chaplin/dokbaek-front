@@ -127,11 +127,6 @@ export const currentPath = atom<string>({
   default: "/"
 });
 
-export const isDraft = atom<boolean>({
-  key: "isDraft",
-  default: false
-});
-
 export const isDraftComplete = atom<boolean>({
   key: "isDraftComplete",
   default: false

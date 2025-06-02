@@ -22,7 +22,7 @@ const Callback = () => {
 
   const currentPathName = useRecoilValue(currentPath);
   const setUserId = useSetRecoilState(defaultId);
-  const setLoginProfileId = useSetRecoilState(loginProfileId);
+  // const setLoginProfileId = useSetRecoilState(loginProfileId);
   const setToastMessage = useSetRecoilState(toastMessage);
   const setLoginErrorState = useSetRecoilState(loginErrorState);
 
@@ -46,7 +46,7 @@ const Callback = () => {
         const getProfileId = async () => {
           const res = await getProfileMe();
           const data = res.data;
-          setLoginProfileId(data.id);
+          useSetToken("loginProfileId", data.id);
         };
         getProfileId();
 

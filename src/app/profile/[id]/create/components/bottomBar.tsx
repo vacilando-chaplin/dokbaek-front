@@ -1,15 +1,54 @@
+"use client";
+
 import ArrowDirectionLeft from "../../../../../../public/icons/ArrowDirectionLeft.svg";
 import BoxButton from "@/components/atoms/boxButton";
 import ProgressBar from "./progressBar";
+import { useRouter } from "next/navigation";
+import { postProfileDraftPublish } from "../../api";
+import { useRecoilValue } from "recoil";
+import { profileDraftData } from "@/lib/recoil/profile/common/atom";
+import { useEffect, useState } from "react";
 
 interface BottomBarProps {
-  progress: number;
-  disabled: boolean;
-  onBack: React.MouseEventHandler<HTMLButtonElement>;
-  onSave: React.MouseEventHandler<HTMLButtonElement>;
+  profileId: number;
 }
 
-const BottomBar = ({ progress, disabled, onBack, onSave }: BottomBarProps) => {
+const BottomBar = ({ profileId }: BottomBarProps) => {
+  const router = useRouter();
+
+  const draftInfoData = useRecoilValue(profileDraftData).info;
+  const [disabled, setDisabled] = useState(true);
+
+  const onSave = async () => {
+    await postProfileDraftPublish(profileId);
+
+    router.prefetch(`/profile/${profileId}`);
+    router.push(`/profile/${profileId}`);
+  };
+
+  const onBack = () => {
+    router.prefetch(`/profile/${profileId}`);
+    router.push(`/profile/${profileId}`);
+  };
+
+  useEffect(() => {
+    if (draftInfoData) {
+      const { name, gender, bornYear, contact } = draftInfoData;
+      const inValid =
+        name.trim() === "" ||
+        !gender ||
+        String(bornYear).length < 4 ||
+        contact.length < 10;
+
+      setDisabled(inValid);
+    }
+  }, [
+    draftInfoData?.name,
+    draftInfoData?.bornYear,
+    draftInfoData?.contact,
+    draftInfoData?.gender
+  ]);
+
   return (
     <section className="fixed bottom-0 z-50 flex h-auto w-full items-center justify-between border-t-[1px] border-border-default-light bg-background-elevated-light px-6 py-3 shadow-low dark:border-border-default-dark dark:bg-background-elevated-dark">
       <div className="flex gap-4">
@@ -23,7 +62,7 @@ const BottomBar = ({ progress, disabled, onBack, onSave }: BottomBarProps) => {
         </BoxButton>
       </div>
       <div className="flex flex-row items-center gap-6">
-        <ProgressBar progress={progress} />
+        <ProgressBar />
         <BoxButton
           type="primary"
           size="medium"
