@@ -80,7 +80,7 @@ const AddableSearchDropdown = ({
       {active &&
         (list.length === 0 && value.length > 0 ? (
           <div className="interaction-default typography-body3 absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 font-normal shadow-low dark:bg-background-elevated-dark">
-            <label>{value}</label>
+            <label className="dark:text-content-primary-dark">{value}</label>
             <button
               type="button"
               className="absolute right-4"
