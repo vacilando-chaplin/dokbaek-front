@@ -1,6 +1,13 @@
 import BoxButton from "@/components/atoms/boxButton";
 import React, { useEffect, useState } from "react";
-
+import {
+  DEFAULT_MIN_BORN_YEAR,
+  DEFAULT_MAX_BORN_YEAR,
+  DEFAULT_MIN_HEIGHT,
+  DEFAULT_MAX_HEIGHT,
+  DEFAULT_MIN_WEIGHT,
+  DEFAULT_MAX_WEIGHT
+} from "@/constants/constants";
 import TextInput from "@/components/atoms/textInput";
 import ArrowChevronDown from "../../../../public/icons/ArrowChevronDown.svg";
 import Reset from "../../../../public/icons/Reset.svg";
@@ -63,20 +70,20 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     { label: "남성", value: "M" }
   ];
 
-  const [minBornYear, setMinBornYear] = useState(0);
-  const [maxBornYear, setMaxBornYear] = useState(0);
+  const [minBornYear, setMinBornYear] = useState(DEFAULT_MIN_BORN_YEAR);
+  const [maxBornYear, setMaxBornYear] = useState(DEFAULT_MAX_BORN_YEAR);
   const [bornYearRange, setBornYearRange] = useState<[number, number]>([
     minBornYear,
     maxBornYear
   ]);
-  const [minHeight, setMinHeight] = useState(0);
-  const [maxHeight, setMaxHeight] = useState(0);
+  const [minHeight, setMinHeight] = useState(DEFAULT_MIN_HEIGHT);
+  const [maxHeight, setMaxHeight] = useState(DEFAULT_MAX_HEIGHT);
   const [heightRange, setHeightRange] = useState<[number, number]>([
     minHeight,
     maxHeight
   ]);
-  const [minWeight, setMinWeight] = useState(0);
-  const [maxWeight, setMaxWeight] = useState(0);
+  const [minWeight, setMinWeight] = useState(DEFAULT_MIN_WEIGHT);
+  const [maxWeight, setMaxWeight] = useState(DEFAULT_MAX_WEIGHT);
   const [WeightRange, setWeightRange] = useState<[number, number]>([
     minWeight,
     maxWeight
@@ -164,12 +171,12 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const onClickFilterReset = () => {
     setKeyword("");
     setGender("U");
-    setMinBornYear(0);
-    setMaxBornYear(0);
-    setMinHeight(0);
-    setMaxHeight(0);
-    setMinWeight(0);
-    setMaxWeight(0);
+    setMinBornYear(DEFAULT_MIN_BORN_YEAR);
+    setMaxBornYear(DEFAULT_MAX_BORN_YEAR);
+    setMinHeight(DEFAULT_MIN_HEIGHT);
+    setMaxHeight(DEFAULT_MAX_HEIGHT);
+    setMinWeight(DEFAULT_MIN_WEIGHT);
+    setMaxWeight(DEFAULT_MAX_WEIGHT);
     onSubmit();
     router.push(`/profiles`);
   };
@@ -200,19 +207,28 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           "전체"
         );
       case "bornYear":
-        if (minBornYear === 0 && maxBornYear === 0) {
+        if (
+          minBornYear == DEFAULT_MIN_BORN_YEAR &&
+          maxBornYear == DEFAULT_MAX_BORN_YEAR
+        ) {
           return "전체";
         } else {
           return `${minBornYear} - ${maxBornYear} 년생`;
         }
       case "height":
-        if (minHeight === 0 && maxHeight === 0) {
+        if (
+          minHeight == DEFAULT_MIN_HEIGHT &&
+          maxHeight == DEFAULT_MAX_HEIGHT
+        ) {
           return "전체";
         } else {
           return `${minHeight} - ${maxHeight} cm`;
         }
       case "weight":
-        if (minWeight === 0 && maxWeight === 0) {
+        if (
+          minWeight == DEFAULT_MIN_WEIGHT &&
+          maxWeight == DEFAULT_MAX_WEIGHT
+        ) {
           return "전체";
         } else {
           return `${minWeight} - ${maxWeight} kg`;
@@ -371,8 +387,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                setMinBornYear(0);
-                setMaxBornYear(0);
+                setMinBornYear(DEFAULT_MIN_BORN_YEAR);
+                setMaxBornYear(DEFAULT_MAX_BORN_YEAR);
                 setShouldSubmit(true);
               }}
               className="flex items-center gap-1"
@@ -409,8 +425,6 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
                 size="medium"
                 name="minBornYear"
                 value={minBornYear}
-                placeholder="0"
-                maxLength={200}
                 onChange={handleMinBornYearChange}
               />
               ~
@@ -419,8 +433,6 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
                 size="medium"
                 name="maxBornYear"
                 value={maxBornYear}
-                placeholder="0"
-                maxLength={200}
                 onChange={handleMaxBornYearChange}
               />
             </div>
@@ -428,8 +440,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               <RangeSlider
                 value={bornYearRange}
                 setValue={handleBornYearRangeChange}
-                min={1900}
-                max={2025}
+                min={DEFAULT_MIN_BORN_YEAR}
+                max={DEFAULT_MAX_BORN_YEAR}
               />
             </div>
           </div>
@@ -447,8 +459,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                setMinHeight(0);
-                setMaxHeight(0);
+                setMinHeight(DEFAULT_MIN_HEIGHT);
+                setMaxHeight(DEFAULT_MAX_HEIGHT);
                 setShouldSubmit(true);
               }}
               className="flex items-center gap-1"
@@ -486,8 +498,6 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
                 name="minHeight"
                 value={minHeight}
                 parameter={"cm"}
-                placeholder="0"
-                maxLength={200}
                 onChange={handleMinHeightChange}
               />
               ~
@@ -497,8 +507,6 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
                 name="maxHeight"
                 value={maxHeight}
                 parameter={"cm"}
-                placeholder="0"
-                maxLength={200}
                 onChange={handleMaxHeightChange}
               />
             </div>
@@ -506,8 +514,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               <RangeSlider
                 value={heightRange}
                 setValue={handleHeightRangeChange}
-                min={0}
-                max={200}
+                min={DEFAULT_MIN_HEIGHT}
+                max={DEFAULT_MAX_HEIGHT}
               />
             </div>
           </div>
@@ -524,8 +532,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                setMinWeight(0);
-                setMaxWeight(0);
+                setMinWeight(DEFAULT_MIN_WEIGHT);
+                setMaxWeight(DEFAULT_MAX_WEIGHT);
                 setShouldSubmit(true);
               }}
               className="flex items-center gap-1"
@@ -563,8 +571,6 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
                 name="minWeight"
                 value={minWeight}
                 parameter={"kg"}
-                placeholder="0"
-                maxLength={200}
                 onChange={handleMinWeightChange}
               />
               ~
@@ -574,8 +580,6 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
                 name="maxWeight"
                 value={maxWeight}
                 parameter={"kg"}
-                placeholder="0"
-                maxLength={200}
                 onChange={handleMaxWeightChange}
               />
             </div>
@@ -583,8 +587,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               <RangeSlider
                 value={WeightRange}
                 setValue={handleWeightRangeChange}
-                min={0}
-                max={200}
+                min={DEFAULT_MIN_WEIGHT}
+                max={DEFAULT_MAX_WEIGHT}
               />
             </div>
           </div>
