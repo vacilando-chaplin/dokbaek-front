@@ -9,7 +9,7 @@ const AppleLogin = () => {
   const APPLE_AUTH_URL =
     `https://appleid.apple.com/auth/authorize?` +
     new URLSearchParams({
-      response_type: "code",
+      response_type: "code id_token",
       response_mode: "form_post",
       client_id: process.env.NEXT_PUBLIC_APPLE_CLIENT_ID || "",
       redirect_uri: process.env.NEXT_PUBLIC_APPLE_LOGIN_REDIRECT_URI || "",
