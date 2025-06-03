@@ -284,7 +284,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
       <div className="border-b border-border-default-light py-4 dark:border-border-default-dark">
         <div className="flex items-center justify-between px-5">
           <div className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
-            {profilesData?.numberOfElements}명
+            {profilesData?.totalElements}명
           </div>
           <BoxButton
             type="secondaryOutlined"

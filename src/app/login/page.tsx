@@ -3,6 +3,7 @@
 import KakaoLogin from "@/app/login/components/kakaoLogin";
 import NaverLogin from "@/app/login/components/naverLogin";
 import GoogleLogin from "@/app/login/components/googleLogin";
+import AppleLogin from "@/app/login/components/appleLogin";
 import { useEffect, useState } from "react";
 import LogoVertical from "../../../public/icons/LogoVertical.svg";
 import Tooltip from "@/components/atoms/tooltip";
@@ -16,6 +17,23 @@ const Login = () => {
     setLoginForm(currentLoginForm || null);
   }, []);
 
+  const LoginButton = ({
+    type,
+    Component
+  }: {
+    type: string;
+    Component: React.FC;
+  }) => (
+    <div className="relative flex items-center justify-center">
+      <Component />
+      {loginForm === type && (
+        <div className="absolute -top-7">
+          <Tooltip placement="top" text="마지막에 로그인했어요" />
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <main className="relative flex h-auto w-auto flex-col items-center gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20 dark:border-border-default-dark dark:bg-background-surface-dark">
       <div className="flex flex-col items-center justify-center gap-4">
@@ -25,36 +43,10 @@ const Login = () => {
         </label>
       </div>
       <div className="flex h-auto w-full flex-col gap-2">
-        {loginForm === "카카오" ? (
-          <div className="relative flex items-center justify-center">
-            <KakaoLogin />
-            <div className="absolute -top-7">
-              <Tooltip placement="top" text="마지막에 로그인했어요" />
-            </div>
-          </div>
-        ) : (
-          <KakaoLogin />
-        )}
-        {loginForm === "네이버" ? (
-          <div className="relative flex items-center justify-center">
-            <NaverLogin />
-            <div className="absolute -top-7">
-              <Tooltip placement="top" text="마지막에 로그인했어요" />
-            </div>
-          </div>
-        ) : (
-          <NaverLogin />
-        )}
-        {loginForm === "구글" ? (
-          <div className="relative flex items-center justify-center">
-            <GoogleLogin />
-            <div className="absolute -top-7">
-              <Tooltip placement="top" text="마지막에 로그인했어요" />
-            </div>
-          </div>
-        ) : (
-          <GoogleLogin />
-        )}
+        <LoginButton type="카카오" Component={KakaoLogin} />
+        <LoginButton type="네이버" Component={NaverLogin} />
+        <LoginButton type="애플" Component={AppleLogin} />
+        <LoginButton type="구글" Component={GoogleLogin} />
       </div>
     </main>
   );
