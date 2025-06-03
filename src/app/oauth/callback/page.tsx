@@ -75,6 +75,8 @@ const Callback = () => {
       getOauthLoginToken("네이버");
     } else if (code && state === "google") {
       getOauthLoginToken("구글");
+    } else if (code && state === "apple") {
+      getOauthLoginToken("애플");
     }
   }, [urlParams]);
 };
