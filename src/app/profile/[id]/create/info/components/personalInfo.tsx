@@ -47,6 +47,7 @@ const PersonalInfo = ({
   const {
     name,
     bornYear,
+    gender,
     height,
     weight,
     contact,
@@ -156,7 +157,7 @@ const PersonalInfo = ({
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${info.gender === "F" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
+                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${gender === "F" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>
@@ -177,7 +178,7 @@ const PersonalInfo = ({
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${info.gender === "M" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
+                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${gender === "M" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>
@@ -199,7 +200,7 @@ const PersonalInfo = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
-              onBlur={mutate}
+              onBlur={onSaveInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -213,7 +214,7 @@ const PersonalInfo = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
-              onBlur={mutate}
+              onBlur={onSaveInfo}
             />
           </div>
         </div>
@@ -227,7 +228,7 @@ const PersonalInfo = ({
               value={contact}
               maxLength={13}
               onChange={onContactChange}
-              onBlur={mutate}
+              onBlur={onSaveInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -239,7 +240,7 @@ const PersonalInfo = ({
               value={email}
               maxLength={40}
               onChange={onInputChange}
-              onBlur={mutate}
+              onBlur={onSaveInfo}
             />
           </div>
         </div>
@@ -287,7 +288,7 @@ const PersonalInfo = ({
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
-              onBlur={mutate}
+              onBlur={onSaveInfo}
             />
             <TextInput
               type="link"
@@ -298,7 +299,7 @@ const PersonalInfo = ({
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
-              onBlur={mutate}
+              onBlur={onSaveInfo}
             />
           </div>
         </div>
