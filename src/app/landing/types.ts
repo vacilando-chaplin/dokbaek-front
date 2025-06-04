@@ -23,7 +23,6 @@ export interface ProfilesResponseType {
   number?: number | null;
   sort?: any | null;
   first?: boolean | null;
-  numberOfElements?: number | null;
   pageable?: any | null;
   empty?: boolean | null;
 }
