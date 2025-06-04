@@ -15,7 +15,7 @@ interface TextInputProps {
   maxLength?: number;
   placeholder?: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  onBlur?: () => void;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 const TextInput = ({

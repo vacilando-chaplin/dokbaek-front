@@ -12,9 +12,9 @@ export interface VideoLinkType {
 export interface ProfileInfoDataType {
   name: string;
   gender: string;
-  bornYear: number;
-  height: number;
-  weight: number;
+  bornYear: number | string;
+  height: number | string;
+  weight: number | string;
   email: string;
   contact: string;
   instagramLink: string;
@@ -98,7 +98,7 @@ export interface ProfileDarftDataType {
   id: number;
   userId: number | null;
   status: string | null;
-  info: ProfileInfoDataType | null;
+  info: ProfileInfoDataType;
   mainPhotoPath: string | null;
   mainPhotoPreviewPath: string | null;
   education: ProfileEducationDataType[];

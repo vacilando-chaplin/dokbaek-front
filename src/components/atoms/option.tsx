@@ -5,7 +5,7 @@ interface OptionProps {
   item: string;
   size: string;
   active: boolean;
-  selected: string;
+  selected: string | number;
   onClick: (name: string, item: string) => void;
   onActive: (name: string, state: boolean) => void;
 }

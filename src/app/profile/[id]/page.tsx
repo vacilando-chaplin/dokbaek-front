@@ -4,9 +4,7 @@ import { getProfile, getProfileMe, getProfileOtherUser } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
-  defaultId,
   filmoCategory,
-  loginProfileId,
   profileIdInit,
   stepperInit,
   toastMessage
@@ -47,6 +45,7 @@ import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import imageCompression from "browser-image-compression";
 import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
 import { useGetBlurPhoto } from "@/lib/hooks";
+import Cookies from "js-cookie";
 
 const Profile = () => {
   const router = useRouter();
@@ -55,7 +54,7 @@ const Profile = () => {
   const pathUserId =
     pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
   const [profileId, setProfileId] = useRecoilState(profileIdInit);
-  const loginProfile = useRecoilValue(loginProfileId);
+  const loginProfile = Number(Cookies.get("loginProfileId"));
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const filmoCategoryList = useRecoilValue(filmoCategory);
@@ -112,8 +111,8 @@ const Profile = () => {
     const path = ["info", "photo", "filmo", "video"];
 
     setStepper(stepper);
-    router.prefetch(`/profile/${profileId}/create/${path[stepper]}`);
-    router.push(`/profile/${profileId}/create/${path[stepper]}`);
+    router.prefetch(`/profile/${loginProfile}/create/${path[stepper]}`);
+    router.push(`/profile/${loginProfile}/create/${path[stepper]}`);
   };
 
   // ProfileSub

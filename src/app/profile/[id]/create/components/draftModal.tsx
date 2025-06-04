@@ -1,16 +1,18 @@
 "use client";
 
 import ConfirmModal from "@/components/organisms/confirmModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteProfileDraft, postProfileDraft } from "../../api";
+import { useRecoilValue } from "recoil";
+import { draftStatus } from "@/lib/recoil/profile/common/atom";
 
 interface DraftModalProps {
   profileId: number;
-  draftModalState: boolean;
 }
 
-const DraftModal = ({ profileId, draftModalState }: DraftModalProps) => {
-  const [modalState, setModalState] = useState(draftModalState);
+const DraftModal = ({ profileId }: DraftModalProps) => {
+  const draftState = useRecoilValue(draftStatus);
+  const [modalState, setModalState] = useState(true);
 
   const onReject = async () => {
     await deleteProfileDraft(profileId);
@@ -22,6 +24,12 @@ const DraftModal = ({ profileId, draftModalState }: DraftModalProps) => {
   const onConfirm = async () => {
     setModalState(false);
   };
+
+  useEffect(() => {
+    if (draftState === 200) {
+      setModalState(true);
+    }
+  }, []);
 
   return (
     <>

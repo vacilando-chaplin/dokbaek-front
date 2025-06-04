@@ -17,7 +17,6 @@ const TermAgreementButton = () => {
 
   const currentPathName = useRecoilValue(currentPath);
   const setUserId = useSetRecoilState(defaultId);
-  const setLoginProfileId = useSetRecoilState(loginProfileId);
 
   const [termAgreements, setTermAgreements] = useState<TermAgreementsType[]>([
     { termId: 1, agreement: true }
@@ -35,7 +34,7 @@ const TermAgreementButton = () => {
       const getProfileId = async () => {
         const res = await getProfileMe();
         const data = res.data;
-        setLoginProfileId(data.id);
+        useSetToken("loginProfileId", data.id);
       };
       getProfileId();
 

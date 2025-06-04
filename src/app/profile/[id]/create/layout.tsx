@@ -1,7 +1,6 @@
 import ListMenu from "@/app/profile/[id]/create/components/listMenu";
 import BottomBar from "@/app/profile/[id]/create/components/bottomBar";
 import { redirect } from "next/navigation";
-import { postProfileDraft } from "../api";
 import { cookies } from "next/headers";
 import DraftModal from "./components/draftModal";
 import { getProfileDraft } from "@/lib/api/profile/common/api";
@@ -13,18 +12,18 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   const profileId = Number(cookies().get("loginProfileId")?.value);
 
-  const draftRes = await postProfileDraft(profileId);
-  const draftStatus = draftRes.status;
-
   const initialDraftData = await getProfileDraft(profileId);
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
       <ListMenu profileId={profileId} />
-      <InitalDataProvider data={initialDraftData} />
+      <InitalDataProvider
+        profileId={profileId}
+        initialData={initialDraftData}
+      />
       {children}
       <BottomBar profileId={profileId} />
-      <DraftModal profileId={profileId} draftModalState={draftStatus === 200} />
+      <DraftModal profileId={profileId} />
     </div>
   );
 };

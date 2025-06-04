@@ -1,51 +1,45 @@
 "use client";
 
-import {
-  completionProgress,
-  isDraftComplete,
-  profileIdInit,
-  stepperInit
-} from "@/lib/atoms";
+import { completionProgress, isDraftComplete, stepperInit } from "@/lib/atoms";
 import { educationEngList, educationEnum, educationList } from "@/lib/data";
 import { useDebounce } from "@/lib/hooks";
-import { contactFormat, isValid, setOnlyNumber } from "@/lib/utils";
+import { isValid } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import InfoMain from "./components/infoMain";
 import InfoSub from "./components/infoSub";
 import InfoThird from "./components/infoThird";
 import {
-  InfoActiveType,
   InfoDataType,
   InfoInputType,
   SchoolType,
   SpecialtyType
 } from "./types";
-import { infoActiveInit, infoInputInit } from "./data";
+import { infoInputInit } from "./data";
+import { specialtyData } from "../../../../../lib/atoms";
+import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal";
+import { EducationWithIdType } from "@/lib/types";
+import PersonalInfo from "./components/personalInfo";
+import { cookies } from "next/headers";
 import {
-  deleteEducation,
-  getSchoolName,
   postEducation,
   postSpecialty,
   postUserProfileSpecialty,
   putEducation,
   putInfoDraft
-} from "./api";
-import { specialtyData } from "../../../../../lib/atoms";
-import ProfileSpecialtyFormModal from "../../components/profileSpecialtyFormModal";
-import { getProfileDraft } from "../../api";
-import { EducationWithIdType } from "@/lib/types";
+} from "@/lib/api/profile/info/api";
+import { getProfileDraft } from "@/lib/api/profile/common/api";
+import Cookies from "js-cookie";
 
 const Info = () => {
-  const profileId = useRecoilValue(profileIdInit);
+  // const profileId = Number(cookies().get("loginProfileId")?.value);
+  const profileId = Number(Cookies.get("loginProfileId"));
+
   const stepper = useRecoilValue(stepperInit);
   const isDraftLoading = useRecoilValue(isDraftComplete);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
 
   const [infoInputs, setInfoInputs] = useState<InfoInputType>(infoInputInit);
-  const [infoActives, setInfoActives] =
-    useState<InfoActiveType>(infoActiveInit);
 
   const [specialties, setSpecialties] =
     useRecoilState<SpecialtyType[]>(specialtyData);
@@ -66,12 +60,6 @@ const Info = () => {
   });
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
 
-  const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInfoInputs({ ...infoInputs, gender: e.target.id });
-    setCompletion({ ...completion, gender: true });
-    onSaveInfo();
-  };
-
   // 내 정보 입력
   const onInputChange = (
     e:
@@ -86,56 +74,6 @@ const Info = () => {
     isValid(value)
       ? setCompletion({ ...completion, [name]: true })
       : setCompletion({ ...completion, [name]: false });
-  };
-
-  // 키, 몸무게 입력(숫자만 입력 가능하게)
-  const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const changeNumber = setOnlyNumber(value);
-    setInfoInputs({ ...infoInputs, [name]: changeNumber });
-    isValid(value)
-      ? setCompletion({ ...completion, [name]: true })
-      : setCompletion({ ...completion, [name]: false });
-  };
-
-  // 출생연도 입력(숫자만 입력 가능하게)
-  const onBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const changeNumber = setOnlyNumber(value);
-    setInfoInputs({ ...infoInputs, [name]: changeNumber });
-    if (value && !infoActives.bornYear) {
-      setInfoActives({ ...infoActives, [name]: true });
-    } else if (
-      value.length === 4 ||
-      (value.length === 0 && infoActives.bornYear)
-    ) {
-      setInfoActives({ ...infoActives, [name]: false });
-    }
-    value.length >= 4
-      ? setCompletion({ ...completion, [name]: true })
-      : setCompletion({ ...completion, [name]: false });
-  };
-
-  // 전화번호 입력(전화번호 포맷으로 변경)
-  const onContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const inputContact = contactFormat(value);
-    setInfoInputs({ ...infoInputs, [name]: inputContact });
-    isValid(value)
-      ? setCompletion({ ...completion, [name]: true })
-      : setCompletion({ ...completion, [name]: false });
-  };
-
-  // 드랍다운 수동 액티브
-  const onInfoDropdownActive = (name: string, state: boolean) => {
-    setInfoActives({ ...infoActives, [name]: !state });
-  };
-
-  // 드랍다운 아이템 클릭
-  const onItemClick = (name: string, item: string) => {
-    setInfoInputs({ ...infoInputs, [name]: item });
-    setCompletion({ ...completion, [name]: true });
-    onSaveInfo();
   };
 
   const onSpecialtyFormModalClose = () => {
@@ -511,20 +449,11 @@ const Info = () => {
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
-      <InfoMain
-        infoInputs={infoInputs}
-        infoActives={infoActives}
+      <PersonalInfo
+        profileId={profileId}
         specialties={specialties}
-        onSelectGender={onSelectGender}
-        onInputChange={onInputChange}
-        onNumberChange={onNumberChange}
-        onBirthChange={onBirthChange}
-        onContactChange={onContactChange}
-        onInfoDropdownActive={onInfoDropdownActive}
-        onItemClick={onItemClick}
         onSpecialtyFormModalOpen={onSpecialtyFormModalOpen}
         onDeleteSpecialty={onDeleteSpecialty}
-        onBlurInfo={onSaveInfo}
       />
       <InfoSub
         education={education}

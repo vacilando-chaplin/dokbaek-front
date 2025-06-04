@@ -3,17 +3,36 @@
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { ProfileDarftDataType } from "../types";
-import { profileDraftData } from "@/lib/recoil/profile/common/atom";
+import {
+  draftStatus,
+  profileDraftData
+} from "@/lib/recoil/profile/common/atom";
+import { initialInfoData } from "@/lib/data";
+import { postProfileDraft } from "../../api";
 
 interface InitalDataProviderProps {
-  data: ProfileDarftDataType;
+  profileId: number;
+  initialData: ProfileDarftDataType;
 }
 
-const InitalDataProvider = ({ data }: InitalDataProviderProps) => {
+const InitalDataProvider = ({
+  profileId,
+  initialData
+}: InitalDataProviderProps) => {
+  const setDraftStatus = useSetRecoilState(draftStatus);
+
   const setData = useSetRecoilState(profileDraftData);
 
   useEffect(() => {
-    setData(data);
+    const postDraft = async () => {
+      const draftRes = await postProfileDraft(profileId);
+      setDraftStatus(draftRes.status);
+    };
+    postDraft();
+    setData({
+      ...initialData,
+      info: initialInfoData
+    });
   }, []);
 
   return null;
