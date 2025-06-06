@@ -1,46 +1,109 @@
+"use client";
+
 import Label from "@/components/atoms/label";
 import TextInput from "@/components/atoms/textInput";
 import Title from "@/components/atoms/title";
 import SearchDropdown from "@/components/molecules/searchDropdown";
 import { yearList } from "@/lib/data";
-import { InfoActiveType, InfoInputType, SpecialtyType } from "../types";
+import { SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
 import Plus from "../../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
+import { useRecoilState } from "recoil";
+import { profileDraftData } from "@/lib/recoil/profile/common/atom";
+import { useMutation } from "@tanstack/react-query";
+import { putInfoDraft } from "@/lib/api/profile/info/api";
+import { useState } from "react";
+import { contactFormat, setOnlyNumber } from "@/lib/utils";
 
-interface InfoMainProps {
-  infoInputs: InfoInputType;
-  infoActives: InfoActiveType;
+interface PersonalInfoProps {
+  profileId: number;
   specialties: SpecialtyType[];
-  onSelectGender: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onInputChange: React.ChangeEventHandler<HTMLInputElement>;
-  onNumberChange: React.ChangeEventHandler<HTMLInputElement>;
-  onBirthChange: React.ChangeEventHandler<HTMLInputElement>;
-  onContactChange: React.ChangeEventHandler<HTMLInputElement>;
-  onInfoDropdownActive: (name: string, state: boolean) => void;
-  onItemClick: (name: string, item: string) => void;
   onSpecialtyFormModalOpen: React.MouseEventHandler<HTMLButtonElement>;
   onDeleteSpecialty: (specialtyId: number) => () => void;
-  onBlurInfo: () => void;
 }
 
-const InfoMain = ({
-  infoInputs,
-  infoActives,
+const PersonalInfo = ({
+  profileId,
   specialties,
-  onSelectGender,
-  onInputChange,
-  onNumberChange,
-  onBirthChange,
-  onContactChange,
-  onInfoDropdownActive,
-  onItemClick,
   onSpecialtyFormModalOpen,
-  onDeleteSpecialty,
-  onBlurInfo
-}: InfoMainProps) => {
-  const { name, bornYear, height, weight, contact, email, instagram, youtube } =
-    infoInputs;
+  onDeleteSpecialty
+}: PersonalInfoProps) => {
+  const [profileData, setProfileData] = useRecoilState(profileDraftData);
+  const [info, setInfo] = useState(profileData.info);
+  const [dropdownActive, setDropdownActive] = useState(false);
+
+  const { mutate, isError } = useMutation({
+    mutationFn: (newInfo: any) => putInfoDraft(profileId, newInfo),
+    onSuccess: () => {
+      setProfileData({ ...profileData, info: info });
+    }
+  });
+
+  const onSaveInfo = () => {
+    mutate(info);
+  };
+
+  const {
+    name,
+    bornYear,
+    gender,
+    height,
+    weight,
+    contact,
+    email,
+    instagramLink,
+    youtubeLink
+  } = info;
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInfo({
+      ...info,
+      [name]: value
+    });
+  };
+
+  // 출생연도 입력(숫자만 입력 가능하게)
+  const onBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const changeNumber = setOnlyNumber(value);
+    setInfo({ ...info, [name]: changeNumber });
+    if (value && !dropdownActive) {
+      setDropdownActive(true);
+    } else if (value.length === 4 || (value.length === 0 && dropdownActive)) {
+      setDropdownActive(false);
+    }
+  };
+
+  // 키, 몸무게 입력(숫자만 입력 가능하게)
+  const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const changeNumber = setOnlyNumber(value);
+    setInfo({ ...info, [name]: changeNumber });
+  };
+
+  // 전화번호 입력(전화번호 포맷으로 변경)
+  const onContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const inputContact = contactFormat(value);
+    setInfo({ ...info, [name]: inputContact });
+  };
+
+  const onDropdownActive = () => {
+    setDropdownActive(!dropdownActive);
+  };
+
+  // 드랍다운 아이템 클릭
+  const onDropdownClick = (name: string, item: string) => {
+    setInfo({ ...info, [name]: item });
+    mutate(info);
+  };
+
+  const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInfo({ ...info, gender: e.target.id });
+    mutate(info);
+  };
 
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
@@ -57,7 +120,7 @@ const InfoMain = ({
               maxLength={10}
               placeholder="이름을 입력해주세요."
               onChange={onInputChange}
-              onBlur={onBlurInfo}
+              onBlur={onSaveInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -67,14 +130,14 @@ const InfoMain = ({
               name="bornYear"
               list={yearList}
               value={bornYear}
-              active={infoActives.bornYear}
+              active={dropdownActive}
               selected={bornYear}
               maxLength={4}
               placeholder="출생연도를 선택해주세요."
-              onClick={onItemClick}
-              onActive={onInfoDropdownActive}
+              onClick={onDropdownClick}
+              onActive={onDropdownActive}
               onChange={onBirthChange}
-              onSave={onBlurInfo}
+              onSave={onSaveInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -85,7 +148,7 @@ const InfoMain = ({
                   type="radio"
                   id="F"
                   name="customRadio"
-                  checked={infoInputs.gender === "F"}
+                  checked={info.gender === "F"}
                   className="peer hidden"
                   onChange={onSelectGender}
                 />
@@ -94,7 +157,7 @@ const InfoMain = ({
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "F" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
+                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${gender === "F" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>
@@ -106,7 +169,7 @@ const InfoMain = ({
                   type="radio"
                   id="M"
                   name="customRadio"
-                  checked={infoInputs.gender === "M"}
+                  checked={info.gender === "M"}
                   className="peer hidden"
                   onChange={onSelectGender}
                 />
@@ -115,7 +178,7 @@ const InfoMain = ({
                   className="flex cursor-pointer items-center space-x-2"
                 >
                   <span
-                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${infoInputs.gender === "M" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
+                    className={`interaction-default flex h-4 w-4 items-center justify-center rounded-full ${gender === "M" ? "border-[4px] border-accent-primary-light dark:border-accent-primary-dark" : "border-[1.5px] border-border-default-light hover:border-[2.5px] hover:border-accent-primary-light dark:border-border-default-dark dark:hover:border-accent-primary-dark"}`}
                   >
                     <span className="bg-white hidden h-2.5 w-2.5 rounded-full peer-checked:block"></span>
                   </span>
@@ -137,7 +200,7 @@ const InfoMain = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
-              onBlur={onBlurInfo}
+              onBlur={onSaveInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -151,7 +214,7 @@ const InfoMain = ({
               maxLength={3}
               placeholder="0"
               onChange={onNumberChange}
-              onBlur={onBlurInfo}
+              onBlur={onSaveInfo}
             />
           </div>
         </div>
@@ -165,7 +228,7 @@ const InfoMain = ({
               value={contact}
               maxLength={13}
               onChange={onContactChange}
-              onBlur={onBlurInfo}
+              onBlur={onSaveInfo}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -177,7 +240,7 @@ const InfoMain = ({
               value={email}
               maxLength={40}
               onChange={onInputChange}
-              onBlur={onBlurInfo}
+              onBlur={onSaveInfo}
             />
           </div>
         </div>
@@ -219,24 +282,24 @@ const InfoMain = ({
             <TextInput
               type="link"
               size="medium"
-              name="instagram"
+              name="instagramLink"
               icon="instagram"
-              value={instagram}
+              value={instagramLink}
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
-              onBlur={onBlurInfo}
+              onBlur={onSaveInfo}
             />
             <TextInput
               type="link"
               size="medium"
-              name="youtube"
+              name="youtubeLink"
               icon="youtube"
-              value={youtube}
+              value={youtubeLink}
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
-              onBlur={onBlurInfo}
+              onBlur={onSaveInfo}
             />
           </div>
         </div>
@@ -245,4 +308,4 @@ const InfoMain = ({
   );
 };
 
-export default InfoMain;
+export default PersonalInfo;

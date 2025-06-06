@@ -130,5 +130,6 @@ export const isValidYoutubeChannelUrl = (url: string) => {
 export const removeStorageData = () => {
   Cookies.remove("jwt", { path: "/" });
   Cookies.remove("refresh_token", { path: "/" });
+  Cookies.remove("loginProfileId", { path: "/" });
   localStorage.removeItem("recoil-persist");
 };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import RecoilRootProvider from "./recoilRootProvider";
 import "../styles/globals.css";
+import QueryRootProvider from "./queryRootProvider";
 
 export const metadata: Metadata = {
   title: "filogram",
@@ -29,9 +30,11 @@ export default function RootLayout({
       className={`${pretendard.variable} bg-background-surface-light dark:bg-background-surface-dark`}
     >
       <body className={`${pretendard.className}`}>
-        <RecoilRootProvider>
-          <main>{children}</main>
-        </RecoilRootProvider>
+        <QueryRootProvider>
+          <RecoilRootProvider>
+            <main>{children}</main>
+          </RecoilRootProvider>
+        </QueryRootProvider>
       </body>
     </html>
   );

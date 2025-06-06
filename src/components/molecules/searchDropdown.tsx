@@ -7,9 +7,9 @@ interface SearchDropdownProps {
   size: string;
   name: string;
   list: string[];
-  value: string;
+  value: string | number;
   active: boolean;
-  selected: string;
+  selected: string | number;
   isEmpty?: boolean;
   maxLength?: number;
   helperText?: string;
@@ -17,7 +17,7 @@ interface SearchDropdownProps {
   onClick: (name: string, item: string) => void;
   onActive: (name: string, state: boolean) => void;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  onSave?: () => void;
+  onSave?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 const SearchDropdown = ({

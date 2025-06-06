@@ -23,7 +23,7 @@ const TopNavigation = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const loginProfile = useRecoilValue(loginProfileId);
+  const loginProfile = Cookies.get("loginProfileId");
   const setPathName = useSetRecoilState(currentPath);
   const setToastMessage = useSetRecoilState(toastMessage);
 
