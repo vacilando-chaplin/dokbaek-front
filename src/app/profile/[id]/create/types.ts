@@ -10,16 +10,16 @@ export interface VideoLinkType {
 }
 
 export interface ProfileInfoDataType {
-  name: string;
-  gender: string;
+  name: string | null;
+  gender: string | null;
   bornYear: number | string;
   height: number | string;
   weight: number | string;
-  email: string;
-  contact: string;
-  instagramLink: string;
-  youtubeLink: string;
-  introduction: string;
+  email: string | null;
+  contact: string | null;
+  instagramLink: string | null;
+  youtubeLink: string | null;
+  introduction: string | null;
 }
 
 export interface ProfileEducationDataType {

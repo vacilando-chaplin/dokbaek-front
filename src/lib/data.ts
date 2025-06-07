@@ -31,19 +31,6 @@ export const loginErrorMessages: Record<
   }
 };
 
-export const initialInfoData = {
-  name: "",
-  gender: "M",
-  bornYear: 0,
-  height: 0,
-  weight: 0,
-  email: "",
-  contact: "",
-  instagramLink: "",
-  youtubeLink: "",
-  introduction: ""
-};
-
 export const educationList = [
   "졸업",
   "졸업 예정",

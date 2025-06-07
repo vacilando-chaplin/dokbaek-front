@@ -3,27 +3,27 @@ import BottomBar from "@/app/profile/[id]/create/components/bottomBar";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import DraftModal from "./components/draftModal";
-import { getProfileDraft } from "@/lib/api/profile/common/api";
-import InitalDataProvider from "./components/initialDataProvider";
+import { postProfileDraftServer } from "@/lib/api/profile/common/api";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-  const jwt = cookies().get("jwt")?.value;
+  const cookie = await cookies();
+  const jwt = cookie.get("jwt")?.value;
   if (!jwt) redirect("/");
 
   const profileId = Number(cookies().get("loginProfileId")?.value);
 
-  const initialDraftData = await getProfileDraft(profileId);
+  const draftRes = await postProfileDraftServer(profileId);
+  const draftData = await draftRes.data.data;
+  const draftStatus = draftRes.status;
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
       <ListMenu profileId={profileId} />
-      <InitalDataProvider
-        profileId={profileId}
-        initialData={initialDraftData}
-      />
       {children}
       <BottomBar profileId={profileId} />
-      <DraftModal profileId={profileId} />
+      {draftStatus === 200 && (
+        <DraftModal profileId={profileId} draftData={draftData} />
+      )}
     </div>
   );
 };

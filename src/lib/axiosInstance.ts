@@ -14,7 +14,9 @@ const api = axios.create({
 
 const refreshToken = async () => {
   const refresh_token = Cookies.get("refresh_token");
-  if (!refresh_token) throw new Error("Refresh token not found");
+  if (!refresh_token) {
+    throw new Error("Refresh token not found");
+  }
 
   try {
     const { data } = await axios.post(

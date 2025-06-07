@@ -34,13 +34,16 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
   useEffect(() => {
     if (draftInfoData) {
       const { name, gender, bornYear, contact } = draftInfoData;
-      const inValid =
-        name.trim() === "" ||
-        !gender ||
-        String(bornYear).length < 4 ||
-        contact.length < 10;
+      const valid =
+        name !== null &&
+        name.trim() !== "" &&
+        gender !== null &&
+        bornYear !== null &&
+        String(bornYear).length === 4 &&
+        contact !== null &&
+        contact.length >= 9;
 
-      setDisabled(inValid);
+      setDisabled(!valid);
     }
   }, [
     draftInfoData?.name,

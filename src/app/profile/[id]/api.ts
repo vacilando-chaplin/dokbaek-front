@@ -1,7 +1,7 @@
 import { api } from "@/lib/axiosInstance";
 import { base64ToBlob } from "@/lib/utils";
 
-export const postProfileDraft = async (profileId: number) => {
+export const postProfileDraftClient = async (profileId: number) => {
   try {
     const res = await api.post(`/profile/${profileId}/draft`);
     return res;
@@ -10,7 +10,7 @@ export const postProfileDraft = async (profileId: number) => {
   }
 };
 
-export const deleteProfileDraft = async (profileId: number) => {
+export const deleteProfileDraftClient = async (profileId: number) => {
   try {
     const res = await api.delete(`/profile/${profileId}/draft`);
     return res.data;

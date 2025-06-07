@@ -7,7 +7,6 @@ import { isValid } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import InfoSub from "./components/infoSub";
-import InfoThird from "./components/infoThird";
 import {
   InfoDataType,
   InfoInputType,
@@ -27,8 +26,8 @@ import {
   putEducation,
   putInfoDraft
 } from "@/lib/api/profile/info/api";
-import { getProfileDraft } from "@/lib/api/profile/common/api";
 import Cookies from "js-cookie";
+import Introduction from "./components/introduction";
 
 const Info = () => {
   // const profileId = Number(cookies().get("loginProfileId")?.value);
@@ -59,22 +58,6 @@ const Info = () => {
     education: false
   });
   const [profileSpecialtyModal, setProfileSpecialtyModal] = useState(false);
-
-  // 내 정보 입력
-  const onInputChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setInfoInputs({
-      ...infoInputs,
-      [name]: value
-    });
-    isValid(value)
-      ? setCompletion({ ...completion, [name]: true })
-      : setCompletion({ ...completion, [name]: false });
-  };
 
   const onSpecialtyFormModalClose = () => {
     setProfileSpecialtyModal(false);
@@ -375,77 +358,77 @@ const Info = () => {
   }, [stepper]);
 
   // 내 정보 업데이트
-  useEffect(() => {
-    const getProfileData = async () => {
-      if (isDraftLoading) {
-        const res = await getProfileDraft(profileId);
-        const data = await res.data;
+  // useEffect(() => {
+  //   const getProfileData = async () => {
+  //     if (isDraftLoading) {
+  //       const res = await getProfileDraft(profileId);
+  //       const data = await res.data;
 
-        if (data.education.length >= 1) {
-          const findEducation = educationEngList.findIndex(
-            (education: string) => education === data.education[0].status
-          );
+  //       if (data.education.length >= 1) {
+  //         const findEducation = educationEngList.findIndex(
+  //           (education: string) => education === data.education[0].status
+  //         );
 
-          const educationInit = [
-            {
-              id: data.education[0].id,
-              school: {
-                name: data.education[0].school.name,
-                schoolType: data.education[0].school.schoolType,
-                schoolGubun: data.education[0].school.schoolGubun
-              },
-              major: data.education[0].major,
-              status: educationList[0]
-            }
-          ];
-          setCompletion({
-            ...completion,
-            schoolName: isValid(data.education[0].school.name),
-            schoolMajor: isValid(data.education[0].major),
-            schoolStatus: isValid(educationList[findEducation])
-          });
-          setEducation(educationInit);
-        }
+  //         const educationInit = [
+  //           {
+  //             id: data.education[0].id,
+  //             school: {
+  //               name: data.education[0].school.name,
+  //               schoolType: data.education[0].school.schoolType,
+  //               schoolGubun: data.education[0].school.schoolGubun
+  //             },
+  //             major: data.education[0].major,
+  //             status: educationList[0]
+  //           }
+  //         ];
+  //         setCompletion({
+  //           ...completion,
+  //           schoolName: isValid(data.education[0].school.name),
+  //           schoolMajor: isValid(data.education[0].major),
+  //           schoolStatus: isValid(educationList[findEducation])
+  //         });
+  //         setEducation(educationInit);
+  //       }
 
-        if (data.info !== null) {
-          setCompletion({
-            ...completion,
-            name: isValid(data.info.name),
-            gender: isValid(data.info.gender),
-            bornYear: isValid(data.info.bornYear),
-            height: data.info.height > 0 ? true : false,
-            weight: data.info.weight > 0 ? true : false,
-            contact: isValid(data.info.contact),
-            email: isValid(data.info.email),
-            specialty: isValid(data.specialties),
-            youtube: isValid(data.info.youtubeLink),
-            instagram: isValid(data.info.instagramLink),
-            introduction: isValid(data.info.introduction),
-            profilePhoto: isValid(data.photos),
-            stillcutPhoto: isValid(data.stillCuts),
-            recentPhoto: isValid(data.recentPhotos),
-            filmography: isValid(data.filmos),
-            video: isValid(data.videos)
-          });
+  //       if (data.info !== null) {
+  //         setCompletion({
+  //           ...completion,
+  //           name: isValid(data.info.name),
+  //           gender: isValid(data.info.gender),
+  //           bornYear: isValid(data.info.bornYear),
+  //           height: data.info.height > 0 ? true : false,
+  //           weight: data.info.weight > 0 ? true : false,
+  //           contact: isValid(data.info.contact),
+  //           email: isValid(data.info.email),
+  //           specialty: isValid(data.specialties),
+  //           youtube: isValid(data.info.youtubeLink),
+  //           instagram: isValid(data.info.instagramLink),
+  //           introduction: isValid(data.info.introduction),
+  //           profilePhoto: isValid(data.photos),
+  //           stillcutPhoto: isValid(data.stillCuts),
+  //           recentPhoto: isValid(data.recentPhotos),
+  //           filmography: isValid(data.filmos),
+  //           video: isValid(data.videos)
+  //         });
 
-          setInfoInputs({
-            ...infoInputs,
-            name: data.info.name,
-            gender: data.info.gender,
-            bornYear: data.info.bornYear,
-            height: data.info.height,
-            weight: data.info.weight,
-            contact: data.info.contact,
-            email: data.info.email,
-            instagram: data.info.instagramLink,
-            youtube: data.info.youtubeLink,
-            introduction: data.info.introduction
-          });
-        }
-      }
-    };
-    getProfileData();
-  }, [isDraftLoading]);
+  //         setInfoInputs({
+  //           ...infoInputs,
+  //           name: data.info.name,
+  //           gender: data.info.gender,
+  //           bornYear: data.info.bornYear,
+  //           height: data.info.height,
+  //           weight: data.info.weight,
+  //           contact: data.info.contact,
+  //           email: data.info.email,
+  //           instagram: data.info.instagramLink,
+  //           youtube: data.info.youtubeLink,
+  //           introduction: data.info.introduction
+  //         });
+  //       }
+  //     }
+  //   };
+  //   getProfileData();
+  // }, [isDraftLoading]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
@@ -469,11 +452,7 @@ const Info = () => {
         onCreateEducation={onCreateEducation}
         onDeleteEducation={onDeleteEducation}
       />
-      <InfoThird
-        infoInputs={infoInputs}
-        onInputChange={onInputChange}
-        onSaveInfo={onSaveInfo}
-      />
+      <Introduction profileId={profileId} />
       {profileSpecialtyModal && (
         <ProfileSpecialtyFormModal
           type="add"

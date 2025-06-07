@@ -7,7 +7,7 @@ interface TextInputProps {
   type: string;
   size: string;
   name: string;
-  value: any;
+  value: string | number | null;
   icon?: string;
   limit?: boolean;
   disabled?: boolean;
@@ -66,7 +66,7 @@ const TextInput = ({
       <input
         type={type}
         name={name}
-        value={value}
+        value={value ? value : ""}
         disabled={disabled}
         maxLength={maxLength}
         placeholder={placeholder}
@@ -82,7 +82,8 @@ const TextInput = ({
       )}
       {limit && (
         <label className="text-caption1 text-content-secondary-light dark:text-content-secondary-dark">
-          {value.length}/{maxLength}
+          {value !== null && typeof value === "string" && value.length}/
+          {maxLength}
         </label>
       )}
     </div>

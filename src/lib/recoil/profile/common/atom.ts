@@ -8,16 +8,16 @@ export const profileDraftData = atom<ProfileDarftDataType>({
     userId: null,
     status: null,
     info: {
-      name: "",
-      gender: "M",
+      name: null,
+      gender: null,
       bornYear: 0,
       height: 0,
       weight: 0,
-      email: "",
-      contact: "",
-      instagramLink: "",
-      youtubeLink: "",
-      introduction: ""
+      email: null,
+      contact: null,
+      instagramLink: null,
+      youtubeLink: null,
+      introduction: null
     },
     mainPhotoPath: null,
     mainPhotoPreviewPath: null,
@@ -33,7 +33,7 @@ export const profileDraftData = atom<ProfileDarftDataType>({
   }
 });
 
-export const draftStatus = atom<number>({
-  key: "draftStatus",
-  default: 0
+export const profiledraftModalState = atom<string>({
+  key: "profiledraftModalState",
+  default: ""
 });
