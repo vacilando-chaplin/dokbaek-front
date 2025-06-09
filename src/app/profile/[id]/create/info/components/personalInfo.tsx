@@ -9,40 +9,30 @@ import { SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
 import Plus from "../../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { useMutation } from "@tanstack/react-query";
-import { putInfoDraft } from "@/lib/api/profile/info/api";
 import { useState } from "react";
 import { contactFormat, setOnlyNumber } from "@/lib/utils";
+import { ProfileInfoDataType } from "../../types";
+import { putInfoDraft } from "../api";
+import {
+  profileSpecialtyModalState,
+  specialtyData
+} from "@/lib/recoil/profile/info/atom";
 
 interface PersonalInfoProps {
   profileId: number;
-  specialties: SpecialtyType[];
-  onSpecialtyFormModalOpen: React.MouseEventHandler<HTMLButtonElement>;
-  onDeleteSpecialty: (specialtyId: number) => () => void;
 }
 
-const PersonalInfo = ({
-  profileId,
-  specialties,
-  onSpecialtyFormModalOpen,
-  onDeleteSpecialty
-}: PersonalInfoProps) => {
+const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
-  const [info, setInfo] = useState(profileData.info);
+  const [specialties, setSpecialties] =
+    useRecoilState<SpecialtyType[]>(specialtyData);
+  const setProfileSpecialtyModal = useSetRecoilState(
+    profileSpecialtyModalState
+  );
   const [dropdownActive, setDropdownActive] = useState(false);
-
-  const { mutate, isError } = useMutation({
-    mutationFn: (newInfo: any) => putInfoDraft(profileId, newInfo),
-    onSuccess: () => {
-      setProfileData({ ...profileData, info: info });
-    }
-  });
-
-  const onSaveInfo = () => {
-    mutate(info);
-  };
 
   const {
     name,
@@ -54,21 +44,58 @@ const PersonalInfo = ({
     email,
     instagramLink,
     youtubeLink
-  } = info;
+  } = profileData.info || {};
 
+  const { mutate } = useMutation({
+    mutationFn: (newInfo: ProfileInfoDataType) =>
+      putInfoDraft(profileId, newInfo),
+    onMutate: () => {
+      setProfileData((prev) => ({
+        ...prev,
+        info: {
+          ...prev.info,
+          name: name,
+          bornYear: bornYear,
+          gender: gender,
+          height: height,
+          weight: weight,
+          contact: contact,
+          email: email,
+          instagramLink: instagramLink,
+          youtubeLink: youtubeLink
+        }
+      }));
+    }
+  });
+
+  // 기본 정보 저장
+  const onSaveInfo = () => {
+    mutate(profileData.info);
+  };
+
+  // 문자열, 숫자 상관없는 입력
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setInfo({
-      ...info,
-      [name]: value
-    });
+    setProfileData((prev) => ({
+      ...prev,
+      info: {
+        ...profileData.info,
+        [name]: value
+      }
+    }));
   };
 
   // 출생연도 입력(숫자만 입력 가능하게)
   const onBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const changeNumber = setOnlyNumber(value);
-    setInfo({ ...info, [name]: changeNumber });
+    setProfileData((prev) => ({
+      ...prev,
+      info: {
+        ...profileData.info,
+        [name]: changeNumber
+      }
+    }));
     if (value && !dropdownActive) {
       setDropdownActive(true);
     } else if (value.length === 4 || (value.length === 0 && dropdownActive)) {
@@ -80,29 +107,55 @@ const PersonalInfo = ({
   const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const changeNumber = setOnlyNumber(value);
-    setInfo({ ...info, [name]: changeNumber });
+    setProfileData((prev) => ({
+      ...prev,
+      info: { ...profileData.info, [name]: changeNumber }
+    }));
   };
 
   // 전화번호 입력(전화번호 포맷으로 변경)
   const onContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const inputContact = contactFormat(value);
-    setInfo({ ...info, [name]: inputContact });
+    setProfileData((prev) => ({
+      ...prev,
+      info: { ...profileData.info, [name]: inputContact }
+    }));
   };
 
+  // 드랍다운 액티브
   const onDropdownActive = () => {
     setDropdownActive(!dropdownActive);
   };
 
   // 드랍다운 아이템 클릭
   const onDropdownClick = (name: string, item: string) => {
-    setInfo({ ...info, [name]: item });
-    mutate(info);
+    setProfileData((prev) => ({
+      ...prev,
+      info: { ...profileData.info, [name]: item }
+    }));
+    mutate(profileData.info);
   };
 
+  // 성별 선택
   const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInfo({ ...info, gender: e.target.id });
-    mutate(info);
+    setProfileData((prev) => ({
+      ...prev,
+      info: { ...profileData.info, gender: e.target.id }
+    }));
+    mutate(profileData.info);
+  };
+
+  const onSpecialtyFormModalOpen = async () => {
+    setProfileSpecialtyModal(true);
+  };
+
+  const onDeleteSpecialty = (specialtyId: number) => {
+    return () => {
+      setSpecialties((prev) =>
+        prev.filter((specialty) => specialty.id !== specialtyId)
+      );
+    };
   };
 
   return (
@@ -148,7 +201,7 @@ const PersonalInfo = ({
                   type="radio"
                   id="F"
                   name="customRadio"
-                  checked={info.gender === "F"}
+                  checked={gender === "F"}
                   className="peer hidden"
                   onChange={onSelectGender}
                 />
@@ -169,7 +222,7 @@ const PersonalInfo = ({
                   type="radio"
                   id="M"
                   name="customRadio"
-                  checked={info.gender === "M"}
+                  checked={gender === "M"}
                   className="peer hidden"
                   onChange={onSelectGender}
                 />

@@ -21,9 +21,10 @@ export const useDebounce = (value: any, delay: number) => {
 
 export const useSetToken = (name: string, token: string) => {
   Cookies.set(name, token, {
-    expires: 1,
+    expires: 7,
+    secure: process.env.NODE_ENV === "production",
     path: "/",
-    sameSite: "Strict"
+    sameSite: "strict"
   });
 };
 

@@ -1,12 +1,7 @@
 "use client";
 
 import { deletePhoto, postPhoto, patchPhoto } from "@/lib/api";
-import {
-  completionProgress,
-  isDraftComplete,
-  profileIdInit,
-  toastMessage
-} from "@/lib/atoms";
+import { completionProgress, profileIdInit, toastMessage } from "@/lib/atoms";
 import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -18,22 +13,32 @@ import PhotoRecent from "./components/photoRecent";
 import imageCompression from "browser-image-compression";
 import { convertToBase64, getFileMimeTypeFromUrl, isValid } from "@/lib/utils";
 import { postRecentPhoto, postRecentPhotoEdit } from "./api";
-import { getProfileDraft } from "../../api";
 import { CropDataType, PhotoModalType, SelectedImagesType } from "../../types";
 import { imageCompressionOptions } from "@/lib/data";
 import { cropDataInit } from "../../data";
+import { getProfileDraftClient } from "../../api";
+import Cookies from "js-cookie";
+import {
+  profileDraftData,
+  profileDraftModalState
+} from "@/lib/recoil/profile/common/atom";
 
 const Photo = () => {
-  const profileId = useRecoilValue(profileIdInit);
-  const isDraftLoading = useRecoilValue(isDraftComplete);
+  const profileId = Number(Cookies.get("loginProfileId"));
+  const profileDraftState = useRecoilValue(profileDraftModalState);
   const setToastMessage = useSetRecoilState(toastMessage);
   const [completion, setCompletion] = useRecoilState(completionProgress);
+  const profileData = useRecoilValue(profileDraftData);
 
-  const [photoList, setPhotoList] = useState<PhotoResponseType[]>([]);
-  const [stillCutList, setStillCutList] = useState<PhotoResponseType[]>([]);
+  const [photoList, setPhotoList] = useState<PhotoResponseType[]>(
+    profileData.photos
+  );
+  const [stillCutList, setStillCutList] = useState<PhotoResponseType[]>(
+    profileData.stillCuts
+  );
   const [recentPhotoList, setRecentPhotoList] = useState<
     PhotoRecentResponseType[]
-  >([]);
+  >(profileData.recentPhotos);
 
   // 이미지 크롭할 때 사진
   const [selectImage, setSelectImage] = useState("");
@@ -191,7 +196,7 @@ const Photo = () => {
       }
       setCompletion({ ...completion, stillcutPhoto: true });
     }
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -208,7 +213,7 @@ const Photo = () => {
   const onEditPhoto = async () => {
     await patchPhoto(profileId, cropImage, photoModal.id, photoModal.category);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -228,7 +233,7 @@ const Photo = () => {
       photoModal.category
     );
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setCompletion({ ...completion, recentPhoto: true });
@@ -243,7 +248,7 @@ const Photo = () => {
   const onEditRecentPhoto = async () => {
     await postRecentPhotoEdit(profileId, selectImage, cropImage, photoModal.id);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setRecentPhotoList(data.recentPhotos);
@@ -257,7 +262,7 @@ const Photo = () => {
   const onDeletePhoto = async (id: string, category: string) => {
     await deletePhoto(profileId, id, category);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     isValid(data.photos)
@@ -371,31 +376,39 @@ const Photo = () => {
   };
 
   // 사진 리스트 업데이트
+  // useEffect(() => {
+  //   const getProfileData = async () => {
+  //     if (isDraftLoading) {
+  //       const res = await getProfileDraftClient(profileId);
+  //       const data = await res.data;
+
+  //       isValid(data.photos)
+  //         ? setCompletion({ ...completion, profilePhoto: true })
+  //         : setCompletion({ ...completion, profilePhoto: false });
+
+  //       isValid(data.stillCuts)
+  //         ? setCompletion({ ...completion, stillcutPhoto: true })
+  //         : setCompletion({ ...completion, stillcutPhoto: false });
+
+  //       isValid(data.recentPhotos)
+  //         ? setCompletion({ ...completion, recentPhoto: true })
+  //         : setCompletion({ ...completion, recentPhoto: false });
+
+  //       setPhotoList(data.photos);
+  //       setStillCutList(data.stillCuts);
+  //       setRecentPhotoList(data.recentPhotos);
+  //     }
+  //   };
+  //   getProfileData();
+  // }, [isDraftLoading]);
+
   useEffect(() => {
-    const getProfileData = async () => {
-      if (isDraftLoading) {
-        const res = await getProfileDraft(profileId);
-        const data = await res.data;
-
-        isValid(data.photos)
-          ? setCompletion({ ...completion, profilePhoto: true })
-          : setCompletion({ ...completion, profilePhoto: false });
-
-        isValid(data.stillCuts)
-          ? setCompletion({ ...completion, stillcutPhoto: true })
-          : setCompletion({ ...completion, stillcutPhoto: false });
-
-        isValid(data.recentPhotos)
-          ? setCompletion({ ...completion, recentPhoto: true })
-          : setCompletion({ ...completion, recentPhoto: false });
-
-        setPhotoList(data.photos);
-        setStillCutList(data.stillCuts);
-        setRecentPhotoList(data.recentPhotos);
-      }
-    };
-    getProfileData();
-  }, [isDraftLoading]);
+    if (profileDraftState !== "") {
+      setPhotoList(profileData.photos);
+      setStillCutList(profileData.stillCuts);
+      setRecentPhotoList(profileData.recentPhotos);
+    }
+  }, [profileDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-4">

@@ -1,15 +1,14 @@
 "use client";
 
-import { getProfile, getProfileMe, getProfileOtherUser } from "@/lib/api";
+import { getProfile, getProfileOtherUser } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
   filmoCategory,
-  profileIdInit,
   stepperInit,
   toastMessage
 } from "@/lib/atoms";
-import { imageCompressionOptions, profileResponseInit } from "@/lib/data";
+import { imageCompressionOptions } from "@/lib/data";
 import {
   FilmoCategoryType,
   FilmoResponseType,
@@ -28,7 +27,7 @@ import {
   videoLinkInit
 } from "./data";
 import { SpecialtyItemType } from "./create/info/types";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   deleteProfilePhotoMain,
   patchProfilePhotoMain,
@@ -46,15 +45,16 @@ import imageCompression from "browser-image-compression";
 import ProfileMainPhotoModal from "./components/profileMainPhotoModal";
 import { useGetBlurPhoto } from "@/lib/hooks";
 import Cookies from "js-cookie";
+import {
+  profileDraftData,
+  viewedProfileId
+} from "@/lib/recoil/profile/common/atom";
 
 const Profile = () => {
   const router = useRouter();
-  const pathName = usePathname();
-  const pathParts = pathName.split("/").filter((part) => part.length > 0);
-  const pathUserId =
-    pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
-  const [profileId, setProfileId] = useRecoilState(profileIdInit);
-  const loginProfile = Number(Cookies.get("loginProfileId"));
+
+  const loginProfileId = Number(Cookies.get("loginProfileId"));
+  const viewProfileId = useRecoilValue(viewedProfileId);
 
   const [categoryList, setCategoryList] = useRecoilState(categoryData);
   const filmoCategoryList = useRecoilValue(filmoCategory);
@@ -65,7 +65,7 @@ const Profile = () => {
   const subRef = useRef<HTMLDivElement>(null);
   const [linear, setLinear] = useState("sub");
 
-  const [profileData, setProfileData] = useState<any>(profileResponseInit);
+  const [profileData, setProfileData] = useState<any>(profileDraftData);
   const [otherUser, setOtherUser] = useState(false);
 
   const [profileSpecialties, setProfileSpecialties] = useState<
@@ -111,8 +111,8 @@ const Profile = () => {
     const path = ["info", "photo", "filmo", "video"];
 
     setStepper(stepper);
-    router.prefetch(`/profile/${loginProfile}/create/${path[stepper]}`);
-    router.push(`/profile/${loginProfile}/create/${path[stepper]}`);
+    router.prefetch(`/profile/${loginProfileId}/create/${path[stepper]}`);
+    router.push(`/profile/${loginProfileId}/create/${path[stepper]}`);
   };
 
   // ProfileSub
@@ -249,7 +249,11 @@ const Profile = () => {
   };
 
   const onAddMainPhoto = async () => {
-    const res = await postProfilePhotoMain(profileId, mainPhotoTemp, cropImage);
+    const res = await postProfilePhotoMain(
+      loginProfileId,
+      mainPhotoTemp,
+      cropImage
+    );
     const data = res.data;
 
     setSelectImage("");
@@ -262,9 +266,13 @@ const Profile = () => {
   };
 
   const onChangeMainPhoto = async () => {
-    await deleteProfilePhotoMain(profileId);
+    await deleteProfilePhotoMain(loginProfileId);
 
-    const res = await postProfilePhotoMain(profileId, mainPhotoTemp, cropImage);
+    const res = await postProfilePhotoMain(
+      loginProfileId,
+      mainPhotoTemp,
+      cropImage
+    );
     const data = res.data;
 
     setSelectImage("");
@@ -277,7 +285,7 @@ const Profile = () => {
   };
 
   const onEditMainPhoto = async () => {
-    const res = await patchProfilePhotoMain(profileId, cropImage);
+    const res = await patchProfilePhotoMain(loginProfileId, cropImage);
     const data = res.data;
 
     setMainPhoto(data.mainPhotoPreviewPath);
@@ -290,7 +298,7 @@ const Profile = () => {
   };
 
   const onDeleteMainPhoto = async () => {
-    await deleteProfilePhotoMain(profileId);
+    await deleteProfilePhotoMain(loginProfileId);
 
     setMainPhoto("");
     setMainPhotoOrigin("");
@@ -305,20 +313,13 @@ const Profile = () => {
 
       mainHeight >= subHeight ? setLinear("main") : setLinear("sub");
     }
-
-    const getProfileId = async () => {
-      const res = await getProfileMe();
-      const data = res.data;
-      setProfileId(data.id);
-    };
-    getProfileId();
   }, []);
 
   useEffect(() => {
     const getProfileData = async () => {
-      if (pathName && loginProfile !== Number(pathUserId)) {
+      if (loginProfileId !== viewProfileId) {
         setOtherUser(true);
-        const res = await getProfileOtherUser(Number(pathUserId));
+        const res = await getProfileOtherUser(Number(viewProfileId));
         const data = res.data;
 
         if (data.photos.length >= 1) {
@@ -326,19 +327,14 @@ const Profile = () => {
           setBlurPhotoList(photoList);
         }
 
-        setProfileId(Number(pathUserId));
         setProfileData(data);
         setMainPhoto(data.mainPhotoPreviewPath);
         setMainPhotoOrigin(data.mainPhotoPath);
         setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
-      } else if (pathName && loginProfile === Number(pathUserId) && profileId) {
-        const profileRes = await getProfileMe();
-        const profileData = profileRes.data;
-        setProfileId(profileData.id);
-
+      } else if (loginProfileId === viewProfileId) {
         setOtherUser(false);
-        const res = await getProfile(profileData.id);
+        const res = await getProfile(loginProfileId);
         const data = res.data;
 
         if (data.photos.length >= 1) {
@@ -354,11 +350,12 @@ const Profile = () => {
       }
     };
     getProfileData();
-  }, [pathName, profileId]);
+  }, [viewProfileId]);
 
   useEffect(() => {
     const filteredCategoryList = filmoCategoryList.filter(
       (category: FilmoCategoryType) =>
+        profileData.filmos &&
         profileData.filmos.findIndex(
           (filmo: FilmoResponseType) =>
             filmo.production.category.name === category.name
@@ -371,7 +368,7 @@ const Profile = () => {
   }, [profileData]);
 
   const onDownloadPDF = () => {
-    const PDFUrl = `https://filogram.my/api/pdf/v1/profile/${profileId}`;
+    const PDFUrl = `https://filogram.my/api/pdf/v1/profile/${loginProfileId}`;
     window.open(PDFUrl, "_blank");
   };
 
@@ -381,7 +378,7 @@ const Profile = () => {
         <ProfileMain
           info={profileData.info}
           linear={linear}
-          profileId={profileId}
+          profileId={viewProfileId}
           otherUser={otherUser}
           mainPhoto={mainPhoto}
           updated={profileData.updatedAt}
@@ -395,9 +392,7 @@ const Profile = () => {
           onMainPhotoChangeModalOpen={onMainPhotoChangeModalOpen}
           onMainPhotoEditModalOpen={onMainPhotoEditModalOpen}
           onMainPhotoDeleteModalOpen={onMainPhotoDeleteModalActive}
-          education={
-            profileData.education.length >= 1 ? profileData.education : []
-          }
+          education={profileData.education}
         />
       </div>
       <div ref={subRef} className="flex-[1_1_70%]">

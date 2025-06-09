@@ -72,7 +72,7 @@ const ProfilePhotoModal = ({
           placeholder="blur"
           blurDataURL={blurPhotoList[currentIndex]}
           priority
-          className={`max-h-[80vh] rounded-2xl ${photoLabel === "profilePhoto" ? "w-[60vh] max-w-[80vh]" : "w-auto"}`}
+          className={`max-h-[80vh] rounded-2xl ${photoLabel === "stillcutPhoto" ? "w-[100vh] min-w-[100vh]" : "w-[60vh] max-w-[80vh]"}`}
           onClick={(e) => e.stopPropagation()}
         />
       </div>

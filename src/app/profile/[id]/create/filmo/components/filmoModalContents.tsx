@@ -160,11 +160,13 @@ const FilmoModalContents = ({
           <Label label="썸네일 이미지" />
           <ThumbnailFrame
             image={
-              thumbnail === "" || thumbnail.endsWith("null") ? false : true
+              !thumbnail || thumbnail === "" || thumbnail.endsWith("null")
+                ? false
+                : true
             }
             onChange={onSelectThumbnail}
           >
-            {thumbnail === "" || thumbnail.endsWith("null") ? (
+            {!thumbnail || thumbnail === "" || thumbnail.endsWith("null") ? (
               <>
                 <Plus width="16" height="16" fill="#868E96" />
                 추가

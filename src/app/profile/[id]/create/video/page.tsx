@@ -1,12 +1,7 @@
 "use client";
 
 import LinkModal from "@/components/organisms/linkModal";
-import {
-  completionProgress,
-  isDraftComplete,
-  profileIdInit,
-  toastMessage
-} from "@/lib/atoms";
+import { completionProgress, profileIdInit, toastMessage } from "@/lib/atoms";
 import { VideoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -18,11 +13,17 @@ import { videoModalInit } from "./data";
 import { videoLinkInit } from "../../data";
 import { deleteVideo, postVideo, putVideo } from "./api";
 import { isValid } from "@/lib/utils";
-import { getProfileDraft } from "../../api";
+import { getProfileDraftClient } from "../../api";
+import Cookies from "js-cookie";
+import {
+  profileDraftData,
+  profileDraftModalState
+} from "@/lib/recoil/profile/common/atom";
 
 const Video = () => {
-  const profileId = useRecoilValue(profileIdInit);
-  const isDraftLoading = useRecoilValue(isDraftComplete);
+  const profileId = Number(Cookies.get("loginProfileId"));
+  const profileDraftState = useRecoilValue(profileDraftModalState);
+  const profileData = useRecoilValue(profileDraftData);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -61,7 +62,7 @@ const Video = () => {
   const onVideoModalSave = async () => {
     await postVideo(profileId, videoInputs);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     setCompletion({ ...completion, video: true });
@@ -87,7 +88,7 @@ const Video = () => {
   const onVideoModalEdit = async () => {
     await putVideo(profileId, videoModal.id, videoInputs);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     setVideoList(data.videos);
@@ -111,7 +112,7 @@ const Video = () => {
   const onVideoDeleteClick = async () => {
     await deleteVideo(profileId, videoModal.id);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     isValid(data.videos)
@@ -133,20 +134,26 @@ const Video = () => {
   };
 
   // 비디오 리스트 업데이트
-  useEffect(() => {
-    const getProfileData = async () => {
-      if (isDraftLoading) {
-        const res = await getProfileDraft(profileId);
-        const data = await res.data;
+  // useEffect(() => {
+  //   const getProfileData = async () => {
+  //     if (isDraftLoading) {
+  //       const res = await getProfileDraftClient(profileId);
+  //       const data = await res.data;
 
-        isValid(data.videos)
-          ? setCompletion({ ...completion, video: true })
-          : setCompletion({ ...completion, video: false });
-        setVideoList(data.videos);
-      }
-    };
-    getProfileData();
-  }, [isDraftLoading]);
+  //       isValid(data.videos)
+  //         ? setCompletion({ ...completion, video: true })
+  //         : setCompletion({ ...completion, video: false });
+  //       setVideoList(data.videos);
+  //     }
+  //   };
+  //   getProfileData();
+  // }, [isDraftLoading]);
+
+  useEffect(() => {
+    if (profileDraftState !== "") {
+      setVideoList(profileData.videos);
+    }
+  }, [profileDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

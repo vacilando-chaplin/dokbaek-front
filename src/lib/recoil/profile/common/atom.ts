@@ -1,5 +1,8 @@
 import { ProfileDarftDataType } from "@/app/profile/[id]/create/types";
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 export const profileDraftData = atom<ProfileDarftDataType>({
   key: "profileDraftData",
@@ -8,16 +11,16 @@ export const profileDraftData = atom<ProfileDarftDataType>({
     userId: null,
     status: null,
     info: {
-      name: "",
-      gender: "M",
+      name: null,
+      gender: null,
       bornYear: 0,
       height: 0,
       weight: 0,
-      email: "",
-      contact: "",
-      instagramLink: "",
-      youtubeLink: "",
-      introduction: ""
+      email: null,
+      contact: null,
+      instagramLink: null,
+      youtubeLink: null,
+      introduction: null
     },
     mainPhotoPath: null,
     mainPhotoPreviewPath: null,
@@ -33,7 +36,13 @@ export const profileDraftData = atom<ProfileDarftDataType>({
   }
 });
 
-export const draftStatus = atom<number>({
-  key: "draftStatus",
-  default: 0
+export const profileDraftModalState = atom<string>({
+  key: "profiledraftModalState",
+  default: ""
+});
+
+export const viewedProfileId = atom<number | null | undefined>({
+  key: "viewedProfileId",
+  default: null,
+  effects_UNSTABLE: [persistAtom]
 });

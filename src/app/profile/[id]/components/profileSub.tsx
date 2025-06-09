@@ -44,13 +44,15 @@ const ProfileSub = ({
   onFilmoModalActive,
   onFilmoLinkModalOpen
 }: PropfileSubProps) => {
-  const repFilmoList = filmographyList.filter(
-    (filmo: FilmoResponseType) => filmo.featured === true
-  );
+  const repFilmoList =
+    filmographyList &&
+    filmographyList.filter(
+      (filmo: FilmoResponseType) => filmo.featured === true
+    );
 
-  const nonRepFilmoList = filmographyList.filter(
-    (filmo) => filmo.featured === false
-  );
+  const nonRepFilmoList =
+    filmographyList &&
+    filmographyList.filter((filmo) => filmo.featured === false);
 
   const [photoSlider, setPhotoSlider] = useState(0);
 
@@ -188,7 +190,7 @@ const ProfileSub = ({
       <div className="flex h-auto w-full flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title name="작품 활동" />
-          {filmographyList.length >= 1 && (
+          {filmographyList && filmographyList.length >= 1 && (
             <button
               type="button"
               className="flex gap-1 rounded"
@@ -200,60 +202,68 @@ const ProfileSub = ({
             </button>
           )}
         </div>
-        {filmographyList.length >= 1 && repFilmoList.length === 0 && (
-          <div className="grid h-auto w-auto grid-cols-3 gap-2">
-            {filmographyList.map((filmo: FilmoResponseType, index: number) => {
-              return (
-                <div
-                  key={filmo.id}
-                  className={`grid gap-2 ${index > 5 && "hidden"}`}
-                >
-                  <FilmoItem
-                    filmo={filmo}
-                    canEdit={false}
-                    onLink={() =>
-                      onFilmoLinkModalOpen(filmo.production.videoUrl)
-                    }
-                  />
-                </div>
-              );
-            })}
-          </div>
-        )}
-        {repFilmoList.length >= 1 && repFilmoList.length < 6 && (
-          <div className="grid h-auto w-auto grid-cols-3 gap-2">
-            {repFilmoList.map((filmo: FilmoResponseType) => {
-              return (
-                <div key={filmo.id} className="grid gap-2">
-                  <FilmoItem
-                    filmo={filmo}
-                    canEdit={false}
-                    onLink={() =>
-                      onFilmoLinkModalOpen(filmo.production.videoUrl)
-                    }
-                  />
-                </div>
-              );
-            })}
-            {nonRepFilmoList.map((filmo: FilmoResponseType, index: number) => {
-              return (
-                <div
-                  key={filmo.id}
-                  className={`grid gap-2 ${repFilmoList.length + index > 5 && "hidden"}`}
-                >
-                  <FilmoItem
-                    filmo={filmo}
-                    canEdit={false}
-                    onLink={() =>
-                      onFilmoLinkModalOpen(filmo.production.videoUrl)
-                    }
-                  />
-                </div>
-              );
-            })}
-          </div>
-        )}
-        {repFilmoList.length >= 6 && (
+        {filmographyList &&
+          filmographyList.length >= 1 &&
+          repFilmoList.length === 0 && (
+            <div className="grid h-auto w-auto grid-cols-3 gap-2">
+              {filmographyList.map(
+                (filmo: FilmoResponseType, index: number) => {
+                  return (
+                    <div
+                      key={filmo.id}
+                      className={`grid gap-2 ${index > 5 && "hidden"}`}
+                    >
+                      <FilmoItem
+                        filmo={filmo}
+                        canEdit={false}
+                        onLink={() =>
+                          onFilmoLinkModalOpen(filmo.production.videoUrl)
+                        }
+                      />
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          )}
+        {filmographyList &&
+          repFilmoList.length >= 1 &&
+          repFilmoList.length < 6 && (
+            <div className="grid h-auto w-auto grid-cols-3 gap-2">
+              {repFilmoList.map((filmo: FilmoResponseType) => {
+                return (
+                  <div key={filmo.id} className="grid gap-2">
+                    <FilmoItem
+                      filmo={filmo}
+                      canEdit={false}
+                      onLink={() =>
+                        onFilmoLinkModalOpen(filmo.production.videoUrl)
+                      }
+                    />
+                  </div>
+                );
+              })}
+              {nonRepFilmoList.map(
+                (filmo: FilmoResponseType, index: number) => {
+                  return (
+                    <div
+                      key={filmo.id}
+                      className={`grid gap-2 ${repFilmoList.length + index > 5 && "hidden"}`}
+                    >
+                      <FilmoItem
+                        filmo={filmo}
+                        canEdit={false}
+                        onLink={() =>
+                          onFilmoLinkModalOpen(filmo.production.videoUrl)
+                        }
+                      />
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          )}
+        {filmographyList && repFilmoList.length >= 6 && (
           <div className="grid h-auto w-auto grid-cols-3 gap-2">
             {repFilmoList.map((filmo: FilmoResponseType, index: number) => {
               return (
@@ -273,7 +283,7 @@ const ProfileSub = ({
             })}
           </div>
         )}
-        {filmographyList.length === 0 && (
+        {filmographyList && filmographyList.length === 0 && (
           <EmptyState
             text="작품 활동이 없어요."
             button
@@ -288,7 +298,7 @@ const ProfileSub = ({
       {/* Youtube Video */}
       <div className="flex h-auto w-full flex-col gap-3">
         <Title name="영상" />
-        {videoList.length >= 1 ? (
+        {videoList && videoList.length >= 1 ? (
           <div className="grid h-auto w-full grid-cols-3 flex-row gap-2">
             {videoList.map((video: VideoResponseType) => {
               return <YoutubeVideo key={video.id} link={video.url} />;

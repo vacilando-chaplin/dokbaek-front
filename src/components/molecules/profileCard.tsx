@@ -10,6 +10,8 @@ import EyeOn from "../../../public/icons/EyeOn.svg";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import LoginModal from "../organisms/loginModal";
+import { useSetRecoilState } from "recoil";
+import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
@@ -19,12 +21,14 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
   const [loginModal, setLoginModal] = useState(false);
+  const setViewedProfileId = useSetRecoilState(viewedProfileId);
 
   const jwt = Cookies.get("jwt");
   const router = useRouter();
 
   const onClickProfile = () => {
     if (loginModal) return;
+    setViewedProfileId(profile.id);
     router.push(`/profile/${profile.id}`);
   };
 

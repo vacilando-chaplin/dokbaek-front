@@ -3,7 +3,7 @@ import { sizeStyleType } from "@/lib/types";
 interface TextAreaProps {
   size: string;
   name: string;
-  value: string;
+  value: string | null;
   limit?: number;
   placeholder?: string;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
@@ -29,7 +29,7 @@ const TextArea = ({
     <div className="flex h-40 w-full flex-col gap-1">
       <textarea
         name={name}
-        value={value}
+        value={value ? value : ""}
         maxLength={500}
         placeholder={placeholder}
         autoComplete="off"

@@ -6,26 +6,89 @@ export const profileProgress = selector<number>({
   get: ({ get }) => {
     const data = get(profileDraftData);
 
-    const info = data.info ? Object.values(data.info) : [];
-    const list = [
-      data.specialties,
-      data.education,
-      data.photos,
-      data.stillCuts,
-      data.recentPhotos,
-      data.filmos,
-      data.videos
+    const fields = [
+      {
+        value: data.info?.name,
+        validate: (value: any) => typeof value === "string" && value.length > 0
+      },
+      {
+        value: data.info?.bornYear,
+        validate: (value: any) =>
+          (typeof value === "string" && value.length === 4) ||
+          (typeof value === "number" && value.toString().length === 4)
+      },
+      {
+        value: data.info?.gender,
+        validate: (value: any) =>
+          typeof value === "string" && value.length === 1
+      },
+      {
+        value: data.info?.height,
+        validate: (value: any) =>
+          (typeof value === "string" && value.length > 0) ||
+          (typeof value === "number" && value > 0)
+      },
+      {
+        value: data.info?.weight,
+        validate: (value: any) =>
+          (typeof value === "string" && value.length > 0) ||
+          (typeof value === "number" && value > 0)
+      },
+      {
+        value: data.info?.contact,
+        validate: (value: any) => typeof value === "string" && value.length >= 9
+      },
+      {
+        value: data.info?.instagramLink,
+        validate: (value: any) => typeof value === "string" && value.length > 0
+      },
+      {
+        value: data.info?.youtubeLink,
+        validate: (value: any) => typeof value === "string" && value.length > 0
+      },
+      {
+        value: data.info?.email,
+        validate: (value: any) => typeof value === "string" && value.length > 0
+      },
+      {
+        value: data.info?.introduction,
+        validate: (value: any) => typeof value === "string" && value.length > 0
+      },
+      {
+        value: data.specialties,
+        validate: (value: any) => Array.isArray(value) && value.length > 0
+      },
+      {
+        value: data.education,
+        validate: (value: any) => Array.isArray(value) && value.length > 0
+      },
+      {
+        value: data.photos,
+        validate: (value: any) => Array.isArray(value) && value.length > 0
+      },
+      {
+        value: data.stillCuts,
+        validate: (value: any) => Array.isArray(value) && value.length > 0
+      },
+      {
+        value: data.recentPhotos,
+        validate: (value: any) => Array.isArray(value) && value.length > 0
+      },
+      {
+        value: data.filmos,
+        validate: (value: any) => Array.isArray(value) && value.length > 0
+      },
+      {
+        value: data.videos,
+        validate: (value: any) => Array.isArray(value) && value.length > 0
+      }
     ];
 
-    const totalList = [...info, ...list];
-    const progressCount = 17;
+    const completedData = fields.filter((field) =>
+      field.validate(field.value)
+    ).length;
 
-    const completedData = totalList.filter((value) => {
-      if (Array.isArray(value)) return value.length > 0;
-      if (typeof value === "number") return !isNaN(value);
-      if (typeof value === "string") return value.trim() !== "";
-      return false;
-    }).length;
+    const progressCount = fields.length;
 
     return Math.round((completedData / progressCount) * 100);
   }

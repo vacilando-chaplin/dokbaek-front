@@ -4,7 +4,6 @@ import { base64ToBlob } from "@/lib/utils";
 
 export const postFilmography = async (id: number, data: FilmoRequestType) => {
   try {
-    console.log(data);
     const res = await api.post(`/profile/${id}/draft/filmo`, data);
     return res.data;
   } catch (error) {

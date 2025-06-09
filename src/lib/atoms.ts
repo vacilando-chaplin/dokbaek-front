@@ -1,13 +1,10 @@
-import { SpecialtyType } from "@/app/profile/[id]/create/info/types";
 import {
   CompletionProgressType,
   FilmoCategoryType,
-  FilmoRoleType,
-  InfoRequiredType
+  FilmoRoleType
 } from "@/lib/types";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { profileResponseInit } from "./data";
 
 const { persistAtom } = recoilPersist();
 
@@ -31,7 +28,8 @@ export const loginProfileId = atom<number>({
 
 export const stepperInit = atom<number>({
   key: "stepperInit",
-  default: 0
+  default: 0,
+  effects_UNSTABLE: [persistAtom]
 });
 
 export const completionProgress = atom<CompletionProgressType>({
@@ -69,15 +67,6 @@ export const toastMessage = atom<string>({
   default: ""
 });
 
-export const infoRequired = atom<InfoRequiredType>({
-  key: "infoRequired",
-  default: {
-    name: "",
-    birth: "",
-    contact: ""
-  }
-});
-
 export const categoryData = atom<string[]>({
   key: "categoryData",
   default: []
@@ -102,7 +91,6 @@ export const filmoCategory = atom<FilmoCategoryType[]>({
 export const filmoRole = atom<FilmoRoleType[]>({
   key: "filmoRole",
   default: [
-    { id: 0, name: "" },
     { id: 1, name: "주연" },
     { id: 2, name: "조연" },
     { id: 3, name: "단역" },
@@ -111,25 +99,9 @@ export const filmoRole = atom<FilmoRoleType[]>({
   effects_UNSTABLE: [persistAtom]
 });
 
-export const profileData = atom({
-  key: "profileData",
-  default: profileResponseInit
-});
-
-export const specialtyData = atom<SpecialtyType[]>({
-  key: "specialtyData",
-  default: [],
-  effects_UNSTABLE: [persistAtom]
-});
-
 export const currentPath = atom<string>({
   key: "currentPath",
   default: "/"
-});
-
-export const isDraftComplete = atom<boolean>({
-  key: "isDraftComplete",
-  default: false
 });
 
 export const withdrawalReasons = atom<boolean[]>({

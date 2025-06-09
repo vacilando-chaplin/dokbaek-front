@@ -7,7 +7,7 @@ interface SearchDropdownProps {
   size: string;
   name: string;
   list: string[];
-  value: string | number;
+  value: string | number | null;
   active: boolean;
   selected: string | number;
   isEmpty?: boolean;
@@ -54,7 +54,7 @@ const SearchDropdown = ({
           placeholder={placeholder}
           maxLength={maxLength}
           autoComplete="off"
-          value={value}
+          value={value ? value : ""}
           onChange={onChange}
           onBlur={onSave}
         />
