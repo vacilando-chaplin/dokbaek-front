@@ -176,27 +176,6 @@ export interface EducationEnumType {
   DROPPED_OUT: string;
 }
 
-export interface EducationInitType {
-  school: {
-    name: string;
-    schoolType: string;
-    schoolGubun: string;
-  };
-  major: string;
-  status: string;
-}
-
-export interface EducationWithIdType {
-  id: number;
-  school: {
-    name: string;
-    schoolType: string;
-    schoolGubun: string;
-  };
-  major: string;
-  status: string;
-}
-
 export interface EducationInputsType {
   name: number;
   school: string;

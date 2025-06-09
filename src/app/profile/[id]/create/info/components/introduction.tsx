@@ -2,22 +2,17 @@
 
 import TextArea from "@/components/atoms/textArea";
 import Title from "@/components/atoms/title";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  profileDraftData,
-  profiledraftModalState
-} from "@/lib/recoil/profile/common/atom";
-import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { useMutation } from "@tanstack/react-query";
 import { ProfileInfoDataType } from "../../types";
-import { putInfoDraft } from "@/lib/api/profile/info/api";
+import { putInfoDraft } from "../api";
 
 interface IntroductionProps {
   profileId: number;
 }
 
 const Introduction = ({ profileId }: IntroductionProps) => {
-  const draftModalState = useRecoilValue(profiledraftModalState);
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
 
   const { introduction } = profileData.info || {};
@@ -36,10 +31,12 @@ const Introduction = ({ profileId }: IntroductionProps) => {
     }
   });
 
+  // 자기소개 저장
   const onSaveInfo = () => {
     mutate(profileData.info);
   };
 
+  // 문자열, 숫자 상관없는 입력
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setProfileData((prev) => ({
@@ -50,15 +47,6 @@ const Introduction = ({ profileId }: IntroductionProps) => {
       }
     }));
   };
-
-  // useEffect(() => {
-  //   if (draftModalState === "confirmed") {
-  //     setProfileData((prev) => ({
-  //       ...prev,
-  //       info: info
-  //     }));
-  //   }
-  // }, [draftModalState]);
 
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">

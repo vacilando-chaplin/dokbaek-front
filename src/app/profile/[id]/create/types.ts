@@ -22,6 +22,16 @@ export interface ProfileInfoDataType {
   introduction: string | null;
 }
 
+export interface ProfileEducationRequestType {
+  school: {
+    name: string;
+    schoolType: string;
+    schoolGubun: string;
+  };
+  major: string;
+  status: string;
+}
+
 export interface ProfileEducationDataType {
   id: number;
   school: {

@@ -18,13 +18,14 @@ import PhotoRecent from "./components/photoRecent";
 import imageCompression from "browser-image-compression";
 import { convertToBase64, getFileMimeTypeFromUrl, isValid } from "@/lib/utils";
 import { postRecentPhoto, postRecentPhotoEdit } from "./api";
-import { getProfileDraft } from "../../api";
 import { CropDataType, PhotoModalType, SelectedImagesType } from "../../types";
 import { imageCompressionOptions } from "@/lib/data";
 import { cropDataInit } from "../../data";
+import { getProfileDraftClient } from "../../api";
+import Cookies from "js-cookie";
 
 const Photo = () => {
-  const profileId = useRecoilValue(profileIdInit);
+  const profileId = Number(Cookies.get("loginProfileId"));
   const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -191,7 +192,7 @@ const Photo = () => {
       }
       setCompletion({ ...completion, stillcutPhoto: true });
     }
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -208,7 +209,7 @@ const Photo = () => {
   const onEditPhoto = async () => {
     await patchPhoto(profileId, cropImage, photoModal.id, photoModal.category);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setPhotoList(data.photos);
@@ -228,7 +229,7 @@ const Photo = () => {
       photoModal.category
     );
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setCompletion({ ...completion, recentPhoto: true });
@@ -243,7 +244,7 @@ const Photo = () => {
   const onEditRecentPhoto = async () => {
     await postRecentPhotoEdit(profileId, selectImage, cropImage, photoModal.id);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     setRecentPhotoList(data.recentPhotos);
@@ -257,7 +258,7 @@ const Photo = () => {
   const onDeletePhoto = async (id: string, category: string) => {
     await deletePhoto(profileId, id, category);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
     isValid(data.photos)
@@ -374,7 +375,7 @@ const Photo = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(profileId);
+        const res = await getProfileDraftClient(profileId);
         const data = await res.data;
 
         isValid(data.photos)

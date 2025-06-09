@@ -33,11 +33,6 @@ const FilmoItem = ({
 }: FilmoItemProps) => {
   const { id, role, customRole, character, production } = filmo;
 
-  const checkYoutube =
-    (production.videoUrl &&
-      production.videoUrl.includes("https://www.youtube.com")) ||
-    production.videoUrl.includes("https://youtu.be/");
-
   return (
     <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark">
       {filmoRepresentActive && (
@@ -101,13 +96,13 @@ const FilmoItem = ({
         <button
           type="button"
           className="w-fit"
-          disabled={!checkYoutube}
+          disabled={!production.videoUrl}
           onClick={() => onLink(production.videoUrl)}
         >
           <PlayCircle
             width="16"
             height="16"
-            className={`fill-current ${checkYoutube ? "text-content-primary-light dark:text-content-primary-dark" : "text-content-alternative-light dark:text-content-alternative-dark"}`}
+            className={`fill-current ${production.videoUrl ? "text-content-primary-light dark:text-content-primary-dark" : "text-content-alternative-light dark:text-content-alternative-dark"}`}
           />
         </button>
       </div>

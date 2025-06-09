@@ -13,6 +13,7 @@ import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
 import { useEffect, useState } from "react";
 import { removeStorageData } from "@/lib/utils";
+import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
 
 interface UserMenuType {
   name: string;
@@ -23,9 +24,10 @@ const TopNavigation = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const loginProfile = Cookies.get("loginProfileId");
+  const loginProfileId = Number(Cookies.get("loginProfileId"));
   const setPathName = useSetRecoilState(currentPath);
   const setToastMessage = useSetRecoilState(toastMessage);
+  const setViewProfileId = useSetRecoilState(viewedProfileId);
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [userMenuActive, setUserMenuActive] = useState(false);
@@ -48,6 +50,10 @@ const TopNavigation = () => {
       removeStorageData();
       router.replace("/");
     }
+  };
+
+  const onMoveMyProrfile = () => {
+    setViewProfileId(loginProfileId);
   };
 
   const onUserMenuClick = () => {
@@ -95,8 +101,9 @@ const TopNavigation = () => {
               배우 찾기
             </Link>
             <Link
-              href={`/profile/${loginProfile}`}
+              href={`/profile/${loginProfileId}`}
               className="typography-body3 flex items-center font-semibold text-content-secondary-light hover:text-accent-primary-light dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
+              onClick={onMoveMyProrfile}
             >
               내 프로필
             </Link>

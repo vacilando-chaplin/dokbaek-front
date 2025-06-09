@@ -9,16 +9,13 @@ import { SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
 import Plus from "../../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  profileDraftData,
-  profiledraftModalState
-} from "@/lib/recoil/profile/common/atom";
+import { useRecoilState } from "recoil";
+import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { useMutation } from "@tanstack/react-query";
-import { putInfoDraft } from "@/lib/api/profile/info/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { contactFormat, setOnlyNumber } from "@/lib/utils";
 import { ProfileInfoDataType } from "../../types";
+import { putInfoDraft } from "../api";
 
 interface PersonalInfoProps {
   profileId: number;
@@ -33,7 +30,6 @@ const PersonalInfo = ({
   onSpecialtyFormModalOpen,
   onDeleteSpecialty
 }: PersonalInfoProps) => {
-  const draftModalState = useRecoilValue(profiledraftModalState);
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
   const [dropdownActive, setDropdownActive] = useState(false);
 
@@ -71,10 +67,12 @@ const PersonalInfo = ({
     }
   });
 
+  // 기본 정보 저장
   const onSaveInfo = () => {
     mutate(profileData.info);
   };
 
+  // 문자열, 숫자 상관없는 입력
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData((prev) => ({
@@ -124,6 +122,7 @@ const PersonalInfo = ({
     }));
   };
 
+  // 드랍다운 액티브
   const onDropdownActive = () => {
     setDropdownActive(!dropdownActive);
   };
@@ -137,6 +136,7 @@ const PersonalInfo = ({
     mutate(profileData.info);
   };
 
+  // 성별 선택
   const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileData((prev) => ({
       ...prev,
@@ -144,15 +144,6 @@ const PersonalInfo = ({
     }));
     mutate(profileData.info);
   };
-
-  // useEffect(() => {
-  //   if (draftModalState === "confirmed") {
-  //     setProfileData((prev) => ({
-  //       ...prev,
-  //       info: info
-  //     }));
-  //   }
-  // }, [draftModalState]);
 
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">

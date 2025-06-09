@@ -39,10 +39,11 @@ import {
   putFilmography,
   putFilmographyFeatured
 } from "./api";
-import { getProfileDraft } from "../../api";
+import { getProfileDraftClient } from "../../api";
+import Cookies from "js-cookie";
 
 const Filmography = () => {
-  const profileId = useRecoilValue(profileIdInit);
+  const profileId = Number(Cookies.get("loginProfileId"));
   const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -128,7 +129,7 @@ const Filmography = () => {
       );
     }
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     setCompletion({ ...completion, filmography: true });
@@ -188,7 +189,7 @@ const Filmography = () => {
       }
     }
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -227,7 +228,7 @@ const Filmography = () => {
       }
     }
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     setFilmoList(data.filmos);
@@ -376,7 +377,7 @@ const Filmography = () => {
     await deleteFilmographyThumbnail(profileId, filmoDelete.id);
     await deleteFilmography(profileId, filmoDelete.id);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     isValid(data.filmos)
@@ -407,7 +408,7 @@ const Filmography = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(profileId);
+        const res = await getProfileDraftClient(profileId);
         const data = await res.data;
 
         isValid(data.filmos)

@@ -5,7 +5,7 @@ import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import XCircleFill from "../../../../../public/icons/XCircleFill.svg";
 import { useDebounce } from "@/lib/hooks";
 import ProfileSpecialtyMediaModal from "./profileSpecialtyMediaModal";
-import { getSpecialty } from "@/lib/api/profile/info/api";
+import { getSpecialty } from "../create/info/api";
 
 interface ProfileSpecialtyEditorProps {
   specialties: SpecialtyType[];

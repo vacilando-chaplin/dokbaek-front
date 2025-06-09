@@ -5,32 +5,34 @@ import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import {
   profileDraftData,
-  profiledraftModalState
+  profileDraftModalState
 } from "@/lib/recoil/profile/common/atom";
 import { deleteProfileDraftClient, postProfileDraftClient } from "../../api";
-import { ProfileDarftDataType } from "../types";
 
 interface DraftModalProps {
   profileId: number;
-  draftData: ProfileDarftDataType;
 }
 
-const DraftModal = ({ profileId, draftData }: DraftModalProps) => {
+const DraftModal = ({ profileId }: DraftModalProps) => {
   const [modalState, setModalState] = useState(true);
   const setData = useSetRecoilState(profileDraftData);
-  const setDraftModalState = useSetRecoilState(profiledraftModalState);
+  const setDraftModalState = useSetRecoilState(profileDraftModalState);
 
   const onReject = async () => {
     await deleteProfileDraftClient(profileId);
-    await postProfileDraftClient(profileId);
+    const res = await postProfileDraftClient(profileId);
+    const data = await res.data.data;
 
-    setData(draftData);
+    setData(data);
     setDraftModalState("rejected");
     setModalState(false);
   };
 
-  const onConfirm = () => {
-    setData(draftData);
+  const onConfirm = async () => {
+    const res = await postProfileDraftClient(profileId);
+    const data = await res.data.data;
+
+    setData(data);
     setDraftModalState("confirmed");
     setModalState(false);
   };

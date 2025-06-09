@@ -31,7 +31,8 @@ export const loginProfileId = atom<number>({
 
 export const stepperInit = atom<number>({
   key: "stepperInit",
-  default: 0
+  default: 0,
+  effects_UNSTABLE: [persistAtom]
 });
 
 export const completionProgress = atom<CompletionProgressType>({

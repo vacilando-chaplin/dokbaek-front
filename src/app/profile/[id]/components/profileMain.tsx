@@ -26,7 +26,7 @@ interface ProfileMainProps {
   info: InfoResponseType;
   linear: string;
   updated: string;
-  profileId: number;
+  profileId: number | null | undefined;
   otherUser: boolean;
   mainPhoto: string;
   profileSpecialties: SpecialtyItemType[];
@@ -73,7 +73,7 @@ const ProfileMain = ({
     instagramLink,
     youtubeLink,
     introduction
-  } = info;
+  } = info || {};
 
   const statusIndex = educationEngList.findIndex(
     (item: string) => item === education?.status
@@ -163,6 +163,7 @@ const ProfileMain = ({
               </button>
             </div>
           )}
+          {/* <div className="flex flex-row gap-1.5 rounded-lg bg-background-scrim-light px-2 py-1 opacity-40 dark:bg-background-scrim-dark"></div> */}
         </div>
       ) : (
         <div
@@ -297,7 +298,7 @@ const ProfileMain = ({
         isValidYoutubeChannelUrl(youtubeLink)) && (
         <ProfileInfoContainer title="SNS">
           <div className="flex flex-row gap-2">
-            {isValidInstagramUrl(instagramLink) && (
+            {instagramLink && (
               <Link
                 href={instagramLink}
                 className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"

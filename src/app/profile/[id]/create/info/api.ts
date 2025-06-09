@@ -1,6 +1,8 @@
-import { ProfileInfoDataType } from "@/app/profile/[id]/create/types";
+import {
+  ProfileEducationRequestType,
+  ProfileInfoDataType
+} from "@/app/profile/[id]/create/types";
 import { api } from "@/lib/axiosInstance";
-import { EducationInitType } from "@/lib/types";
 
 export const putInfoDraft = async (
   profileId: number,
@@ -76,7 +78,7 @@ export const postUserProfileSpecialty = async (
 
 export const postEducation = async (
   profileId: number,
-  educationDto: EducationInitType
+  educationDto: ProfileEducationRequestType
 ) => {
   try {
     const res = await api.post(
@@ -92,7 +94,7 @@ export const postEducation = async (
 export const putEducation = async (
   profileId: number,
   educationId: number,
-  educationDto: EducationInitType
+  educationDto: ProfileEducationRequestType
 ) => {
   try {
     const res = await api.put(

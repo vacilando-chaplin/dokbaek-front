@@ -18,10 +18,11 @@ import { videoModalInit } from "./data";
 import { videoLinkInit } from "../../data";
 import { deleteVideo, postVideo, putVideo } from "./api";
 import { isValid } from "@/lib/utils";
-import { getProfileDraft } from "../../api";
+import { getProfileDraftClient } from "../../api";
+import Cookies from "js-cookie";
 
 const Video = () => {
-  const profileId = useRecoilValue(profileIdInit);
+  const profileId = Number(Cookies.get("loginProfileId"));
   const isDraftLoading = useRecoilValue(isDraftComplete);
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -61,7 +62,7 @@ const Video = () => {
   const onVideoModalSave = async () => {
     await postVideo(profileId, videoInputs);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     setCompletion({ ...completion, video: true });
@@ -87,7 +88,7 @@ const Video = () => {
   const onVideoModalEdit = async () => {
     await putVideo(profileId, videoModal.id, videoInputs);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     setVideoList(data.videos);
@@ -111,7 +112,7 @@ const Video = () => {
   const onVideoDeleteClick = async () => {
     await deleteVideo(profileId, videoModal.id);
 
-    const res = await getProfileDraft(profileId);
+    const res = await getProfileDraftClient(profileId);
     const data = await res.data;
 
     isValid(data.videos)
@@ -136,7 +137,7 @@ const Video = () => {
   useEffect(() => {
     const getProfileData = async () => {
       if (isDraftLoading) {
-        const res = await getProfileDraft(profileId);
+        const res = await getProfileDraftClient(profileId);
         const data = await res.data;
 
         isValid(data.videos)
