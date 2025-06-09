@@ -94,6 +94,15 @@ const ProfileMain = ({
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
+  const hasInstagram =
+    instagramLink !== null &&
+    typeof instagramLink === "string" &&
+    instagramLink.includes("https://www.instagram.com");
+  const hasYoutubeChannel =
+    youtubeLink !== null &&
+    typeof youtubeLink === "string" &&
+    youtubeLink.includes("https://youtube.com/channel");
+
   return (
     <section
       className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light dark:border-border-default-dark"}`}
@@ -294,11 +303,10 @@ const ProfileMain = ({
           otherUser={otherUser}
         />
       )}
-      {(isValidInstagramUrl(instagramLink) ||
-        isValidYoutubeChannelUrl(youtubeLink)) && (
+      {(hasInstagram || hasYoutubeChannel) && (
         <ProfileInfoContainer title="SNS">
           <div className="flex flex-row gap-2">
-            {instagramLink && (
+            {hasInstagram && (
               <Link
                 href={instagramLink}
                 className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"
@@ -307,7 +315,7 @@ const ProfileMain = ({
                 <InstagramIcon />
               </Link>
             )}
-            {isValidYoutubeChannelUrl(youtubeLink) && (
+            {hasYoutubeChannel && (
               <Link
                 href={youtubeLink}
                 className="flex w-fit items-center gap-1 rounded-[100px] bg-gray-150 p-[5px]"

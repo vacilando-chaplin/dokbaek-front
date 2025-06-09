@@ -9,7 +9,6 @@ import {
   completionProgress,
   filmoCategory,
   filmoRole,
-  isDraftComplete,
   profileIdInit,
   toastMessage
 } from "@/lib/atoms";
@@ -41,10 +40,15 @@ import {
 } from "./api";
 import { getProfileDraftClient } from "../../api";
 import Cookies from "js-cookie";
+import {
+  profileDraftData,
+  profileDraftModalState
+} from "@/lib/recoil/profile/common/atom";
 
 const Filmography = () => {
   const profileId = Number(Cookies.get("loginProfileId"));
-  const isDraftLoading = useRecoilValue(isDraftComplete);
+  const profileDraftState = useRecoilValue(profileDraftModalState);
+  const profileData = useRecoilValue(profileDraftData);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -103,7 +107,7 @@ const Filmography = () => {
     );
 
     const filmo = {
-      roleId: filmoInputs.cast ? roleId : 0,
+      roleId: filmoInputs.cast ? roleId : null,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
       featured: false,
@@ -150,7 +154,7 @@ const Filmography = () => {
     );
 
     const editFilmo = {
-      roleId: roleId !== -1 ? roleId : 0,
+      roleId: filmoInputs.cast ? roleId : null,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
       featured: filmoInputs.representative,
@@ -172,8 +176,8 @@ const Filmography = () => {
     );
     const filmoRes = await filmoData.data;
 
-    if (filmoInputs.thumbnail.includes("base64")) {
-      if (filmoThumbnail.endsWith("null")) {
+    if (filmoInputs.thumbnail && filmoInputs.thumbnail.includes("base64")) {
+      if (filmoThumbnail && filmoThumbnail.endsWith("null")) {
         await postFilmographyThumbnail(
           profileId,
           filmoRes.id,
@@ -341,7 +345,7 @@ const Filmography = () => {
       classification: filmo.production.category.name,
       production: filmoProduction,
       title: filmo.production.title,
-      cast: filmo.role.name,
+      cast: filmo.role ? filmo.role.name : "",
       castInput: filmo.customRole,
       casting: filmo.character,
       description: filmo.production.description,
@@ -405,20 +409,26 @@ const Filmography = () => {
   }, [filmoList]);
 
   // 필모그래피 리스트 업데이트
-  useEffect(() => {
-    const getProfileData = async () => {
-      if (isDraftLoading) {
-        const res = await getProfileDraftClient(profileId);
-        const data = await res.data;
+  // useEffect(() => {
+  //   const getProfileData = async () => {
+  //     if (isDraftLoading) {
+  //       const res = await getProfileDraftClient(profileId);
+  //       const data = await res.data;
 
-        isValid(data.filmos)
-          ? setCompletion({ ...completion, filmography: true })
-          : setCompletion({ ...completion, filmography: false });
-        setFilmoList(data.filmos);
-      }
-    };
-    getProfileData();
-  }, [isDraftLoading]);
+  //       isValid(data.filmos)
+  //         ? setCompletion({ ...completion, filmography: true })
+  //         : setCompletion({ ...completion, filmography: false });
+  //       setFilmoList(data.filmos);
+  //     }
+  //   };
+  //   getProfileData();
+  // }, [isDraftLoading]);
+
+  useEffect(() => {
+    if (profileDraftState !== "") {
+      setFilmoList(profileData.filmos);
+    }
+  }, [profileDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

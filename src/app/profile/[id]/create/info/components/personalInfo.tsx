@@ -9,28 +9,29 @@ import { SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
 import Plus from "../../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { contactFormat, setOnlyNumber } from "@/lib/utils";
 import { ProfileInfoDataType } from "../../types";
 import { putInfoDraft } from "../api";
+import {
+  profileSpecialtyModalState,
+  specialtyData
+} from "@/lib/recoil/profile/info/atom";
 
 interface PersonalInfoProps {
   profileId: number;
-  specialties: SpecialtyType[];
-  onSpecialtyFormModalOpen: React.MouseEventHandler<HTMLButtonElement>;
-  onDeleteSpecialty: (specialtyId: number) => () => void;
 }
 
-const PersonalInfo = ({
-  profileId,
-  specialties,
-  onSpecialtyFormModalOpen,
-  onDeleteSpecialty
-}: PersonalInfoProps) => {
+const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
+  const [specialties, setSpecialties] =
+    useRecoilState<SpecialtyType[]>(specialtyData);
+  const setProfileSpecialtyModal = useSetRecoilState(
+    profileSpecialtyModalState
+  );
   const [dropdownActive, setDropdownActive] = useState(false);
 
   const {
@@ -143,6 +144,18 @@ const PersonalInfo = ({
       info: { ...profileData.info, gender: e.target.id }
     }));
     mutate(profileData.info);
+  };
+
+  const onSpecialtyFormModalOpen = async () => {
+    setProfileSpecialtyModal(true);
+  };
+
+  const onDeleteSpecialty = (specialtyId: number) => {
+    return () => {
+      setSpecialties((prev) =>
+        prev.filter((specialty) => specialty.id !== specialtyId)
+      );
+    };
   };
 
   return (

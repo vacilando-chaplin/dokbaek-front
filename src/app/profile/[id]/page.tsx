@@ -1,6 +1,6 @@
 "use client";
 
-import { getProfile, getProfileMe, getProfileOtherUser } from "@/lib/api";
+import { getProfile, getProfileOtherUser } from "@/lib/api";
 import LinkModal from "@/components/organisms/linkModal";
 import {
   categoryData,
@@ -8,7 +8,7 @@ import {
   stepperInit,
   toastMessage
 } from "@/lib/atoms";
-import { imageCompressionOptions, profileResponseInit } from "@/lib/data";
+import { imageCompressionOptions } from "@/lib/data";
 import {
   FilmoCategoryType,
   FilmoResponseType,

@@ -218,7 +218,7 @@ export interface FilmoCategoryType {
 }
 
 export interface FilmoRequestType {
-  roleId: number;
+  roleId: number | null;
   customRole: string;
   character: string;
   featured: boolean;

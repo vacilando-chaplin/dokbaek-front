@@ -1,12 +1,7 @@
 "use client";
 
 import LinkModal from "@/components/organisms/linkModal";
-import {
-  completionProgress,
-  isDraftComplete,
-  profileIdInit,
-  toastMessage
-} from "@/lib/atoms";
+import { completionProgress, profileIdInit, toastMessage } from "@/lib/atoms";
 import { VideoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -20,10 +15,15 @@ import { deleteVideo, postVideo, putVideo } from "./api";
 import { isValid } from "@/lib/utils";
 import { getProfileDraftClient } from "../../api";
 import Cookies from "js-cookie";
+import {
+  profileDraftData,
+  profileDraftModalState
+} from "@/lib/recoil/profile/common/atom";
 
 const Video = () => {
   const profileId = Number(Cookies.get("loginProfileId"));
-  const isDraftLoading = useRecoilValue(isDraftComplete);
+  const profileDraftState = useRecoilValue(profileDraftModalState);
+  const profileData = useRecoilValue(profileDraftData);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [completion, setCompletion] = useRecoilState(completionProgress);
@@ -134,20 +134,26 @@ const Video = () => {
   };
 
   // 비디오 리스트 업데이트
-  useEffect(() => {
-    const getProfileData = async () => {
-      if (isDraftLoading) {
-        const res = await getProfileDraftClient(profileId);
-        const data = await res.data;
+  // useEffect(() => {
+  //   const getProfileData = async () => {
+  //     if (isDraftLoading) {
+  //       const res = await getProfileDraftClient(profileId);
+  //       const data = await res.data;
 
-        isValid(data.videos)
-          ? setCompletion({ ...completion, video: true })
-          : setCompletion({ ...completion, video: false });
-        setVideoList(data.videos);
-      }
-    };
-    getProfileData();
-  }, [isDraftLoading]);
+  //       isValid(data.videos)
+  //         ? setCompletion({ ...completion, video: true })
+  //         : setCompletion({ ...completion, video: false });
+  //       setVideoList(data.videos);
+  //     }
+  //   };
+  //   getProfileData();
+  // }, [isDraftLoading]);
+
+  useEffect(() => {
+    if (profileDraftState !== "") {
+      setVideoList(profileData.videos);
+    }
+  }, [profileDraftState]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">

@@ -86,7 +86,8 @@ const FilmoItem = ({
           </div>
           <div className="typography-caption1 flex h-auto w-full flex-col gap-0.5 font-normal text-content-secondary-light dark:text-content-secondary-dark">
             <label>
-              {customRole && role.id === 4 ? customRole : role.name}{" "}
+              {role !== null && customRole && role.id === 4 && customRole}
+              {role !== null && role.name}
               {character && `'${character}'`}
             </label>
             <label>{production.description}</label>
