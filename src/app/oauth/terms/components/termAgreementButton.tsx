@@ -3,11 +3,12 @@
 import { TermAgreementsType } from "@/lib/types";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { currentPath, defaultId, loginProfileId } from "@/lib/atoms";
+import { currentPath, defaultId } from "@/lib/atoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useSetToken } from "@/lib/hooks";
 import { postOauthSignUp } from "../../callback/api";
 import { getProfileMe } from "@/lib/api";
+import BoxButton from "@/components/atoms/boxButton";
 
 const TermAgreementButton = () => {
   const router = useRouter();
@@ -47,9 +48,14 @@ const TermAgreementButton = () => {
   };
 
   return (
-    <button type="button" onClick={onTermAgreement} disabled={!code || !state}>
+    <BoxButton
+      type="primary"
+      size="medium"
+      onClick={onTermAgreement}
+      disabled={!code || !state}
+    >
       약관 동의
-    </button>
+    </BoxButton>
   );
 };
 
