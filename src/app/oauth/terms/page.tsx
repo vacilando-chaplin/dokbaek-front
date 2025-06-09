@@ -1,10 +1,11 @@
+import { Suspense } from "react";
 import TermAgreementButton from "./components/termAgreementButton";
 
 const Terms = () => {
   return (
-    <div>
+    <Suspense fallback={<div></div>}>
       <TermAgreementButton />
-    </div>
+    </Suspense>
   );
 };
 
