@@ -107,7 +107,7 @@ const Filmography = () => {
     );
 
     const filmo = {
-      roleId: filmoInputs.cast ? roleId : null,
+      roleId: filmoInputs.cast ? roleId + 1 : null,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
       featured: false,
@@ -154,7 +154,7 @@ const Filmography = () => {
     );
 
     const editFilmo = {
-      roleId: filmoInputs.cast ? roleId : null,
+      roleId: filmoInputs.cast ? roleId + 1 : null,
       customRole: filmoInputs.castInput,
       character: filmoInputs.casting,
       featured: filmoInputs.representative,
@@ -428,7 +428,7 @@ const Filmography = () => {
     if (profileDraftState !== "") {
       setFilmoList(profileData.filmos);
     }
-  }, [profileDraftState]);
+  }, [profileDraftState, JSON.stringify(profileData.filmos)]);
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
