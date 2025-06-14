@@ -263,9 +263,16 @@ export interface VideoResponseType {
   displayOrder: number;
 }
 
+export interface TermsDataType {
+  id: number;
+  name: string;
+  url: string;
+  required: boolean;
+}
+
 export interface TermAgreementsType {
   termId: number;
-  agreement: boolean;
+  agreed: boolean;
 }
 
 export interface SignUpRequestType {

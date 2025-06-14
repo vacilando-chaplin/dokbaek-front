@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import TermAgreementButton from "./components/termAgreementButton";
+import TermContainer from "./components/termContainer";
 
 const Terms = () => {
   return (
     <Suspense fallback={<div></div>}>
-      <TermAgreementButton />
+      <TermContainer />
     </Suspense>
   );
 };

@@ -170,3 +170,12 @@ export const getProfileMe = async () => {
     throw error;
   }
 };
+
+export const getTerms = async () => {
+  try {
+    const res = await api.get("/terms");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
