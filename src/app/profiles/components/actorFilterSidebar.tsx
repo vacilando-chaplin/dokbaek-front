@@ -62,10 +62,15 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const [shouldSubmit, setShouldSubmit] = useState(false);
 
   const [keyword, setKeyword] = useState("");
-  const [gender, setGender] = useState("U");
+  const [gender, setGender] = useState<string | null>(null);
 
-  const genderOptions = [
-    { label: "전체", value: "U" },
+  type RadioOption = {
+    label: string;
+    value: string | null;
+  };
+
+  const genderOptions: RadioOption[] = [
+    { label: "전체", value: null },
     { label: "여성", value: "F" },
     { label: "남성", value: "M" }
   ];
@@ -95,7 +100,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const [isWeightOpen, setIsWeightOpen] = useState(true);
 
   useEffect(() => {
-    if (currKeyword) setKeyword(currKeyword);
+    setKeyword(currKeyword || "");
     if (currGender) setGender(currGender);
     if (currMinBornYear) setMinBornYear(currMinBornYear);
     if (currMaxBornYear) setMaxBornYear(currMaxBornYear);
@@ -170,15 +175,24 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
 
   const onClickFilterReset = () => {
     setKeyword("");
-    setGender("U");
+    setGender(null);
     setMinBornYear(DEFAULT_MIN_BORN_YEAR);
     setMaxBornYear(DEFAULT_MAX_BORN_YEAR);
     setMinHeight(DEFAULT_MIN_HEIGHT);
     setMaxHeight(DEFAULT_MAX_HEIGHT);
     setMinWeight(DEFAULT_MIN_WEIGHT);
     setMaxWeight(DEFAULT_MAX_WEIGHT);
-    onSubmit();
-    router.push(`/profiles`);
+
+    handleSubmit({
+      keyword: "",
+      gender: null,
+      minBornYear: DEFAULT_MIN_BORN_YEAR,
+      maxBornYear: DEFAULT_MAX_BORN_YEAR,
+      minHeight: DEFAULT_MIN_HEIGHT,
+      maxHeight: DEFAULT_MAX_HEIGHT,
+      minWeight: DEFAULT_MIN_WEIGHT,
+      maxWeight: DEFAULT_MAX_WEIGHT
+    });
   };
 
   const handleBornYearRangeChange = (newRange: [number, number]) => {
@@ -334,7 +348,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                setGender("U");
+                setGender(null);
               }}
               className="flex items-center gap-1"
             >
@@ -368,9 +382,9 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
               <RadioGroup
                 name="성별"
                 size="medium"
-                options={genderOptions}
-                value={gender}
-                onChange={handleGenderChange}
+                options={genderOptions as RadioOption[]}
+                value={gender || null}
+                onChange={handleGenderChange as (value: string | null) => void}
               />
             </div>
           </div>
