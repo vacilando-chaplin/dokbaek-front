@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import ArrowChevronRight from "../../../public/icons/ArrowChevronRight.svg";
 import ArrowChevronLeft from "../../../public/icons/ArrowChevronLeft.svg";
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -18,23 +19,52 @@ const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
     router.replace(`/profiles?${params.toString()}`);
   };
 
+  const getPageNumbers = () => {
+    const maxVisiblePages = 5;
+    const halfVisible = Math.floor(maxVisiblePages / 2);
+
+    let startPage = Math.max(0, currentPage - halfVisible);
+    let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(0, endPage - maxVisiblePages + 1);
+    }
+
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  };
+
+  const buttonStyles = {
+    base: "typography-body3 h-[36px] w-[36px] rounded-[8px]",
+    active: "bg-blue-600 text-static-white",
+    inactive: "text-content-primary-light hover:bg-gray-100"
+  };
+
   return (
     <div className="flex items-center justify-center gap-[4px]">
       <button
         disabled={currentPage === 0}
         onClick={() => handlePageChange(currentPage - 1)}
         className="px-3 py-1 disabled:opacity-50"
+        aria-label="이전 페이지"
       >
         <ArrowChevronLeft width="16" height="16" fill="#868E96" />
       </button>
 
-      {Array.from({ length: totalPages }, (_, i) => (
+      {getPageNumbers().map((pageNum) => (
         <button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          className={`typography-body3 h-[36px] w-[36px] rounded-[8px] ${i === currentPage ? "bg-blue-600 text-static-white" : "text-content-primary-light"}`}
+          key={pageNum}
+          onClick={() => handlePageChange(pageNum)}
+          className={`${buttonStyles.base} ${
+            pageNum === currentPage
+              ? buttonStyles.active
+              : buttonStyles.inactive
+          }`}
+          aria-label={`${pageNum + 1} 페이지로 이동`}
         >
-          {i + 1}
+          {pageNum + 1}
         </button>
       ))}
 
@@ -42,6 +72,7 @@ const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
         disabled={currentPage === totalPages - 1}
         onClick={() => handlePageChange(currentPage + 1)}
         className="px-3 py-1 disabled:opacity-50"
+        aria-label="다음 페이지"
       >
         <ArrowChevronRight width="16" height="16" fill="#868E96" />
       </button>

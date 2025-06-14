@@ -1,7 +1,7 @@
 import RadioButton from "../molecules/radioButton";
 interface Option {
   label: string;
-  value: string;
+  value: string | null;
 }
 
 interface RadioGroupProps {
@@ -9,8 +9,8 @@ interface RadioGroupProps {
   direction?: "horizontal" | "vertical";
   name: string;
   options: Option[];
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: string | null;
+  onChange?: (value: string | null) => void;
 }
 
 const RadioGroup = ({

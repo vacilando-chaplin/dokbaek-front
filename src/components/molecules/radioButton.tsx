@@ -7,11 +7,11 @@ interface RadioButtonProps {
   size?: "large" | "medium";
   label: string;
   id: string;
-  value: string;
+  value: string | null;
   name: string;
   checked?: boolean;
   disabled?: boolean;
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
 }
 
 const RadioButton = ({

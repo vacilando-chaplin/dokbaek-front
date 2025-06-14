@@ -1,10 +1,10 @@
 interface RadioInputProps {
   id: string;
   name: string;
-  value: string;
+  value: string | null;
   checked?: boolean;
   disabled?: boolean;
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
 }
 const RadioInput = ({
   id,
@@ -19,7 +19,7 @@ const RadioInput = ({
       id={id}
       type="radio"
       name={name}
-      value={value}
+      value={value ?? ""}
       checked={checked}
       disabled={disabled}
       onChange={() => onChange(value)}
