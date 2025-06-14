@@ -66,7 +66,7 @@ const TextInput = ({
       <input
         type={type}
         name={name}
-        value={value ? value : ""}
+        value={value === null ? "" : value}
         disabled={disabled}
         maxLength={maxLength}
         placeholder={placeholder}
