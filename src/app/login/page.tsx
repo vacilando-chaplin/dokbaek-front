@@ -43,10 +43,10 @@ const Login = () => {
         </label>
       </div>
       <div className="flex h-auto w-full flex-col gap-2">
-        <LoginButton type="카카오" Component={KakaoLogin} />
-        <LoginButton type="네이버" Component={NaverLogin} />
-        <LoginButton type="애플" Component={AppleLogin} />
-        <LoginButton type="구글" Component={GoogleLogin} />
+        <LoginButton type="kakao" Component={KakaoLogin} />
+        <LoginButton type="naver" Component={NaverLogin} />
+        <LoginButton type="apple" Component={AppleLogin} />
+        <LoginButton type="google" Component={GoogleLogin} />
       </div>
     </main>
   );

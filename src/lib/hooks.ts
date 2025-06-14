@@ -28,6 +28,24 @@ export const useSetToken = (name: string, token: string) => {
   });
 };
 
+export const useSetLoginProfileId = (name: string, loginProfileId: string) => {
+  Cookies.set(name, loginProfileId, {
+    expires: 7,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    sameSite: "strict"
+  });
+};
+
+export const useSetLoginForm = (name: string, loginForm: string) => {
+  Cookies.set(name, loginForm, {
+    expires: 7,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    sameSite: "strict"
+  });
+};
+
 export const useGetBlurPhoto = async (photoList: PhotoResponseType[]) => {
   const blurImages = [];
   for (const photo of photoList) {
