@@ -1,38 +1,45 @@
 "use client";
 
 import BoxButton from "@/components/atoms/boxButton";
-import { withdrawalAgreement, withdrawalReasons } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { deleteWithdraw, postWithdrawReason } from "../api";
-import Cookies from "js-cookie";
 import { removeStorageData } from "@/lib/utils";
+import { ReasonWithCheckType } from "../type";
+import {
+  withdrawalAgreement,
+  withdrawalReasons
+} from "@/lib/recoil/account/withdrawal/atom";
+import { checkedReasonIds } from "@/lib/recoil/account/withdrawal/selector";
 
-const WithdrawalConfirm = () => {
+interface WithdrawalConfirmProps {
+  initialReasons: ReasonWithCheckType[];
+}
+
+const WithdrawalConfirm = ({ initialReasons }: WithdrawalConfirmProps) => {
   const router = useRouter();
 
-  const [terms, setTerms] = useRecoilState(withdrawalReasons);
+  const reasonIds = useRecoilValue(checkedReasonIds);
+  const setReasons = useSetRecoilState(withdrawalReasons);
   const [agreement, setAgreement] = useRecoilState(withdrawalAgreement);
 
   const onCancel = () => {
-    setTerms(Array(5).fill(false));
+    setReasons(initialReasons);
     setAgreement(false);
 
-    router.replace("/");
+    router.replace("/account");
   };
 
   const onConfirm = async () => {
-    const reasons = terms.reduce<number[]>((acc, value, index) => {
-      if (value) acc.push(index);
-      return acc;
-    }, []);
+    setReasons(initialReasons);
+    setAgreement(false);
 
-    await postWithdrawReason(reasons);
+    await postWithdrawReason(reasonIds);
     await deleteWithdraw();
 
     removeStorageData();
 
-    router.replace("/withdrawal/complete");
+    router.replace("/account/withdrawal/complete");
   };
 
   return (

@@ -1,8 +1,8 @@
 "use client";
 
+import { withdrawalAgreement } from "@/lib/recoil/account/withdrawal/atom";
 import WithdrawalCheckbox from "./withdrawalCheckbox";
 import { useRecoilState } from "recoil";
-import { withdrawalAgreement } from "@/lib/atoms";
 
 const WithdrawalAgreement = () => {
   const [agreement, setAgreement] = useRecoilState(withdrawalAgreement);
