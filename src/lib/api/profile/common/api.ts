@@ -1,5 +1,6 @@
 "use server";
 
+import { ProfileDraftDataType } from "@/app/profile/[id]/create/types";
 import { createServerAxios } from "@/lib/axios/server";
 import { cookies } from "next/headers";
 
@@ -11,12 +12,13 @@ export const getProfileDraftServer = async (profileId: number) => {
   try {
     const res = await api.get(`/profile/${profileId}/draft`);
     if (res.status === 200) {
-      return res.data;
+      return { data: res.data, hasDraft: true };
     }
   } catch (error: any) {
     if (error.response && error.response.status === 404) {
-      throw error;
+      return { data: error.response.data, hasDraft: false };
     }
+    throw error;
   }
 };
 

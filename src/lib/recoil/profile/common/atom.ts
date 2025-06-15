@@ -1,10 +1,10 @@
-import { ProfileDarftDataType } from "@/app/profile/[id]/create/types";
+import { ProfileDraftDataType } from "@/app/profile/[id]/create/types";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
-export const profileDraftData = atom<ProfileDarftDataType>({
+export const profileDraftData = atom<ProfileDraftDataType>({
   key: "profileDraftData",
   default: {
     id: 0,
