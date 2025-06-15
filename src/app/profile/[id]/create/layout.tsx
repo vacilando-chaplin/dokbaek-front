@@ -15,15 +15,15 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   const profileInitData = await getProfileDraftServer(profileId);
   const nullCheckedData = {
-    ...profileInitData,
+    ...profileInitData?.data,
     info: {
-      ...profileInitData.info,
-      name: profileInitData.info.name ?? "",
-      email: profileInitData.info.email ?? "",
-      contact: profileInitData.info.contact ?? "",
-      instagramLink: profileInitData.info.instagramLink ?? "",
-      youtubeLink: profileInitData.info.youtubeLink ?? "",
-      introduction: profileInitData.info.introduction ?? ""
+      ...profileInitData?.data.info,
+      name: profileInitData?.data.info?.name ?? "",
+      email: profileInitData?.data.info?.email ?? "",
+      contact: profileInitData?.data.info?.contact ?? "",
+      instagramLink: profileInitData?.data.info?.instagramLink ?? "",
+      youtubeLink: profileInitData?.data.info?.youtubeLink ?? "",
+      introduction: profileInitData?.data.info?.introduction ?? ""
     }
   };
 
@@ -32,7 +32,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
       <ListMenu profileId={profileId} />
       <Initializer profileInitData={nullCheckedData}>{children}</Initializer>
       <BottomBar profileId={profileId} />
-      <DraftModal profileId={profileId} />
+      {!profileInitData?.hasDraft && <DraftModal profileId={profileId} />}
     </div>
   );
 };

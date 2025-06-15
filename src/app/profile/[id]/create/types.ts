@@ -104,7 +104,7 @@ export interface ProfileSpecialtyType {
   updatedAt: string;
 }
 
-export interface ProfileDarftDataType {
+export interface ProfileDraftDataType {
   id: number;
   userId: number | null;
   status: string | null;
