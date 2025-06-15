@@ -9,44 +9,72 @@ import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
 } from "@/app/landing/types";
+import {
+  DEFAULT_MIN_BORN_YEAR,
+  DEFAULT_MAX_BORN_YEAR,
+  DEFAULT_MIN_HEIGHT,
+  DEFAULT_MAX_HEIGHT,
+  DEFAULT_MIN_WEIGHT,
+  DEFAULT_MAX_WEIGHT
+} from "@/constants/constants";
 
 const Page = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
+  const isInitialLoad = useRef(true);
+  const pageSize = useRef(16);
 
-  const currKeyword = useRef("");
-  const currGender = useRef<string | null>(null);
-  const currMinBornYear = useRef(0);
-  const currMaxBornYear = useRef(0);
-  const currMinHeight = useRef(0);
-  const currMaxHeight = useRef(0);
-  const currMinWeight = useRef(0);
-  const currMaxWeight = useRef(0);
+  const [filterState, setFilterState] = useState({
+    keyword: "",
+    gender: null as string | null,
+    minBornYear: DEFAULT_MIN_BORN_YEAR,
+    maxBornYear: DEFAULT_MAX_BORN_YEAR,
+    minHeight: DEFAULT_MIN_HEIGHT,
+    maxHeight: DEFAULT_MAX_HEIGHT,
+    minWeight: DEFAULT_MIN_WEIGHT,
+    maxWeight: DEFAULT_MAX_WEIGHT
+  });
 
   const [profiles, setProfiles] = useState<ProfileShowcaseResponseType[]>([]);
   const [profilesData, setProfilesData] = useState<ProfilesResponseType>();
 
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("page", "0");
+    params.set("size", String(pageSize.current));
+    params.set("sort", "RECENT_UPDATED");
+
+    params.set("minBornYear", String(DEFAULT_MIN_BORN_YEAR));
+    params.set("maxBornYear", String(DEFAULT_MAX_BORN_YEAR));
+    params.set("minHeight", String(DEFAULT_MIN_HEIGHT));
+    params.set("maxHeight", String(DEFAULT_MAX_HEIGHT));
+    params.set("minWeight", String(DEFAULT_MIN_WEIGHT));
+    params.set("maxWeight", String(DEFAULT_MAX_WEIGHT));
+
+    if (!searchParams.toString()) {
+      replace(`/profiles?${params.toString()}`);
+    }
+  }, []);
+
   const getParam = (key: string, defaultValue = 0) => {
-    return Number(searchParams.get(key)) || defaultValue;
+    const value = searchParams.get(key);
+    if (value === null) return defaultValue;
+    const numValue = Number(value);
+    return isNaN(numValue) ? defaultValue : numValue;
   };
 
-  const keyword = searchParams.get("keyword") ?? "";
-  const gender = searchParams.get("gender") ?? "";
-  const minBornYear = getParam("minBornYear");
-  const maxBornYear = getParam("maxBornYear");
-  const minHeight = getParam("minHeight");
-  const maxHeight = getParam("maxHeight");
-  const minWeight = getParam("minWeight");
-  const maxWeight = getParam("maxWeight");
-
-  if (keyword) currKeyword.current = keyword;
-  if (gender) currGender.current = gender;
-  if (!isNaN(minBornYear)) currMinBornYear.current = minBornYear;
-  if (!isNaN(maxBornYear)) currMaxBornYear.current = maxBornYear;
-  if (!isNaN(minHeight)) currMinHeight.current = minHeight;
-  if (!isNaN(maxHeight)) currMaxHeight.current = maxHeight;
-  if (!isNaN(minWeight)) currMinWeight.current = minWeight;
-  if (!isNaN(maxWeight)) currMaxWeight.current = maxWeight;
+  useEffect(() => {
+    setFilterState({
+      keyword: searchParams.get("keyword") || "",
+      gender: searchParams.get("gender") || null,
+      minBornYear: getParam("minBornYear"),
+      maxBornYear: getParam("maxBornYear"),
+      minHeight: getParam("minHeight", DEFAULT_MIN_HEIGHT),
+      maxHeight: getParam("maxHeight", DEFAULT_MAX_HEIGHT),
+      minWeight: getParam("minWeight", DEFAULT_MIN_WEIGHT),
+      maxWeight: getParam("maxWeight", DEFAULT_MAX_WEIGHT)
+    });
+  }, [searchParams]);
 
   const onSubmit = ({
     keyword,
@@ -67,19 +95,16 @@ const Page = () => {
     minWeight: number;
     maxWeight: number;
   }) => {
-    currKeyword.current = keyword.trim();
-    currMinBornYear.current = minBornYear;
-    currMaxBornYear.current = maxBornYear;
-    currMinHeight.current = minHeight;
-    currMaxHeight.current = maxHeight;
-    currMinWeight.current = minWeight;
-    currMaxWeight.current = maxWeight;
-
-    if (gender === "F" || gender === "M") {
-      currGender.current = gender;
-    }
-
-    fetchProfiles();
+    setFilterState({
+      keyword: keyword,
+      gender,
+      minBornYear,
+      maxBornYear,
+      minHeight,
+      maxHeight,
+      minWeight,
+      maxWeight
+    });
 
     const params = new URLSearchParams();
     params.set("keyword", keyword);
@@ -87,34 +112,43 @@ const Page = () => {
       params.set("gender", gender);
     }
     params.set("page", String(0));
-    params.set("size", String(10));
+    params.set("size", String(pageSize.current));
     params.set("sort", "RECENT_UPDATED");
 
     if (minBornYear > 0) params.set("minBornYear", String(minBornYear));
     if (maxBornYear > 0) params.set("maxBornYear", String(maxBornYear));
-    if (minHeight > 0) params.set("minHeight", String(minHeight));
-    if (maxHeight > 0) params.set("maxHeight", String(maxHeight));
-    if (minWeight > 0) params.set("minWeight", String(minWeight));
-    if (maxWeight > 0) params.set("maxWeight", String(maxWeight));
+    if (minHeight > -1) params.set("minHeight", String(minHeight));
+    if (maxHeight > -1) params.set("maxHeight", String(maxHeight));
+    if (minWeight > -1) params.set("minWeight", String(minWeight));
+    if (maxWeight > -1) params.set("maxWeight", String(maxWeight));
 
     const newUrl = `/profiles?${params.toString()}`;
     replace(newUrl, { scroll: false });
   };
 
   const getSearchParams = () => {
+    console.log("getSearchParams", filterState.keyword);
     const params = new URLSearchParams();
-    if (keyword) params.set("keyword", keyword);
-    if (gender) params.set("gender", gender);
-    params.set("page", String(0));
-    params.set("size", String(10));
+    params.set("size", String(pageSize.current));
     params.set("sort", "RECENT_UPDATED");
 
-    if (minBornYear > 0) params.set("minBornYear", String(minBornYear));
-    if (maxBornYear > 0) params.set("maxBornYear", String(maxBornYear));
-    if (minHeight > 0) params.set("minHeight", String(minHeight));
-    if (maxHeight > 0) params.set("maxHeight", String(maxHeight));
-    if (minWeight > 0) params.set("minWeight", String(minWeight));
-    if (maxWeight > 0) params.set("maxWeight", String(maxWeight));
+    const page = searchParams.get("page");
+    if (page) {
+      params.set("page", page);
+    } else {
+      params.set("page", "0");
+    }
+
+    params.set("keyword", filterState.keyword);
+    if (filterState.gender === "F" || filterState.gender === "M") {
+      params.set("gender", filterState.gender);
+    }
+    params.set("minBornYear", String(filterState.minBornYear));
+    params.set("maxBornYear", String(filterState.maxBornYear));
+    params.set("minHeight", String(filterState.minHeight));
+    params.set("maxHeight", String(filterState.maxHeight));
+    params.set("minWeight", String(filterState.minWeight));
+    params.set("maxWeight", String(filterState.maxWeight));
 
     return params;
   };
@@ -124,14 +158,27 @@ const Page = () => {
       const res = await getProfiles(getSearchParams().toString());
       setProfiles(res.content);
       setProfilesData(res);
+      isInitialLoad.current = false;
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchProfiles();
-  }, [searchParams.toString()]);
+    if (searchParams.toString()) {
+      fetchProfiles();
+    }
+  }, [
+    searchParams.toString(),
+    filterState.keyword,
+    filterState.gender,
+    filterState.minBornYear,
+    filterState.maxBornYear,
+    filterState.minHeight,
+    filterState.maxHeight,
+    filterState.minWeight,
+    filterState.maxWeight
+  ]);
 
   return (
     <div className="container-max m-[auto] mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
@@ -141,14 +188,14 @@ const Page = () => {
         </p>
         <div className="mb-4 flex flex-row justify-center gap-6">
           <ActorFilterSidebar
-            currKeyword={currKeyword.current}
-            currGender={currGender.current}
-            currMinBornYear={currMinBornYear.current}
-            currMaxBornYear={currMaxBornYear.current}
-            currMinHeight={currMinHeight.current}
-            currMaxHeight={currMaxHeight.current}
-            currMinWeight={currMinWeight.current}
-            currMaxWeight={currMaxWeight.current}
+            currKeyword={filterState.keyword}
+            currGender={filterState.gender}
+            currMinBornYear={filterState.minBornYear}
+            currMaxBornYear={filterState.maxBornYear}
+            currMinHeight={filterState.minHeight}
+            currMaxHeight={filterState.maxHeight}
+            currMinWeight={filterState.minWeight}
+            currMaxWeight={filterState.maxWeight}
             handleSubmit={onSubmit}
             profiles={profiles}
             profilesData={profilesData}

@@ -43,7 +43,7 @@ const ProfilesMain = ({
             {profilesData && (
               <Pagination
                 currentPage={currentPage}
-                totalPages={profilesData?.totalPages ?? 0}
+                totalPages={profilesData?.totalPages || 0}
               />
             )}
           </div>

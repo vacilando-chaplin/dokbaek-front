@@ -1,27 +1,35 @@
 "use client";
 
 import { TermAgreementsType } from "@/lib/types";
-import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { currentPath, defaultId } from "@/lib/atoms";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useSetToken } from "@/lib/hooks";
+import { defaultId } from "@/lib/atoms";
+import { useSetRecoilState } from "recoil";
+import {
+  useSetLoginForm,
+  useSetLoginProfileId,
+  useSetToken
+} from "@/lib/hooks";
 import { postOauthSignUp } from "../../callback/api";
 import { getProfileMe } from "@/lib/api";
 import BoxButton from "@/components/atoms/boxButton";
+import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
 
-const TermAgreementButton = () => {
+interface TermAgreementButtonProps {
+  termAgreements: TermAgreementsType[];
+  isAllRequiredTermsAgreed: boolean;
+}
+
+const TermAgreementButton = ({
+  termAgreements,
+  isAllRequiredTermsAgreed
+}: TermAgreementButtonProps) => {
   const router = useRouter();
   const urlParams = useSearchParams();
   const code = urlParams.get("code");
   const state = urlParams.get("state");
 
-  const currentPathName = useRecoilValue(currentPath);
   const setUserId = useSetRecoilState(defaultId);
-
-  const [termAgreements, setTermAgreements] = useState<TermAgreementsType[]>([
-    { termId: 1, agreement: true }
-  ]);
+  const setViewProfileId = useSetRecoilState(viewedProfileId);
 
   const onTermAgreement = async () => {
     if (code && state) {
@@ -32,29 +40,29 @@ const TermAgreementButton = () => {
       });
       const data = res.data;
 
-      const getProfileId = async () => {
-        const res = await getProfileMe();
-        const data = res.data;
-        useSetToken("loginProfileId", data.id);
-      };
-      getProfileId();
+      const profileRes = await getProfileMe();
+      const loginProfileId = profileRes.data.id;
+      useSetLoginProfileId("loginProfileId", String(loginProfileId));
+      setViewProfileId(loginProfileId);
 
       setUserId(data.userId);
       useSetToken("jwt", data.token.jwt);
       useSetToken("refresh_token", data.token.refreshToken);
-    }
+      useSetLoginForm("login_form", state);
 
-    router.push(`${currentPathName}`);
+      router.replace(`/profile/${loginProfileId}`);
+    }
   };
 
   return (
     <BoxButton
       type="primary"
       size="medium"
+      width="full"
       onClick={onTermAgreement}
-      disabled={!code || !state}
+      disabled={!code || !state || !isAllRequiredTermsAgreed}
     >
-      약관 동의
+      회원 가입
     </BoxButton>
   );
 };
