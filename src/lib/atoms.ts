@@ -103,13 +103,3 @@ export const currentPath = atom<string>({
   key: "currentPath",
   default: "/"
 });
-
-export const withdrawalReasons = atom<boolean[]>({
-  key: "withdrawalReasons",
-  default: Array(5).fill(false)
-});
-
-export const withdrawalAgreement = atom<boolean>({
-  key: "withdrawalAgreement",
-  default: false
-});

@@ -1,15 +1,15 @@
 "use client";
 
 import { deleteSignOut } from "@/lib/api";
-import AccountListItem from "./accountListItem";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import AccountContainer from "./accountContainer";
 import { removeStorageData } from "@/lib/utils";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
+import AccountMenuItem from "./accountMenuItem";
 
-const AccountSubContents = () => {
+const AccountMenu = () => {
   const router = useRouter();
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -32,11 +32,11 @@ const AccountSubContents = () => {
   return (
     <AccountContainer type="sub">
       <div className="h-auto w-full">
-        <AccountListItem text="로그아웃" onClick={onLogOut} />
-        <AccountListItem text="회원 탈퇴" negative onClick={onWithdraw} />
+        <AccountMenuItem text="로그아웃" onClick={onLogOut} />
+        <AccountMenuItem text="회원 탈퇴" negative onClick={onWithdraw} />
       </div>
     </AccountContainer>
   );
 };
 
-export default AccountSubContents;
+export default AccountMenu;

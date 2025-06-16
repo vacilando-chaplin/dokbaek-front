@@ -1,9 +1,20 @@
 import WithdrawalContainer from "./components/withdrawalContainer";
-import WithdrawalTerms from "./components/withdrawalTerms";
 import WithdrawalAgreement from "./components/withdrawalAgreement";
 import WithdrawalConfirm from "./components/withdrawalConfirm";
+import { getWithdrawReason } from "./api";
+import WithdrawalReasons from "./components/withdrawalReasons";
+import { ReasonType } from "./type";
 
-const Withdrawal = () => {
+const Withdrawal = async () => {
+  const getReasons = await getWithdrawReason();
+
+  const initialReasons =
+    getReasons &&
+    getReasons.data.reasons.map((reason: ReasonType) => ({
+      ...reason,
+      checked: false
+    }));
+
   return (
     <section className="flex h-auto w-[560px] max-w-[560px] flex-col gap-10 pb-28 pt-24">
       <WithdrawalContainer title="탈퇴하기 전에 확인해주세요.">
@@ -12,9 +23,9 @@ const Withdrawal = () => {
           없어요.
         </span>
       </WithdrawalContainer>
-      <WithdrawalTerms />
+      <WithdrawalReasons initialReasons={initialReasons} />
       <WithdrawalAgreement />
-      <WithdrawalConfirm />
+      <WithdrawalConfirm initialReasons={initialReasons} />
     </section>
   );
 };
