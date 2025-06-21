@@ -1,6 +1,5 @@
 "use server";
 
-import { ProfileDraftDataType } from "@/app/profile/[id]/create/types";
 import { createServerAxios } from "@/lib/axios/server";
 import { cookies } from "next/headers";
 
