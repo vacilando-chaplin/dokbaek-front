@@ -6,7 +6,7 @@ interface DeleteModalProps {
   text: string;
   category: string;
   onCancel: React.MouseEventHandler<HTMLButtonElement>;
-  onDelete: (id: string, category: string) => void;
+  onDelete: (id: string, category: any) => void;
 }
 
 const DeleteModal = ({

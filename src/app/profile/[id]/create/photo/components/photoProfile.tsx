@@ -1,127 +1,133 @@
-import Image from "next/image";
-import Title from "@/components/atoms/title";
-import DeleteModal from "@/components/molecules/deleteModal";
-import Plus from "../../../../../../../public/icons/Plus.svg";
-import Edit from "../../../../../../../public/icons/Edit.svg";
-import X from "../../../../../../../public/icons/X.svg";
-import { PhotoResponseType } from "@/lib/types";
-import LimitLabel from "./limitLabel";
-import TitleHelperText from "./titleHelperText";
+"use client";
+
 import EmptyPhotoFrame from "./emptyPhotoFrame";
-import UploadButton from "@/components/atoms/uploadButton";
+import { useRecoilState } from "recoil";
+import { profileDraftData } from "@/lib/recoil/profile/common/atom";
+import { cropDataInit } from "../../../data";
+import PhotoInfoForm from "./photoInfoForm";
+import { useImageSelector } from "@/lib/hooks";
+import PhotoModal from "./photoModal";
+import PhotoPreviewList from "./photoPreviewList";
+import { cropModalState } from "@/lib/recoil/profile/photo/atom";
+import imageCompression from "browser-image-compression";
+import { imageCompressionOptions } from "@/lib/data";
+import { convertToBase64 } from "@/lib/utils";
 
-interface PhotoProfileProps {
-  photoList: PhotoResponseType[];
-  photoDeleteActive: boolean;
-  onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onPhotoModalOpen: (category: string) => void;
-  onPhotoEditModalOpen: (photo: any, category: string) => void;
-  onDeletePhoto: (id: string, category: string) => void;
-  onDeletePhotoActive: React.MouseEventHandler<HTMLButtonElement>;
-  onDrop: (images: File[], rejectedFiles: any[]) => void;
-}
+const PhotoProfile = () => {
+  const [profileData, setProfileData] = useRecoilState(profileDraftData);
+  const [cropModal, setCropModal] = useRecoilState(cropModalState);
 
-const PhotoProfile = ({
-  photoList,
-  photoDeleteActive,
-  onSelectFile,
-  onPhotoModalOpen,
-  onPhotoEditModalOpen,
-  onDeletePhoto,
-  onDeletePhotoActive,
-  onDrop
-}: PhotoProfileProps) => {
+  const {
+    selectImage,
+    selectedImages,
+    setCropImage,
+    setSelectImage,
+    setSelectedImages,
+    onSelectFile
+  } = useImageSelector();
+
+  // 사진 추가 모달 열기
+  const onCropModalOpen = (category: string) => {
+    // setSelectedPhotoId(0);
+    setCropModal({
+      id: "",
+      state: "add",
+      active: true,
+      name: "사진 추가",
+      buttonText: "추가",
+      category: category
+    });
+  };
+
+  // 사진 드래그 앤 드랍
+  const onPhotoDrop = async (images: File[], rejectedFiles: File[]) => {
+    if (rejectedFiles.length > 0) {
+      return;
+    }
+
+    let fileData: any = [];
+
+    for (const file of images) {
+      const downSizedFile = await imageCompression(
+        file,
+        imageCompressionOptions
+      );
+      const downSizedImage = await convertToBase64(downSizedFile);
+
+      fileData = fileData.concat([
+        {
+          origin: downSizedImage,
+          preview: downSizedImage,
+          originImage: downSizedImage,
+          cropData: cropDataInit
+        }
+      ]);
+    }
+
+    setCropImage(fileData[0].preview);
+    setSelectImage(fileData[0].originImage);
+    setSelectedImages(fileData);
+    // setSelectedPhotoId(0);
+    setCropModal({
+      id: "",
+      state: "add",
+      active: true,
+      name: "사진 추가",
+      buttonText: "추가",
+      category: "photos"
+    });
+  };
+
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
-      <div className="flex w-full flex-row items-start justify-between">
-        <div className="flex flex-col gap-1">
-          <div className="flex flex-row items-center gap-2">
-            <Title name="프로필 사진" />
-            <LimitLabel value={photoList.length} limit={20} />
-          </div>
-          <TitleHelperText text="자신의 매력을 가장 잘 보여줄 수 있는 프로필 사진을 추가해주세요." />
-        </div>
-        <UploadButton
-          type="primaryOutlined"
-          size="small"
-          disabled={photoList.length >= 20}
-          onClick={() => onPhotoModalOpen("photo")}
-          onChange={onSelectFile}
-        >
-          <Plus
-            width="12"
-            height="12"
-            className="fill-current text-accent-primary-light dark:text-accent-primary-dark"
-          />
-          추가
-        </UploadButton>
-      </div>
-      {photoList.length >= 1 ? (
-        <div className="grid w-full grid-cols-4 gap-2">
-          {photoList.map((photoItem: PhotoResponseType) => {
-            return (
-              <figure
-                key={photoItem.id}
-                className="relative flex aspect-[160/204] h-full w-full rounded-lg"
-              >
-                <Image
-                  src={photoItem.previewPath}
-                  alt="사진 미리보기"
-                  sizes="100vw"
-                  fill
-                  priority
-                  className="rounded-lg"
-                />
-                (
-                <div className="absolute h-full w-full opacity-0 hover:opacity-100">
-                  {/* edit */}
-                  <label
-                    className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
-                    onClick={() => onPhotoEditModalOpen(photoItem, "photo")}
-                  >
-                    <Edit
-                      width="12"
-                      height="12"
-                      className="fill-current text-content-primary-light dark:text-content-primary-dark"
-                    />
-                  </label>
-                  {/* delete */}
-                  <button
-                    className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
-                    type="button"
-                    onClick={onDeletePhotoActive}
-                  >
-                    <X
-                      width="12"
-                      height="12"
-                      className="fill-current text-state-negative-light dark:text-state-negative-dark"
-                    />
-                  </button>
-                  {/* deleteModal */}
-                  {photoDeleteActive && (
-                    <DeleteModal
-                      id={photoItem.id}
-                      text="이 사진을 삭제할까요?"
-                      category="photo"
-                      onCancel={onDeletePhotoActive}
-                      onDelete={onDeletePhoto}
-                    />
-                  )}
-                </div>
-                )
-              </figure>
-            );
-          })}
-        </div>
+      <PhotoInfoForm
+        title="프로필 사진"
+        helperText="자신의 매력을 가장 잘 보여줄 수 있는 프로필 사진을 추가해주세요."
+        disabled={profileData.photos && profileData.photos.length >= 20}
+        limitValue={profileData.photos && profileData.photos.length}
+        onModalOpen={() => onCropModalOpen("photos")}
+        onSelectFile={onSelectFile}
+      />
+      {profileData.photos && profileData.photos.length >= 1 ? (
+        <PhotoPreviewList
+          previewPhotoList={profileData.photos}
+          setCropImage={setCropImage}
+          setSelectImage={setSelectImage}
+          setSelectedImages={setSelectedImages}
+        />
       ) : (
         <EmptyPhotoFrame
           text="추가할 사진을 끌어다 놓으세요."
-          listSize={photoList.length}
-          onDrop={onDrop}
-          onCropModalOpen={() => onPhotoModalOpen("photo")}
+          listSize={profileData.photos && profileData.photos.length}
+          onDrop={onPhotoDrop}
+          onCropModalOpen={() => onCropModalOpen("photos")}
           onChange={onSelectFile}
         />
       )}
+      {/* {cropModal.active && (
+        <PhotoModal
+          selectImage={selectImage}
+          selectedImages={selectedImages}
+          selectedPhotoId={selectedPhotoId}
+          photoModal={photoModal}
+          onModalActive={onPhotoModalClose}
+          onAddPhoto={
+            photoModal.category === "photo" ||
+            photoModal.category === "stillcut"
+              ? onAddPhoto
+              : onAddRecentPhoto
+          }
+          onEditPhoto={
+            photoModal.category === "photo" ||
+            photoModal.category === "stillcut"
+              ? onEditPhoto
+              : onEditRecentPhoto
+          }
+          setCropData={setCropData}
+          setCropImage={setCropImage}
+          onSelectImage={onSelectImage}
+        />
+      )} */}
     </section>
   );
 };

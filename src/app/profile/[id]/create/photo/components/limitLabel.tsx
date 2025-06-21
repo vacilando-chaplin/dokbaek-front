@@ -1,5 +1,5 @@
 interface LimitLabelProps {
-  value: number;
+  value: number | undefined;
   limit: number;
 }
 

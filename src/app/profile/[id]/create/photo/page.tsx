@@ -265,18 +265,6 @@ const Photo = () => {
     const res = await getProfileDraftClient(profileId);
     const data = res.data;
 
-    isValid(data.photos)
-      ? setCompletion({ ...completion, profilePhoto: true })
-      : setCompletion({ ...completion, profilePhoto: false });
-
-    isValid(data.stillCuts)
-      ? setCompletion({ ...completion, stillcutPhoto: true })
-      : setCompletion({ ...completion, stillcutPhoto: false });
-
-    isValid(data.recentPhotos)
-      ? setCompletion({ ...completion, recentPhoto: true })
-      : setCompletion({ ...completion, recentPhoto: false });
-
     setPhotoList(data.photos);
     setStillCutList(data.stillCuts);
     setRecentPhotoList(data.recentPhotos);
@@ -375,33 +363,6 @@ const Photo = () => {
     e.target.value = "";
   };
 
-  // 사진 리스트 업데이트
-  // useEffect(() => {
-  //   const getProfileData = async () => {
-  //     if (isDraftLoading) {
-  //       const res = await getProfileDraftClient(profileId);
-  //       const data = await res.data;
-
-  //       isValid(data.photos)
-  //         ? setCompletion({ ...completion, profilePhoto: true })
-  //         : setCompletion({ ...completion, profilePhoto: false });
-
-  //       isValid(data.stillCuts)
-  //         ? setCompletion({ ...completion, stillcutPhoto: true })
-  //         : setCompletion({ ...completion, stillcutPhoto: false });
-
-  //       isValid(data.recentPhotos)
-  //         ? setCompletion({ ...completion, recentPhoto: true })
-  //         : setCompletion({ ...completion, recentPhoto: false });
-
-  //       setPhotoList(data.photos);
-  //       setStillCutList(data.stillCuts);
-  //       setRecentPhotoList(data.recentPhotos);
-  //     }
-  //   };
-  //   getProfileData();
-  // }, [isDraftLoading]);
-
   useEffect(() => {
     if (profileDraftState !== "") {
       setPhotoList(profileData.photos);
@@ -412,16 +373,7 @@ const Photo = () => {
 
   return (
     <div className="flex w-[65vw] flex-col gap-4">
-      <PhotoProfile
-        photoList={photoList}
-        photoDeleteActive={photoDeleteActive}
-        onSelectFile={onSelectFile}
-        onPhotoModalOpen={onPhotoModalOpen}
-        onPhotoEditModalOpen={onPhotoEditModalOpen}
-        onDeletePhoto={onDeletePhoto}
-        onDeletePhotoActive={onDeletePhotoActive}
-        onDrop={onProfileDrop}
-      />
+      <PhotoProfile />
       {photoModal.active && (
         <PhotoModal
           selectImage={selectImage}

@@ -1,5 +1,3 @@
-"use client";
-
 import Toast from "@/components/atoms/toast";
 import TopNavigation from "@/components/organisms/topNavigation";
 
