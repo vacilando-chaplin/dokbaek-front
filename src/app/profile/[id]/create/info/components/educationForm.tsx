@@ -180,7 +180,7 @@ const EducationForm = ({ item, profileId, onDelete }: EducationFormProps) => {
           size="medium"
           name="name"
           list={schoolList}
-          value={item.school.name}
+          value={item.school.name ?? ""}
           active={dropdownActive.schoolName}
           selected={item.school.name}
           isEmpty={dropdownActive.schoolName && schoolList.length === 0}
@@ -200,7 +200,7 @@ const EducationForm = ({ item, profileId, onDelete }: EducationFormProps) => {
               type="text"
               size="medium"
               name="major"
-              value={item.major}
+              value={item.major ?? ""}
               maxLength={20}
               onChange={onMajorChange}
               onBlur={() => onSaveEducation(profileData.education)}
@@ -211,7 +211,7 @@ const EducationForm = ({ item, profileId, onDelete }: EducationFormProps) => {
               name="education"
               list={educationList}
               size="medium"
-              value={statusName}
+              value={statusName ?? "졸업"}
               active={dropdownActive.status}
               selected={statusName}
               onClick={onStatusDropdownClick}

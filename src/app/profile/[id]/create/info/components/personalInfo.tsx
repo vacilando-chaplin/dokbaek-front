@@ -169,7 +169,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               type="text"
               size="medium"
               name="name"
-              value={name}
+              value={name ?? ""}
               maxLength={10}
               placeholder="이름을 입력해주세요."
               onChange={onInputChange}
@@ -182,7 +182,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               size="medium"
               name="bornYear"
               list={yearList}
-              value={bornYear}
+              value={bornYear ?? ""}
               active={dropdownActive}
               selected={bornYear}
               maxLength={4}
@@ -248,7 +248,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               type="text"
               size="medium"
               name="height"
-              value={height}
+              value={height ?? ""}
               parameter="cm"
               maxLength={3}
               placeholder="0"
@@ -262,7 +262,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               type="text"
               size="medium"
               name="weight"
-              value={weight}
+              value={weight ?? ""}
               parameter="kg"
               maxLength={3}
               placeholder="0"
@@ -278,7 +278,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               type="tel"
               size="medium"
               name="contact"
-              value={contact}
+              value={contact ?? ""}
               maxLength={13}
               onChange={onContactChange}
               onBlur={onSaveInfo}
@@ -290,7 +290,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               type="email"
               size="medium"
               name="email"
-              value={email}
+              value={email ?? ""}
               maxLength={40}
               onChange={onInputChange}
               onBlur={onSaveInfo}
@@ -337,7 +337,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               size="medium"
               name="instagramLink"
               icon="instagram"
-              value={instagramLink}
+              value={instagramLink ?? ""}
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}
@@ -348,7 +348,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               size="medium"
               name="youtubeLink"
               icon="youtube"
-              value={youtubeLink}
+              value={youtubeLink ?? ""}
               maxLength={300}
               placeholder="https://"
               onChange={onInputChange}

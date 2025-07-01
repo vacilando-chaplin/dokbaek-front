@@ -54,7 +54,7 @@ const Introduction = ({ profileId }: IntroductionProps) => {
       <TextArea
         size="medium"
         name="introduction"
-        value={introduction}
+        value={introduction ?? ""}
         limit={500}
         placeholder="자기소개를 입력해주세요."
         onChange={onInputChange}
