@@ -16,6 +16,7 @@ export interface PhotoModalType {
 }
 
 export interface SelectedImagesType {
+  id: number;
   origin: string;
   preview: string;
   originImage: string;

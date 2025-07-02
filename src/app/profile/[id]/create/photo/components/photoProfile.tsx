@@ -46,6 +46,7 @@ const PhotoProfile = () => {
     setSelectImage("");
     setSelectedImages([
       {
+        id: 0,
         origin: "",
         preview: "",
         originImage: "",

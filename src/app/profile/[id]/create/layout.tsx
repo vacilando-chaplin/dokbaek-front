@@ -14,16 +14,17 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   const profileId = Number(cookies().get("loginProfileId")?.value);
 
   const profileInitData = await getProfileDraftServer(profileId);
+  const profileData = profileInitData?.data?.data;
   const nullCheckedData = {
-    ...profileInitData?.data,
+    ...profileData,
     info: {
-      ...profileInitData?.data.info,
-      name: profileInitData?.data.info?.name ?? "",
-      email: profileInitData?.data.info?.email ?? "",
-      contact: profileInitData?.data.info?.contact ?? "",
-      instagramLink: profileInitData?.data.info?.instagramLink ?? "",
-      youtubeLink: profileInitData?.data.info?.youtubeLink ?? "",
-      introduction: profileInitData?.data.info?.introduction ?? ""
+      ...profileData?.info,
+      name: profileData?.info?.name ?? "",
+      email: profileData?.info?.email ?? "",
+      contact: profileData?.info?.contact ?? "",
+      instagramLink: profileData?.info?.instagramLink ?? "",
+      youtubeLink: profileData?.info?.youtubeLink ?? "",
+      introduction: profileData?.info?.introduction ?? ""
     }
   };
 

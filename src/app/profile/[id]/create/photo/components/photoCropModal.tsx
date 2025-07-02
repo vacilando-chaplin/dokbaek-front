@@ -5,7 +5,7 @@ import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
 import Image from "next/image";
 import { PhotoModalType, SelectedImagesType } from "../../../types";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
 import { patchPhoto, postPhoto } from "@/lib/api";
@@ -16,6 +16,7 @@ import { cropDataInit } from "../../../data";
 import { Coordinates } from "react-advanced-cropper";
 import { CategoryKey } from "../types";
 import Cookies from "js-cookie";
+import X from "../../../../../../../public/icons/X.svg";
 
 interface PhotoCropModalProps {
   cropImage: string;
@@ -51,6 +52,7 @@ const PhotoCropModal = ({
   const onSelectImage = (index: number) => {
     const updateImages = [...selectedImages];
     updateImages[selectedPhotoId] = {
+      id: selectedImages[selectedPhotoId].id,
       origin: selectedImages[selectedPhotoId].origin,
       preview: cropImage,
       originImage: selectImage,
@@ -66,6 +68,12 @@ const PhotoCropModal = ({
     setCropData(coordinates);
     setCropImage(cropedImage);
     setSelectImage(image);
+  };
+
+  const onRemoveImage = (indexToRemove: number) => {
+    setSelectedImages((prev) =>
+      prev.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   // 사진 추가 모달 저장
@@ -127,6 +135,45 @@ const PhotoCropModal = ({
     setToastMessage("사진을 수정했어요.");
   };
 
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const isMouseDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (scrollRef.current) {
+      isMouseDown.current = true;
+      startX.current = e.pageX - scrollRef.current.offsetLeft;
+      scrollLeft.current = scrollRef.current.scrollLeft;
+      scrollRef.current.style.cursor = "grabbing";
+      scrollRef.current.style.userSelect = "none";
+    }
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDown.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = x - startX.current;
+    scrollRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const onMouseUp = () => {
+    if (scrollRef.current) {
+      scrollRef.current.style.cursor = "grab";
+      scrollRef.current.style.userSelect = "auto";
+    }
+    isMouseDown.current = false;
+  };
+
+  const onMouseLeave = () => {
+    if (scrollRef.current) {
+      scrollRef.current.style.cursor = "grab";
+      scrollRef.current.style.userSelect = "auto";
+    }
+    isMouseDown.current = false;
+  };
+
   return (
     <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
       <div className="interaction-default relative flex h-auto max-h-[88vh] w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
@@ -143,12 +190,20 @@ const PhotoCropModal = ({
           />
         </div>
         {selectedImages.length >= 2 && (
-          <div className="flex flex-row items-center gap-4 p-4">
+          <div
+            className="no-scrollbar flex w-full flex-row overflow-x-auto overflow-y-hidden px-2 py-4"
+            ref={scrollRef}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseLeave}
+          >
             {selectedImages.map((images: SelectedImagesType, index: number) => {
               return (
                 <div
-                  key={index}
-                  className="relative h-20 w-14 cursor-pointer"
+                  key={images.id}
+                  tabIndex={0}
+                  className="group relative mx-2 h-20 w-14 shrink-0 cursor-pointer"
                   onClick={() => onSelectImage(index)}
                 >
                   <Image
@@ -157,6 +212,20 @@ const PhotoCropModal = ({
                     layout="fill"
                     priority
                   />
+                  <button
+                    className="absolute right-1 top-1 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 opacity-0 outline-none transition-opacity group-hover:opacity-100 dark:border-border-default-dark dark:bg-background-surface-dark"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation(); // 부모의 onClick 이벤트 방지
+                      onRemoveImage(index);
+                    }}
+                  >
+                    <X
+                      width="12"
+                      height="12"
+                      className="fill-current text-state-negative-light dark:text-state-negative-dark"
+                    />
+                  </button>
                 </div>
               );
             })}

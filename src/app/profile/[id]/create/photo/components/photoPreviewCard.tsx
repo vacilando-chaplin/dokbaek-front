@@ -43,7 +43,6 @@ const PhotoPreviewCard = ({
     setDeleteModalActive(!deleteModalActive);
   };
 
-  // category 가능하면 유니온타입으로 변경 (최근 사진 포함)
   const onDeletePhoto = async (
     id: string,
     category: "photos" | "stillCuts"
@@ -79,6 +78,7 @@ const PhotoPreviewCard = ({
     setSelectImage(downSizedImage);
     setSelectedImages([
       {
+        id: 0,
         origin: downSizedImage,
         preview: downSizedImage,
         originImage: downSizedImage,
@@ -98,7 +98,7 @@ const PhotoPreviewCard = ({
   return (
     <figure
       key={previewPhoto.id}
-      className="relative flex aspect-[160/204] h-full w-full rounded-lg"
+      className="group relative flex aspect-[160/204] h-full w-full rounded-lg"
     >
       <Image
         src={previewPhoto.previewPath}
@@ -109,7 +109,7 @@ const PhotoPreviewCard = ({
         className="rounded-lg"
       />
       (
-      <div className="absolute h-full w-full opacity-0 hover:opacity-100">
+      <div className="absolute h-full w-full opacity-0 transition-opacity group-hover:opacity-100">
         {/* edit */}
         <label
           className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"

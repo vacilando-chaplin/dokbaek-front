@@ -47,6 +47,7 @@ const Photo = () => {
   const [cropData, setCropData] = useState<CropDataType>(cropDataInit);
   const [selectedImages, setSelectedImages] = useState<SelectedImagesType[]>([
     {
+      id: 0,
       origin: "",
       preview: "",
       originImage: "",
@@ -258,110 +259,110 @@ const Photo = () => {
     setToastMessage("사진을 수정했어요.");
   };
 
-  // 사진 삭제 모달 버튼 클릭
-  const onDeletePhoto = async (id: string, category: string) => {
-    await deletePhoto(profileId, id, category);
+  // // 사진 삭제 모달 버튼 클릭
+  // const onDeletePhoto = async (id: string, category: string) => {
+  //   await deletePhoto(profileId, id, category);
 
-    const res = await getProfileDraftClient(profileId);
-    const data = res.data;
+  //   const res = await getProfileDraftClient(profileId);
+  //   const data = res.data;
 
-    setPhotoList(data.photos);
-    setStillCutList(data.stillCuts);
-    setRecentPhotoList(data.recentPhotos);
-    setPhotoDeleteActive(!photoDeleteActive);
-    setToastMessage("사진을 삭제했어요.");
-  };
+  //   setPhotoList(data.photos);
+  //   setStillCutList(data.stillCuts);
+  //   setRecentPhotoList(data.recentPhotos);
+  //   setPhotoDeleteActive(!photoDeleteActive);
+  //   setToastMessage("사진을 삭제했어요.");
+  // };
 
-  // 사진 추가 모달 열기
-  const onPhotoModalOpen = (category: string) => {
-    setSelectedPhotoId(0);
-    setPhotoModal({
-      ...photoModal,
-      state: "add",
-      active: true,
-      name: "사진 추가",
-      buttonText: "추가",
-      category: category
-    });
-  };
+  // // 사진 추가 모달 열기
+  // const onPhotoModalOpen = (category: string) => {
+  //   setSelectedPhotoId(0);
+  //   setPhotoModal({
+  //     ...photoModal,
+  //     state: "add",
+  //     active: true,
+  //     name: "사진 추가",
+  //     buttonText: "추가",
+  //     category: category
+  //   });
+  // };
 
-  // 사진 추가 모달 닫기
-  const onPhotoModalClose = (e: any) => {
-    setCropImage("");
-    setSelectImage("");
-    setSelectedImages([
-      {
-        origin: "",
-        preview: "",
-        originImage: "",
-        cropData: cropDataInit
-      }
-    ]);
-    setPhotoModal(photoModalInit);
-  };
+  // // 사진 추가 모달 닫기
+  // const onPhotoModalClose = (e: any) => {
+  //   setCropImage("");
+  //   setSelectImage("");
+  //   setSelectedImages([
+  //     {
+  //       origin: "",
+  //       preview: "",
+  //       originImage: "",
+  //       cropData: cropDataInit
+  //     }
+  //   ]);
+  //   setPhotoModal(photoModalInit);
+  // };
 
-  // 사진 편집 모달 오픈
-  const onPhotoEditModalOpen = async (
-    photo: PhotoResponseType,
-    category: string
-  ) => {
-    const mimeType = await getFileMimeTypeFromUrl(photo.path);
-    const response = await fetch(photo.path);
-    const blob = await response.blob();
-    const file = new File([blob], "image", { type: mimeType });
+  // // 사진 편집 모달 오픈
+  // const onPhotoEditModalOpen = async (
+  //   photo: PhotoResponseType,
+  //   category: string
+  // ) => {
+  //   const mimeType = await getFileMimeTypeFromUrl(photo.path);
+  //   const response = await fetch(photo.path);
+  //   const blob = await response.blob();
+  //   const file = new File([blob], "image", { type: mimeType });
 
-    const downSizedFile = await imageCompression(file, imageCompressionOptions);
-    const downSizedImage = await convertToBase64(downSizedFile);
+  //   const downSizedFile = await imageCompression(file, imageCompressionOptions);
+  //   const downSizedImage = await convertToBase64(downSizedFile);
 
-    setCropImage(downSizedImage);
-    setSelectImage(downSizedImage);
-    setSelectedImages([
-      {
-        origin: downSizedImage,
-        preview: downSizedImage,
-        originImage: downSizedImage,
-        cropData: cropDataInit
-      }
-    ]);
-    setPhotoModal({
-      id: photo.id,
-      state: "edit",
-      active: true,
-      name: "사진 편집",
-      buttonText: "완료",
-      category: category
-    });
-  };
+  //   setCropImage(downSizedImage);
+  //   setSelectImage(downSizedImage);
+  //   setSelectedImages([
+  //     {
+  //       origin: downSizedImage,
+  //       preview: downSizedImage,
+  //       originImage: downSizedImage,
+  //       cropData: cropDataInit
+  //     }
+  //   ]);
+  //   setPhotoModal({
+  //     id: photo.id,
+  //     state: "edit",
+  //     active: true,
+  //     name: "사진 편집",
+  //     buttonText: "완료",
+  //     category: category
+  //   });
+  // };
 
-  // 사진 삭제 모달 액티브
-  const onDeletePhotoActive = () => {
-    setPhotoDeleteActive(!photoDeleteActive);
-  };
+  // // 사진 삭제 모달 액티브
+  // const onDeletePhotoActive = () => {
+  //   setPhotoDeleteActive(!photoDeleteActive);
+  // };
 
-  // 사진 모달에 크롭 할 이미지 선택
-  const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      const originImage = await convertToBase64(file);
-      const downSizedFile = await imageCompression(
-        file,
-        imageCompressionOptions
-      );
-      const downSizedImage = await convertToBase64(downSizedFile);
+  // // 사진 모달에 크롭 할 이미지 선택
+  // const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     const file = e.target.files[0];
+  //     const originImage = await convertToBase64(file);
+  //     const downSizedFile = await imageCompression(
+  //       file,
+  //       imageCompressionOptions
+  //     );
+  //     const downSizedImage = await convertToBase64(downSizedFile);
 
-      setSelectImage(downSizedImage);
-      setCropImage(downSizedImage);
-      setSelectedImages([
-        {
-          origin: originImage,
-          preview: downSizedImage,
-          originImage: selectImage,
-          cropData: cropDataInit
-        }
-      ]);
-    }
-    e.target.value = "";
-  };
+  //     setSelectImage(downSizedImage);
+  //     setCropImage(downSizedImage);
+  //     setSelectedImages([
+  //       {
+  //         origin: originImage,
+  //         preview: downSizedImage,
+  //         originImage: selectImage,
+  //         cropData: cropDataInit
+  //       }
+  //     ]);
+  //   }
+  //   e.target.value = "";
+  // };
 
   useEffect(() => {
     if (profileDraftState !== "") {
