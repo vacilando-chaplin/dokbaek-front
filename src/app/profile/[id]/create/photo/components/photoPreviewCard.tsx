@@ -48,7 +48,11 @@ const PhotoPreviewCard = ({
     id: string,
     category: "photos" | "stillCuts"
   ) => {
-    await deletePhoto(profileId, id, category);
+    await deletePhoto(
+      profileId,
+      id,
+      category === "photos" ? "photo" : "stillcut"
+    );
 
     setProfileData((prev) => ({
       ...prev,

@@ -1,3 +1,5 @@
+import { Coordinates } from "react-advanced-cropper";
+
 export interface SelectedPhotoType {
   index: number;
   photoId: string;
@@ -17,7 +19,7 @@ export interface SelectedImagesType {
   origin: string;
   preview: string;
   originImage: string;
-  cropData: CropDataType;
+  cropData: Coordinates | null;
 }
 
 export interface CropDataType {

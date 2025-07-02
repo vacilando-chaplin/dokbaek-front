@@ -6,7 +6,7 @@ import { PhotoRecentResponseType, PhotoResponseType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { photoModalInit } from "./data";
-import PhotoModal from "./components/photoModal";
+import PhotoModal from "./components/photoCropModal";
 import PhotoProfile from "./components/photoProfile";
 import PhotoStillCut from "./components/photoStillCut";
 import PhotoRecent from "./components/photoRecent";
@@ -135,25 +135,25 @@ const Photo = () => {
   };
 
   // 모달에서 사진 여러개 업로드 시 사진 선택
-  const onSelectImage = (index: number) => {
-    const updateImages = [...selectedImages];
-    updateImages[selectedPhotoId] = {
-      origin: selectedImages[selectedPhotoId].origin,
-      preview: cropImage,
-      originImage: selectImage,
-      cropData: cropData
-    };
-    setSelectedImages(updateImages);
-    setSelectedPhotoId(index);
+  // const onSelectImage = (index: number) => {
+  //   const updateImages = [...selectedImages];
+  //   updateImages[selectedPhotoId] = {
+  //     origin: selectedImages[selectedPhotoId].origin,
+  //     preview: cropImage,
+  //     originImage: selectImage,
+  //     cropData: cropData
+  //   };
+  //   setSelectedImages(updateImages);
+  //   setSelectedPhotoId(index);
 
-    const image = selectedImages[index].originImage;
-    const cropedImage = selectedImages[index].preview;
-    const coordinates = selectedImages[index].cropData;
+  //   const image = selectedImages[index].originImage;
+  //   const cropedImage = selectedImages[index].preview;
+  //   const coordinates = selectedImages[index].cropData;
 
-    setCropData(coordinates);
-    setCropImage(cropedImage);
-    setSelectImage(image);
-  };
+  //   setCropData(coordinates);
+  //   setCropImage(cropedImage);
+  //   setSelectImage(image);
+  // };
 
   // 사진 추가 모달 저장
   const onAddPhoto = async () => {
@@ -374,8 +374,8 @@ const Photo = () => {
   return (
     <div className="flex w-[65vw] flex-col gap-4">
       <PhotoProfile />
-      {photoModal.active && (
-        <PhotoModal
+      {/* {photoModal.active && (
+        <PhotoCropModal
           selectImage={selectImage}
           selectedImages={selectedImages}
           selectedPhotoId={selectedPhotoId}
@@ -397,8 +397,8 @@ const Photo = () => {
           setCropImage={setCropImage}
           onSelectImage={onSelectImage}
         />
-      )}
-      <PhotoStillCut
+      )} */}
+      {/* <PhotoStillCut
         stillCutList={stillCutList}
         photoDeleteActive={photoDeleteActive}
         onSelectFile={onSelectFile}
@@ -416,7 +416,7 @@ const Photo = () => {
         onPhotoEditModalOpen={onPhotoEditModalOpen}
         onDeletePhoto={onDeletePhoto}
         onDeletePhotoActive={onDeletePhotoActive}
-      />
+      /> */}
     </div>
   );
 };

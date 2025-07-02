@@ -332,7 +332,7 @@ const Profile = () => {
         setMainPhotoOrigin(data.mainPhotoPath);
         setSelectedPhotoList(data.photos);
         setProfileSpecialties(data.specialties);
-      } else if (loginProfileId === viewProfileId) {
+      } else {
         setOtherUser(false);
         const res = await getProfile(loginProfileId);
         const data = res.data;

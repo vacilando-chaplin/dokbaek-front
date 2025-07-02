@@ -5,7 +5,7 @@ import Plus from "../../../../../../../public/icons/Plus.svg";
 import EducationForm from "./educationForm";
 import { useRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
-import { deleteEducation, postEducation, putEducation } from "../api";
+import { deleteEducation, postEducation } from "../api";
 import { ProfileEducationDataType } from "../../types";
 
 interface EducationProps {

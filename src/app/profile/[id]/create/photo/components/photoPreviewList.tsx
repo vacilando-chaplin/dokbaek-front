@@ -20,6 +20,7 @@ const PhotoPreviewList = ({
       {previewPhotoList.map((previewPhoto: ProfilePhotoDataType) => {
         return (
           <PhotoPreviewCard
+            key={previewPhoto.id}
             previewPhoto={previewPhoto}
             setCropImage={setCropImage}
             setSelectImage={setSelectImage}

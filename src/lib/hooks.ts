@@ -87,7 +87,7 @@ export const useImageSelector = () => {
         {
           origin: originImage,
           preview: downSizedImage,
-          originImage: selectImage,
+          originImage: originImage,
           cropData: cropDataInit
         }
       ]);
