@@ -73,6 +73,7 @@ const PhotoProfile = () => {
 
       fileData = fileData.concat([
         {
+          id: Math.random(),
           origin: downSizedImage,
           preview: downSizedImage,
           originImage: downSizedImage,

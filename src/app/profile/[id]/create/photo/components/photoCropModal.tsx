@@ -213,10 +213,10 @@ const PhotoCropModal = ({
                     priority
                   />
                   <button
-                    className="absolute right-1 top-1 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 opacity-0 outline-none transition-opacity group-hover:opacity-100 dark:border-border-default-dark dark:bg-background-surface-dark"
+                    className="absolute right-1 top-1 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-0.5 opacity-0 outline-none transition-opacity group-hover:opacity-100 dark:border-border-default-dark dark:bg-background-surface-dark"
                     type="button"
                     onClick={(e) => {
-                      e.stopPropagation(); // 부모의 onClick 이벤트 방지
+                      e.stopPropagation();
                       onRemoveImage(index);
                     }}
                   >

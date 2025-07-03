@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Edit from "../../../../../../../public/icons/Edit.svg";
 import X from "../../../../../../../public/icons/X.svg";
+import LoadingSpinner from "../../../../../../../public/icons/LoadingSpinner.svg";
 import { ProfilePhotoDataType } from "../../types";
 import { useState } from "react";
 import DeleteModal from "@/components/molecules/deleteModal";
@@ -33,6 +34,8 @@ const PhotoPreviewCard = ({
 }: PhotoPreviewCardProps) => {
   const profileId = Number(Cookies.get("loginProfileId"));
 
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [deleteModalActive, setDeleteModalActive] = useState(false);
 
   const setProfileData = useSetRecoilState(profileDraftData);
@@ -96,21 +99,31 @@ const PhotoPreviewCard = ({
   };
 
   return (
-    <figure
+    <div
       key={previewPhoto.id}
       className="group relative flex aspect-[160/204] h-full w-full rounded-lg"
     >
+      {!isLoaded && !isError && (
+        <LoadingSpinner
+          width="24"
+          height="24"
+          className="fill-current animate-spin text-content-primary-light dark:text-content-primary-dark"
+        />
+      )}
       <Image
         src={previewPhoto.previewPath}
-        alt="사진 미리보기"
+        alt=""
         sizes="100vw"
         fill
         priority
-        className="rounded-lg"
+        className={`rounded-lg object-cover transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => {
+          setIsError(true);
+          setIsLoaded(true);
+        }}
       />
-      (
       <div className="absolute h-full w-full opacity-0 transition-opacity group-hover:opacity-100">
-        {/* edit */}
         <label
           className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
           onClick={() => onPhotoEditModalOpen(previewPhoto, "photos")}
@@ -121,7 +134,6 @@ const PhotoPreviewCard = ({
             className="fill-current text-content-primary-light dark:text-content-primary-dark"
           />
         </label>
-        {/* delete */}
         <button
           className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
           type="button"
@@ -133,7 +145,6 @@ const PhotoPreviewCard = ({
             className="fill-current text-state-negative-light dark:text-state-negative-dark"
           />
         </button>
-        {/* deleteModal */}
         {deleteModalActive && (
           <DeleteModal
             id={previewPhoto.id}
@@ -144,8 +155,31 @@ const PhotoPreviewCard = ({
           />
         )}
       </div>
-      )
-    </figure>
+      {isError && (
+        <div>
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gray-50">
+            <div className="mb-2 text-gray-400">
+              <svg
+                className="h-8 w-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 002 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <span className="text-xs text-gray-500">
+              이미지를 불러오는데 실패 했어요.
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

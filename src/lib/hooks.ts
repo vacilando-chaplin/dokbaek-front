@@ -85,7 +85,7 @@ export const useImageSelector = () => {
       setCropImage(downSizedImage);
       setSelectedImages([
         {
-          id: Date.now() + Math.random(),
+          id: Math.random(),
           origin: originImage,
           preview: downSizedImage,
           originImage: originImage,
