@@ -1,9 +1,9 @@
 "use client";
 
-import { CropDataType } from "@/app/profile/[id]/types";
 import { useEffect, useRef, useState } from "react";
 import { Coordinates, Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
+import LoadingSpinner from "../../../public/icons/LoadingSpinner.svg";
 
 interface ImageCropperProps {
   selectImage: string;
@@ -22,7 +22,7 @@ const ImageCropper = ({
 }: ImageCropperProps) => {
   const cropperRef = useRef<CropperRef>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const onCropEnd = () => {
     if (cropperRef.current) {
@@ -37,7 +37,7 @@ const ImageCropper = ({
   };
 
   const defaultSize = ({ imageSize }: any) => {
-    if (cropType === "stillcut") {
+    if (cropType === "stillCuts") {
       const stillcutWidth = imageSize.width * 0.4;
       const stillcutHeight = stillcutWidth * (160 / 204);
 
@@ -62,7 +62,7 @@ const ImageCropper = ({
       img.src = selectImage;
       img.onload = () => {
         setTimeout(() => {
-          setIsLoading(true);
+          setIsLoaded(true);
           onCropEnd();
         }, 500);
       };
@@ -72,7 +72,7 @@ const ImageCropper = ({
 
   return (
     <>
-      {isLoading && (
+      {isLoaded ? (
         <Cropper
           ref={cropperRef}
           src={selectImage}
@@ -83,10 +83,16 @@ const ImageCropper = ({
             cropData.top !== 0 && cropData.left !== 0 ? cropData : undefined
           }
           stencilProps={{
-            aspectRatio: cropType === "stillcut" ? 16 / 9 : 160 / 204
+            aspectRatio: cropType === "stillCuts" ? 16 / 9 : 160 / 204
           }}
           onInteractionEnd={onCropEnd}
           className="h-full w-full"
+        />
+      ) : (
+        <LoadingSpinner
+          width="24"
+          height="24"
+          className="fill-current absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
         />
       )}
     </>

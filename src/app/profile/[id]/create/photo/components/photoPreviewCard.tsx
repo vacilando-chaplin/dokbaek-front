@@ -18,8 +18,10 @@ import { imageCompressionOptions } from "@/lib/data";
 import { cropDataInit } from "../../../data";
 import { cropModalState } from "@/lib/recoil/profile/photo/atom";
 import { SelectedImagesType } from "../../../types";
+import { CategoryKey } from "../types";
 
 interface PhotoPreviewCardProps {
+  category: CategoryKey;
   previewPhoto: ProfilePhotoDataType;
   setCropImage: React.Dispatch<React.SetStateAction<string>>;
   setSelectImage: React.Dispatch<React.SetStateAction<string>>;
@@ -27,6 +29,7 @@ interface PhotoPreviewCardProps {
 }
 
 const PhotoPreviewCard = ({
+  category,
   previewPhoto,
   setCropImage,
   setSelectImage,
@@ -101,13 +104,13 @@ const PhotoPreviewCard = ({
   return (
     <div
       key={previewPhoto.id}
-      className="group relative flex aspect-[160/204] h-full w-full rounded-lg"
+      className={`group relative flex h-full w-full rounded-lg ${category === "stillCuts" ? "aspect-video" : "aspect-[160/204]"}`}
     >
       {!isLoaded && !isError && (
         <LoadingSpinner
           width="24"
           height="24"
-          className="fill-current animate-spin text-content-primary-light dark:text-content-primary-dark"
+          className="fill-current absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
         />
       )}
       <Image
@@ -128,7 +131,7 @@ const PhotoPreviewCard = ({
           className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
           onClick={(e) => {
             e.stopPropagation();
-            onPhotoEditModalOpen(previewPhoto, "photos");
+            onPhotoEditModalOpen(previewPhoto, category);
           }}
         >
           <Edit
@@ -155,7 +158,7 @@ const PhotoPreviewCard = ({
           <DeleteModal
             id={previewPhoto.id}
             text="이 사진을 삭제할까요?"
-            category="photos"
+            category={category}
             onCancel={onDeleteModalActive}
             onDelete={onDeletePhoto}
           />

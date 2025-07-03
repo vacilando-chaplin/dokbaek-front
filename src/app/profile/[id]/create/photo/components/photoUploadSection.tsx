@@ -13,10 +13,23 @@ import { imageCompressionOptions } from "@/lib/data";
 import { convertToBase64 } from "@/lib/utils";
 import PhotoCropModal from "./photoCropModal";
 import { photoModalInit } from "../data";
+import { CategoryKey } from "../types";
 
-const PhotoProfile = () => {
+interface PhotoUploadSectionProps {
+  category: CategoryKey;
+}
+
+const PhotoUploadSection = ({ category }: PhotoUploadSectionProps) => {
   const profileData = useRecoilValue(profileDraftData);
   const [cropModal, setCropModal] = useRecoilState(cropModalState);
+
+  const photoList =
+    profileData &&
+    (category === "photos"
+      ? profileData.photos
+      : category === "stillCuts"
+        ? profileData.stillCuts
+        : []);
 
   const {
     cropImage,
@@ -91,37 +104,50 @@ const PhotoProfile = () => {
       active: true,
       name: "사진 추가",
       buttonText: "추가",
-      category: "photos"
+      category: category
     });
   };
 
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">
       <PhotoInfoForm
-        title="프로필 사진"
-        helperText="자신의 매력을 가장 잘 보여줄 수 있는 프로필 사진을 추가해주세요."
-        disabled={profileData?.photos && profileData.photos.length >= 20}
-        limitValue={profileData?.photos && profileData.photos.length}
-        onModalOpen={() => onCropModalOpen("photos")}
+        title={
+          category === "photos"
+            ? "프로필 사진"
+            : category === "stillCuts"
+              ? "스틸컷"
+              : ""
+        }
+        helperText={
+          category === "photos"
+            ? "자신의 매력을 가장 잘 보여줄 수 있는 프로필 사진을 추가해주세요."
+            : category === "stillCuts"
+              ? "출연할 작품 안에서의 모습이 담긴 사진을 추가해주세요."
+              : ""
+        }
+        disabled={photoList.length >= 20}
+        limitValue={photoList.length}
+        onModalOpen={() => onCropModalOpen(category)}
         onSelectFile={onSelectFile}
       />
-      {profileData?.photos && profileData.photos.length >= 1 ? (
+      {photoList.length >= 1 ? (
         <PhotoPreviewList
-          listSize={profileData?.photos && profileData.photos.length}
-          previewPhotoList={profileData.photos}
+          category={category}
+          listSize={photoList.length}
+          previewPhotoList={photoList}
           setCropImage={setCropImage}
           setSelectImage={setSelectImage}
           setSelectedImages={setSelectedImages}
           onDrop={onPhotoDrop}
           onSelectFile={onSelectFile}
-          onCropModalOpen={() => onCropModalOpen("photos")}
+          onCropModalOpen={() => onCropModalOpen(category)}
         />
       ) : (
         <EmptyPhotoFrame
           text="추가할 사진을 끌어다 놓으세요."
-          listSize={profileData?.photos && profileData.photos.length}
+          listSize={photoList.length}
           onDrop={onPhotoDrop}
-          onCropModalOpen={() => onCropModalOpen("photos")}
+          onCropModalOpen={() => onCropModalOpen(category)}
           onChange={onSelectFile}
         />
       )}
@@ -142,4 +168,4 @@ const PhotoProfile = () => {
   );
 };
 
-export default PhotoProfile;
+export default PhotoUploadSection;

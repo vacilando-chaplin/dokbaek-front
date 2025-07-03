@@ -4,8 +4,10 @@ import { useDropzone } from "react-dropzone";
 import { SelectedImagesType } from "../../../types";
 import { ProfilePhotoDataType } from "../../types";
 import PhotoPreviewCard from "./photoPreviewCard";
+import { CategoryKey } from "../types";
 
 interface PhotoPreviewListProps {
+  category: CategoryKey;
   listSize: number;
   previewPhotoList: ProfilePhotoDataType[];
   setCropImage: React.Dispatch<React.SetStateAction<string>>;
@@ -17,6 +19,7 @@ interface PhotoPreviewListProps {
 }
 
 const PhotoPreviewList = ({
+  category,
   listSize,
   previewPhotoList,
   setCropImage,
@@ -38,7 +41,7 @@ const PhotoPreviewList = ({
     });
   return (
     <div
-      className={`grid w-full cursor-pointer grid-cols-4 gap-2 rounded-xl hover:border hover:border-dotted hover:border-accent-primary-light hover:bg-accent-light-light dark:hover:border-accent-primary-dark dark:hover:bg-accent-light-dark ${isDragAccept ? "border border-dotted border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark" : isDragReject ? "border border-dotted border-state-negative-light bg-red-50 dark:border-state-negative-dark" : "border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800"}`}
+      className={`grid w-full cursor-pointer grid-cols-4 gap-2 rounded-xl hover:border hover:border-dotted hover:border-accent-primary-light hover:bg-accent-light-light dark:hover:border-accent-primary-dark dark:hover:bg-accent-light-dark ${isDragAccept ? "border border-dotted border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark" : isDragReject ? "hover:border hover:border-dotted hover:border-state-negative-light hover:bg-red-50 hover:dark:border-state-negative-dark" : "border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800"}`}
       {...getRootProps()}
     >
       <input
@@ -53,6 +56,7 @@ const PhotoPreviewList = ({
         return (
           <PhotoPreviewCard
             key={previewPhoto.id}
+            category={category}
             previewPhoto={previewPhoto}
             setCropImage={setCropImage}
             setSelectImage={setSelectImage}

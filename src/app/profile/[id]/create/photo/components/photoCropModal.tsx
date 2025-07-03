@@ -99,9 +99,11 @@ const PhotoCropModal = ({
       photoList.push(result.data);
     }
 
+    const category = cropModal.category as CategoryKey;
+
     setProfileData((prev) => ({
       ...prev,
-      [cropModal.category]: photoList
+      [category]: [...(prev[category] ?? []), ...photoList]
     }));
 
     setCropModal(photoModalInit);
@@ -120,10 +122,10 @@ const PhotoCropModal = ({
     );
 
     if (cropModal.category === "photos" || cropModal.category === "stillCuts") {
-      const key = cropModal.category as CategoryKey;
+      const category = cropModal.category as CategoryKey;
       setProfileData((prev) => ({
         ...prev,
-        [key]: prev[key].map((item) =>
+        [category]: prev[category].map((item) =>
           item.id === cropModal.id ? updatedPhoto.data : item
         )
       }));
