@@ -5,7 +5,7 @@ interface DeleteModalProps {
   id: string;
   text: string;
   category: string;
-  onCancel: React.MouseEventHandler<HTMLButtonElement>;
+  onCancel: () => void;
   onDelete: (id: string, category: any) => void;
 }
 
@@ -28,7 +28,14 @@ const DeleteModal = ({
           {text}
         </label>
         <div className="flex flex-row items-center justify-end gap-1">
-          <BoxButton type="secondaryOutlined" size="small" onClick={onCancel}>
+          <BoxButton
+            type="secondaryOutlined"
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel();
+            }}
+          >
             취소
           </BoxButton>
           <BoxButton

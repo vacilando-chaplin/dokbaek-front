@@ -86,17 +86,7 @@ const TopNavigation = () => {
   useEffect(() => {
     const jwt = Cookies.get("jwt");
 
-    // setIsLoggedIn(jwt ? true : false);
-    setIsLoggedIn(true);
-    useSetToken(
-      "jwt",
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNSIsImV4cCI6MTc1MTU1Mjg3NCwiaWF0IjoxNzUxNDY2NDc0LCJqdGkiOiI3ZTE4MGQ3OS0xM2NmLTQ2ZjYtYjMwMy01NTY3NDhiYzJhZDciLCJkZXZpY2VJZCI6IjA4OWEzYTk4LTMzNDgtNGZmOS1iMzI3LWIwNzJjOTg3MjRiYiJ9.TpqZjsHhEFeZfCyoTcTrcrnhKNvNe0CoMOVvAWPgwkc"
-    );
-    useSetToken(
-      "refresh_token",
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNSIsImV4cCI6MTc1MTU1Mjg3NCwiaWF0IjoxNzUxNDY2NDc0LCJqdGkiOiIwOTE5NjkxMS05MzVmLTRhMjUtODY4YS0wMmU2Mjc5ZTA3NjYiLCJkZXZpY2VJZCI6IjA4OWEzYTk4LTMzNDgtNGZmOS1iMzI3LWIwNzJjOTg3MjRiYiJ9.X1oYTubP6pE7PzANppsgYO707DYsylVkYRyVTgRAFmo"
-    );
-    useSetLoginProfileId("loginProfileId", "15");
+    setIsLoggedIn(jwt ? true : false);
   }, []);
 
   return (

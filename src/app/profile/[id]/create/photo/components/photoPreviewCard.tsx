@@ -126,7 +126,10 @@ const PhotoPreviewCard = ({
       <div className="absolute h-full w-full opacity-0 transition-opacity group-hover:opacity-100">
         <label
           className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
-          onClick={() => onPhotoEditModalOpen(previewPhoto, "photos")}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPhotoEditModalOpen(previewPhoto, "photos");
+          }}
         >
           <Edit
             width="12"
@@ -137,7 +140,10 @@ const PhotoPreviewCard = ({
         <button
           className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
           type="button"
-          onClick={onDeleteModalActive}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDeleteModalActive();
+          }}
         >
           <X
             width="12"

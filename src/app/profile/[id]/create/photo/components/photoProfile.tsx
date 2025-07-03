@@ -107,10 +107,14 @@ const PhotoProfile = () => {
       />
       {profileData?.photos && profileData.photos.length >= 1 ? (
         <PhotoPreviewList
+          listSize={profileData?.photos && profileData.photos.length}
           previewPhotoList={profileData.photos}
           setCropImage={setCropImage}
           setSelectImage={setSelectImage}
           setSelectedImages={setSelectedImages}
+          onDrop={onPhotoDrop}
+          onSelectFile={onSelectFile}
+          onCropModalOpen={() => onCropModalOpen("photos")}
         />
       ) : (
         <EmptyPhotoFrame
