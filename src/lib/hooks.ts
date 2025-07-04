@@ -4,10 +4,17 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { PhotoResponseType } from "./types";
 import { convertToBase64, getFileMimeTypeFromUrl } from "./utils";
-import { SelectedImagesType } from "@/app/profile/[id]/types";
 import { cropDataInit } from "@/app/profile/[id]/data";
 import { imageCompressionOptions } from "./data";
 import imageCompression from "browser-image-compression";
+import { useSetRecoilState } from "recoil";
+import {
+  cropImageState,
+  cropModalState,
+  selectedImagesState,
+  selectImageState
+} from "./recoil/profile/photo/atom";
+import { FileRejection } from "react-dropzone";
 
 export const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -65,11 +72,9 @@ export const useGetBlurPhoto = async (photoList: PhotoResponseType[]) => {
 };
 
 export const useImageSelector = () => {
-  const [selectImage, setSelectImage] = useState<string>("");
-  const [cropImage, setCropImage] = useState<string>("");
-  const [selectedImages, setSelectedImages] = useState<SelectedImagesType[]>(
-    []
-  );
+  const setSelectImage = useSetRecoilState(selectImageState);
+  const setCropImage = useSetRecoilState(cropImageState);
+  const setSelectedImages = useSetRecoilState(selectedImagesState);
 
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -97,12 +102,49 @@ export const useImageSelector = () => {
   };
 
   return {
-    selectImage,
-    cropImage,
-    selectedImages,
-    onSelectFile,
-    setSelectImage,
-    setCropImage,
-    setSelectedImages
+    onSelectFile
   };
+};
+
+export const usePhotoDrop = (category: string) => {
+  const setCropImage = useSetRecoilState(cropImageState);
+  const setSelectImage = useSetRecoilState(selectImageState);
+  const setSelectedImages = useSetRecoilState(selectedImagesState);
+  const setCropModal = useSetRecoilState(cropModalState);
+
+  const onDrop = async (images: File[], rejectedFiles: FileRejection[]) => {
+    if (rejectedFiles.length > 0) return;
+
+    const fileData = await Promise.all(
+      images.map(async (file) => {
+        const downSizedFile = await imageCompression(
+          file,
+          imageCompressionOptions
+        );
+        const downSizedImage = await convertToBase64(downSizedFile);
+
+        return {
+          id: Math.random(),
+          origin: downSizedImage,
+          preview: downSizedImage,
+          originImage: downSizedImage,
+          cropData: cropDataInit
+        };
+      })
+    );
+
+    setCropImage(fileData[0].preview);
+    setSelectImage(fileData[0].originImage);
+    setSelectedImages(fileData);
+    setCropModal({
+      id: "",
+      state: "add",
+      active: true,
+      name: "사진 추가",
+      buttonText: "추가",
+      category
+    });
+  };
+
+  return { onDrop };
 };

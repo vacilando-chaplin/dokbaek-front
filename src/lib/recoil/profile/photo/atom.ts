@@ -1,4 +1,4 @@
-import { PhotoModalType } from "@/app/profile/[id]/types";
+import { PhotoModalType, SelectedImagesType } from "@/app/profile/[id]/types";
 import { atom } from "recoil";
 
 export const cropModalState = atom<PhotoModalType>({
@@ -11,4 +11,19 @@ export const cropModalState = atom<PhotoModalType>({
     buttonText: "",
     category: ""
   }
+});
+
+export const selectImageState = atom<string>({
+  key: "selectImageState",
+  default: ""
+});
+
+export const cropImageState = atom<string>({
+  key: "cropImageState",
+  default: ""
+});
+
+export const selectedImagesState = atom<SelectedImagesType[]>({
+  key: "selectedImagesState",
+  default: []
 });

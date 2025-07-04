@@ -1,1 +1,1 @@
-export type CategoryKey = "photos" | "stillCuts";
+export type CategoryKey = "photos" | "stillCuts" | "recentPhotos";

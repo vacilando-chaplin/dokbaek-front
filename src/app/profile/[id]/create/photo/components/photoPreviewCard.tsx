@@ -16,24 +16,22 @@ import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import imageCompression from "browser-image-compression";
 import { imageCompressionOptions } from "@/lib/data";
 import { cropDataInit } from "../../../data";
-import { cropModalState } from "@/lib/recoil/profile/photo/atom";
-import { SelectedImagesType } from "../../../types";
+import {
+  cropImageState,
+  cropModalState,
+  selectedImagesState,
+  selectImageState
+} from "@/lib/recoil/profile/photo/atom";
 import { CategoryKey } from "../types";
 
 interface PhotoPreviewCardProps {
   category: CategoryKey;
   previewPhoto: ProfilePhotoDataType;
-  setCropImage: React.Dispatch<React.SetStateAction<string>>;
-  setSelectImage: React.Dispatch<React.SetStateAction<string>>;
-  setSelectedImages: React.Dispatch<React.SetStateAction<SelectedImagesType[]>>;
 }
 
 const PhotoPreviewCard = ({
   category,
-  previewPhoto,
-  setCropImage,
-  setSelectImage,
-  setSelectedImages
+  previewPhoto
 }: PhotoPreviewCardProps) => {
   const profileId = Number(Cookies.get("loginProfileId"));
 
@@ -42,8 +40,11 @@ const PhotoPreviewCard = ({
   const [deleteModalActive, setDeleteModalActive] = useState(false);
 
   const setProfileData = useSetRecoilState(profileDraftData);
-  const setCropModalState = useSetRecoilState(cropModalState);
   const setToastMessage = useSetRecoilState(toastMessage);
+  const setCropModalState = useSetRecoilState(cropModalState);
+  const setSelectImage = useSetRecoilState(selectImageState);
+  const setCropImage = useSetRecoilState(cropImageState);
+  const setSelectedImages = useSetRecoilState(selectedImagesState);
 
   const onDeleteModalActive = () => {
     setDeleteModalActive(!deleteModalActive);
@@ -110,7 +111,7 @@ const PhotoPreviewCard = ({
         <LoadingSpinner
           width="24"
           height="24"
-          className="fill-current absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
+          className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
         />
       )}
       <Image

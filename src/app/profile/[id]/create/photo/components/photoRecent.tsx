@@ -1,3 +1,5 @@
+"use client";
+
 import Title from "@/components/atoms/title";
 import TitleHelperText from "./titleHelperText";
 import RecentPhotoFrame from "./recentPhotoFrame";
@@ -6,11 +8,12 @@ import Image from "next/image";
 import Edit from "../../../../../../../public/icons/Edit.svg";
 import X from "../../../../../../../public/icons/X.svg";
 import DeleteModal from "@/components/molecules/deleteModal";
+import { useImageSelector } from "@/lib/hooks";
+import { recentPhotoData } from "../data";
 
 interface PhotoRecentProps {
   recentPhotoList: PhotoRecentResponseType[];
   photoDeleteActive: boolean;
-  onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPhotoModalOpen: (category: string) => void;
   onPhotoEditModalOpen: (photo: any, category: string) => void;
   onDeletePhoto: (id: string, category: string) => void;
@@ -20,27 +23,20 @@ interface PhotoRecentProps {
 const PhotoRecent = ({
   recentPhotoList,
   photoDeleteActive,
-  onSelectFile,
   onPhotoModalOpen,
   onDeletePhoto,
   onDeletePhotoActive,
   onPhotoEditModalOpen
 }: PhotoRecentProps) => {
-  const recentPhotoData = [
-    {
-      photoType: "FULL_BODY",
-      name: "전신 사진"
-    },
-    {
-      photoType: "FRONT_FACE",
-      name: "얼굴 정면 사진"
-    },
-    {
-      photoType: "LEFT_FACE",
-      name: "얼굴 좌측 사진"
-    },
-    { photoType: "RIGHT_FACE", name: "얼굴 우측 사진" }
-  ];
+  const {
+    cropImage,
+    selectImage,
+    selectedImages,
+    setCropImage,
+    setSelectImage,
+    setSelectedImages,
+    onSelectFile
+  } = useImageSelector();
 
   interface recentPhotoDataType {
     photoType: string;
