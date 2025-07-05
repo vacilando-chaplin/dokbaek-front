@@ -19,7 +19,7 @@ const PhotoPreviewList = ({ category }: PhotoPreviewListProps) => {
   const setCropModal = useSetRecoilState(cropModalState);
 
   const { onSelectFile } = useImageSelector();
-  const { onDrop } = usePhotoDrop(category);
+  const { onDrop } = usePhotoDrop(category, "");
 
   const photoList: ProfilePhotoDataType[] =
     profileData &&

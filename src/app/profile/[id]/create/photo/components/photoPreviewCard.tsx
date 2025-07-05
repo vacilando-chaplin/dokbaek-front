@@ -5,28 +5,20 @@ import Image from "next/image";
 import Edit from "../../../../../../../public/icons/Edit.svg";
 import X from "../../../../../../../public/icons/X.svg";
 import LoadingSpinner from "../../../../../../../public/icons/LoadingSpinner.svg";
-import { ProfilePhotoDataType } from "../../types";
+import { ProfilePhotoDataType, ProfileRecentPhotoDataType } from "../../types";
 import { useState } from "react";
 import DeleteModal from "@/components/molecules/deleteModal";
 import { deletePhoto } from "@/lib/api";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
-import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
-import imageCompression from "browser-image-compression";
-import { imageCompressionOptions } from "@/lib/data";
-import { cropDataInit } from "../../../data";
-import {
-  cropImageState,
-  cropModalState,
-  selectedImagesState,
-  selectImageState
-} from "@/lib/recoil/profile/photo/atom";
 import { CategoryKey } from "../types";
+import { usePhotoEditModal } from "@/lib/hooks";
+import { categoryMap } from "../data";
 
 interface PhotoPreviewCardProps {
   category: CategoryKey;
-  previewPhoto: ProfilePhotoDataType;
+  previewPhoto: ProfilePhotoDataType | ProfileRecentPhotoDataType;
 }
 
 const PhotoPreviewCard = ({
@@ -41,24 +33,13 @@ const PhotoPreviewCard = ({
 
   const setProfileData = useSetRecoilState(profileDraftData);
   const setToastMessage = useSetRecoilState(toastMessage);
-  const setCropModalState = useSetRecoilState(cropModalState);
-  const setSelectImage = useSetRecoilState(selectImageState);
-  const setCropImage = useSetRecoilState(cropImageState);
-  const setSelectedImages = useSetRecoilState(selectedImagesState);
 
   const onDeleteModalActive = () => {
     setDeleteModalActive(!deleteModalActive);
   };
 
-  const onDeletePhoto = async (
-    id: string,
-    category: "photos" | "stillCuts"
-  ) => {
-    await deletePhoto(
-      profileId,
-      id,
-      category === "photos" ? "photo" : "stillcut"
-    );
+  const onDeletePhoto = async (id: string, category: CategoryKey) => {
+    await deletePhoto(profileId, id, categoryMap[category]);
 
     setProfileData((prev) => ({
       ...prev,
@@ -68,39 +49,7 @@ const PhotoPreviewCard = ({
     setToastMessage("사진을 삭제했어요.");
   };
 
-  // 사진 편집 모달 오픈
-  const onPhotoEditModalOpen = async (
-    photo: ProfilePhotoDataType,
-    category: string
-  ) => {
-    const mimeType = await getFileMimeTypeFromUrl(photo.path);
-    const response = await fetch(photo.path);
-    const blob = await response.blob();
-    const file = new File([blob], "image", { type: mimeType });
-
-    const downSizedFile = await imageCompression(file, imageCompressionOptions);
-    const downSizedImage = await convertToBase64(downSizedFile);
-
-    setCropImage(downSizedImage);
-    setSelectImage(downSizedImage);
-    setSelectedImages([
-      {
-        id: 0,
-        origin: downSizedImage,
-        preview: downSizedImage,
-        originImage: downSizedImage,
-        cropData: cropDataInit
-      }
-    ]);
-    setCropModalState({
-      id: photo.id,
-      state: "edit",
-      active: true,
-      name: "사진 편집",
-      buttonText: "완료",
-      category: category
-    });
-  };
+  const { onPhotoEditModalOpen } = usePhotoEditModal();
 
   return (
     <div
@@ -116,8 +65,8 @@ const PhotoPreviewCard = ({
       )}
       <Image
         src={previewPhoto.previewPath}
-        alt=""
-        sizes="100vw"
+        alt="미리보기 이미지"
+        sizes="100vw, 50vw"
         fill
         priority
         className={`rounded-lg object-cover transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}

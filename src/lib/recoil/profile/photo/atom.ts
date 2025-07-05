@@ -1,3 +1,4 @@
+import { RecentPhotoCategory } from "@/app/profile/[id]/create/photo/types";
 import { PhotoModalType, SelectedImagesType } from "@/app/profile/[id]/types";
 import { atom } from "recoil";
 
@@ -26,4 +27,9 @@ export const cropImageState = atom<string>({
 export const selectedImagesState = atom<SelectedImagesType[]>({
   key: "selectedImagesState",
   default: []
+});
+
+export const recentPhotoTypeState = atom<RecentPhotoCategory>({
+  key: "recentPhotoTypeState",
+  default: ""
 });

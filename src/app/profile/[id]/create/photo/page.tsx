@@ -1,3 +1,4 @@
+import PhotoRecent from "./components/photoRecent";
 import PhotoUploadSection from "./components/photoUploadSection";
 
 const Photo = () => {
@@ -5,15 +6,7 @@ const Photo = () => {
     <div className="flex w-[65vw] flex-col gap-4">
       <PhotoUploadSection category="photos" />
       <PhotoUploadSection category="stillCuts" />
-      {/* <PhotoRecent
-        recentPhotoList={recentPhotoList}
-        photoDeleteActive={photoDeleteActive}
-        onSelectFile={onSelectFile}
-        onPhotoModalOpen={onPhotoModalOpen}
-        onPhotoEditModalOpen={onPhotoEditModalOpen}
-        onDeletePhoto={onDeletePhoto}
-        onDeletePhotoActive={onDeletePhotoActive}
-      /> */}
+      <PhotoRecent />
     </div>
   );
 };

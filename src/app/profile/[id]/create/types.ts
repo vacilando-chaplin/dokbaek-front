@@ -54,7 +54,7 @@ export interface ProfilePhotoDataType {
 
 export interface ProfileRecentPhotoDataType {
   id: string;
-  photoType: string;
+  photoType: "FULL_BODY" | "FRONT_FACE" | "LEFT_FACE" | "RIGHT_FACE";
   path: string;
   previewPath: string;
   createdAt: string;

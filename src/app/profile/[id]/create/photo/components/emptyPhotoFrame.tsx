@@ -26,7 +26,7 @@ const EmptyPhotoFrame = ({ category }: EmptyPhotoFrameProps) => {
         : []);
 
   const { onSelectFile } = useImageSelector();
-  const { onDrop } = usePhotoDrop(category);
+  const { onDrop } = usePhotoDrop(category, "");
 
   // 사진 추가 모달 열기
   const onCropModalOpen = (category: string) => {

@@ -1,44 +1,91 @@
+"use client";
+
 import HumanMale from "../../../../../../../public/icons/HumanMale.svg";
 import FaceRecognition from "../../../../../../../public/icons/FaceRecognition.svg";
 import FaceManProfile from "../../../../../../../public/icons/FaceManProfile.svg";
 import Plus from "../../../../../../../public/icons/Plus.svg";
 import UploadButton from "@/components/atoms/uploadButton";
+import { useSetRecoilState } from "recoil";
+import {
+  cropModalState,
+  recentPhotoTypeState
+} from "@/lib/recoil/profile/photo/atom";
+import { useImageSelector, usePhotoDrop } from "@/lib/hooks";
+import { useDropzone } from "react-dropzone";
+import { RecentPhotoCategory } from "../types";
 
 interface RecentPhotoFrameProps {
-  text: string;
-  onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onPhotoModalOpen: React.MouseEventHandler<HTMLInputElement>;
+  name: string;
+  photoType: RecentPhotoCategory;
 }
 
-const RecentPhotoFrame = ({
-  text,
-  onSelectFile,
-  onPhotoModalOpen
-}: RecentPhotoFrameProps) => {
+const RecentPhotoFrame = ({ name, photoType }: RecentPhotoFrameProps) => {
+  const setCropModal = useSetRecoilState(cropModalState);
+  const setRecentPhotoType = useSetRecoilState(recentPhotoTypeState);
+
+  const { onDrop } = usePhotoDrop("recentPhotos", photoType);
+  const { onSelectFile } = useImageSelector();
+
+  // 사진 추가 모달 열기
+  const onCropModalOpen = (category: string) => {
+    setRecentPhotoType(photoType);
+    setCropModal({
+      id: "",
+      state: "add",
+      active: true,
+      name: "사진 추가",
+      buttonText: "추가",
+      category: category
+    });
+  };
+
+  const { getRootProps, getInputProps, isDragAccept } = useDropzone({
+    accept: {
+      "image/*": []
+    },
+    onDrop,
+    noClick: true,
+    maxFiles: 1,
+    maxSize: 10000000
+  });
+
   return (
-    <div className="flex aspect-[160/204] h-full w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800">
-      {text === "전신 사진" && (
+    <div
+      className={`flex aspect-[160/204] h-full w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted dark:border-border-active-light dark:bg-gray-800 ${isDragAccept ? "border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark" : "border-gray-150 bg-gray-50"}`}
+      {...getRootProps()}
+    >
+      <input
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          e.stopPropagation();
+          onSelectFile(e);
+        }}
+        {...getInputProps()}
+      />
+      {name === "전신 사진" && (
         <HumanMale
           width="16"
           height="16"
           className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
         />
       )}
-      {text === "얼굴 정면 사진" && (
+      {name === "얼굴 정면 사진" && (
         <FaceRecognition
           width="16"
           height="16"
           className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
         />
       )}
-      {text === "얼굴 좌측 사진" && (
+      {name === "얼굴 좌측 사진" && (
         <FaceManProfile
           width="16"
           height="16"
           className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
         />
       )}
-      {text === "얼굴 우측 사진" && (
+      {name === "얼굴 우측 사진" && (
         <FaceManProfile
           width="16"
           height="16"
@@ -46,13 +93,19 @@ const RecentPhotoFrame = ({
         />
       )}
       <label className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark">
-        {text}
+        {name}
       </label>
       <UploadButton
         type="secondaryOutlined"
         size="small"
-        onClick={onPhotoModalOpen}
-        onChange={onSelectFile}
+        onClick={(e) => {
+          e.stopPropagation();
+          onCropModalOpen("recentPhotos");
+        }}
+        onChange={(e) => {
+          e.stopPropagation();
+          onSelectFile(e);
+        }}
       >
         <Plus
           width="12"

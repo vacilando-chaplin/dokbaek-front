@@ -1,3 +1,5 @@
+import { RecentPhotoDataType } from "./types";
+
 export const photoModalInit = {
   id: "",
   state: "",
@@ -7,7 +9,13 @@ export const photoModalInit = {
   category: ""
 };
 
-export const recentPhotoData = [
+export const categoryMap = {
+  photos: "photo",
+  stillCuts: "stillcut",
+  recentPhotos: "recent"
+};
+
+export const recentPhotoData: RecentPhotoDataType[] = [
   {
     photoType: "FULL_BODY",
     name: "전신 사진"

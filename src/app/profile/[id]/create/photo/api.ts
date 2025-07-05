@@ -28,21 +28,18 @@ export const postRecentPhoto = async (
 
 export const postRecentPhotoEdit = async (
   id: number,
-  origin: string,
   preview: string,
   photoId: string
 ) => {
   const formData = new FormData();
 
-  const imageOrigin = base64ToBlob(origin);
   const imagePreview = base64ToBlob(preview);
 
-  formData.append("origin", imageOrigin);
   formData.append("preview", imagePreview);
 
   try {
     const res = await api.post(
-      `/profile/${id}/recent/draft/${photoId}`,
+      `/profile/${id}/draft/recent/${photoId}`,
       formData
     );
     return res.data;

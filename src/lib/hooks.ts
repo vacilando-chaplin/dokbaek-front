@@ -11,10 +11,19 @@ import { useSetRecoilState } from "recoil";
 import {
   cropImageState,
   cropModalState,
+  recentPhotoTypeState,
   selectedImagesState,
   selectImageState
 } from "./recoil/profile/photo/atom";
 import { FileRejection } from "react-dropzone";
+import {
+  ProfilePhotoDataType,
+  ProfileRecentPhotoDataType
+} from "@/app/profile/[id]/create/types";
+import {
+  CategoryKey,
+  RecentPhotoCategory
+} from "@/app/profile/[id]/create/photo/types";
 
 export const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -101,16 +110,18 @@ export const useImageSelector = () => {
     e.target.value = "";
   };
 
-  return {
-    onSelectFile
-  };
+  return { onSelectFile };
 };
 
-export const usePhotoDrop = (category: string) => {
+export const usePhotoDrop = (
+  category: CategoryKey,
+  photoType: RecentPhotoCategory
+) => {
   const setCropImage = useSetRecoilState(cropImageState);
   const setSelectImage = useSetRecoilState(selectImageState);
   const setSelectedImages = useSetRecoilState(selectedImagesState);
   const setCropModal = useSetRecoilState(cropModalState);
+  const setRecentPhotoType = useSetRecoilState(recentPhotoTypeState);
 
   const onDrop = async (images: File[], rejectedFiles: FileRejection[]) => {
     if (rejectedFiles.length > 0) return;
@@ -133,6 +144,8 @@ export const usePhotoDrop = (category: string) => {
       })
     );
 
+    if (photoType) setRecentPhotoType(photoType);
+
     setCropImage(fileData[0].preview);
     setSelectImage(fileData[0].originImage);
     setSelectedImages(fileData);
@@ -147,4 +160,48 @@ export const usePhotoDrop = (category: string) => {
   };
 
   return { onDrop };
+};
+
+export const usePhotoEditModal = () => {
+  const setCropImage = useSetRecoilState(cropImageState);
+  const setSelectImage = useSetRecoilState(selectImageState);
+  const setSelectedImages = useSetRecoilState(selectedImagesState);
+  const setCropModal = useSetRecoilState(cropModalState);
+
+  const onPhotoEditModalOpen = async (
+    photo: ProfilePhotoDataType | ProfileRecentPhotoDataType,
+    category: CategoryKey
+  ) => {
+    const mimeType = await getFileMimeTypeFromUrl(photo.path);
+    const response = await fetch(photo.path);
+    const blob = await response.blob();
+    const file = new File([blob], "image", { type: mimeType });
+
+    const downSizedFile = await imageCompression(file, imageCompressionOptions);
+    const downSizedImage = await convertToBase64(downSizedFile);
+
+    setCropImage(downSizedImage);
+    setSelectImage(downSizedImage);
+    setSelectedImages([
+      {
+        id: 0,
+        origin: downSizedImage,
+        preview: downSizedImage,
+        originImage: downSizedImage,
+        cropData: cropDataInit
+      }
+    ]);
+    setCropModal({
+      id: photo.id,
+      state: "edit",
+      active: true,
+      name: "사진 편집",
+      buttonText: "완료",
+      category
+    });
+  };
+
+  return {
+    onPhotoEditModalOpen
+  };
 };
