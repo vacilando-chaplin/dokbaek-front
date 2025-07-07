@@ -6,7 +6,7 @@ const Photo = () => {
     <div className="flex w-[65vw] flex-col gap-4">
       <PhotoUploadSection category="photos" />
       <PhotoUploadSection category="stillCuts" />
-      <PhotoRecent />
+      <PhotoRecent category="recentPhotos" />
     </div>
   );
 };

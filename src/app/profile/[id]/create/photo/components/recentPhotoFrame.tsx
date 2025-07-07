@@ -13,6 +13,7 @@ import {
 import { useImageSelector, usePhotoDrop } from "@/lib/hooks";
 import { useDropzone } from "react-dropzone";
 import { RecentPhotoCategory } from "../types";
+import { toastMessage } from "@/lib/atoms";
 
 interface RecentPhotoFrameProps {
   name: string;
@@ -22,6 +23,7 @@ interface RecentPhotoFrameProps {
 const RecentPhotoFrame = ({ name, photoType }: RecentPhotoFrameProps) => {
   const setCropModal = useSetRecoilState(cropModalState);
   const setRecentPhotoType = useSetRecoilState(recentPhotoTypeState);
+  const setToastMessage = useSetRecoilState(toastMessage);
 
   const { onDrop } = usePhotoDrop("recentPhotos", photoType);
   const { onSelectFile } = useImageSelector();
@@ -44,6 +46,9 @@ const RecentPhotoFrame = ({ name, photoType }: RecentPhotoFrameProps) => {
       "image/*": []
     },
     onDrop,
+    onDropRejected: () => {
+      setToastMessage("지원하지 않는 파일 형식이거나 파일 개수가 너무 많아요.");
+    },
     noClick: true,
     maxFiles: 1,
     maxSize: 10000000
@@ -51,7 +56,7 @@ const RecentPhotoFrame = ({ name, photoType }: RecentPhotoFrameProps) => {
 
   return (
     <div
-      className={`flex aspect-[160/204] h-full w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted dark:border-border-active-light dark:bg-gray-800 ${isDragAccept ? "border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark" : "border-gray-150 bg-gray-50"}`}
+      className={`flex aspect-[160/204] h-full w-full flex-col items-center justify-center gap-2 rounded-xl border border-dotted border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800 ${isDragAccept && "border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark"}`}
       {...getRootProps()}
     >
       <input
