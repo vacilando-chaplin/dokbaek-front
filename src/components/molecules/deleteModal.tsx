@@ -17,7 +17,10 @@ const DeleteModal = ({
   onDelete
 }: DeleteModalProps) => {
   return (
-    <div className="absolute -right-2 top-10 z-10 animate-enter shadow-low">
+    <div
+      className="absolute -right-2 top-10 z-10 animate-enter shadow-low"
+      onClick={(e) => e.stopPropagation()}
+    >
       <ArrowTriangleUp
         width="24"
         height="24"

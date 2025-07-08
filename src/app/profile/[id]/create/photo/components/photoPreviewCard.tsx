@@ -15,6 +15,7 @@ import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { CategoryKey } from "../types";
 import { usePhotoEditModal } from "@/lib/hooks";
 import { categoryMap } from "../data";
+import { useMutation } from "@tanstack/react-query";
 
 interface PhotoPreviewCardProps {
   category: CategoryKey;
@@ -38,15 +39,45 @@ const PhotoPreviewCard = ({
     setDeleteModalActive(!deleteModalActive);
   };
 
-  const onDeletePhoto = async (id: string, category: CategoryKey) => {
-    await deletePhoto(profileId, id, categoryMap[category]);
+  // 사진 삭제
+  const useDeletePhotoMutation = () => {
+    return useMutation({
+      mutationFn: async ({
+        profileId,
+        id,
+        category
+      }: {
+        profileId: number;
+        id: string;
+        category: CategoryKey;
+      }) => {
+        return await deletePhoto(profileId, id, categoryMap[category]);
+      },
+      onSuccess: (data, variables) => {
+        const { id, category } = variables;
 
-    setProfileData((prev) => ({
-      ...prev,
-      [category]: prev[category].filter((item) => item.id !== previewPhoto.id)
-    }));
-    onDeleteModalActive();
-    setToastMessage("사진을 삭제했어요.");
+        setProfileData((prev) => ({
+          ...prev,
+          [category]: prev[category].filter((item) => item.id !== id)
+        }));
+
+        onDeleteModalActive();
+        setToastMessage("사진을 삭제했어요.");
+      },
+      onError: () => {
+        setToastMessage("사진 삭제에 실패했어요.");
+      }
+    });
+  };
+
+  const deletePhotoMutation = useDeletePhotoMutation();
+
+  const onDeletePhoto = (id: string, category: CategoryKey) => {
+    deletePhotoMutation.mutate({
+      profileId,
+      id,
+      category
+    });
   };
 
   const { onPhotoEditModalOpen } = usePhotoEditModal();

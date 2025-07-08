@@ -4,7 +4,7 @@ import ImageCropper from "@/components/molecules/imageCropper";
 import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
 import Image from "next/image";
-import { SelectedImagesType } from "../../../types";
+import { PhotoModalType, SelectedImagesType } from "../../../types";
 import { useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
@@ -12,9 +12,8 @@ import { patchPhoto, postPhoto } from "@/lib/api";
 import { categoryMap, photoModalInit } from "../data";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { ProfilePhotoDataType, ProfileRecentPhotoDataType } from "../../types";
-import { cropDataInit } from "../../../data";
 import { Coordinates } from "react-advanced-cropper";
-import { CategoryKey } from "../types";
+import { CategoryKey, RecentPhotoCategory } from "../types";
 import Cookies from "js-cookie";
 import X from "../../../../../../../public/icons/X.svg";
 import {
@@ -25,6 +24,8 @@ import {
   selectImageState
 } from "@/lib/recoil/profile/photo/atom";
 import { postRecentPhoto, postRecentPhotoEdit } from "../api";
+import { useMutation } from "@tanstack/react-query";
+import { cropDataInit } from "../../../data";
 
 const PhotoCropModal = () => {
   const profileId = Number(Cookies.get("loginProfileId"));
@@ -41,7 +42,6 @@ const PhotoCropModal = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedPhotoId, setSelectedPhotoId] = useState(0);
-  const [cropData, setCropData] = useState<Coordinates | null>(cropDataInit);
 
   // 사진 추가 모달 닫기
   const onCropModalClose = () => {
@@ -56,24 +56,32 @@ const PhotoCropModal = () => {
 
   // 모달에서 사진 여러개 업로드 시 사진 선택
   const onSelectImage = (id: number) => {
-    const selectedIndex = selectedImages.findIndex((item) => item.id === id);
-    if (selectedIndex === -1) {
+    const index = selectedImages.findIndex((item) => item.id === id);
+    if (index === -1) {
       setToastMessage("선택한 이미지를 찾을 수 없습니다.");
       return;
     }
 
-    setSelectedIndex(selectedIndex);
+    const selectedIndexToUpdate = selectedImages.findIndex(
+      (item) => item.id === selectedPhotoId
+    );
+
+    const updateImages = [...selectedImages];
+
+    if (selectedIndexToUpdate !== -1) {
+      updateImages[selectedIndexToUpdate] = {
+        ...updateImages[selectedIndexToUpdate],
+        preview: cropImage,
+        originImage: selectImage
+      };
+    }
+    const currentImage = updateImages[index];
+
+    setSelectedImages(updateImages);
+    setSelectedIndex(index);
     setSelectedPhotoId(id);
-
-    const currentImage = selectedImages[selectedIndex];
-
-    const image = currentImage.originImage;
-    const cropedImage = currentImage.preview;
-    const coordinates = currentImage.cropData;
-
-    setCropData(coordinates);
-    setCropImage(cropedImage);
-    setSelectImage(image);
+    setCropImage(currentImage.preview);
+    setSelectImage(currentImage.originImage);
   };
 
   const onRemoveImage = (id: number) => {
@@ -95,93 +103,160 @@ const PhotoCropModal = () => {
     });
   };
 
-  // 사진 추가 모달 저장
-  const onAddPhoto = async () => {
-    const photoList: ProfilePhotoDataType[] | ProfileRecentPhotoDataType[] = [];
-    const category = cropModal.category as CategoryKey;
+  // 사진 추가
+  const useAddPhotoMutation = () => {
+    return useMutation({
+      mutationFn: async ({
+        profileId,
+        selectedImages,
+        cropImage,
+        selectedPhotoId,
+        category,
+        recentPhotoType
+      }: {
+        profileId: number;
+        selectedImages: SelectedImagesType[];
+        cropImage: string;
+        selectedPhotoId: number;
+        category: CategoryKey;
+        recentPhotoType: RecentPhotoCategory;
+      }) => {
+        const photoList: ProfilePhotoDataType[] | ProfileRecentPhotoDataType[] =
+          [];
 
-    if (selectedImages.length > 1) {
-      if (category === "photos" || category === "stillCuts") {
-        for (const [index, images] of selectedImages.entries()) {
-          const result = await postPhoto(
-            profileId,
-            images.origin,
-            selectedPhotoId === index ? cropImage : images.preview,
-            categoryMap[category]
-          );
-          photoList.push(result.data);
+        if (selectedImages.length > 1) {
+          if (category === "photos" || category === "stillCuts") {
+            for (const [_, images] of selectedImages.entries()) {
+              const result = await postPhoto(
+                profileId,
+                images.origin,
+                selectedPhotoId === images.id ? cropImage : images.preview,
+                categoryMap[category]
+              );
+              photoList.push(result.data);
+            }
+          }
+        } else {
+          if (recentPhotoType !== "") {
+            const result = await postRecentPhoto(
+              profileId,
+              selectedImages[0].origin,
+              cropImage,
+              recentPhotoType
+            );
+            photoList.push(result.data);
+          } else if (category === "photos" || category === "stillCuts") {
+            const result = await postPhoto(
+              profileId,
+              selectedImages[0].origin,
+              cropImage,
+              categoryMap[category]
+            );
+            photoList.push(result.data);
+          }
         }
-      }
-    } else {
-      if (recentPhotoType !== "") {
-        const result = await postRecentPhoto(
-          profileId,
-          selectedImages[0].origin,
-          cropImage,
-          recentPhotoType
-        );
-        photoList.push(result.data);
-      } else if (category === "photos" || category === "stillCuts") {
-        const result = await postPhoto(
-          profileId,
-          selectedImages[0].origin,
-          cropImage,
-          categoryMap[category]
-        );
-        photoList.push(result.data);
-      }
-    }
 
-    setProfileData((prev) => ({
-      ...prev,
-      [category]: [...(prev[category] ?? []), ...photoList]
-    }));
+        return { photoList, category };
+      },
+      onSuccess: ({ photoList, category }) => {
+        setProfileData((prev) => ({
+          ...prev,
+          [category]: [...(prev[category] ?? []), ...photoList]
+        }));
 
-    setCropModal(photoModalInit);
-    setRecentPhotoType("");
-    setSelectImage("");
-    setCropImage("");
-    setSelectedImages([]);
-    setToastMessage("사진을 추가했어요.");
+        setCropModal(photoModalInit);
+        setRecentPhotoType("");
+        setSelectImage("");
+        setCropImage("");
+        setSelectedIndex(0);
+        setSelectedImages([]);
+        setToastMessage("사진을 추가했어요.");
+      },
+      onError: () => {
+        setToastMessage("사진 추가에 실패했어요.");
+      }
+    });
   };
 
-  // 사진 편집 모달 완료
-  const onEditPhoto = async () => {
-    const category = cropModal.category as CategoryKey;
-
-    if (category === "recentPhotos") {
-      const updatedPhoto = await postRecentPhotoEdit(
+  // 사진 편집
+  const useEditPhotoMutation = () => {
+    return useMutation({
+      mutationFn: async ({
         profileId,
         cropImage,
-        cropModal.id
-      );
+        cropModal
+      }: {
+        profileId: number;
+        cropImage: string;
+        cropModal: PhotoModalType;
+      }) => {
+        const category = cropModal.category as CategoryKey;
 
-      setProfileData((prev) => ({
-        ...prev,
-        [category]: prev[category].map((item) =>
-          item.id === cropModal.id ? updatedPhoto.data : item
-        )
-      }));
-    } else if (category === "photos" || category === "stillCuts") {
-      const updatedPhoto = await patchPhoto(
+        if (category === "recentPhotos") {
+          const updatedPhoto = await postRecentPhotoEdit(
+            profileId,
+            cropImage,
+            cropModal.id
+          );
+          return {
+            updatedPhoto: updatedPhoto.data,
+            category,
+            id: cropModal.id
+          };
+        } else if (category === "photos" || category === "stillCuts") {
+          const updatedPhoto = await patchPhoto(
+            profileId,
+            cropImage,
+            cropModal.id,
+            categoryMap[category]
+          );
+          return {
+            updatedPhoto: updatedPhoto.data,
+            category,
+            id: cropModal.id
+          };
+        }
+        throw new Error(`지원하지 않는 카테고리입니다: ${category}`);
+      },
+      onSuccess: ({ updatedPhoto, category, id }) => {
+        setProfileData((prev) => ({
+          ...prev,
+          [category]: prev[category].map((item) =>
+            item.id === id ? updatedPhoto : item
+          )
+        }));
+
+        setCropModal(photoModalInit);
+        setSelectImage("");
+        setCropImage("");
+        setToastMessage("사진을 수정했어요.");
+      },
+      onError: () => {
+        setToastMessage("사진 수정에 실패했어요.");
+      }
+    });
+  };
+
+  const onAddPhotoMutation = useAddPhotoMutation();
+  const onEditPhotoMutation = useEditPhotoMutation();
+
+  const onCropSaveClick = () => {
+    if (cropModal.state === "add") {
+      onAddPhotoMutation.mutate({
+        profileId,
+        selectedImages,
+        cropImage,
+        selectedPhotoId,
+        category: cropModal.category as CategoryKey,
+        recentPhotoType
+      });
+    } else if (cropModal.state === "edit") {
+      onEditPhotoMutation.mutate({
         profileId,
         cropImage,
-        cropModal.id,
-        categoryMap[category]
-      );
-
-      setProfileData((prev) => ({
-        ...prev,
-        [category]: prev[category].map((item) =>
-          item.id === cropModal.id ? updatedPhoto.data : item
-        )
-      }));
+        cropModal
+      });
     }
-
-    setCropModal(photoModalInit);
-    setSelectImage("");
-    setCropImage("");
-    setToastMessage("사진을 수정했어요.");
   };
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -223,6 +298,29 @@ const PhotoCropModal = () => {
     isMouseDown.current = false;
   };
 
+  const setCropData = (newCropData: Coordinates) => {
+    setSelectedImages((prev) => {
+      const updated = [...prev];
+      updated[selectedIndex] = {
+        ...updated[selectedIndex],
+        cropData: newCropData
+      };
+      return updated;
+    });
+  };
+
+  const setCropedImage = (newImage: string) => {
+    setCropImage(newImage);
+    setSelectedImages((prev) => {
+      const updated = [...prev];
+      updated[selectedIndex] = {
+        ...updated[selectedIndex],
+        preview: newImage
+      };
+      return updated;
+    });
+  };
+
   return (
     <>
       {cropModal.active && selectedImages?.length >= 1 && (
@@ -233,11 +331,15 @@ const PhotoCropModal = () => {
               className={`flex w-full flex-col items-center justify-center ${selectedImages.length >= 2 ? "h-[60vh] max-h-[60vh]" : "h-[70vh] max-h-[70vh]"}`}
             >
               <ImageCropper
-                cropData={selectedImages[selectedIndex].cropData}
+                cropData={
+                  selectedImages[selectedIndex].cropData
+                    ? selectedImages[selectedIndex].cropData
+                    : cropDataInit
+                }
                 cropType={cropModal.category}
                 selectImage={selectImage}
                 setCropData={setCropData}
-                setCropImage={setCropImage}
+                setCropImage={setCropedImage}
               />
             </div>
             {selectedImages.length >= 2 && (
@@ -286,9 +388,13 @@ const PhotoCropModal = () => {
             )}
             <ModalFooter
               text={cropModal.buttonText}
-              disabled={selectImage === ""}
+              disabled={
+                selectImage === "" ||
+                onAddPhotoMutation.isPending ||
+                onEditPhotoMutation.isPending
+              }
               onCloseClick={onCropModalClose}
-              onSaveClick={cropModal.state === "add" ? onAddPhoto : onEditPhoto}
+              onSaveClick={onCropSaveClick}
             />
           </div>
         </section>
