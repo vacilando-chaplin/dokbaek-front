@@ -5,8 +5,8 @@ interface DeleteModalProps {
   id: string;
   text: string;
   category: string;
-  onCancel: React.MouseEventHandler<HTMLButtonElement>;
-  onDelete: (id: string, category: string) => void;
+  onCancel: () => void;
+  onDelete: (id: string, category: any) => void;
 }
 
 const DeleteModal = ({
@@ -17,7 +17,10 @@ const DeleteModal = ({
   onDelete
 }: DeleteModalProps) => {
   return (
-    <div className="absolute -right-2 top-10 z-10 animate-enter shadow-low">
+    <div
+      className="absolute -right-2 top-10 z-10 animate-enter shadow-low"
+      onClick={(e) => e.stopPropagation()}
+    >
       <ArrowTriangleUp
         width="24"
         height="24"
@@ -28,7 +31,14 @@ const DeleteModal = ({
           {text}
         </label>
         <div className="flex flex-row items-center justify-end gap-1">
-          <BoxButton type="secondaryOutlined" size="small" onClick={onCancel}>
+          <BoxButton
+            type="secondaryOutlined"
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel();
+            }}
+          >
             취소
           </BoxButton>
           <BoxButton

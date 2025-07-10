@@ -1,14 +1,12 @@
 "use client";
 
 import { StepperType } from "../types";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ListItem from "../../../../../components/atoms/listItem";
 import { stepperList } from "../data";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { stepperInit } from "@/lib/atoms";
+import { useRecoilValue } from "recoil";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { putInfoDraft } from "../info/api";
-import { useEffect, useState } from "react";
 
 interface ListMenuProps {
   profileId: number;
@@ -16,33 +14,26 @@ interface ListMenuProps {
 
 const ListMenu = ({ profileId }: ListMenuProps) => {
   const router = useRouter();
-
-  const [stepper, setStepper] = useRecoilState(stepperInit);
+  const pathname = usePathname();
   const profileData = useRecoilValue(profileDraftData);
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const onStepper = async (index: number) => {
-    if (stepper === 0) {
+    if (pathname.endsWith("/info") && profileData?.info) {
       await putInfoDraft(profileId, profileData.info);
     }
 
-    setStepper(index);
-    router.prefetch(`/profile/${profileId}/create/${stepperList[index].path}`);
-    router.push(`/profile/${profileId}/create/${stepperList[index].path}`);
+    const nextPath = `/profile/${profileId}/create/${stepperList[index].path}`;
+    router.push(nextPath);
   };
-
-  useEffect(() => {
-    setIsLoading(true);
-  }, []);
 
   return (
     <aside className="sticky top-[104px] h-fit w-[200px] rounded-2xl bg-background-surface-light p-3 dark:bg-background-surface-dark">
       {stepperList.map((step: StepperType, index: number) => {
+        const isActive = pathname.endsWith(step.path);
         return (
           <ListItem
             key={step.id}
-            active={isLoading && index === stepper}
+            active={isActive}
             onClick={() => onStepper(index)}
           >
             {step.name}

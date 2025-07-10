@@ -5,7 +5,7 @@ import Plus from "../../../../../../../public/icons/Plus.svg";
 import EducationForm from "./educationForm";
 import { useRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
-import { deleteEducation, postEducation, putEducation } from "../api";
+import { deleteEducation, postEducation } from "../api";
 import { ProfileEducationDataType } from "../../types";
 
 interface EducationProps {
@@ -15,7 +15,7 @@ interface EducationProps {
 const Education = ({ profileId }: EducationProps) => {
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
 
-  const { education } = profileData;
+  const education = profileData?.education ?? [];
 
   // 학력 1개 생성
   const onCreateEducation = async () => {
@@ -68,27 +68,26 @@ const Education = ({ profileId }: EducationProps) => {
         <button
           type="button"
           className="flex h-8 w-8 items-center justify-center gap-2.5 rounded-lg"
-          disabled={education.length >= 5}
+          disabled={education?.length >= 5}
           onClick={onCreateEducation}
         >
           <Plus
             width="16"
             height="16"
-            className={`fill-current ${education.length >= 5 ? "text-content-disabled-light dark:text-content-disabled-dark" : "text-content-primary-light dark:text-content-primary-dark"}`}
+            className={`fill-current ${education?.length >= 5 ? "text-content-disabled-light dark:text-content-disabled-dark" : "text-content-primary-light dark:text-content-primary-dark"}`}
           />
         </button>
       </div>
-      {education.length >= 1 &&
-        education.map((item: ProfileEducationDataType) => {
-          return (
-            <EducationForm
-              key={item.id}
-              item={item}
-              profileId={profileId}
-              onDelete={() => onDeleteEducation(item.id)}
-            />
-          );
-        })}
+      {education?.map((item: ProfileEducationDataType) => {
+        return (
+          <EducationForm
+            key={item.id}
+            item={item}
+            profileId={profileId}
+            onDelete={() => onDeleteEducation(item.id)}
+          />
+        );
+      })}
     </section>
   );
 };

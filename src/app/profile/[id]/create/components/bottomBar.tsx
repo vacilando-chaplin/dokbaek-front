@@ -3,11 +3,10 @@
 import ArrowDirectionLeft from "../../../../../../public/icons/ArrowDirectionLeft.svg";
 import BoxButton from "@/components/atoms/boxButton";
 import ProgressBar from "./progressBar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { postProfileDraftPublish } from "../../api";
 import { useRecoilValue } from "recoil";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
-import { stepperInit } from "@/lib/atoms";
 import { putInfoDraft } from "../info/api";
 
 interface BottomBarProps {
@@ -16,8 +15,7 @@ interface BottomBarProps {
 
 const BottomBar = ({ profileId }: BottomBarProps) => {
   const router = useRouter();
-
-  const stepper = useRecoilValue(stepperInit);
+  const pathname = usePathname();
   const profileData = useRecoilValue(profileDraftData);
 
   const { name, gender, bornYear, contact } = profileData.info;
@@ -31,7 +29,7 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
     contact.length >= 9;
 
   const onSaveInfo = async () => {
-    if (stepper === 0) {
+    if (pathname.endsWith("/info") && profileData?.info) {
       await putInfoDraft(profileId, profileData.info);
     }
   };

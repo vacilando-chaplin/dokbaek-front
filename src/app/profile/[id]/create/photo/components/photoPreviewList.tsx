@@ -2,22 +2,26 @@
 
 import { useDropzone } from "react-dropzone";
 import { ProfilePhotoDataType } from "../../types";
+import PhotoPreviewCard from "./photoPreviewCard";
 import { CategoryKey } from "../types";
+import { cropModalState } from "@/lib/recoil/profile/photo/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { useImageSelector, usePhotoDrop } from "@/lib/hooks";
-import { cropModalState } from "@/lib/recoil/profile/photo/atom";
 import { toastMessage } from "@/lib/atoms";
 
-interface EmptyPhotoFrameProps {
+interface PhotoPreviewListProps {
   category: CategoryKey;
 }
 
-const EmptyPhotoFrame = ({ category }: EmptyPhotoFrameProps) => {
+const PhotoPreviewList = ({ category }: PhotoPreviewListProps) => {
   const profileData = useRecoilValue(profileDraftData);
 
   const setCropModal = useSetRecoilState(cropModalState);
   const setToastMessage = useSetRecoilState(toastMessage);
+
+  const { onSelectFile } = useImageSelector();
+  const { onDrop } = usePhotoDrop(category, "");
 
   const photoList: ProfilePhotoDataType[] =
     profileData &&
@@ -26,9 +30,6 @@ const EmptyPhotoFrame = ({ category }: EmptyPhotoFrameProps) => {
       : category === "stillCuts"
         ? profileData.stillCuts
         : []);
-
-  const { onSelectFile } = useImageSelector();
-  const { onDrop } = usePhotoDrop(category, "");
 
   // 사진 추가 모달 열기
   const onCropModalOpen = (category: string) => {
@@ -57,9 +58,9 @@ const EmptyPhotoFrame = ({ category }: EmptyPhotoFrameProps) => {
 
   return (
     <>
-      {photoList.length === 0 && (
+      {photoList.length >= 1 && (
         <div
-          className={`flex h-auto w-full cursor-pointer items-center justify-center gap-4 rounded-xl border border-dotted px-6 py-16 hover:border-accent-primary-light hover:bg-accent-light-light dark:hover:border-accent-primary-dark dark:hover:bg-accent-light-dark ${isDragAccept ? "border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark" : "border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800"}`}
+          className={`grid w-full cursor-pointer grid-cols-4 gap-2 rounded-xl hover:border hover:border-dotted hover:border-accent-primary-light hover:bg-accent-light-light dark:hover:border-accent-primary-dark dark:hover:bg-accent-light-dark ${isDragAccept ? "border border-dotted border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark" : "border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800"}`}
           {...getRootProps()}
         >
           <input
@@ -70,15 +71,19 @@ const EmptyPhotoFrame = ({ category }: EmptyPhotoFrameProps) => {
             onChange={onSelectFile}
             {...getInputProps()}
           />
-          <label
-            className={`typography-caption1 cursor-pointer font-medium ${isDragAccept ? "text-accent-primary-light dark:text-accent-primary-dark" : "text-content-tertiary-light dark:text-content-tertiary-dark"}`}
-          >
-            추가할 사진을 끌어다 놓으세요.
-          </label>
+          {photoList.map((previewPhoto: ProfilePhotoDataType) => {
+            return (
+              <PhotoPreviewCard
+                key={previewPhoto.id}
+                category={category}
+                previewPhoto={previewPhoto}
+              />
+            );
+          })}
         </div>
       )}
     </>
   );
 };
 
-export default EmptyPhotoFrame;
+export default PhotoPreviewList;
