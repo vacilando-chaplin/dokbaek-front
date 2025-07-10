@@ -183,7 +183,7 @@ const EducationForm = ({ item, profileId, onDelete }: EducationFormProps) => {
           value={item.school.name ?? ""}
           active={dropdownActive.schoolName}
           selected={item.school.name}
-          isEmpty={dropdownActive.schoolName && schoolList.length === 0}
+          isEmpty={dropdownActive.schoolName && schoolList?.length === 0}
           maxLength={20}
           placeholder="학교 이름을 검색해보세요."
           onClick={onSchoolDropdownClick}

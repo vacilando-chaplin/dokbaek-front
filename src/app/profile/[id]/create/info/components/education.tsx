@@ -15,7 +15,7 @@ interface EducationProps {
 const Education = ({ profileId }: EducationProps) => {
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
 
-  const { education } = profileData;
+  const education = profileData?.education ?? [];
 
   // 학력 1개 생성
   const onCreateEducation = async () => {
