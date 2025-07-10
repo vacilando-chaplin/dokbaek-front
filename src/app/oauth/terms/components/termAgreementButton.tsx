@@ -2,7 +2,7 @@
 
 import { TermAgreementsType } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { defaultId } from "@/lib/atoms";
+import { loginErrorState, toastMessage } from "@/lib/atoms";
 import { useSetRecoilState } from "recoil";
 import {
   useSetLoginForm,
@@ -13,6 +13,8 @@ import { postOauthSignUp } from "../../callback/api";
 import { getProfileMe } from "@/lib/api";
 import BoxButton from "@/components/atoms/boxButton";
 import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
+import { useMutation } from "@tanstack/react-query";
+import { TermsMutationParams, TermsMutationResult } from "../type";
 
 interface TermAgreementButtonProps {
   termAgreements: TermAgreementsType[];
@@ -28,29 +30,60 @@ const TermAgreementButton = ({
   const code = urlParams.get("code");
   const state = urlParams.get("state");
 
-  const setUserId = useSetRecoilState(defaultId);
   const setViewProfileId = useSetRecoilState(viewedProfileId);
+  const setToastMessage = useSetRecoilState(toastMessage);
+  const setLoginErrorState = useSetRecoilState(loginErrorState);
 
-  const onTermAgreement = async () => {
-    if (code && state) {
+  const onMutateAgreement = useMutation<
+    TermsMutationResult,
+    Error,
+    TermsMutationParams
+  >({
+    mutationFn: async ({ state, domain, tempCode, termAgreements }) => {
       const res = await postOauthSignUp({
-        domain: state.toUpperCase(),
-        tempCode: code,
+        domain: domain,
+        tempCode: tempCode,
         termAgreements: termAgreements
       });
       const data = res.data;
 
-      const profileRes = await getProfileMe();
-      const loginProfileId = profileRes.data.id;
-      useSetLoginProfileId("loginProfileId", String(loginProfileId));
-      setViewProfileId(loginProfileId);
-
-      setUserId(data.userId);
       useSetToken("jwt", data.token.jwt);
       useSetToken("refresh_token", data.token.refreshToken);
-      useSetLoginForm("login_form", state);
+
+      const profileRes = await getProfileMe();
+
+      return {
+        profileId: profileRes.data.id,
+        state: state
+      };
+    },
+    onSuccess: (data) => {
+      const loginProfileId = data.profileId;
+
+      setViewProfileId(Number(loginProfileId));
+      useSetLoginProfileId("loginProfileId", String(loginProfileId));
+      useSetLoginForm("login_form", data.state);
 
       router.replace(`/profile/${loginProfileId}`);
+    },
+    onError: () => {
+      setLoginErrorState(true);
+      setToastMessage(
+        "회원가입 과정에서 문제가 생겼어요. 잠시 후 다시 시도해 주세요."
+      );
+
+      router.replace("/");
+    }
+  });
+
+  const onTermAgreement = () => {
+    if (code && state) {
+      onMutateAgreement.mutate({
+        state: state,
+        domain: state.toUpperCase(),
+        tempCode: code,
+        termAgreements: termAgreements
+      });
     }
   };
 

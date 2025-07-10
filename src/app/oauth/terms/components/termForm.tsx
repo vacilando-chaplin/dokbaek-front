@@ -22,7 +22,14 @@ const TermForm = () => {
   };
 
   const onSelectAllTerms = () => {
-    setTerms((prev) => prev.map((term) => ({ ...term, agreed: true })));
+    const allAgreed = terms.every((term) => term.agreed);
+
+    setTerms((prev) =>
+      prev.map((term) => ({
+        ...term,
+        agreed: !allAgreed
+      }))
+    );
   };
 
   const isAllRequiredTermsAgreed = terms

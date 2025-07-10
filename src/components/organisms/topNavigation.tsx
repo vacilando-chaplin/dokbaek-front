@@ -6,15 +6,15 @@ import { deleteSignOut } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { currentPath, loginProfileId, toastMessage } from "@/lib/atoms";
-import Bell from "../../../public/icons/Bell.svg";
+import { useSetRecoilState } from "recoil";
+import { currentPath, toastMessage } from "@/lib/atoms";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
 import { useEffect, useState } from "react";
 import { removeStorageData } from "@/lib/utils";
 import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
 import { useSetLoginProfileId, useSetToken } from "@/lib/hooks";
+import { useMutation } from "@tanstack/react-query";
 
 interface UserMenuType {
   name: string;
@@ -40,18 +40,26 @@ const TopNavigation = () => {
     router.push("/login");
   };
 
-  const onLogOut = async () => {
-    const refreshToken = Cookies.get("refresh_token");
+  const onLogOutMutation = useMutation({
+    mutationFn: async () => {
+      const refreshToken = Cookies.get("refresh_token");
 
-    setIsLoggedIn(false);
-    setToastMessage("안전하게 로그아웃됐어요.");
+      if (!refreshToken) {
+        throw new Error();
+      }
 
-    if (refreshToken) {
       await deleteSignOut(refreshToken);
+    },
+    onSuccess: () => {
       removeStorageData();
+      setIsLoggedIn(false);
+      setToastMessage("안전하게 로그아웃됐어요.");
       router.replace("/");
+    },
+    onError: () => {
+      setToastMessage("로그아웃 중 문제가 발생했어요. 다시 시도해 주세요.");
     }
-  };
+  });
 
   const onMoveMyProrfile = () => {
     setViewProfileId(loginProfileId);
@@ -62,14 +70,6 @@ const TopNavigation = () => {
   };
 
   const userMenu = [
-    // {
-    //   name: "계정 연동",
-    //   onClick: () => {}
-    // },
-    // {
-    //   name: "알림 설정",
-    //   onClick: () => {}
-    // },
     {
       name: "계정",
       onClick: () => {
@@ -79,14 +79,14 @@ const TopNavigation = () => {
     },
     {
       name: "로그아웃",
-      onClick: onLogOut
+      onClick: () => onLogOutMutation.mutate()
     }
   ];
 
   useEffect(() => {
-    const jwt = Cookies.get("jwt");
+    const refreshToken = Cookies.get("refresh_token");
 
-    setIsLoggedIn(jwt ? true : false);
+    setIsLoggedIn(refreshToken ? true : false);
   }, []);
 
   return (
@@ -115,9 +115,6 @@ const TopNavigation = () => {
                 className="fill-current text-content-secondary-light dark:text-content-secondary-dark"
               />
             </Link>
-            {/* <button type="button">
-              <Bell width="20" height="20" className="fill-current text-content-secondary-light dark:text-content-secondary-dark" />
-            </button> */}
             <button
               type="button"
               className="relative flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50 dark:border-border-default-dark dark:bg-gray-900"

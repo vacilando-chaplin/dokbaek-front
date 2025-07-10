@@ -8,12 +8,6 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
-export const defaultId = atom<number>({
-  key: "defaultId",
-  default: 0,
-  effects_UNSTABLE: [persistAtom]
-});
-
 export const profileIdInit = atom<number>({
   key: "profileIdInit",
   default: 0,

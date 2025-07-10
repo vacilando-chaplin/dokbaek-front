@@ -20,3 +20,14 @@ export interface GoogleDataType {
   refresh_token: string;
   token_type: string;
 }
+
+export interface OAuthMutationParams {
+  domain: string;
+  tempCode: string;
+  state: string;
+}
+
+export interface OAuthMutationResult {
+  profileId: string;
+  state: string;
+}

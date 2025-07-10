@@ -1,12 +1,12 @@
 import WithdrawalContainer from "./components/withdrawalContainer";
 import WithdrawalAgreement from "./components/withdrawalAgreement";
 import WithdrawalConfirm from "./components/withdrawalConfirm";
-import { getWithdrawReason } from "./api";
 import WithdrawalReasons from "./components/withdrawalReasons";
 import { ReasonType } from "./type";
+import { getWithdrawReasonServer } from "@/lib/api/withdraw/api";
 
 const Withdrawal = async () => {
-  const getReasons = await getWithdrawReason();
+  const getReasons = await getWithdrawReasonServer();
 
   const initialReasons =
     getReasons &&
