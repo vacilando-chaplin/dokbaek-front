@@ -2,36 +2,94 @@
 
 import { FilmoResponseType } from "@/lib/types";
 import Image from "next/image";
-import Edit from "../../../../../public/icons/Edit.svg";
-import X from "../../../../../public/icons/X.svg";
-import PlayCircle from "../../../../../public/icons/PlayCircle.svg";
-import LogoHorizontalSmall from "../../../../../public/icons/LogoHorizontalSmall.svg";
+import Edit from "../../../../../../../public/icons/Edit.svg";
+import X from "../../../../../../../public/icons/X.svg";
+import PlayCircle from "../../../../../../../public/icons/PlayCircle.svg";
+import LogoHorizontalSmall from "../../../../../../../public/icons/LogoHorizontalSmall.svg";
 import Checkbox from "@/components/atoms/checkbox";
+import { ProfileFilmoDataType } from "../../types";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  filmoDeleteModalState,
+  filmoInputState,
+  filmoModalState,
+  filmoRepActiveState,
+  filmoRepEditListState,
+  filmoYoutubeLinkModalState
+} from "@/lib/recoil/profile/filmo/atom";
 
 interface FilmoItemProps {
-  filmo: FilmoResponseType;
-  checked?: boolean;
-  checkDisabled?: boolean;
-  filmoRepActive?: boolean;
-  canEdit: boolean;
-  onEdit?: any;
-  onDelete?: any;
-  onCheck?: any;
-  onLink?: any;
+  filmo: ProfileFilmoDataType;
+  filmoList: ProfileFilmoDataType[];
 }
 
-const FilmoItem = ({
-  filmo,
-  checked,
-  checkDisabled,
-  filmoRepActive,
-  canEdit,
-  onEdit,
-  onDelete,
-  onCheck,
-  onLink
-}: FilmoItemProps) => {
-  const { id, role, customRole, character, production } = filmo;
+const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
+  const { id, role, customRole, character, production, featured } = filmo;
+
+  const [filmoRepEditList, setFilmoRepEditList] = useRecoilState(
+    filmoRepEditListState
+  );
+  const filmoRepActive = useRecoilValue(filmoRepActiveState);
+  const setFilmoInputs = useSetRecoilState(filmoInputState);
+  const setFilmoModal = useSetRecoilState(filmoModalState);
+  const setYoutubeLinkModal = useSetRecoilState(filmoYoutubeLinkModalState);
+  const setFilmoDeleteModal = useSetRecoilState(filmoDeleteModalState);
+
+  const checkRep = filmoRepEditList.length >= 6;
+
+  // 필모그래피 대표작 설정 체크
+  const onFilmoRepCheck = (id: number) => {
+    const check: any = filmoList.find((item) => item.id === id);
+    const checkList = filmoRepEditList.find((item) => item.id === check?.id);
+
+    if (checkList === undefined) {
+      setFilmoRepEditList([...filmoRepEditList, check]);
+    } else {
+      const checkedFilmoList = filmoRepEditList.filter(
+        (filmo) => filmo.id !== id
+      );
+      setFilmoRepEditList(checkedFilmoList);
+    }
+  };
+
+  // 필모그래피 편집 모달 오픈
+  const onFilmoEditModalOpen = (filmo: FilmoResponseType) => {
+    const filmoProduction =
+      filmo.production.productionYear === 0
+        ? ""
+        : filmo.production.productionYear.toString();
+
+    setFilmoInputs((prev) => ({
+      ...prev,
+      classification: filmo.production.category.name,
+      production: filmoProduction,
+      title: filmo.production.title,
+      cast: filmo.role ? filmo.role.name : "",
+      castInput: filmo.customRole,
+      casting: filmo.character,
+      description: filmo.production.description,
+      link: filmo.production.videoUrl,
+      thumbnail: filmo.thumbnailPath,
+      representative: filmo.featured,
+      id: filmo.id
+    }));
+    setFilmoModal({
+      state: "edit",
+      active: true,
+      name: "작품 활동 수정",
+      buttonText: "저장"
+    });
+  };
+
+  // 필모그래피 링크 모달 오픈
+  const onLinkModalOpen = (link: string) => {
+    setYoutubeLinkModal({ url: link, active: true });
+  };
+
+  // 필모그래피 삭제 모달 오픈
+  const onFilmoDeleteModalOpen = (id: number) => {
+    setFilmoDeleteModal({ id: id, active: true });
+  };
 
   return (
     <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark">
@@ -39,18 +97,18 @@ const FilmoItem = ({
         <Checkbox
           type="checkboxInput"
           size="medium"
-          checked={checked}
-          disabled={checkDisabled && !checked}
-          onChange={() => onCheck(id)}
+          checked={featured}
+          disabled={checkRep && !featured}
+          onChange={() => onFilmoRepCheck(id)}
         />
       )}
-      {!filmoRepActive && canEdit && (
+      {!filmoRepActive && (
         <div className="flex flex-col gap-1">
           {/* edit */}
           <button
             className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
             type="button"
-            onClick={() => onEdit(filmo)}
+            onClick={() => onFilmoEditModalOpen(filmo)}
           >
             <Edit
               width="12"
@@ -62,7 +120,7 @@ const FilmoItem = ({
           <button
             className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
             type="button"
-            onClick={() => onDelete(id)}
+            onClick={() => onFilmoDeleteModalOpen(id)}
           >
             <X
               width="12"
@@ -98,7 +156,7 @@ const FilmoItem = ({
           type="button"
           className="w-fit"
           disabled={!production.videoUrl}
-          onClick={() => onLink(production.videoUrl)}
+          onClick={() => onLinkModalOpen(production.videoUrl)}
         >
           <PlayCircle
             width="16"

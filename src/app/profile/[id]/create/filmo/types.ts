@@ -26,7 +26,7 @@ export interface FilmoModalType {
   buttonText: string;
 }
 
-export interface FilmoDeleteType {
+export interface FilmoDeleteModalType {
   id: number;
   active: boolean;
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import ConfirmModal from "@/components/organisms/confirmModal";
-import FilmoMain from "./components/filmoMain";
 import FilmoModal from "./components/filmoModal";
 import LinkModal from "@/components/organisms/linkModal";
 import {
@@ -9,7 +8,6 @@ import {
   completionProgress,
   filmoCategory,
   filmoRole,
-  profileIdInit,
   toastMessage
 } from "@/lib/atoms";
 import {
@@ -20,7 +18,7 @@ import {
 import { isValid, setOnlyNumber } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { FilmoDeleteType } from "./types";
+import { FilmoDeleteModalType } from "./types";
 import { VideoLinkType } from "../types";
 import {
   filmoDeleteInit,
@@ -44,6 +42,7 @@ import {
   profileDraftData,
   profileDraftModalState
 } from "@/lib/recoil/profile/common/atom";
+import FilmoSection from "./components/filmoSection";
 
 const Filmography = () => {
   const profileId = Number(Cookies.get("loginProfileId"));
@@ -69,7 +68,7 @@ const Filmography = () => {
 
   // 삭제
   const [filmoDelete, setFilmoDelete] =
-    useState<FilmoDeleteType>(filmoDeleteInit);
+    useState<FilmoDeleteModalType>(filmoDeleteInit);
 
   // 영상 링크
   const [linkModal, setLinkModal] = useState<VideoLinkType>(videoLinkInit);
@@ -204,68 +203,6 @@ const Filmography = () => {
   };
 
   // filmographyMain
-
-  // 필모그래피 대표작 설정 액티브
-  const onFilmoRepActive = () => {
-    const checkedFilmoList = filmoList.filter((filmo) => filmo.featured);
-    setFilmoRepEditList(checkedFilmoList);
-    setFilmoRepresentActive(!filmoRepresentActive);
-  };
-
-  // 필모그래피 대표작 설정 취소
-  const onFilmoRepCancel = () => {
-    setFilmoRepEditList([]);
-    setFilmoRepresentActive(!filmoRepresentActive);
-  };
-
-  // 필모그래피 대표작 설정 완료
-  const onFilmoRepSave = async () => {
-    for (const filmo of filmoList) {
-      const findFilmo = filmoRepEditList.findIndex(
-        (item) => item.id === filmo.id
-      );
-
-      if (filmo.featured && findFilmo === -1) {
-        await deleteFilmographyFeatured(profileId, filmo.id);
-      } else if (!filmo.featured && findFilmo >= 0) {
-        await putFilmographyFeatured(profileId, filmo.id);
-      }
-    }
-
-    const res = await getProfileDraftClient(profileId);
-    const data = await res.data;
-
-    setFilmoList(data.filmos);
-    setFilmoRepEditList([]);
-    setFilmoRepresentActive(!filmoRepresentActive);
-  };
-
-  // 필모그래피 대표작 설정 체크
-  const onFilmoRepCheck = (id: number) => {
-    const check: any = filmoList.find((item) => item.id === id);
-    const checkList = filmoRepEditList.find((item) => item.id === check?.id);
-
-    if (checkList === undefined) {
-      setFilmoRepEditList([...filmoRepEditList, check]);
-    } else {
-      const checkedFilmoList = filmoRepEditList.filter(
-        (filmo) => filmo.id !== id
-      );
-      setFilmoRepEditList(checkedFilmoList);
-    }
-  };
-
-  // 필모그래피 모달 액티브
-  const onFilmoModalOpen = () => {
-    setFilmoModal({
-      state: "add",
-      active: true,
-      name: "작품 활동 추가",
-      buttonText: "추가"
-    });
-    setFilmoInputs(filmographyInputInit);
-    setFilmoActives(filmographyActiveInit);
-  };
 
   const onFilmoModalClose = () => {
     setFilmoModal(filmoModalInit);
@@ -408,22 +345,6 @@ const Filmography = () => {
     setCategoryList(resultCategoryList);
   }, [filmoList]);
 
-  // 필모그래피 리스트 업데이트
-  // useEffect(() => {
-  //   const getProfileData = async () => {
-  //     if (isDraftLoading) {
-  //       const res = await getProfileDraftClient(profileId);
-  //       const data = await res.data;
-
-  //       isValid(data.filmos)
-  //         ? setCompletion({ ...completion, filmography: true })
-  //         : setCompletion({ ...completion, filmography: false });
-  //       setFilmoList(data.filmos);
-  //     }
-  //   };
-  //   getProfileData();
-  // }, [isDraftLoading]);
-
   useEffect(() => {
     if (profileDraftState !== "") {
       setFilmoList(profileData.filmos);
@@ -432,20 +353,7 @@ const Filmography = () => {
 
   return (
     <div className="flex w-[65vw] flex-col gap-3">
-      <FilmoMain
-        filmoList={filmoList}
-        filmoRepEditList={filmoRepEditList}
-        categoryList={categoryList}
-        filmoRepresentActive={filmoRepresentActive}
-        onFilmoRepActive={onFilmoRepActive}
-        onFilmoRepCancel={onFilmoRepCancel}
-        onFilmoRepSave={onFilmoRepSave}
-        onFilmoModalOpen={onFilmoModalOpen}
-        onFilmoEditModalOpen={onFilmoEditModalOpen}
-        onFilmoDeleteModalOpen={onFilmoDeleteModalOpen}
-        onFilmoRepCheck={onFilmoRepCheck}
-        onLinkModalOpen={onLinkModalOpen}
-      />
+      <FilmoSection />
       {filmoModal.active && (
         <FilmoModal
           filmoInputs={filmoInputs}

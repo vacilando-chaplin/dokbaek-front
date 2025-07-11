@@ -69,7 +69,7 @@ export interface ProfileFilmoDataType {
   };
   customRole: string;
   character: string;
-  featured: true;
+  featured: boolean;
   production: {
     category: {
       id: number;
