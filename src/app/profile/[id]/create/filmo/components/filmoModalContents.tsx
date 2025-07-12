@@ -225,14 +225,12 @@ const FilmoModalContents = () => {
                 추가
               </>
             ) : (
-              <div className="relative h-full w-full">
+              <div className="relative aspect-[100/150] w-full overflow-hidden rounded-lg bg-gray-100">
                 <Image
                   src={thumbnail}
                   alt="thumbnail"
-                  width={100}
-                  height={150}
-                  priority
-                  className="h-[150px] w-[100px] rounded-lg bg-gray-100"
+                  fill
+                  className="object-cover"
                 />
                 <button
                   className="absolute right-2 top-2 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
