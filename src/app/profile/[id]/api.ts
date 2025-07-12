@@ -1,5 +1,6 @@
-import { api } from "@/lib/axiosInstance";
+import { api, baseURL } from "@/lib/axiosInstance";
 import { base64ToBlob } from "@/lib/utils";
+import axios from "axios";
 
 export const getProfileDraftClient = async (profileId: number) => {
   try {
@@ -78,6 +79,24 @@ export const patchProfilePhotoMain = async (id: number, preview: string) => {
 export const deleteProfilePhotoMain = async (id: number) => {
   try {
     const res = await api.delete(`/profile/${id}/photo/main`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFilmoRoles = async () => {
+  try {
+    const res = await axios.get(`${baseURL}/filmo/roles`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFilmoCategories = async () => {
+  try {
+    const res = await axios.get(`${baseURL}/filmo/categories`);
     return res.data;
   } catch (error) {
     throw error;

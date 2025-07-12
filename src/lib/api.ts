@@ -144,24 +144,6 @@ export const deletePhoto = async (
   }
 };
 
-export const getFilmoRoles = async () => {
-  try {
-    const res = await api.get("/filmo/roles");
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getFilmoCategories = async () => {
-  try {
-    const res = await api.get("/filmo/categories");
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getProfileMe = async () => {
   try {
     const res = await api.get("/profile/me");

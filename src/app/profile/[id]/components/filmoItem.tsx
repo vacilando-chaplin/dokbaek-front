@@ -12,7 +12,7 @@ interface FilmoItemProps {
   filmo: FilmoResponseType;
   checked?: boolean;
   checkDisabled?: boolean;
-  filmoRepresentActive?: boolean;
+  filmoRepActive?: boolean;
   canEdit: boolean;
   onEdit?: any;
   onDelete?: any;
@@ -24,7 +24,7 @@ const FilmoItem = ({
   filmo,
   checked,
   checkDisabled,
-  filmoRepresentActive,
+  filmoRepActive,
   canEdit,
   onEdit,
   onDelete,
@@ -35,7 +35,7 @@ const FilmoItem = ({
 
   return (
     <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark">
-      {filmoRepresentActive && (
+      {filmoRepActive && (
         <Checkbox
           type="checkboxInput"
           size="medium"
@@ -44,7 +44,7 @@ const FilmoItem = ({
           onChange={() => onCheck(id)}
         />
       )}
-      {!filmoRepresentActive && canEdit && (
+      {!filmoRepActive && canEdit && (
         <div className="flex flex-col gap-1">
           {/* edit */}
           <button

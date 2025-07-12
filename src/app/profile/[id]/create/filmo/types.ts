@@ -13,6 +13,22 @@ export interface FilmoInputType {
   displayOrder: number;
 }
 
+export interface FilmoRequestType {
+  roleId: number | null;
+  customRole: string;
+  character: string;
+  featured: boolean;
+  production: {
+    categoryId: number;
+    productionYear: number;
+    title: string;
+    description: string;
+    videoUrl: string;
+    thumbnailUrl: string;
+  };
+  displayOrder: number;
+}
+
 export interface FilmoActiveType {
   classification: boolean;
   production: boolean;
@@ -26,7 +42,7 @@ export interface FilmoModalType {
   buttonText: string;
 }
 
-export interface FilmoDeleteType {
+export interface FilmoDeleteModalType {
   id: number;
   active: boolean;
 }
