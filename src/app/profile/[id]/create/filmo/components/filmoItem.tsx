@@ -178,13 +178,14 @@ const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
             className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
           />
         ) : (
-          <Image
-            src={filmo.thumbnailPath}
-            alt={production.title}
-            width={76}
-            height={114}
-            className="aspect-[76/114] rounded-lg bg-gray-100"
-          />
+          <div className="relative aspect-[76/114] w-[76px] overflow-hidden rounded-lg bg-gray-100">
+            <Image
+              src={filmo.thumbnailPath}
+              alt={production.title}
+              fill
+              className="object-cover"
+            />
+          </div>
         )}
       </div>
     </div>

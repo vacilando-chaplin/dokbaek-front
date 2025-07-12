@@ -86,17 +86,7 @@ const TopNavigation = () => {
   useEffect(() => {
     const refreshToken = Cookies.get("refresh_token");
 
-    // setIsLoggedIn(refreshToken ? true : false);
-    setIsLoggedIn(true);
-    useSetToken(
-      "jwt",
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNSIsImV4cCI6MTc1MjM5NzM3MSwiaWF0IjoxNzUyMzEwOTcxLCJqdGkiOiJhMTNhZmJmOC1mMmFhLTQzMjUtYmJjZC01MGRlOGQwZTUxMjAiLCJkZXZpY2VJZCI6IjAwODM0NzM3LTk2NWQtNDNjYy05NzVlLTk2Y2MzMjRhNjEzMCJ9.O5XtDoJd82pNoxZBy9oCZW_7uxJsUFhN7CzUquu7icI"
-    );
-    useSetToken(
-      "refresh_token",
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNSIsImV4cCI6MTc1MjM5NzM3MSwiaWF0IjoxNzUyMzEwOTcxLCJqdGkiOiI2YTlmMzViZi02YTRlLTQ1MjktYjZkMS1jMDIxMmU1N2ZmYWEiLCJkZXZpY2VJZCI6IjAwODM0NzM3LTk2NWQtNDNjYy05NzVlLTk2Y2MzMjRhNjEzMCJ9.cBSOxg9Z_mEQ74bautXi3YWJg_piTjp0_i3sdgBGkTw"
-    );
-    useSetLoginProfileId("loginProfileId", "15");
+    setIsLoggedIn(refreshToken ? true : false);
   }, []);
 
   return (
