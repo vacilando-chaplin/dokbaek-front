@@ -15,7 +15,7 @@ import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg
 import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import ChipItem from "@/components/atoms/chipItem";
 import { PhotoLabelType } from "../types";
-import FilmoItem from "./filmoItem";
+import ProfileFilmoItem from "./profileFilmoItem";
 
 interface PropfileSubProps {
   linear: string;
@@ -155,7 +155,7 @@ const ProfileSub = ({
                           width={0}
                           height={0}
                           sizes="100vw"
-                          className={`${photoLabel === "stillcutPhoto" ? "aspect-video" : "aspect-[258/330]"} h-auto max-h-[50vh] w-full rounded-2xl opacity-100 transition-all ease-in hover:opacity-30`}
+                          className={`${photoLabel === "stillcutPhoto" ? "aspect-video" : "aspect-[258/330]"} h-auto max-h-[50vh] w-full rounded-2xl opacity-100 hover:opacity-30`}
                         />
                         <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-1 rounded-[14.8px] bg-static-black text-static-white opacity-0 hover:bg-[rgba(0,0,0,0.8)] hover:opacity-100">
                           <PlusCircle
@@ -213,9 +213,8 @@ const ProfileSub = ({
                       key={filmo.id}
                       className={`grid gap-2 ${index > 5 && "hidden"}`}
                     >
-                      <FilmoItem
+                      <ProfileFilmoItem
                         filmo={filmo}
-                        canEdit={false}
                         onLink={() =>
                           onFilmoLinkModalOpen(filmo.production.videoUrl)
                         }
@@ -233,9 +232,8 @@ const ProfileSub = ({
               {repFilmoList.map((filmo: FilmoResponseType) => {
                 return (
                   <div key={filmo.id} className="grid gap-2">
-                    <FilmoItem
+                    <ProfileFilmoItem
                       filmo={filmo}
-                      canEdit={false}
                       onLink={() =>
                         onFilmoLinkModalOpen(filmo.production.videoUrl)
                       }
@@ -250,9 +248,8 @@ const ProfileSub = ({
                       key={filmo.id}
                       className={`grid gap-2 ${repFilmoList.length + index > 5 && "hidden"}`}
                     >
-                      <FilmoItem
+                      <ProfileFilmoItem
                         filmo={filmo}
-                        canEdit={false}
                         onLink={() =>
                           onFilmoLinkModalOpen(filmo.production.videoUrl)
                         }
@@ -271,9 +268,8 @@ const ProfileSub = ({
                   key={filmo.id}
                   className={`grid gap-2 ${index > 5 && "hidden"}`}
                 >
-                  <FilmoItem
+                  <ProfileFilmoItem
                     filmo={filmo}
-                    canEdit={false}
                     onLink={() =>
                       onFilmoLinkModalOpen(filmo.production.videoUrl)
                     }

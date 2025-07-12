@@ -1,7 +1,7 @@
 import Title from "@/components/atoms/title";
 import ModalHeader from "@/components/molecules/modalHeader";
 import { FilmoResponseType } from "@/lib/types";
-import FilmoItem from "./filmoItem";
+import FilmoItem from "./profileFilmoItem";
 
 interface ProfileFilmoModalProps {
   filmoList: FilmoResponseType[];

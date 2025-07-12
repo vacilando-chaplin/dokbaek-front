@@ -33,7 +33,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
       <ListMenu profileId={profileId} />
       <Initializer profileInitData={nullCheckedData}>{children}</Initializer>
       <BottomBar profileId={profileId} />
-      {!profileInitData?.hasDraft && <DraftModal profileId={profileId} />}
+      {profileInitData?.hasDraft && <DraftModal profileId={profileId} />}
     </div>
   );
 };
