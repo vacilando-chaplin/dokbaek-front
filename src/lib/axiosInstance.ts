@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useSetToken } from "./hooks";
 
 const token = Cookies.get("jwt");
-const baseURL = process.env.NEXT_PUBLIC_BASEURL;
+export const baseURL = process.env.NEXT_PUBLIC_BASEURL;
 
 const api = axios.create({
   baseURL: baseURL,

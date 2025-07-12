@@ -1,4 +1,10 @@
 import {
+  filmoDeleteModalInit,
+  filmoInputInit,
+  filmoLinkModalInit,
+  filmoModalInit
+} from "@/app/profile/[id]/create/filmo/data";
+import {
   FilmoDeleteModalType,
   FilmoInputType,
   FilmoModalType
@@ -7,24 +13,22 @@ import {
   ProfileFilmoDataType,
   VideoLinkType
 } from "@/app/profile/[id]/create/types";
+import { FilmoCategoryType, FilmoRoleType } from "@/lib/types";
 import { atom } from "recoil";
+
+export const filmoCategoryListState = atom<FilmoCategoryType[]>({
+  key: "filmoCategoryListState",
+  default: []
+});
+
+export const filmoRoleListState = atom<FilmoRoleType[]>({
+  key: "filmoRoleListState",
+  default: []
+});
 
 export const filmoInputState = atom<FilmoInputType>({
   key: "filmoInputState",
-  default: {
-    classification: "",
-    production: "",
-    title: "",
-    cast: "",
-    castInput: "",
-    casting: "",
-    description: "",
-    link: "",
-    thumbnail: "",
-    representative: false,
-    id: 0,
-    displayOrder: 0
-  }
+  default: filmoInputInit
 });
 
 export const filmoRepActiveState = atom<boolean>({
@@ -39,15 +43,15 @@ export const filmoRepEditListState = atom<ProfileFilmoDataType[]>({
 
 export const filmoModalState = atom<FilmoModalType>({
   key: "filmoModalState",
-  default: { state: "", active: false, name: "", buttonText: "" }
+  default: filmoModalInit
 });
 
 export const filmoYoutubeLinkModalState = atom<VideoLinkType>({
   key: "filmoYoutubeLinkModalState",
-  default: { url: "", active: false }
+  default: filmoLinkModalInit
 });
 
 export const filmoDeleteModalState = atom<FilmoDeleteModalType>({
   key: "filmoDeleteModalState",
-  default: { id: 0, active: false }
+  default: filmoDeleteModalInit
 });

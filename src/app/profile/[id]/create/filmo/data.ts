@@ -1,4 +1,4 @@
-export const filmographyInputInit = {
+export const filmoInputInit = {
   classification: "",
   production: "",
   title: "",
@@ -13,7 +13,7 @@ export const filmographyInputInit = {
   displayOrder: 0
 };
 
-export const filmographyActiveInit = {
+export const filmoActiveInit = {
   classification: false,
   production: false,
   cast: false
@@ -26,7 +26,12 @@ export const filmoModalInit = {
   buttonText: ""
 };
 
-export const filmoDeleteInit = {
+export const filmoLinkModalInit = {
+  url: "",
+  active: false
+};
+
+export const filmoDeleteModalInit = {
   id: 0,
   active: false
 };

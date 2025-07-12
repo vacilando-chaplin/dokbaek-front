@@ -15,7 +15,7 @@ import {
 } from "@/lib/recoil/profile/filmo/atom";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 import { deleteFilmographyFeatured, putFilmographyFeatured } from "../api";
-import { filmographyInputInit } from "../data";
+import { filmoInputInit } from "../data";
 import { useMutation } from "@tanstack/react-query";
 import { toastMessage } from "@/lib/atoms";
 
@@ -61,6 +61,8 @@ const FilmoSectionHeader = () => {
         filmoList: ProfileFilmoDataType[];
         filmoRepEditList: ProfileFilmoDataType[];
       }) => {
+        const updatedFilmoList = [];
+
         for (const filmo of filmoList) {
           const findFilmo = filmoRepEditList.findIndex(
             (item) => item.id === filmo.id
@@ -68,15 +70,30 @@ const FilmoSectionHeader = () => {
 
           if (filmo.featured && findFilmo === -1) {
             await deleteFilmographyFeatured(profileId, filmo.id);
+            updatedFilmoList.push({ id: filmo.id, featured: false });
           } else if (!filmo.featured && findFilmo >= 0) {
             await putFilmographyFeatured(profileId, filmo.id);
+            updatedFilmoList.push({
+              id: filmo.id,
+              featured: true
+            });
           }
         }
+
+        return updatedFilmoList;
       },
-      onSuccess: (data, variables) => {
+      onSuccess: (updatedFilmoList) => {
         setProfileData((prev) => ({
           ...prev,
-          filmos: variables.filmoRepEditList
+          filmos: prev.filmos.map((filmo) => {
+            const updatedFilmo = updatedFilmoList.find(
+              (updated) => updated.id === filmo.id
+            );
+            if (updatedFilmo) {
+              return { ...filmo, featured: updatedFilmo.featured };
+            }
+            return filmo;
+          })
         }));
         setFilmoRepEditList([]);
         setFilmoRepActive(!filmoRepActive);
@@ -87,10 +104,10 @@ const FilmoSectionHeader = () => {
     });
   };
 
+  const updateMutation = useFilmoRepSaveMutation();
+
   // 필모그래피 대표작 설정 완료
   const onFilmoRepSave = () => {
-    const updateMutation = useFilmoRepSaveMutation();
-
     updateMutation.mutate({
       profileId,
       filmoList,
@@ -106,7 +123,7 @@ const FilmoSectionHeader = () => {
       name: "작품 활동 추가",
       buttonText: "추가"
     });
-    setFilmoInputs(filmographyInputInit);
+    setFilmoInputs(filmoInputInit);
   };
 
   return (

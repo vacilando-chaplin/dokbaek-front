@@ -24,7 +24,7 @@ interface FilmoItemProps {
 }
 
 const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
-  const { id, role, customRole, character, production, featured } = filmo;
+  const { id, role, customRole, character, production } = filmo;
 
   const [filmoRepEditList, setFilmoRepEditList] = useRecoilState(
     filmoRepEditListState
@@ -35,20 +35,25 @@ const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
   const setYoutubeLinkModal = useSetRecoilState(filmoYoutubeLinkModalState);
   const setFilmoDeleteModal = useSetRecoilState(filmoDeleteModalState);
 
+  const checked = filmoRepEditList.find((rep) => rep.id === filmo.id)
+    ? true
+    : false;
   const checkRep = filmoRepEditList.length >= 6;
 
   // 필모그래피 대표작 설정 체크
   const onFilmoRepCheck = (id: number) => {
-    const check: any = filmoList.find((item) => item.id === id);
-    const checkList = filmoRepEditList.find((item) => item.id === check?.id);
+    const findFilmo = filmoList.find((item) => item.id === id);
 
-    if (checkList === undefined) {
-      setFilmoRepEditList([...filmoRepEditList, check]);
+    if (!findFilmo) {
+      return;
+    }
+
+    const isAlreadySelected = filmoRepEditList.some((item) => item.id === id);
+
+    if (isAlreadySelected) {
+      setFilmoRepEditList(filmoRepEditList.filter((filmo) => filmo.id !== id));
     } else {
-      const checkedFilmoList = filmoRepEditList.filter(
-        (filmo) => filmo.id !== id
-      );
-      setFilmoRepEditList(checkedFilmoList);
+      setFilmoRepEditList([...filmoRepEditList, findFilmo]);
     }
   };
 
@@ -97,8 +102,8 @@ const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
         <Checkbox
           type="checkboxInput"
           size="medium"
-          checked={featured}
-          disabled={checkRep && !featured}
+          checked={checked}
+          disabled={checkRep && !checked}
           onChange={() => onFilmoRepCheck(id)}
         />
       )}
@@ -144,8 +149,7 @@ const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
           </div>
           <div className="typography-caption1 flex h-auto w-full flex-col gap-0.5 font-normal text-content-secondary-light dark:text-content-secondary-dark">
             <label>
-              {role !== null && customRole && role.id === 4 && customRole}
-              {role !== null && role.name}
+              {role && (role.id === 4 ? customRole : role.name)}
               {character && `'${character}'`}
             </label>
             <label>{production.description}</label>

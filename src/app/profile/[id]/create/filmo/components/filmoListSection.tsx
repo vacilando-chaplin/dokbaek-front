@@ -3,15 +3,22 @@
 import { useRecoilValue } from "recoil";
 import { ProfileFilmoDataType } from "../../types";
 import { profileDraftData } from "@/lib/recoil/profile/common/atom";
-import { classificationList } from "@/lib/data";
 import FilmoList from "./filmoList";
+import { filmoCategoryListState } from "@/lib/recoil/profile/filmo/atom";
 
 const FilmoListSection = () => {
   const profileData = useRecoilValue(profileDraftData);
+  const filmoCategoryList = useRecoilValue(filmoCategoryListState);
 
   const filmoList = profileData?.filmos ?? [];
   const repFilmoList = filmoList.filter(
     (filmo: ProfileFilmoDataType) => filmo.featured === true
+  );
+
+  const categoriesWithNonFeatured = new Set(
+    filmoList
+      .filter((filmo: ProfileFilmoDataType) => filmo.featured === false)
+      .map((filmo: ProfileFilmoDataType) => filmo.production.category.name)
   );
 
   const existingCategories = new Set(
@@ -20,8 +27,10 @@ const FilmoListSection = () => {
     )
   );
 
-  const categoryList = classificationList.filter((category) =>
-    existingCategories.has(category)
+  const categoryList = filmoCategoryList.filter(
+    (category) =>
+      existingCategories.has(category.name) &&
+      categoriesWithNonFeatured.has(category.name)
   );
 
   return (
@@ -31,11 +40,11 @@ const FilmoListSection = () => {
       )}
       {categoryList.map((category) => (
         <FilmoList
-          key={category}
-          category={category}
+          key={category.id}
+          category={category.name}
           filmoList={filmoList.filter(
             (filmo: ProfileFilmoDataType) =>
-              filmo.production.category.name === category &&
+              filmo.production.category.name === category.name &&
               filmo.featured === false
           )}
         />
