@@ -138,27 +138,27 @@ const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
       <div className="flex h-full w-full flex-col justify-between">
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
-            <label className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark">
+            <label className="typography-caption1 hidden font-medium text-content-tertiary-light dark:text-content-tertiary-dark sm:block">
               {production.productionYear >= 1
                 ? `${production.productionYear + " | " + production.category.name}`
                 : production.category.name}
             </label>
-            <label className="typography-body1 font-semibold text-content-primary-light dark:text-content-primary-dark">
+            <label className="typography-body1 hidden font-semibold text-content-primary-light dark:text-content-primary-dark sm:block">
               {production.title}
             </label>
           </div>
           <div className="typography-caption1 flex h-auto w-full flex-col gap-0.5 font-normal text-content-secondary-light dark:text-content-secondary-dark">
-            <label>
+            <label className="hidden sm:block">
               {role && (role.id === 4 ? customRole : role.name)}
               {character && `'${character}'`}
             </label>
-            <label>{production.description}</label>
+            <label className="hidden sm:block">{production.description}</label>
           </div>
         </div>
         {/* link */}
         <button
           type="button"
-          className="w-fit"
+          className="hidden w-fit sm:block"
           disabled={!production.videoUrl}
           onClick={() => onLinkModalOpen(production.videoUrl)}
         >
