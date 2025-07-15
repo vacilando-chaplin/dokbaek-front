@@ -367,16 +367,10 @@ const Profile = () => {
     setCategoryList(resultCategoryList);
   }, [profileData]);
 
-  const onDownloadPDF = () => {
-    const PDFUrl = `https://filogram.my/api/pdf/v1/profile/${loginProfileId}`;
-    window.open(PDFUrl, "_blank");
-  };
-
   return (
     <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light dark:bg-background-surface-dark">
       <div ref={mainRef} className="min-w-[500px] flex-[1_1_30%]">
         <ProfileMain
-          info={profileData.info}
           linear={linear}
           profileId={viewProfileId}
           otherUser={otherUser}
@@ -384,7 +378,6 @@ const Profile = () => {
           updated={profileData.updatedAt}
           profileSpecialties={profileSpecialties}
           mainPhotoMenuActive={mainPhotoMenuActive}
-          onDownloadPDF={onDownloadPDF}
           onMoveToCreate={onMoveToCreate}
           onMainPhotoSelectFile={onMainPhotoSelectFile}
           onMainPhotoModalOpen={onMainPhotoModalOpen}

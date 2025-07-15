@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { PhotoResponseType } from "./types";
 import { convertToBase64, getFileMimeTypeFromUrl } from "./utils";
@@ -204,4 +204,14 @@ export const usePhotoEditModal = () => {
   return {
     onPhotoEditModalOpen
   };
+};
+
+export const useActive = (initialActive: boolean = false) => {
+  const [active, setActive] = useState(initialActive);
+
+  const onActive = useCallback(() => {
+    setActive((prev) => !prev);
+  }, []);
+
+  return { active, onActive };
 };

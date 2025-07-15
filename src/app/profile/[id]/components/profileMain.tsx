@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { educationEngList, educationList } from "@/lib/data";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
 import BoxButton from "@/components/atoms/boxButton";
 import EmptyState from "@/components/molecules/emptyState";
@@ -14,16 +14,15 @@ import Edit from "../../../../../public/icons/Edit.svg";
 import Account from "../../../../../public/icons/Account.svg";
 import InstagramIcon from "../../../../../public/icons/InstagramIcon.svg";
 import YoutubeIcon from "../../../../../public/icons/YoutubeIcon.svg";
-import { InfoResponseType } from "@/lib/types";
 import UploadButton from "@/components/atoms/uploadButton";
 import Tooltip from "@/components/atoms/tooltip";
 import DotsVertical from "../../../../../public/icons/DotsVertical.svg";
 import { SpecialtyItemType } from "../create/info/types";
 import ProfileInfoContainer from "./profileInfoContainer";
-import { isValidInstagramUrl, isValidYoutubeChannelUrl } from "@/lib/utils";
+import Cookies from "js-cookie";
+import { profileDraftData } from "@/lib/recoil/profile/common/atom";
 
 interface ProfileMainProps {
-  info: InfoResponseType;
   linear: string;
   updated: string;
   profileId: number | null | undefined;
@@ -32,7 +31,6 @@ interface ProfileMainProps {
   profileSpecialties: SpecialtyItemType[];
   education: any;
   mainPhotoMenuActive: boolean;
-  onDownloadPDF: () => void;
   onMoveToCreate: (stepper: number) => void;
   onMainPhotoModalOpen: () => void;
   onMainPhotoSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -43,7 +41,6 @@ interface ProfileMainProps {
 }
 
 const ProfileMain = ({
-  info,
   linear,
   updated,
   profileId,
@@ -52,7 +49,6 @@ const ProfileMain = ({
   profileSpecialties,
   education,
   mainPhotoMenuActive,
-  onDownloadPDF,
   onMoveToCreate,
   onMainPhotoSelectFile,
   onMainPhotoModalOpen,
@@ -61,7 +57,12 @@ const ProfileMain = ({
   onMainPhotoEditModalOpen,
   onMainPhotoDeleteModalOpen
 }: ProfileMainProps) => {
+  const loginProfileId = Number(Cookies.get("loginProfileId"));
+
+  const [profileData, setProfileData] = useRecoilState(profileDraftData);
   const setToast = useSetRecoilState(toastMessage);
+
+  const info = profileData?.info;
 
   const {
     name,
@@ -89,6 +90,11 @@ const ProfileMain = ({
     }
   };
 
+  const onDownloadPDF = () => {
+    const PDFUrl = `https://filogram.my/api/pdf/v1/profile/${loginProfileId}`;
+    window.open(PDFUrl, "_blank");
+  };
+
   const date = new Date(updated);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -107,107 +113,6 @@ const ProfileMain = ({
     <section
       className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light dark:border-border-default-dark"}`}
     >
-      {mainPhoto ? (
-        <div
-          className="relative w-full"
-          style={{ paddingBottom: `${(532 / 416) * 100}%` }}
-        >
-          <Image
-            src={mainPhoto}
-            alt="대표 사진"
-            sizes="30vw"
-            layout="fill"
-            priority
-            className="h-full w-full rounded-2xl"
-          />
-          {otherUser === false && (
-            <div className="absolute right-1 top-1">
-              <button
-                className="absolute right-1 top-1 h-auto w-auto rounded-[10px] border border-border-default-light bg-background-surface-light p-2 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
-                type="button"
-                onClick={onMainPhotoMenuActive}
-              >
-                <DotsVertical
-                  width="20"
-                  height="20"
-                  className="fill-current text-content-primary-light dark:text-content-primary-dark"
-                />
-              </button>
-            </div>
-          )}
-          {mainPhotoMenuActive && (
-            <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark">
-              <label className="typography-body3 flex h-[38px] w-full cursor-pointer gap-2 rounded-md px-3 py-2 font-regular text-content-primary-light hover:bg-gray-50 active:bg-gray-150 dark:text-content-primary-dark dark:hover:bg-background-surface-dark dark:active:bg-background-surface-dark">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    onMainPhotoChangeModalOpen();
-                    onMainPhotoMenuActive();
-                    onMainPhotoSelectFile(e);
-                  }}
-                />
-                변경
-              </label>
-              <button
-                type="button"
-                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md px-3 py-2 font-regular text-content-primary-light hover:bg-gray-50 active:bg-gray-150 dark:text-content-primary-dark dark:hover:bg-background-surface-dark dark:active:bg-background-surface-dark"
-                onClick={() => {
-                  onMainPhotoMenuActive();
-                  onMainPhotoEditModalOpen();
-                }}
-              >
-                편집
-              </button>
-              <button
-                type="button"
-                className="typography-body3 flex h-[38px] w-full gap-2 rounded-md px-3 py-2 font-regular text-content-primary-light hover:bg-gray-50 active:bg-gray-150 dark:text-content-primary-dark dark:hover:bg-background-surface-dark dark:active:bg-background-surface-dark"
-                onClick={() => {
-                  onMainPhotoMenuActive();
-                  onMainPhotoDeleteModalOpen();
-                }}
-              >
-                삭제
-              </button>
-            </div>
-          )}
-          {/* <div className="flex flex-row gap-1.5 rounded-lg bg-background-scrim-light px-2 py-1 opacity-40 dark:bg-background-scrim-dark"></div> */}
-        </div>
-      ) : (
-        <div
-          className="relative w-full"
-          style={{ paddingBottom: `${(532 / 416) * 100}%` }}
-        >
-          <div className="absolute flex h-full w-full flex-col items-center justify-center gap-4 rounded-2xl border border-border-default-light dark:border-border-default-dark">
-            <Account
-              width="40"
-              height="40"
-              className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
-            />
-            {otherUser === false && (
-              <div className="relative flex justify-center">
-                <UploadButton
-                  type="secondaryOutlined"
-                  size="medium"
-                  onClick={onMainPhotoModalOpen}
-                  onChange={onMainPhotoSelectFile}
-                >
-                  <Plus
-                    width="14"
-                    height="14"
-                    className="fill-current text-content-primary-light dark:text-content-primary-dark"
-                  />
-                  대표 사진 추가
-                </UploadButton>
-                <div className="absolute -top-10">
-                  <Tooltip placement="top" text="대표 사진을 추가하세요." />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
       {otherUser ? (
         <BoxButton type="secondaryOutlined" size="medium" onClick={onCopyUrl}>
           <Copy
@@ -274,12 +179,12 @@ const ProfileMain = ({
         </div>
         <span className="typography-body2 font-medium">배우</span>
       </div>
-      {bornYear >= 1 || contact ? (
+      {Number(bornYear) >= 1 || contact ? (
         <ProfileInfoContainer title="기본 정보">
           <span>
             {bornYear}년생{" "}
             <label className="opacity-50">
-              {(height >= 1 || weight >= 1) && "· "}
+              {(Number(height) >= 1 || Number(weight) >= 1) && "· "}
             </label>
             {height && height + "cm "}
             {weight && weight + "kg"}
