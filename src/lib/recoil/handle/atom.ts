@@ -1,6 +1,7 @@
 import { ProfileDraftDataType } from "@/app/profile/[id]/create/types";
 import { profilePhotoModalInit } from "@/app/profile/[id]/data";
 import { ProfilePhotoModalType } from "@/app/profile/[id]/types";
+import { profileInit } from "@/lib/data";
 import { atom } from "recoil";
 
 export const isMyProfileState = atom<boolean>({
@@ -8,9 +9,9 @@ export const isMyProfileState = atom<boolean>({
   default: false
 });
 
-export const profileViewState = atom<ProfileDraftDataType | null>({
+export const profileViewState = atom<ProfileDraftDataType>({
   key: "profileViewState",
-  default: null
+  default: profileInit
 });
 
 export const mainPhotoModalState = atom<ProfilePhotoModalType>({
@@ -18,13 +19,13 @@ export const mainPhotoModalState = atom<ProfilePhotoModalType>({
   default: profilePhotoModalInit
 });
 
-export const mainPhotoImageState = atom<string | null>({
-  key: "mainPhotoImage",
-  default: null
+export const mainPhotoImageState = atom<string>({
+  key: "mainPhotoImageState",
+  default: ""
 });
 
 export const mainPhotoCropImageState = atom<string>({
-  key: "mainPhotoImage",
+  key: "mainPhotoCropImageState",
   default: ""
 });
 
