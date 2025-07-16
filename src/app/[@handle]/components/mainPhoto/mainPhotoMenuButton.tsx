@@ -1,7 +1,7 @@
 "use client";
 
 import { useRecoilValue } from "recoil";
-import DotsVertical from "../../../../../../public/icons/DotsVertical.svg";
+import DotsVertical from "../../../../../public/icons/DotsVertical.svg";
 import { isMyProfileState } from "@/lib/recoil/handle/atom";
 
 interface MainPhotoMenuButtonProps {

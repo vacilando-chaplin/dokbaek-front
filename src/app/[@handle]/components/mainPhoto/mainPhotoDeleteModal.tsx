@@ -4,12 +4,14 @@ import ConfirmModal from "@/components/organisms/confirmModal";
 import {
   mainPhotoCropImageState,
   mainPhotoDeleteModalActiveState,
-  mainPhotoImageState
+  mainPhotoImageState,
+  profileViewState
 } from "@/lib/recoil/handle/atom";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { deleteProfilePhotoMain } from "../../profile/[id]/api";
 import { toastMessage } from "@/lib/atoms";
 import Cookies from "js-cookie";
+import { deleteProfilePhotoMain } from "@/app/profile/[id]/api";
+import { useMutation } from "@tanstack/react-query";
 
 const MainPhotoDeleteModal = () => {
   const loginProfileId = Number(Cookies.get("loginProfileId"));
@@ -18,6 +20,7 @@ const MainPhotoDeleteModal = () => {
     mainPhotoDeleteModalActiveState
   );
 
+  const setProfileData = useSetRecoilState(profileViewState);
   const setCropImage = useSetRecoilState(mainPhotoCropImageState);
   const setSelectImage = useSetRecoilState(mainPhotoImageState);
   const setToastMessage = useSetRecoilState(toastMessage);
@@ -28,11 +31,35 @@ const MainPhotoDeleteModal = () => {
     setDeleteModal((prev) => !prev);
   };
 
-  const onDeleteMainPhoto = async () => {
-    await deleteProfilePhotoMain(loginProfileId);
+  // 대표 사진 삭제 Mutation
+  const useDeleteMainPhoto = () => {
+    return useMutation({
+      mutationFn: async ({ loginProfileId }: { loginProfileId: number }) => {
+        await deleteProfilePhotoMain(loginProfileId);
+        return loginProfileId;
+      },
+      onSuccess: () => {
+        setProfileData((prev) => ({
+          ...prev,
+          mainPhotoPath: null,
+          mainPhotoPreviewPath: null
+        }));
+        onMainPhotoDeleteModalActive();
+        setToastMessage("대표 사진을 삭제했어요.");
+      },
+      onError: () => {
+        setToastMessage("대표 사진 삭제에 실패했어요. 다시 시도해 주세요.");
+      }
+    });
+  };
 
-    onMainPhotoDeleteModalActive();
-    setToastMessage("대표 사진을 삭제했어요.");
+  const deleteMainPhotoMutation = useDeleteMainPhoto();
+
+  // 대표 사진 삭제
+  const onDeleteMainPhoto = () => {
+    deleteMainPhotoMutation.mutate({
+      loginProfileId: loginProfileId
+    });
   };
 
   return (

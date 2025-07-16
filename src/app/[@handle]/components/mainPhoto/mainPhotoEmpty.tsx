@@ -7,8 +7,8 @@ import {
   mainPhotoModalState
 } from "@/lib/recoil/handle/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import Account from "../../../../../../public/icons/Account.svg";
-import Plus from "../../../../../../public/icons/Plus.svg";
+import Account from "../../../../../public/icons/Account.svg";
+import Plus from "../../../../../public/icons/Plus.svg";
 
 interface MainPhotoEmptyProps {
   onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
