@@ -98,7 +98,7 @@ export const profileInit = {
   videos: [],
   specialties: [],
   likesCount: 0,
-  likedByMe: true,
+  likedByMe: false,
   viewsCount: 0,
   createdAt: "",
   updatedAt: ""

@@ -118,6 +118,9 @@ export interface ProfileDraftDataType {
   filmos: ProfileFilmoDataType[];
   videos: ProfileVideoDataType[];
   specialties: ProfileSpecialtyType[];
+  likesCount: number;
+  likedByMe: boolean;
+  viewsCount: number;
   createdAt: string;
   updatedAt: string;
 }
