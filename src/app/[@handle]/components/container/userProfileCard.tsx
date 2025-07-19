@@ -1,6 +1,7 @@
 import MainPhoto from "../mainPhoto/mainPhoto";
-import MainPhotoCropModal from "../mainPhoto/mainPhotoCropModal";
-import MainPhotoDeleteModal from "../mainPhoto/mainPhotoDeleteModal";
+import ProfileActionButtonContainer from "./profileActionButtonContainer";
+import ProfileInfoContainer from "./profileInfoContainer";
+import ProfileMeta from "./profileMeta";
 
 interface UserProfileCardProps {
   linear: "main" | "sub";
@@ -12,8 +13,9 @@ const UserProfileCard = ({ linear }: UserProfileCardProps) => {
       className={`flex h-full w-full flex-col gap-2 p-8 ${linear === "main" && "border-r-[1px] border-border-default-light dark:border-border-default-dark"}`}
     >
       <MainPhoto />
-      <MainPhotoCropModal />
-      <MainPhotoDeleteModal />
+      <ProfileActionButtonContainer />
+      <ProfileMeta />
+      <ProfileInfoContainer />
     </section>
   );
 };

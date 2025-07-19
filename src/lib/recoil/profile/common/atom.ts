@@ -31,6 +31,9 @@ export const profileDraftData = atom<ProfileDraftDataType>({
     filmos: [],
     videos: [],
     specialties: [],
+    likesCount: 0,
+    likedByMe: false,
+    viewsCount: 0,
     createdAt: "",
     updatedAt: ""
   }

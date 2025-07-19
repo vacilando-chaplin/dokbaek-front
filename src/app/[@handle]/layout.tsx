@@ -32,7 +32,11 @@ const Layout = async ({
     <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">
       <Toast kind="info" fullWidth={false} placement="top" />
       <TopNavigation />
-      <HandleInitializer profileData={profileData} isMyProfile={isMyProfile}>
+      <HandleInitializer
+        profileData={profileData}
+        isMyProfile={isMyProfile}
+        handleName={handleName}
+      >
         {children}
       </HandleInitializer>
     </div>

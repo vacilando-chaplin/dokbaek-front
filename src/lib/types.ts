@@ -294,3 +294,5 @@ export interface SignUpResponseType {
   defaultProfileId: number;
   userId: number;
 }
+
+export type ProfilePathType = "info" | "photo" | "filmo" | "video";

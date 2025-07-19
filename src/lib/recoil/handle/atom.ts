@@ -14,6 +14,11 @@ export const profileViewState = atom<ProfileDraftDataType>({
   default: profileInit
 });
 
+export const handleNameState = atom<string>({
+  key: "handleNameState",
+  default: ""
+});
+
 export const mainPhotoModalState = atom<ProfilePhotoModalType>({
   key: "mainPhotoModalState",
   default: profilePhotoModalInit

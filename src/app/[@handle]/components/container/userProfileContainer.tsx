@@ -2,6 +2,8 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import UserProfileCard from "./userProfileCard";
+import MainPhotoCropModal from "../mainPhoto/mainPhotoCropModal";
+import MainPhotoDeleteModal from "../mainPhoto/mainPhotoDeleteModal";
 
 const UserProfileContainer = () => {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -24,6 +26,8 @@ const UserProfileContainer = () => {
         <UserProfileCard linear={linear} />
       </div>
       <div ref={subRef} className="flex-[1_1_70%]"></div>
+      <MainPhotoCropModal />
+      <MainPhotoDeleteModal />
     </div>
   );
 };

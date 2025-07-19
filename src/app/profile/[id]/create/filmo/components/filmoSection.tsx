@@ -1,6 +1,6 @@
 import FilmoSectionHeader from "./filmoSectionHeader";
 import FilmoListSection from "./filmoListSection";
-import FilmoEmptyFrame from "./filmoEmptyFram";
+import FilmoEmptyFrame from "./filmoEmptyFrame";
 
 const FilmoSection = () => {
   return (
