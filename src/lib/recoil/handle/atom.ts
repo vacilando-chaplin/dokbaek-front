@@ -38,3 +38,8 @@ export const mainPhotoDeleteModalActiveState = atom<boolean>({
   key: "mainPhotoDeleteModalActiveState",
   default: false
 });
+
+export const specialtyModalState = atom<boolean>({
+  key: "specialtyModalState",
+  default: false
+});

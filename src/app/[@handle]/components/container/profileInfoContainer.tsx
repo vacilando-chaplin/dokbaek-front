@@ -4,13 +4,14 @@ import ProfileInfoFrame from "./profileInfoFrame";
 import BasicInfo from "../info/basicInfo";
 import SocialLinks from "../info/socialLinks";
 import Introduction from "../info/introduction";
+import Specialty from "../info/specialty";
 
 const ProfileInfoContainer = () => {
   return (
     <>
       <BasicInfo />
       <SocialLinks />
-      <ProfileInfoFrame title="특기">123</ProfileInfoFrame>
+      <Specialty />
       <Introduction />
     </>
   );

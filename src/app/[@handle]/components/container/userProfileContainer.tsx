@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import UserProfileCard from "./userProfileCard";
 import MainPhotoCropModal from "../mainPhoto/mainPhotoCropModal";
 import MainPhotoDeleteModal from "../mainPhoto/mainPhotoDeleteModal";
+import SpecialtyModal from "../info/specialtyModal";
 
 const UserProfileContainer = () => {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -28,6 +29,7 @@ const UserProfileContainer = () => {
       <div ref={subRef} className="flex-[1_1_70%]"></div>
       <MainPhotoCropModal />
       <MainPhotoDeleteModal />
+      <SpecialtyModal />
     </div>
   );
 };
