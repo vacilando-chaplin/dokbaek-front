@@ -5,6 +5,8 @@ import UserProfileCard from "./userProfileCard";
 import MainPhotoCropModal from "../mainPhoto/mainPhotoCropModal";
 import MainPhotoDeleteModal from "../mainPhoto/mainPhotoDeleteModal";
 import SpecialtyModal from "../info/specialtyModal";
+import UserProfileShowcase from "./userProfileShowcase";
+import PhotoOriginModal from "../photo/photoOriginModal";
 
 const UserProfileContainer = () => {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -26,10 +28,13 @@ const UserProfileContainer = () => {
       <div ref={mainRef} className="min-w-[500px] flex-[1_1_30%]">
         <UserProfileCard linear={linear} />
       </div>
-      <div ref={subRef} className="flex-[1_1_70%]"></div>
+      <div ref={subRef} className="flex-[1_1_70%]">
+        <UserProfileShowcase linear={linear} />
+      </div>
       <MainPhotoCropModal />
       <MainPhotoDeleteModal />
       <SpecialtyModal />
+      <PhotoOriginModal />
     </div>
   );
 };

@@ -1,3 +1,7 @@
+import {
+  PhotoOriginModalType,
+  SelectedPhotoLabelType
+} from "@/app/[@handle]/types";
 import { ProfileDraftDataType } from "@/app/profile/[id]/create/types";
 import { profilePhotoModalInit } from "@/app/profile/[id]/data";
 import { ProfilePhotoModalType } from "@/app/profile/[id]/types";
@@ -42,4 +46,24 @@ export const mainPhotoDeleteModalActiveState = atom<boolean>({
 export const specialtyModalState = atom<boolean>({
   key: "specialtyModalState",
   default: false
+});
+
+export const selectedPhotoLabelState = atom<SelectedPhotoLabelType>({
+  key: "selectedPhotoLabelState",
+  default: "photos"
+});
+
+export const photoListSliderState = atom<number>({
+  key: "photoListSliderState",
+  default: 0
+});
+
+export const photoOriginModalState = atom<PhotoOriginModalType>({
+  key: "photoOriginModalState",
+  default: {
+    active: false,
+    path: "",
+    id: "",
+    index: 0
+  }
 });
