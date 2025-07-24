@@ -21,11 +21,11 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
   };
 
   return (
-    <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark">
+    <div className="flex h-auto w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark">
       <div className="flex h-full w-full flex-col justify-between">
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
-            <label className="typography-caption1 hidden font-medium text-content-tertiary-light dark:text-content-tertiary-dark sm:block">
+            <label className="typography-caption1 hidden font-medium text-content-tertiary-light dark:text-content-tertiary-dark md:block">
               {production.productionYear >= 1
                 ? `${production.productionYear + " | " + production.category.name}`
                 : production.category.name}
@@ -35,17 +35,17 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
             </label>
           </div>
           <div className="typography-caption1 flex h-auto w-full flex-col gap-0.5 font-normal text-content-secondary-light dark:text-content-secondary-dark">
-            <label className="hidden sm:block">
+            <label className="hidden md:block">
               {role && (role.id === 4 ? customRole : role.name)}
               {character && `'${character}'`}
             </label>
-            <label className="hidden sm:block">{production.description}</label>
+            <label className="hidden md:block">{production.description}</label>
           </div>
         </div>
         {/* link */}
         <button
           type="button"
-          className="hidden w-fit sm:block"
+          className="hidden w-fit md:block"
           disabled={!production.videoUrl}
           onClick={() => onYoutubeModalOpen(production.videoUrl)}
         >
@@ -56,7 +56,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
           />
         </button>
       </div>
-      <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
+      <div className="hidden min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100 md:flex">
         {filmo.thumbnailPath === null ||
         filmo.thumbnailPath.endsWith("null") ? (
           <LogoHorizontalSmall
@@ -65,7 +65,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
             className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
           />
         ) : (
-          <div className="relative aspect-[76/114] w-[76px] overflow-hidden rounded-lg bg-gray-100">
+          <div className="relative h-[114px] w-[76px] overflow-hidden rounded-lg bg-gray-100">
             <Image
               src={filmo.thumbnailPath}
               alt={production.title}
