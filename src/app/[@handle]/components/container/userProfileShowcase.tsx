@@ -1,5 +1,6 @@
 import FilmoShowcase from "../filmo/filmoShowcase";
 import PhotoShowcase from "../photo/photoShowcase";
+import VideoShowcase from "../video/videoShowcase";
 
 interface UserProfileShowcaseProps {
   linear: "main" | "sub";
@@ -12,6 +13,7 @@ const UserProfileShowcase = ({ linear }: UserProfileShowcaseProps) => {
     >
       <PhotoShowcase />
       <FilmoShowcase />
+      <VideoShowcase />
     </section>
   );
 };

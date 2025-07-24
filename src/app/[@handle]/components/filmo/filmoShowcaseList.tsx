@@ -3,6 +3,7 @@
 import { profileViewState } from "@/lib/recoil/handle/atom";
 import { useRecoilValue } from "recoil";
 import FilmoShowcaseItem from "./filmoShowcaseItem";
+import ProfileShowcaseEmptyFrame from "../container/profileShowcaseEmptyFrame";
 
 const FilmoShowcaseList = () => {
   const profileData = useRecoilValue(profileViewState);
@@ -17,12 +18,14 @@ const FilmoShowcaseList = () => {
 
   const visibleFilmoList = [...featured, ...nonFeatured].slice(0, maxVisible);
 
-  return (
+  return visibleFilmoList.length >= 1 ? (
     <div className="grid h-auto w-full grid-cols-3 gap-2">
       {visibleFilmoList.map((filmo) => {
         return <FilmoShowcaseItem key={filmo.id} filmo={filmo} />;
       })}
     </div>
+  ) : (
+    <ProfileShowcaseEmptyFrame text="작품 활동이 없어요." />
   );
 };
 
