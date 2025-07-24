@@ -4,6 +4,7 @@ import TopNavigation from "@/components/organisms/topNavigation";
 import HandleInitializer from "./components/provider/initializer";
 import { notFound } from "next/navigation";
 import { getProfileOtherUser } from "@/lib/api";
+import { getFilmoCategories } from "../profile/[id]/api";
 
 const Layout = async ({
   params,
@@ -28,6 +29,9 @@ const Layout = async ({
   const profileData = res.data;
   const isMyProfile = true;
 
+  const categoryRes = await getFilmoCategories();
+  const filmoCategories = categoryRes.data;
+
   return (
     <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">
       <Toast kind="info" fullWidth={false} placement="top" />
@@ -36,6 +40,7 @@ const Layout = async ({
         profileData={profileData}
         isMyProfile={isMyProfile}
         handleName={handleName}
+        filmoCategories={filmoCategories}
       >
         {children}
       </HandleInitializer>

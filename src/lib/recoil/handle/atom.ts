@@ -1,11 +1,13 @@
 import {
   PhotoOriginModalType,
-  SelectedPhotoLabelType
+  SelectedPhotoLabelType,
+  YoutubeModalType
 } from "@/app/[@handle]/types";
 import { ProfileDraftDataType } from "@/app/profile/[id]/create/types";
 import { profilePhotoModalInit } from "@/app/profile/[id]/data";
 import { ProfilePhotoModalType } from "@/app/profile/[id]/types";
 import { profileInit } from "@/lib/data";
+import { FilmoCategoryType } from "@/lib/types";
 import { atom } from "recoil";
 
 export const isMyProfileState = atom<boolean>({
@@ -66,4 +68,22 @@ export const photoOriginModalState = atom<PhotoOriginModalType>({
     id: "",
     index: 0
   }
+});
+
+export const filmoViewAllModalState = atom<boolean>({
+  key: "filmoViewAllModalState",
+  default: false
+});
+
+export const filmoYoutubeModalState = atom<YoutubeModalType>({
+  key: "filmoYoutubeModalState",
+  default: {
+    url: "",
+    active: false
+  }
+});
+
+export const profileFilmoCategoryState = atom<FilmoCategoryType[]>({
+  key: "profileFilmoCategoryState",
+  default: []
 });

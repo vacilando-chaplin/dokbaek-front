@@ -6,3 +6,8 @@ export interface PhotoOriginModalType {
   id: string;
   index: number;
 }
+
+export interface YoutubeModalType {
+  url: string;
+  active: boolean;
+}

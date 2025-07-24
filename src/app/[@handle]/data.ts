@@ -4,3 +4,8 @@ export const photoOriginModalInit = {
   id: "",
   index: 0
 };
+
+export const youtubeModalInit = {
+  url: "",
+  active: false
+};
