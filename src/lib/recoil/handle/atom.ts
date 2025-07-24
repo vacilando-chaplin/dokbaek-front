@@ -1,3 +1,4 @@
+import { photoOriginModalInit, youtubeModalInit } from "@/app/[@handle]/data";
 import {
   PhotoOriginModalType,
   SelectedPhotoLabelType,
@@ -62,12 +63,7 @@ export const photoListSliderState = atom<number>({
 
 export const photoOriginModalState = atom<PhotoOriginModalType>({
   key: "photoOriginModalState",
-  default: {
-    active: false,
-    path: "",
-    id: "",
-    index: 0
-  }
+  default: photoOriginModalInit
 });
 
 export const filmoViewAllModalState = atom<boolean>({
@@ -77,10 +73,7 @@ export const filmoViewAllModalState = atom<boolean>({
 
 export const filmoYoutubeModalState = atom<YoutubeModalType>({
   key: "filmoYoutubeModalState",
-  default: {
-    url: "",
-    active: false
-  }
+  default: youtubeModalInit
 });
 
 export const profileFilmoCategoryState = atom<FilmoCategoryType[]>({
