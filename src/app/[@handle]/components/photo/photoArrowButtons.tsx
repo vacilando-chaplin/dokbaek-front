@@ -1,15 +1,11 @@
 "use client";
 
 import {
-  ProfilePhotoDataType,
-  ProfileRecentPhotoDataType
-} from "@/app/profile/[id]/create/types";
-import {
   photoListSliderState,
   profileViewState,
   selectedPhotoLabelState
 } from "@/lib/recoil/handle/atom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import ArrowChevronLeft from "../../../../../public/icons/ArrowChevronLeft.svg";
 import ArrowChevronRight from "../../../../../public/icons/ArrowChevronRight.svg";
@@ -19,24 +15,27 @@ const PhotoArrowButtons = () => {
   const photoLabel = useRecoilValue(selectedPhotoLabelState);
   const [photoSlider, setPhotoSlider] = useRecoilState(photoListSliderState);
 
-  const [selectedPhotoList, setSelectedPhotoList] = useState<
-    ProfilePhotoDataType[] | ProfileRecentPhotoDataType[]
-  >(profileData.photos);
-
-  const onSliderPrev = () => {
-    setPhotoSlider((prev) => (prev !== 0 ? prev - 1 : 0));
-  };
-
-  const onSliderNext = (slides: number) => {
-    setPhotoSlider((prev) =>
-      prev <= Math.floor(slides / 4) - 1 ? prev + 1 : prev
-    );
-  };
+  const selectedPhotoList = useMemo(() => {
+    if (profileData && profileData[photoLabel]) {
+      return profileData[photoLabel];
+    }
+    return [];
+  }, [profileData, photoLabel]);
 
   useEffect(() => {
     setPhotoSlider(0);
-    setSelectedPhotoList(profileData[photoLabel]);
   }, [photoLabel]);
+
+  const itemsVisible = 4;
+  const maxSlider = Math.max(0, selectedPhotoList.length - itemsVisible);
+
+  const onSliderPrev = () => {
+    setPhotoSlider((prev) => Math.max(prev - 1, 0));
+  };
+
+  const onSliderNext = () => {
+    setPhotoSlider((prev) => Math.min(prev + 1, maxSlider));
+  };
 
   return (
     selectedPhotoList.length > 4 && (
@@ -56,10 +55,10 @@ const PhotoArrowButtons = () => {
         </button>
         {/* NextButton */}
         <button
-          className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.floor(selectedPhotoList.length / 5) && "opacity-40"}`}
+          className={`rounded-full bg-gray-150 p-1.5 ${photoSlider === Math.max(0, selectedPhotoList.length - 4) && "opacity-40"}`}
           type="button"
-          disabled={photoSlider === Math.floor(selectedPhotoList.length / 5)}
-          onClick={() => onSliderNext(selectedPhotoList.length)}
+          disabled={photoSlider === Math.max(0, selectedPhotoList.length - 4)}
+          onClick={() => onSliderNext()}
         >
           <ArrowChevronRight
             width="16"

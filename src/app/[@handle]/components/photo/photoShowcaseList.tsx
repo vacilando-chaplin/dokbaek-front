@@ -29,9 +29,9 @@ const PhotoShowcaseList = () => {
   return selectedPhotoList.length >= 1 ? (
     <div className="relative overflow-hidden">
       <div
-        className="relative flex h-auto w-full gap-2 transition-all duration-500 ease-out"
+        className="flex h-auto w-full flex-row transition-all duration-300 ease-out"
         style={{
-          transform: `translateX(-${photoSlider * 100}%)`
+          transform: `translateX(-${photoSlider * 25}%)`
         }}
       >
         {selectedPhotoList.map(
@@ -40,7 +40,9 @@ const PhotoShowcaseList = () => {
             index: number
           ) => {
             return (
-              <PhotoShowcaseImage key={photo.id} photo={photo} index={index} />
+              <div key={photo.id} className="w-1/4 flex-shrink-0 pr-2">
+                <PhotoShowcaseImage photo={photo} index={index} />
+              </div>
             );
           }
         )}

@@ -116,6 +116,7 @@ const MainPhoto = () => {
       <Image
         src={mainPhotoPreview}
         alt="대표 사진"
+        quality={100}
         fill
         priority
         onLoad={() => setIsLoaded(true)}
