@@ -3,9 +3,9 @@
 import Image from "next/image";
 import PlayCircle from "../../../../../public/icons/PlayCircle.svg";
 import LogoHorizontalSmall from "../../../../../public/icons/LogoHorizontalSmall.svg";
-import { ProfileFilmoDataType } from "@/app/profile/[id]/create/types";
 import { useSetRecoilState } from "recoil";
 import { filmoYoutubeModalState } from "@/lib/recoil/handle/atom";
+import { ProfileFilmoDataType } from "../../edit/types";
 
 interface FilmoShowcaseItemProps {
   filmo: ProfileFilmoDataType;

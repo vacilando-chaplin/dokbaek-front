@@ -1,10 +1,6 @@
 "use client";
 
 import {
-  ProfilePhotoDataType,
-  ProfileRecentPhotoDataType
-} from "@/app/profile/[id]/create/types";
-import {
   photoOriginModalState,
   selectedPhotoLabelState
 } from "@/lib/recoil/handle/atom";
@@ -14,6 +10,10 @@ import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
 import LoadingSpinner from "../../../../../public/icons/LoadingSpinner.svg";
 import { useState } from "react";
 import EmptyImage from "@/components/atoms/emptyImage";
+import {
+  ProfilePhotoDataType,
+  ProfileRecentPhotoDataType
+} from "../../edit/types";
 
 interface PhotoShowcaseImageProps {
   photo: ProfilePhotoDataType | ProfileRecentPhotoDataType;

@@ -1,4 +1,4 @@
-import { ProfileEducationDataType } from "../profile/[id]/create/types";
+import { ProfileEducationDataType } from "./edit/types";
 
 // 학교명으로만 학교급 판별
 export const useGetSchoolLevel = (schoolName: string) => {

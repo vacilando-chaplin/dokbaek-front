@@ -58,20 +58,6 @@ export const educationEnum = {
   DROPPED_OUT: "중퇴"
 };
 
-export const classificationList = [
-  "장편상업영화",
-  "장편독립영화",
-  "단편영화",
-  "TV드라마",
-  "웹드라마",
-  "광고",
-  "뮤직비디오",
-  "연극",
-  "기타"
-];
-
-export const castList = ["주연", "조연", "단역", "직접 입력"];
-
 export const profileInit = {
   id: 0,
   userId: 0,

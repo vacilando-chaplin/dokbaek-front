@@ -1,10 +1,6 @@
 "use client";
 
 import {
-  ProfilePhotoDataType,
-  ProfileRecentPhotoDataType
-} from "@/app/profile/[id]/create/types";
-import {
   photoListSliderState,
   profileViewState,
   selectedPhotoLabelState
@@ -13,6 +9,10 @@ import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
 import ProfileShowcaseEmptyFrame from "../container/profileShowcaseEmptyFrame";
 import PhotoShowcaseImage from "./photoShowcaseImage";
+import {
+  ProfilePhotoDataType,
+  ProfileRecentPhotoDataType
+} from "../../edit/types";
 
 const PhotoShowcaseList = () => {
   const profileData = useRecoilValue(profileViewState);

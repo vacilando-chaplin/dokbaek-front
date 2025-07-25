@@ -1,6 +1,5 @@
 "use client";
 
-import { ProfileDraftDataType } from "@/app/profile/[id]/create/types";
 import {
   filmoViewAllModalState,
   filmoYoutubeModalState,
@@ -20,8 +19,12 @@ import {
 import { FilmoCategoryType } from "@/lib/types";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { photoOriginModalInit, youtubeModalInit } from "../../data";
-import { profilePhotoModalInit } from "@/app/profile/[id]/data";
+import {
+  photoOriginModalInit,
+  profilePhotoModalInit,
+  youtubeModalInit
+} from "../../data";
+import { ProfileDraftDataType } from "../../edit/types";
 
 interface HandleInitializerProps {
   children: React.ReactNode;

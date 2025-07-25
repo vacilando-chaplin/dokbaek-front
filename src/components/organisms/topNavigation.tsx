@@ -12,7 +12,7 @@ import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
 import { useEffect, useState } from "react";
 import { removeStorageData } from "@/lib/utils";
-import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
+import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
 import { useSetLoginProfileId, useSetToken } from "@/lib/hooks";
 import { useMutation } from "@tanstack/react-query";
 

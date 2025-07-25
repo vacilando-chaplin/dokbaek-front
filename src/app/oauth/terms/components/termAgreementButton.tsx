@@ -12,7 +12,7 @@ import {
 import { postOauthSignUp } from "../../callback/api";
 import { getProfileMe } from "@/lib/api";
 import BoxButton from "@/components/atoms/boxButton";
-import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
+import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
 import { useMutation } from "@tanstack/react-query";
 import { TermsMutationParams, TermsMutationResult } from "../type";
 

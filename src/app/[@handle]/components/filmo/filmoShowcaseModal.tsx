@@ -3,7 +3,6 @@
 import Title from "@/components/atoms/title";
 import ModalHeader from "@/components/molecules/modalHeader";
 import FilmoShowcaseItem from "./filmoShowcaseItem";
-import { ProfileFilmoDataType } from "@/app/profile/[id]/create/types";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   filmoViewAllModalState,
@@ -11,6 +10,7 @@ import {
   profileViewState
 } from "@/lib/recoil/handle/atom";
 import { FilmoCategoryType } from "@/lib/types";
+import { ProfileFilmoDataType } from "../../edit/types";
 
 const FilmoShowcaseModal = () => {
   const profileData = useRecoilValue(profileViewState);

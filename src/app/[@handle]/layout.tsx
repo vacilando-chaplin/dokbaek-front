@@ -4,7 +4,7 @@ import TopNavigation from "@/components/organisms/topNavigation";
 import HandleInitializer from "./components/provider/initializer";
 import { notFound } from "next/navigation";
 import { getProfileOtherUser } from "@/lib/api";
-import { getFilmoCategories } from "../profile/[id]/api";
+import { getFilmoCategories } from "./api";
 
 const Layout = async ({
   params,

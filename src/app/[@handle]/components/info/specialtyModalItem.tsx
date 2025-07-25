@@ -1,9 +1,9 @@
 "use client";
 
-import { ProfileSpecialtyType } from "@/app/profile/[id]/create/types";
 import YoutubeVideo from "@/components/atoms/youtubeVideo";
 import { useActive } from "@/lib/hooks";
 import Image from "next/image";
+import { ProfileSpecialtyType } from "../../edit/types";
 
 interface SpecialtyModalItemProps {
   specialty: ProfileSpecialtyType;

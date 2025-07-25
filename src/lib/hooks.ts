@@ -2,9 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { PhotoResponseType } from "./types";
 import { convertToBase64, getFileMimeTypeFromUrl } from "./utils";
-import { cropDataInit } from "@/app/profile/[id]/data";
 import { imageCompressionOptions } from "./data";
 import imageCompression from "browser-image-compression";
 import { useSetRecoilState } from "recoil";
@@ -14,16 +12,17 @@ import {
   recentPhotoTypeState,
   selectedImagesState,
   selectImageState
-} from "./recoil/profile/photo/atom";
+} from "./recoil/handle/edit/photo/atom";
 import { FileRejection } from "react-dropzone";
-import {
-  ProfilePhotoDataType,
-  ProfileRecentPhotoDataType
-} from "@/app/profile/[id]/create/types";
 import {
   CategoryKey,
   RecentPhotoCategory
-} from "@/app/profile/[id]/create/photo/types";
+} from "@/app/[@handle]/edit/photo/types";
+import { cropDataInit } from "@/app/[@handle]/data";
+import {
+  ProfilePhotoDataType,
+  ProfileRecentPhotoDataType
+} from "@/app/[@handle]/edit/types";
 
 export const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -64,20 +63,6 @@ export const useSetLoginForm = (name: string, loginForm: string) => {
     path: "/",
     sameSite: "strict"
   });
-};
-
-export const useGetBlurPhoto = async (photoList: PhotoResponseType[]) => {
-  const blurImages = [];
-  for (const photo of photoList) {
-    const mimeType = await getFileMimeTypeFromUrl(photo.path);
-    const response = await fetch(photo.path);
-    const blob = await response.blob();
-    const file = new File([blob], "image", { type: mimeType });
-    const image = await convertToBase64(file);
-
-    blurImages.push(image);
-  }
-  return blurImages;
 };
 
 export const useImageSelector = () => {

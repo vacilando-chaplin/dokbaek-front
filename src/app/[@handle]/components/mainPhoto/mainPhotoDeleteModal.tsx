@@ -10,7 +10,7 @@ import {
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
 import Cookies from "js-cookie";
-import { deleteProfilePhotoMain } from "@/app/profile/[id]/api";
+import { deleteProfilePhotoMain } from "@/app/[@handle]/api";
 import { useMutation } from "@tanstack/react-query";
 
 const MainPhotoDeleteModal = () => {

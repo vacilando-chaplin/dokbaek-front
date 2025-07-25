@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import LoginModal from "../organisms/loginModal";
 import { useSetRecoilState } from "recoil";
-import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
+import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;

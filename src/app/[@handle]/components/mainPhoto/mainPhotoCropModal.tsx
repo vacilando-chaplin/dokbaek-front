@@ -4,9 +4,7 @@ import {
   deleteProfilePhotoMain,
   patchProfilePhotoMain,
   postProfilePhotoMain
-} from "@/app/profile/[id]/api";
-import { photoModalInit } from "@/app/profile/[id]/create/photo/data";
-import { cropDataInit } from "@/app/profile/[id]/data";
+} from "@/app/[@handle]/api";
 import ImageCropper from "@/components/molecules/imageCropper";
 import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
@@ -21,6 +19,8 @@ import { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Cookies from "js-cookie";
 import { useMutation } from "@tanstack/react-query";
+import { cropDataInit } from "../../data";
+import { photoModalInit } from "../../edit/photo/data";
 
 const MainPhotoCropModal = () => {
   const loginProfileId = Number(Cookies.get("loginProfileId"));

@@ -1,10 +1,10 @@
 "use client";
 
-import { ProfileVideoDataType } from "@/app/profile/[id]/create/types";
 import YoutubeVideo from "@/components/atoms/youtubeVideo";
 import { profileViewState } from "@/lib/recoil/handle/atom";
 import { useRecoilValue } from "recoil";
 import ProfileShowcaseEmptyFrame from "../container/profileShowcaseEmptyFrame";
+import { ProfileVideoDataType } from "../../edit/types";
 
 const VideoShowcaseList = () => {
   const profileData = useRecoilValue(profileViewState);
