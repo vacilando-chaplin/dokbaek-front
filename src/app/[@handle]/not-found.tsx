@@ -1,3 +1,4 @@
+import { routePaths } from "@/constants/routes";
 import Link from "next/link";
 
 const ProfileNotFound = () => {
@@ -13,13 +14,13 @@ const ProfileNotFound = () => {
         </p>
         <div className="space-y-4">
           <Link
-            href="/"
+            href={routePaths.home()}
             className="text-white block rounded-lg bg-blue-600 px-6 py-3 transition-colors hover:bg-blue-700"
           >
             홈으로 돌아가기
           </Link>
           <Link
-            href="/profiles"
+            href={routePaths.profiles()}
             className="block rounded-lg bg-gray-200 px-6 py-3 text-gray-800 transition-colors hover:bg-gray-300"
           >
             배우 목록 보기

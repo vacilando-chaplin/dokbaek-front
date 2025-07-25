@@ -8,6 +8,8 @@ import { useRecoilValue } from "recoil";
 import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
 import { putInfoDraft } from "../info/api";
 import { postProfileDraftPublish } from "../../api";
+import { routePaths } from "@/constants/routes";
+import { handleNameState } from "@/lib/recoil/handle/atom";
 
 interface BottomBarProps {
   profileId: number;
@@ -17,6 +19,7 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const profileData = useRecoilValue(profileDraftData);
+  const handleName = useRecoilValue(handleNameState);
 
   const { name, gender, bornYear, contact } = profileData.info;
   const valid =
@@ -28,6 +31,8 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
     contact !== null &&
     contact.length >= 9;
 
+  const profileURL = routePaths.profile(handleName);
+
   const onSaveInfo = async () => {
     if (pathname.endsWith("/info") && profileData?.info) {
       await putInfoDraft(profileId, profileData.info);
@@ -38,15 +43,15 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
     await onSaveInfo();
     await postProfileDraftPublish(profileId);
 
-    router.prefetch(`/profile/${profileId}`);
-    router.push(`/profile/${profileId}`);
+    router.prefetch(profileURL);
+    router.push(profileURL);
   };
 
   const onBack = async () => {
     await onSaveInfo();
 
-    router.prefetch(`/profile/${profileId}`);
-    router.push(`/profile/${profileId}`);
+    router.prefetch(profileURL);
+    router.push(profileURL);
   };
 
   return (

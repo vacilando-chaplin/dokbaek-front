@@ -11,6 +11,7 @@ import {
   withdrawalReasons
 } from "@/lib/recoil/account/withdrawal/atom";
 import { checkedReasonIds } from "@/lib/recoil/account/withdrawal/selector";
+import { routePaths } from "@/constants/routes";
 
 interface WithdrawalConfirmProps {
   initialReasons: ReasonWithCheckType[];
@@ -27,7 +28,7 @@ const WithdrawalConfirm = ({ initialReasons }: WithdrawalConfirmProps) => {
     setReasons(initialReasons);
     setAgreement(false);
 
-    router.replace("/account");
+    router.replace(routePaths.account());
   };
 
   const onConfirm = async () => {
@@ -39,7 +40,7 @@ const WithdrawalConfirm = ({ initialReasons }: WithdrawalConfirmProps) => {
 
     removeStorageData();
 
-    router.replace("/account/withdrawal/complete");
+    router.replace(routePaths.accountWithdrawalComplete());
   };
 
   return (

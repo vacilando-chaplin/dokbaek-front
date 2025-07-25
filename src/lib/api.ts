@@ -5,7 +5,7 @@ import { profileInit } from "./data";
 export const deleteSignOut = async (refreshToken: string) => {
   try {
     const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_BASEURL}/auth/signout`,
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/auth/signout`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export const deleteSignOut = async (refreshToken: string) => {
 export const getProfileOtherUser = async (id: number) => {
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASEURL}/profile/${id}`
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/profile/${id}`
     );
     return res.data;
   } catch (error: any) {

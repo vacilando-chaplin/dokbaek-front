@@ -3,14 +3,18 @@
 import BoxButton from "@/components/atoms/boxButton";
 import Tooltip from "@/components/atoms/tooltip";
 import { toastMessage } from "@/lib/atoms";
-import { isMyProfileState, profileViewState } from "@/lib/recoil/handle/atom";
-import { ProfilePathType } from "@/lib/types";
+import {
+  handleNameState,
+  isMyProfileState,
+  profileViewState
+} from "@/lib/recoil/handle/atom";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import Download from "../../../../../public/icons/Download.svg";
 import Copy from "../../../../../public/icons/Copy.svg";
 import Edit from "../../../../../public/icons/Edit.svg";
+import { absoluteRoutePaths, routePaths } from "@/constants/routes";
 
 const ProfileActionButtonContainer = () => {
   const loginProfileId = Number(Cookies.get("loginProfileId"));
@@ -18,13 +22,14 @@ const ProfileActionButtonContainer = () => {
 
   const profileData = useRecoilValue(profileViewState);
   const isMyProfile = useRecoilValue(isMyProfileState);
+  const handleName = useRecoilValue(handleNameState);
 
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const { bornYear, contact } = profileData?.info || {};
 
   const onCopyUrl = async () => {
-    const copyUrl = `https://filogram.my/profile/${loginProfileId}`;
+    const copyUrl = absoluteRoutePaths.profile(handleName);
     try {
       setToastMessage("프로필 링크를 복사 했어요.");
       await navigator.clipboard.writeText(copyUrl);
@@ -34,13 +39,13 @@ const ProfileActionButtonContainer = () => {
   };
 
   const onDownloadPDF = () => {
-    const PDFUrl = `https://filogram.my/api/pdf/v1/profile/${loginProfileId}`;
+    const PDFUrl = absoluteRoutePaths.profilePDF(loginProfileId);
     window.open(PDFUrl, "_blank");
   };
 
-  const onMoveToCreate = async (path: ProfilePathType) => {
-    router.prefetch(`/profile/${loginProfileId}/create/${path}}`);
-    router.push(`/profile/${loginProfileId}/create/${path}`);
+  const onMoveToCreate = () => {
+    router.prefetch(routePaths.profileEditInfo(handleName));
+    router.push(routePaths.profileEditInfo(handleName));
   };
 
   return isMyProfile ? (
@@ -65,7 +70,7 @@ const ProfileActionButtonContainer = () => {
         <button
           type="button"
           className="interaction-default typography-body3 flex h-auto w-full items-center justify-center gap-1.5 rounded-xl border border-border-default-light bg-background-surface-light px-5 py-[11px] font-medium text-content-primary-light outline-none hover:brightness-[97%] active:brightness-[94%] dark:border-border-default-dark dark:bg-background-surface-dark dark:text-content-primary-dark"
-          onClick={() => onMoveToCreate("info")}
+          onClick={() => onMoveToCreate()}
         >
           <Edit
             width="14"

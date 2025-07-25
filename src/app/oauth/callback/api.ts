@@ -4,7 +4,7 @@ import axios from "axios";
 export const postOauthSignUp = async (data: SignUpRequestType) => {
   try {
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASEURL}/auth/oauth/signup`,
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/auth/oauth/signup`,
       data
     );
     const resData = res.data;
@@ -17,7 +17,7 @@ export const postOauthSignUp = async (data: SignUpRequestType) => {
 export const postOauthSignIn = async (data: SignInRequestType) => {
   try {
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASEURL}/auth/oauth/signin`,
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/auth/oauth/signin`,
       data
     );
     const resData = res.data;
