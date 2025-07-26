@@ -1,11 +1,11 @@
-import AddableSearchDropdown from "../../../../../../components/molecules/addableSearchDropdown";
 import React, { useEffect, useState } from "react";
-import PlusCircle from "../../../../../public/icons/PlusCircle.svg";
-import XCircleFill from "../../../../../public/icons/XCircleFill.svg";
+import PlusCircle from "../../../../../../../public/icons/PlusCircle.svg";
+import XCircleFill from "../../../../../../../public/icons/XCircleFill.svg";
 import { useDebounce } from "@/lib/hooks";
 import ProfileSpecialtyMediaModal from "./profileSpecialtyMediaModal";
 import { SpecialtyType } from "../../types";
 import { getSpecialty } from "../../api";
+import AddableSearchDropdown from "@/components/molecules/addableSearchDropdown";
 
 interface ProfileSpecialtyEditorProps {
   specialties: SpecialtyType[];

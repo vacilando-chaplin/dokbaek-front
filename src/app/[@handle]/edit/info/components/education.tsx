@@ -1,7 +1,7 @@
 "use client";
 
 import Title from "@/components/atoms/title";
-import Plus from "../../../../../../../public/icons/Plus.svg";
+import Plus from "../../../../../../public/icons/Plus.svg";
 import EducationForm from "./educationForm";
 import { useRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";

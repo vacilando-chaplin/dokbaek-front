@@ -1,6 +1,6 @@
 "use client";
 
-import ArrowDirectionLeft from "../../../../../../public/icons/ArrowDirectionLeft.svg";
+import ArrowDirectionLeft from "../../../../../public/icons/ArrowDirectionLeft.svg";
 import BoxButton from "@/components/atoms/boxButton";
 import ProgressBar from "./progressBar";
 import { usePathname, useRouter } from "next/navigation";

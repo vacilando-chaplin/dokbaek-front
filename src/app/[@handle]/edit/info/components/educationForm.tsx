@@ -4,7 +4,7 @@ import Label from "@/components/atoms/label";
 import TextInput from "@/components/atoms/textInput";
 import SearchDropdown from "@/components/molecules/searchDropdown";
 import SelectDropdown from "@/components/molecules/selectDropdown";
-import X from "../../../../../../../public/icons/X.svg";
+import X from "../../../../../../public/icons/X.svg";
 import { SchoolType } from "../types";
 import { educationEngList, educationList } from "@/lib/data";
 import { ProfileEducationDataType } from "../../types";

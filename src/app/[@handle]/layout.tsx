@@ -25,7 +25,7 @@ const Layout = async ({
   //   notFound();
   // }
 
-  const res = await getProfileOtherUser(Number(loginProfileId) ?? 15);
+  const res = await getProfileOtherUser(Number(loginProfileId));
   const profileData = res.data;
   const isMyProfile = true;
 

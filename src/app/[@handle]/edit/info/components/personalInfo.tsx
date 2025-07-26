@@ -7,7 +7,7 @@ import SearchDropdown from "@/components/molecules/searchDropdown";
 import { yearList } from "@/lib/data";
 import { SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
-import Plus from "../../../../../../../public/icons/Plus.svg";
+import Plus from "../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
