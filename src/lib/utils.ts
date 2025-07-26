@@ -14,59 +14,6 @@ export const contactFormat = (contact: string): string => {
   return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
 };
 
-export const isValid = (value: string | number | any[]): boolean => {
-  if (typeof value === "string") {
-    return value.trim().length >= 1;
-  }
-  if (typeof value === "number") {
-    return value > 0;
-  }
-  if (Array.isArray(value)) {
-    return value.length >= 1;
-  }
-  return false;
-};
-
-export const setCanvasPreview = (
-  image: HTMLImageElement,
-  canvas: HTMLCanvasElement,
-  crop: any
-) => {
-  const context = canvas.getContext("2d");
-  if (!context) {
-    throw new Error("No 2d context");
-  }
-
-  const pixelRatio = window.devicePixelRatio;
-  const scaleX = image.naturalWidth / image.width;
-  const scaleY = image.naturalHeight / image.height;
-
-  canvas.width = Math.floor(crop.width * scaleX * pixelRatio);
-  canvas.height = Math.floor(crop.height * scaleY * pixelRatio);
-
-  context.scale(pixelRatio, pixelRatio);
-  context.imageSmoothingQuality = "high";
-  context.save();
-
-  const cropX = crop.x * scaleX;
-  const cropY = crop.y * scaleY;
-
-  context.translate(-cropX, -cropY);
-  context.drawImage(
-    image,
-    0,
-    0,
-    image.naturalWidth,
-    image.naturalHeight,
-    0,
-    0,
-    image.naturalWidth,
-    image.naturalHeight
-  );
-
-  context.restore();
-};
-
 export const base64ToBlob = (base64String: string) => {
   const [metadata, base64Data] = base64String.split(";base64,");
   const mimeType = metadata.split(":")[1];
@@ -113,18 +60,6 @@ export const convertToBase64 = (file: File): Promise<string> => {
     reader.onerror = reject;
     reader.readAsDataURL(file); // 파일을 base64로 변환
   });
-};
-
-export const isValidInstagramUrl = (url: string) => {
-  const regex =
-    /^https:\/\/(www\.)?instagram\.com\/([a-zA-Z0-9_]+)\/?(\?.*)?(#.*)?$/;
-  return regex.test(url);
-};
-
-export const isValidYoutubeChannelUrl = (url: string) => {
-  const regex =
-    /^(https:\/\/(www\.)?youtube\.com\/(@[a-zA-Z0-9_-]+|c\/[a-zA-Z0-9_-]+|user\/[a-zA-Z0-9_-]+|channel\/[a-zA-Z0-9_-]{24}))$/;
-  return regex.test(url);
 };
 
 export const removeStorageData = () => {

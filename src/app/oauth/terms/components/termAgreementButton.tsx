@@ -3,7 +3,7 @@
 import { TermAgreementsType } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loginErrorState, toastMessage } from "@/lib/atoms";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   useSetLoginForm,
   useSetLoginProfileId,
@@ -12,9 +12,11 @@ import {
 import { postOauthSignUp } from "../../callback/api";
 import { getProfileMe } from "@/lib/api";
 import BoxButton from "@/components/atoms/boxButton";
-import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
+import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
 import { useMutation } from "@tanstack/react-query";
 import { TermsMutationParams, TermsMutationResult } from "../type";
+import { routePaths } from "@/constants/routes";
+import { handleNameState } from "@/lib/recoil/handle/atom";
 
 interface TermAgreementButtonProps {
   termAgreements: TermAgreementsType[];
@@ -29,6 +31,8 @@ const TermAgreementButton = ({
   const urlParams = useSearchParams();
   const code = urlParams.get("code");
   const state = urlParams.get("state");
+
+  const handleName = useRecoilValue(handleNameState);
 
   const setViewProfileId = useSetRecoilState(viewedProfileId);
   const setToastMessage = useSetRecoilState(toastMessage);
@@ -64,7 +68,7 @@ const TermAgreementButton = ({
       useSetLoginProfileId("loginProfileId", String(loginProfileId));
       useSetLoginForm("login_form", data.state);
 
-      router.replace(`/profile/${loginProfileId}`);
+      router.replace(routePaths.profile(handleName));
     },
     onError: () => {
       setLoginErrorState(true);
@@ -72,7 +76,7 @@ const TermAgreementButton = ({
         "회원가입 과정에서 문제가 생겼어요. 잠시 후 다시 시도해 주세요."
       );
 
-      router.replace("/");
+      router.replace(routePaths.home());
     }
   });
 

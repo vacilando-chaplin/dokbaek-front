@@ -1,15 +1,20 @@
+"use client";
+
 import BoxButton from "@/components/atoms/boxButton";
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
-import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
-import { loginProfileId } from "@/lib/atoms";
 import LoginModal from "@/components/organisms/loginModal";
+import { useRecoilValue } from "recoil";
+import { handleNameState } from "@/lib/recoil/handle/atom";
+import { routePaths } from "@/constants/routes";
 
 const LandingSub = () => {
+  const userId = Number(Cookies.get("loginProfileId"));
+  const handleName = useRecoilValue(handleNameState);
+
   const router = useRouter();
-  const [userId, setUserId] = useRecoilState(loginProfileId);
   const [loginModal, setLoginModal] = useState(false);
   const jwt = Cookies.get("jwt");
 
@@ -18,8 +23,8 @@ const LandingSub = () => {
       setLoginModal(true);
       return;
     } else {
-      router.prefetch(`/profile/${userId}/create/info`);
-      router.push(`/profile/${userId}/create/info`);
+      router.prefetch(routePaths.profileEditInfo(handleName));
+      router.push(routePaths.profileEditInfo(handleName));
     }
   };
   return (

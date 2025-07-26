@@ -1,13 +1,14 @@
 "use client";
 
 import BoxButton from "@/components/atoms/boxButton";
+import { routePaths } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 
 const HomeButton = () => {
   const router = useRouter();
 
   const onGoHome = () => {
-    router.replace("/");
+    router.replace(routePaths.home());
   };
 
   return (

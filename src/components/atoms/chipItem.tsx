@@ -1,6 +1,6 @@
 interface ChipItemProps {
   children: React.ReactNode;
-  state: string;
+  state?: string;
   disabled?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }

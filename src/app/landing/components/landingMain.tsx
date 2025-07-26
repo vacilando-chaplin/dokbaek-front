@@ -5,6 +5,7 @@ import { getProfileShowcase } from "@/app/landing/api";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
 import { useRouter } from "next/navigation";
 import TextButton from "@/components/atoms/textButton";
+import { routePaths } from "@/constants/routes";
 
 const LandingMain = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const LandingMain = () => {
             type="secondary"
             size="large"
             onClick={() => {
-              router.push(`/profiles`);
+              router.push(routePaths.profiles());
             }}
           >
             더 많은 프로필 보기

@@ -58,52 +58,36 @@ export const educationEnum = {
   DROPPED_OUT: "중퇴"
 };
 
-export const classificationList = [
-  "장편상업영화",
-  "장편독립영화",
-  "단편영화",
-  "TV드라마",
-  "웹드라마",
-  "광고",
-  "뮤직비디오",
-  "연극",
-  "기타"
-];
-
-export const castList = ["주연", "조연", "단역", "직접 입력"];
-
 export const profileInit = {
-  data: {
-    id: 0,
-    userId: 0,
-    status: "",
-    info: {
-      name: "",
-      gender: "M",
-      bornYear: 0,
-      height: 0,
-      weight: 0,
-      email: "",
-      contact: "",
-      instagramLink: "",
-      youtubeLink: "",
-      introduction: ""
-    },
-    mainPhotoPath: "",
-    mainPhotoPreviewPath: "",
-    education: [],
-    photos: [],
-    recentPhotos: [],
-    stillCuts: [],
-    filmos: [],
-    videos: [],
-    specialties: [],
-    likesCount: 0,
-    likedByMe: true,
-    viewsCount: 0,
-    createdAt: "",
-    updatedAt: ""
-  }
+  id: 0,
+  userId: 0,
+  status: "",
+  info: {
+    name: "",
+    gender: "M",
+    bornYear: 0,
+    height: 0,
+    weight: 0,
+    email: "",
+    contact: "",
+    instagramLink: "",
+    youtubeLink: "",
+    introduction: ""
+  },
+  mainPhotoPath: "",
+  mainPhotoPreviewPath: "",
+  education: [],
+  photos: [],
+  recentPhotos: [],
+  stillCuts: [],
+  filmos: [],
+  videos: [],
+  specialties: [],
+  likesCount: 0,
+  likedByMe: false,
+  viewsCount: 0,
+  createdAt: "",
+  updatedAt: ""
 };
 
 export const imageCompressionOptions = {

@@ -8,6 +8,7 @@ import { removeStorageData } from "@/lib/utils";
 import { useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
 import AccountMenuItem from "./accountMenuItem";
+import { routePaths } from "@/constants/routes";
 
 const AccountMenu = () => {
   const router = useRouter();
@@ -20,13 +21,15 @@ const AccountMenu = () => {
       await deleteSignOut(refreshToken);
       removeStorageData();
       setToastMessage("안전하게 로그아웃됐어요.");
-      router.replace("/");
+      router.replace(routePaths.home());
     }
   };
 
   const onWithdraw = async () => {
-    router.prefetch("/account/withdrawal");
-    router.push("/account/withdrawal");
+    const withdrawalURL = routePaths.accountWithdrawal();
+
+    router.prefetch(withdrawalURL);
+    router.push(withdrawalURL);
   };
 
   return (

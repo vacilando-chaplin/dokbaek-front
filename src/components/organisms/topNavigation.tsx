@@ -6,15 +6,17 @@ import { deleteSignOut } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentPath, toastMessage } from "@/lib/atoms";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
 import { useEffect, useState } from "react";
 import { removeStorageData } from "@/lib/utils";
-import { viewedProfileId } from "@/lib/recoil/profile/common/atom";
+import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
 import { useSetLoginProfileId, useSetToken } from "@/lib/hooks";
 import { useMutation } from "@tanstack/react-query";
+import { routePaths } from "@/constants/routes";
+import { handleNameState } from "@/lib/recoil/handle/atom";
 
 interface UserMenuType {
   name: string;
@@ -26,6 +28,9 @@ const TopNavigation = () => {
   const pathName = usePathname();
 
   const loginProfileId = Number(Cookies.get("loginProfileId"));
+
+  const handleName = useRecoilValue(handleNameState);
+
   const setPathName = useSetRecoilState(currentPath);
   const setToastMessage = useSetRecoilState(toastMessage);
   const setViewProfileId = useSetRecoilState(viewedProfileId);
@@ -36,8 +41,8 @@ const TopNavigation = () => {
   const onLogIn = () => {
     setPathName(pathName);
 
-    router.prefetch("/login");
-    router.push("/login");
+    router.prefetch(routePaths.login());
+    router.push(routePaths.login());
   };
 
   const onLogOutMutation = useMutation({
@@ -54,7 +59,7 @@ const TopNavigation = () => {
       removeStorageData();
       setIsLoggedIn(false);
       setToastMessage("안전하게 로그아웃됐어요.");
-      router.replace("/");
+      router.replace(routePaths.home());
     },
     onError: () => {
       setToastMessage("로그아웃 중 문제가 발생했어요. 다시 시도해 주세요.");
@@ -73,8 +78,8 @@ const TopNavigation = () => {
     {
       name: "계정",
       onClick: () => {
-        router.prefetch("/account");
-        router.push("/account");
+        router.prefetch(routePaths.account());
+        router.push(routePaths.account());
       }
     },
     {
@@ -96,19 +101,19 @@ const TopNavigation = () => {
         {isLoggedIn === true && (
           <div className="flex flex-row gap-5">
             <Link
-              href={`/profiles`}
+              href={routePaths.profiles()}
               className="typography-body3 flex items-center font-semibold text-content-secondary-light hover:text-accent-primary-light dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
             >
               배우 찾기
             </Link>
             <Link
-              href={`/profile/${loginProfileId}`}
+              href={routePaths.profile(handleName)}
               className="typography-body3 flex items-center font-semibold text-content-secondary-light hover:text-accent-primary-light dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
               onClick={onMoveMyProrfile}
             >
               내 프로필
             </Link>
-            <Link href={`/likes`} className="flex items-center">
+            <Link href={routePaths.likes()} className="flex items-center">
               <Heart
                 width="20"
                 height="20"
@@ -149,7 +154,7 @@ const TopNavigation = () => {
         {isLoggedIn === false && (
           <div className="flex flex-row gap-5">
             <Link
-              href={`/profiles`}
+              href={routePaths.profiles()}
               className="typography-body3 flex items-center font-semibold text-content-secondary-light"
             >
               배우 찾기

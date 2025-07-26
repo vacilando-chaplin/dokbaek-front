@@ -14,6 +14,7 @@ import { getProfileMe } from "@/lib/api";
 import { loginErrorMessages } from "@/lib/data";
 import { useMutation } from "@tanstack/react-query";
 import { OAuthMutationParams, OAuthMutationResult } from "./types";
+import { routePaths } from "@/constants/routes";
 
 const Callback = () => {
   const router = useRouter();
@@ -57,7 +58,7 @@ const Callback = () => {
         "로그인 과정에서 문제가 생겼어요. 잠시 후 다시 시도해 주세요."
       );
 
-      router.replace("/");
+      router.replace(routePaths.home());
     }
   });
 
@@ -74,7 +75,7 @@ const Callback = () => {
       setToastMessage(errorMessage);
       setLoginErrorState(true);
 
-      router.replace("/");
+      router.replace(routePaths.home());
 
       return;
     }
