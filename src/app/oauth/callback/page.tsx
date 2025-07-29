@@ -4,13 +4,8 @@ import { currentPath, loginErrorState, toastMessage } from "@/lib/atoms";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  useSetLoginForm,
-  useSetLoginProfileId,
-  useSetToken
-} from "@/lib/hooks";
+import { useSetLoginForm, useSetToken } from "@/lib/hooks";
 import { postOauthSignIn } from "./api";
-import { getProfileMe } from "@/lib/api";
 import { loginErrorMessages } from "@/lib/data";
 import { useMutation } from "@tanstack/react-query";
 import { OAuthMutationParams, OAuthMutationResult } from "./types";
@@ -34,20 +29,14 @@ const Callback = () => {
       const res = await postOauthSignIn({ domain, tempCode });
       const data = res.data;
 
-      useSetToken("jwt", data.token.jwt);
-      useSetToken("refresh_token", data.token.refreshToken);
-
-      const profileRes = await getProfileMe();
-
       return {
-        profileId: profileRes.data.id,
+        token: data.token,
         state: state
       };
     },
     onSuccess: (data) => {
-      const loginProfileId = data.profileId;
-
-      useSetLoginProfileId("loginProfileId", String(loginProfileId));
+      useSetToken("jwt", data.token.jwt);
+      useSetToken("refresh_token", data.token.refreshToken);
       useSetLoginForm("login_form", data.state);
 
       router.replace(`${currentPathName}`);

@@ -3,6 +3,7 @@
 import {
   filmoViewAllModalState,
   filmoYoutubeModalState,
+  handleNameModalState,
   handleNameState,
   isMyProfileState,
   mainPhotoCropImageState,
@@ -18,13 +19,14 @@ import {
 } from "@/lib/recoil/handle/atom";
 import { FilmoCategoryType } from "@/lib/types";
 import { useLayoutEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   photoOriginModalInit,
   profilePhotoModalInit,
   youtubeModalInit
 } from "../../data";
 import { ProfileDraftDataType } from "../../edit/types";
+import { loginState } from "@/lib/atoms";
 
 interface HandleInitializerProps {
   children: React.ReactNode;
@@ -41,9 +43,12 @@ const HandleInitializer = ({
   handleName,
   filmoCategories
 }: HandleInitializerProps) => {
+  const isLoggedIn = useRecoilValue(loginState);
+
   const setProfileData = useSetRecoilState(profileViewState);
   const setIsMyProfile = useSetRecoilState(isMyProfileState);
   const setHandleName = useSetRecoilState(handleNameState);
+  const setHandleNameModal = useSetRecoilState(handleNameModalState);
   const setFilmoCategoryList = useSetRecoilState(profileFilmoCategoryState);
 
   const setMainPhotoModalState = useSetRecoilState(mainPhotoModalState);
@@ -63,9 +68,15 @@ const HandleInitializer = ({
   const setFilmoYoutubeModalState = useSetRecoilState(filmoYoutubeModalState);
 
   useLayoutEffect(() => {
-    setProfileData(profileData);
-    setIsMyProfile(isMyProfile);
-    setHandleName(handleName);
+    if (isLoggedIn && !handleName) {
+      setHandleNameModal({ type: "create", active: true });
+    }
+
+    if (handleName) {
+      setHandleName(handleName);
+      setProfileData(profileData);
+      setIsMyProfile(isMyProfile);
+    }
     setFilmoCategoryList(filmoCategories);
 
     setMainPhotoModalState(profilePhotoModalInit);

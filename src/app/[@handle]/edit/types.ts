@@ -106,6 +106,7 @@ export interface ProfileSpecialtyType {
 
 export interface ProfileDraftDataType {
   id: number;
+  handleId: string;
   userId: number | null;
   status: string | null;
   info: ProfileInfoDataType;

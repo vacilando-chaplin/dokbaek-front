@@ -3,8 +3,9 @@ import Toast from "@/components/atoms/toast";
 import TopNavigation from "@/components/organisms/topNavigation";
 import HandleInitializer from "./components/provider/initializer";
 import { notFound } from "next/navigation";
-import { getProfileOtherUser } from "@/lib/api";
-import { getFilmoCategories } from "./api";
+import { getFilmoCategories, getProfileByHandleId } from "./api";
+import HandleNameCreatePage from "./handleNameCreatePage";
+import { profileInit } from "@/lib/data";
 
 const Layout = async ({
   params,
@@ -13,24 +14,31 @@ const Layout = async ({
   params: { "@handle": string };
   children: React.ReactNode;
 }) => {
-  // 로그인 프로필 Id 핸들네임으로 교체 해야 함
   const loginProfileId = cookies().get("loginProfileId")?.value;
-  const handleName = params["@handle"];
-  // const isMyProfile = loginProfileId === handleName;
-
-  // const res = await getProfile(handleName);
-  // const profileData = res.data;
-
-  // if (res.status === 404) {
-  //   notFound();
-  // }
-
-  const res = await getProfileOtherUser(Number(loginProfileId));
-  const profileData = res.data;
-  const isMyProfile = true;
-
+  const rawHandle = params["@handle"];
+  const handleName = decodeURIComponent(rawHandle);
   const categoryRes = await getFilmoCategories();
   const filmoCategories = categoryRes.data;
+
+  if (handleName === "@new") {
+    return (
+      <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">
+        <Toast kind="info" fullWidth={false} placement="top" />
+        <TopNavigation />
+        <HandleNameCreatePage />
+      </div>
+    );
+  }
+
+  const res = await getProfileByHandleId(handleName);
+  const profileExists = res?.status !== 404;
+
+  if (!profileExists) {
+    notFound();
+  }
+
+  const profileData = profileExists ? res?.data.data : profileInit;
+  const isMyProfile = loginProfileId === profileData?.id;
 
   return (
     <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">

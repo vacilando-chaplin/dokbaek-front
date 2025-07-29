@@ -102,3 +102,30 @@ export const getFilmoCategories = async () => {
     throw error;
   }
 };
+
+export const getProfileByHandleId = async (handleId: string) => {
+  try {
+    const res = await axios.get(`${baseURL}/profile/@${handleId}`);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postProfile = async (handleId: string) => {
+  try {
+    const res = await api.post(`/profile`, handleId);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const putProfileHandle = async (profileId: string) => {
+  try {
+    const res = await api.post(`/profile/${profileId}/handle`, profileId);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};

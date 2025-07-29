@@ -8,6 +8,7 @@ export const profileDraftData = atom<ProfileDraftDataType>({
   key: "profileDraftData",
   default: {
     id: 0,
+    handleId: "",
     userId: null,
     status: null,
     info: {

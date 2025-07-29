@@ -19,10 +19,10 @@ export const deleteSignOut = async (refreshToken: string) => {
   }
 };
 
-export const getProfileOtherUser = async (id: number) => {
+export const getProfileByProfileId = async (profileId: number) => {
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASEURL}/profile/${id}`
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/profile/${profileId}`
     );
     return res.data;
   } catch (error: any) {

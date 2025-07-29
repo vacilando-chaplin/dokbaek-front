@@ -16,6 +16,9 @@ export interface TermsMutationParams {
 }
 
 export interface TermsMutationResult {
-  profileId: string;
+  token: {
+    jwt: string;
+    refreshToken: string;
+  };
   state: string;
 }
