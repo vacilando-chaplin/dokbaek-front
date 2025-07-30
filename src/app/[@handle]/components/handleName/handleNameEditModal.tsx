@@ -77,18 +77,19 @@ const HandleNameEditModal = () => {
       return await putProfileHandle(loginProfileId, handleId);
     },
     onSuccess: (data, handleId) => {
+      const profileData = data.data;
       setHandleName(handleId);
       setCurrentHandleName(handleId);
-      setProfileData(data);
-      setToastMessage("프로필 아이디가 수정됐어요.");
-      router.replace(routePaths.profile(handleId));
+      setProfileData(profileData);
+      setToastMessage("프로필 아이디가 변경됐어요.");
+      router.replace(routePaths.profile(handleName));
     },
     onError: (error: any) => {
       if (error.message === "이미 존재하는 프로필 아이디에요.") {
         setToastMessage(error.message);
       } else {
         setHandleName(currentHandleName);
-        setToastMessage("프로필 아이디 수정 중 오류가 발생했어요.");
+        setToastMessage("프로필 아이디 변경 중 오류가 발생했어요.");
       }
     }
   });

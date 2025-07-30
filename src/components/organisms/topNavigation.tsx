@@ -67,7 +67,7 @@ const TopNavigation = () => {
   const moveMyProfileMutation = useMutation({
     mutationFn: getProfileMe,
     onSuccess: (res) => {
-      const data = res.data;
+      const data = res.data.data;
 
       if (data.handleId) {
         setHandleName(data.handleId);
@@ -107,7 +107,7 @@ const TopNavigation = () => {
   ];
 
   return (
-    <section className="fixed top-0 z-50 flex h-12 w-full items-center border-b-[1px] border-border-default-light bg-background-elevated-light px-6 shadow-drop dark:border-border-default-dark dark:bg-background-elevated-dark">
+    <section className="fixed top-0 z-[48] flex h-12 w-full items-center border-b-[1px] border-border-default-light bg-background-elevated-light px-8 shadow-drop dark:border-border-default-dark dark:bg-background-elevated-dark">
       <nav className="flex w-full items-center justify-between">
         <Logo />
         {isLoggedIn === true && (

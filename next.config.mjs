@@ -8,7 +8,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "dokbaek.s3.ap-northeast-2.amazonaws.com",
+        hostname: "filogram.s3.ap-northeast-2.amazonaws.com",
         pathname: "/**"
       },
       {
