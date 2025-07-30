@@ -8,8 +8,7 @@ const FooterCompany = () => {
       </p>
       <p className="typography-caption1 font-regular text-content-tertiary-light dark:text-content-tertiary-dark">
         대표: {process.env.NEXT_PUBLIC_REPRESENTATIVE_NAME} | 사업자 등록번호:
-        {process.env.NEXT_PUBLIC_BUSINESS_NO} | 통신판매업신고번호
-        {process.env.NEXT_PUBLIC_COMMERCIAL_LICENSE_NUMBER}
+        {process.env.NEXT_PUBLIC_BUSINESS_NO}
         <br />
         {process.env.NEXT_PUBLIC_BUSINESS_ADDRESS}
       </p>
