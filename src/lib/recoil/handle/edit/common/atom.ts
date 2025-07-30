@@ -44,9 +44,3 @@ export const profileDraftModalState = atom<string>({
   key: "profiledraftModalState",
   default: ""
 });
-
-export const viewedProfileId = atom<number | null | undefined>({
-  key: "viewedProfileId",
-  default: null,
-  effects_UNSTABLE: [persistAtom]
-});

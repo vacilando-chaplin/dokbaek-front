@@ -1,21 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Profile from "../../../public/images/samples/profile.png";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
 import { deleteProfileLike, postProfileLike } from "@/app/profiles/api";
 import Heart from "../../../public/icons/Heart.svg";
 import Like from "../../../public/icons/Like.svg";
-import LikeRed from "../../../public/icons/LikeRed.svg";
 import EyeOn from "../../../public/icons/EyeOn.svg";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import LoginModal from "../organisms/loginModal";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
-import { handleNameState } from "@/lib/recoil/handle/atom";
 import { routePaths } from "@/constants/routes";
+import { getProfileByProfileId } from "@/lib/api";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
@@ -25,16 +22,15 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
   const [loginModal, setLoginModal] = useState(false);
-  const handleName = useRecoilValue(handleNameState);
-  const setViewedProfileId = useSetRecoilState(viewedProfileId);
 
   const jwt = Cookies.get("jwt");
   const router = useRouter();
 
-  const onClickProfile = () => {
+  const onClickProfile = async () => {
     if (loginModal) return;
-    setViewedProfileId(profile.id);
-    router.push(routePaths.profile(handleName));
+    const res = await getProfileByProfileId(profile.id);
+    const data = res.data;
+    router.push(routePaths.profile(data.handleId));
   };
 
   const calculateBornYearShort = (bornYear: number) => {

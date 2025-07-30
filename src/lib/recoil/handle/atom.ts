@@ -1,13 +1,11 @@
 import {
   photoOriginModalInit,
-  profileHandleNameModalInit,
   profilePhotoModalInit,
   youtubeModalInit
 } from "@/app/[@handle]/data";
 import { ProfileDraftDataType } from "@/app/[@handle]/edit/types";
 import {
   PhotoOriginModalType,
-  ProfileHandleNameModalType,
   ProfilePhotoModalType,
   SelectedPhotoLabelType,
   YoutubeModalType
@@ -31,9 +29,9 @@ export const handleNameState = atom<string>({
   default: ""
 });
 
-export const handleNameModalState = atom<ProfileHandleNameModalType>({
-  key: "handleNameModalState",
-  default: profileHandleNameModalInit
+export const handleNameEditModalState = atom<boolean>({
+  key: "handleNameEditModalState",
+  default: false
 });
 
 export const mainPhotoModalState = atom<ProfilePhotoModalType>({

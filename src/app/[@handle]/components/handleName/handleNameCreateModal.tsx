@@ -2,21 +2,24 @@
 
 import BoxButton from "@/components/atoms/boxButton";
 import HandleNameModalHeader from "./handleNameModalHeadet";
-import { postProfile } from "../../api";
-import { useSetRecoilState } from "recoil";
-import { toastMessage } from "@/lib/atoms";
+import { getProfileHandleExists, postProfile } from "../../api";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { loginState, toastMessage } from "@/lib/atoms";
 import { useMutation } from "@tanstack/react-query";
 import TextInput from "@/components/atoms/textInput";
-import { useState } from "react";
-import { handleNameState } from "@/lib/recoil/handle/atom";
+import { useEffect, useState } from "react";
+import { handleNameState, profileViewState } from "@/lib/recoil/handle/atom";
 import { useRouter } from "next/navigation";
 import { routePaths } from "@/constants/routes";
+import { isValidHandle, setLoginProfileId } from "@/lib/utils";
 
 const HandleNameCreateModal = () => {
   const router = useRouter();
 
   const [handleName, setHandleName] = useState("");
 
+  const isLoggedIn = useRecoilValue(loginState);
+  const setProfileData = useSetRecoilState(profileViewState);
   const setCurrentHandleName = useSetRecoilState(handleNameState);
   const setToastMessage = useSetRecoilState(toastMessage);
 
@@ -50,19 +53,33 @@ const HandleNameCreateModal = () => {
 
   const useCreateProfile = () => {
     return useMutation({
-      mutationFn: (handleId: string) => postProfile(handleId),
-      onSuccess: (res, handleId) => {
-        if (res.status === 200) {
-          setHandleName(handleId);
-          setCurrentHandleName(handleId);
-          router.push(routePaths.profile(handleId));
+      mutationFn: (handleId: string) => getProfileHandleExists(handleId),
+      onSuccess: async (res, handleId) => {
+        const exists = res?.data?.data?.exists;
+
+        if (exists === false) {
+          try {
+            const profileRes = await postProfile(handleId);
+            const data = profileRes.data.data;
+
+            setHandleName(handleId);
+            setCurrentHandleName(handleId);
+            setProfileData(data);
+            setLoginProfileId("loginProfileId", data.id);
+            setToastMessage("프로필 생성이 완료됐어요.");
+            router.replace(routePaths.profile(handleId));
+          } catch (error) {
+            setToastMessage("프로필 생성 중 오류가 발생했어요.");
+          }
+        } else {
+          setToastMessage("이미 존재하는 프로필 아이디에요.");
         }
       },
       onError: (error: any) => {
         if (error.response?.status === 409) {
-          setToastMessage("이미 존재하는 프로필 아이디에요.");
+          setToastMessage("프로필 아이디는 하나만 생성할 수 있어요.");
         } else {
-          setToastMessage("프로필 아이디 생성 중 오류가 발생했어요.");
+          setToastMessage("프로필 생성 중 오류가 발생했어요.");
         }
       }
     });
@@ -73,6 +90,12 @@ const HandleNameCreateModal = () => {
   const onSaveClick = () => {
     createProfileMutation.mutate(handleName);
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace(routePaths.home());
+    }
+  }, []);
 
   return (
     <section className="fixed inset-0 z-[50] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark">
@@ -99,7 +122,7 @@ const HandleNameCreateModal = () => {
           <BoxButton
             type="primary"
             size="medium"
-            disabled={!handleName}
+            disabled={!isValidHandle(handleName)}
             onClick={onSaveClick}
           >
             완료

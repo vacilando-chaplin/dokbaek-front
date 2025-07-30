@@ -4,28 +4,35 @@ import TextInput from "@/components/atoms/textInput";
 import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
 import {
-  handleNameModalState,
-  handleNameState
+  handleNameEditModalState,
+  handleNameState,
+  profileViewState
 } from "@/lib/recoil/handle/atom";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { profileHandleNameModalInit } from "../../data";
 import { useMutation } from "@tanstack/react-query";
-import { postProfile } from "../../api";
+import { getProfileHandleExists, putProfileHandle } from "../../api";
 import { toastMessage } from "@/lib/atoms";
+import { useRouter } from "next/navigation";
+import { routePaths } from "@/constants/routes";
+import { isValidHandle } from "@/lib/utils";
 
 const HandleNameEditModal = () => {
+  const router = useRouter();
+
   const [handleName, setHandleName] = useState("");
   const [currentHandleName, setCurrentHandleName] =
     useRecoilState(handleNameState);
-  const [handleNameModal, setHandleNameModal] =
-    useRecoilState(handleNameModalState);
+  const [handleNameEditModal, setHandleNameEditModal] = useRecoilState(
+    handleNameEditModalState
+  );
 
+  const setProfileData = useSetRecoilState(profileViewState);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const onModalClose = () => {
     setHandleName("");
-    setHandleNameModal(profileHandleNameModalInit);
+    setHandleNameEditModal(false);
   };
 
   const onHandleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,17 +73,33 @@ const HandleNameEditModal = () => {
 
   const useEditProfile = () => {
     return useMutation({
-      mutationFn: (handleId: string) => postProfile(handleId),
-      onSuccess: (res, handleId) => {
-        if (res.status === 200) {
+      mutationFn: (handleId: string) => getProfileHandleExists(handleId),
+      onSuccess: async (res, handleId) => {
+        const exists = res?.data?.data?.exists;
+
+        if (exists) {
+          setToastMessage("이미 존재하는 프로필 아이디에요.");
+          return;
+        }
+
+        try {
+          const profileRes = await putProfileHandle(handleId);
+          const data = profileRes.data;
+
           setHandleName(handleId);
+          setCurrentHandleName(handleId);
+          setProfileData(data);
+          setToastMessage("프로필 아이디가 수정됐어요.");
+          router.replace(routePaths.profile(handleId));
+        } catch (error) {
+          setToastMessage("프로필 아이디 수정 중 오류가 발생했어요.");
         }
       },
       onError: (error: any) => {
         if (error.response?.status === 409) {
           setToastMessage("이미 존재하는 프로필 아이디에요.");
         } else {
-          setToastMessage("프로필 아이디 생성 중 오류가 발생했어요.");
+          setToastMessage("프로필 아이디 수정 중 오류가 발생했어요.");
         }
       }
     });
@@ -86,7 +109,7 @@ const HandleNameEditModal = () => {
 
   const onSaveClick = () => {
     createProfileMutation.mutate(handleName);
-    setHandleNameModal(profileHandleNameModalInit);
+    setHandleNameEditModal(false);
   };
 
   useEffect(() => {
@@ -94,8 +117,7 @@ const HandleNameEditModal = () => {
   }, [currentHandleName]);
 
   return (
-    handleNameModal.type === "edit" &&
-    handleNameModal.active && (
+    handleNameEditModal && (
       <section className="fixed inset-0 z-[50] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark">
         <div className="interaction-default relative my-20 flex h-auto w-full max-w-[1024px] animate-enter flex-col items-center justify-center rounded-3xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
           <ModalHeader name="프로필 아이디 변경" onClick={onModalClose} />
@@ -113,6 +135,7 @@ const HandleNameEditModal = () => {
           </div>
           <ModalFooter
             text="저장"
+            disabled={!isValidHandle(handleName)}
             onCloseClick={onModalClose}
             onSaveClick={onSaveClick}
           />

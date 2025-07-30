@@ -1,23 +1,27 @@
 "use client";
 
 import {
-  handleNameState,
+  handleNameEditModalState,
   isMyProfileState,
   profileViewState
 } from "@/lib/recoil/handle/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import Edit from "../../../../../public/icons/Edit.svg";
 
 const ProfileMeta = () => {
   const profileData = useRecoilValue(profileViewState);
   const isMyProfile = useRecoilValue(isMyProfileState);
 
-  const [handleName, setHandleName] = useRecoilState(handleNameState);
+  const setHandleNameEditModal = useSetRecoilState(handleNameEditModalState);
 
   const date = new Date(profileData.updatedAt);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
+
+  const onHandleNameEditModalOpen = () => {
+    setHandleNameEditModal(true);
+  };
 
   return (
     <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light dark:bg-background-base_inverse-dark dark:text-static-black">
@@ -28,9 +32,9 @@ const ProfileMeta = () => {
         {isMyProfile && (
           <div className="flex flex-row gap-1.5 rounded-lg bg-[#FFFFFF1A] px-1.5 py-0.5">
             <span className="typography-caption1 font-medium text-content-alternative-light dark:text-content-alternative-dark">
-              {handleName}
+              {profileData.handleId}
             </span>
-            <button type="button">
+            <button type="button" onClick={onHandleNameEditModalOpen}>
               <Edit
                 width="12"
                 height="12"

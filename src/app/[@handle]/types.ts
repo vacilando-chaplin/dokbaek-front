@@ -57,8 +57,3 @@ export interface ProfilePhotoModalType {
 }
 
 export type PhotoLabelType = "profilePhoto" | "stillcutPhoto" | "recentPhoto";
-
-export interface ProfileHandleNameModalType {
-  type: "" | "create" | "edit";
-  active: boolean;
-}

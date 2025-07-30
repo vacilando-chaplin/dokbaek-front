@@ -19,7 +19,9 @@ export const deleteSignOut = async (refreshToken: string) => {
   }
 };
 
-export const getProfileByProfileId = async (profileId: number) => {
+export const getProfileByProfileId = async (
+  profileId: number | null | undefined
+) => {
   try {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_API_BASEURL}/profile/${profileId}`

@@ -4,12 +4,12 @@ import { TermAgreementsType } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loginErrorState, toastMessage } from "@/lib/atoms";
 import { useSetRecoilState } from "recoil";
-import { useSetLoginForm, useSetToken } from "@/lib/hooks";
 import { postOauthSignUp } from "../../callback/api";
 import BoxButton from "@/components/atoms/boxButton";
 import { useMutation } from "@tanstack/react-query";
 import { TermsMutationParams, TermsMutationResult } from "../type";
 import { routePaths } from "@/constants/routes";
+import { setLoginForm, setToken } from "@/lib/utils";
 
 interface TermAgreementButtonProps {
   termAgreements: TermAgreementsType[];
@@ -47,9 +47,9 @@ const TermAgreementButton = ({
       };
     },
     onSuccess: (data) => {
-      useSetToken("jwt", data.token.jwt);
-      useSetToken("refresh_token", data.token.refreshToken);
-      useSetLoginForm("login_form", data.state);
+      setToken("jwt", data.token.jwt);
+      setToken("refresh_token", data.token.refreshToken);
+      setLoginForm("login_form", data.state);
       router.replace(routePaths.profile("new"));
     },
     onError: () => {

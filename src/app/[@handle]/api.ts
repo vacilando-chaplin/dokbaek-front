@@ -114,7 +114,7 @@ export const getProfileByHandleId = async (handleId: string) => {
 
 export const postProfile = async (handleId: string) => {
   try {
-    const res = await api.post(`/profile`, handleId);
+    const res = await api.post(`/profile`, { handleId });
     return res;
   } catch (error) {
     throw error;
@@ -123,7 +123,18 @@ export const postProfile = async (handleId: string) => {
 
 export const putProfileHandle = async (profileId: string) => {
   try {
-    const res = await api.post(`/profile/${profileId}/handle`, profileId);
+    const res = await api.post(`/profile/${profileId}/handle`, { profileId });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getProfileHandleExists = async (handleId: string) => {
+  try {
+    const res = await axios.get(`${baseURL}/profile/handle/exists`, {
+      params: { handleId }
+    });
     return res.data;
   } catch (error) {
     throw error;

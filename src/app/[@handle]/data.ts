@@ -1,5 +1,3 @@
-import { ProfileHandleNameModalType } from "./types";
-
 export const photoOriginModalInit = {
   active: false,
   path: "",
@@ -35,9 +33,4 @@ export const cropDataInit = {
   left: 0,
   width: 0,
   height: 0
-};
-
-export const profileHandleNameModalInit: ProfileHandleNameModalType = {
-  type: "",
-  active: false
 };

@@ -11,9 +11,7 @@ import { currentPath, loginState, toastMessage } from "@/lib/atoms";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
 import { useState } from "react";
-import { removeStorageData } from "@/lib/utils";
-import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
-import { useSetLoginProfileId } from "@/lib/hooks";
+import { removeStorageData, setLoginProfileId } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { routePaths } from "@/constants/routes";
 import { handleNameState } from "@/lib/recoil/handle/atom";
@@ -29,7 +27,6 @@ const TopNavigation = () => {
 
   const setPathName = useSetRecoilState(currentPath);
   const setToastMessage = useSetRecoilState(toastMessage);
-  const setViewProfileId = useSetRecoilState(viewedProfileId);
 
   const [handleName, setHandleName] = useRecoilState(handleNameState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState<boolean>(loginState);
@@ -72,11 +69,9 @@ const TopNavigation = () => {
     onSuccess: (res) => {
       const data = res.data;
 
-      setViewProfileId(data.id);
-      useSetLoginProfileId("loginProfileId", data.id);
-
       if (data.handleId) {
         setHandleName(data.handleId);
+        setLoginProfileId("loginProfileId", data.id);
         router.push(routePaths.profile(data.handleId));
       } else {
         router.push(routePaths.profile("new"));

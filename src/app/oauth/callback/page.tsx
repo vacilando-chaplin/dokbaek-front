@@ -4,12 +4,12 @@ import { currentPath, loginErrorState, toastMessage } from "@/lib/atoms";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useSetLoginForm, useSetToken } from "@/lib/hooks";
 import { postOauthSignIn } from "./api";
 import { loginErrorMessages } from "@/lib/data";
 import { useMutation } from "@tanstack/react-query";
 import { OAuthMutationParams, OAuthMutationResult } from "./types";
 import { routePaths } from "@/constants/routes";
+import { setLoginForm, setToken } from "@/lib/utils";
 
 const Callback = () => {
   const router = useRouter();
@@ -35,9 +35,9 @@ const Callback = () => {
       };
     },
     onSuccess: (data) => {
-      useSetToken("jwt", data.token.jwt);
-      useSetToken("refresh_token", data.token.refreshToken);
-      useSetLoginForm("login_form", data.state);
+      setToken("jwt", data.token.jwt);
+      setToken("refresh_token", data.token.refreshToken);
+      setLoginForm("login_form", data.state);
 
       router.replace(`${currentPathName}`);
     },

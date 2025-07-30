@@ -38,33 +38,6 @@ export const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
-export const useSetToken = (name: string, token: string) => {
-  Cookies.set(name, token, {
-    expires: 7,
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    sameSite: "strict"
-  });
-};
-
-export const useSetLoginProfileId = (name: string, loginProfileId: string) => {
-  Cookies.set(name, loginProfileId, {
-    expires: 7,
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    sameSite: "strict"
-  });
-};
-
-export const useSetLoginForm = (name: string, loginForm: string) => {
-  Cookies.set(name, loginForm, {
-    expires: 7,
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    sameSite: "strict"
-  });
-};
-
 export const useImageSelector = () => {
   const setSelectImage = useSetRecoilState(selectImageState);
   const setCropImage = useSetRecoilState(cropImageState);
