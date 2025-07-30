@@ -29,7 +29,7 @@ const TopNavigation = () => {
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const [handleName, setHandleName] = useRecoilState(handleNameState);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState<boolean>(loginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userMenuActive, setUserMenuActive] = useState(false);
 
   const onLogIn = () => {
@@ -64,7 +64,7 @@ const TopNavigation = () => {
     setUserMenuActive(!userMenuActive);
   };
 
-  const useMoveMyProfileMutation = useMutation({
+  const moveMyProfileMutation = useMutation({
     mutationFn: getProfileMe,
     onSuccess: (res) => {
       const data = res.data;
@@ -77,13 +77,19 @@ const TopNavigation = () => {
         router.push(routePaths.profile("new"));
       }
     },
-    onError: () => {
-      setToastMessage("내 프로필을 불러 올 수 없어요. 다시 시도해 주세요.");
+    onError: (error: any) => {
+      const status = error.response?.status;
+
+      if (status === 404) {
+        router.push(routePaths.profile("new"));
+      } else {
+        setToastMessage("내 프로필을 불러 올 수 없어요. 다시 시도해 주세요.");
+      }
     }
   });
 
   const onMoveMyProfile = () => {
-    useMoveMyProfileMutation.mutate();
+    moveMyProfileMutation.mutate();
   };
 
   const userMenu = [

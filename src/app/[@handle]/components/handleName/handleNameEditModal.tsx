@@ -16,8 +16,10 @@ import { toastMessage } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
 import { routePaths } from "@/constants/routes";
 import { isValidHandle } from "@/lib/utils";
+import Cookies from "js-cookie";
 
 const HandleNameEditModal = () => {
+  const loginProfileId = Number(Cookies.get("loginProfileId"));
   const router = useRouter();
 
   const [handleName, setHandleName] = useState("");
@@ -38,77 +40,61 @@ const HandleNameEditModal = () => {
   const onHandleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
-    if (!value.startsWith("@")) {
-      value = "@" + value.replace(/^@*/, "");
-    }
+    // 모든 @ 제거 후, 순수 사용자 입력만 저장
+    value = value.replace(/^@+/, "");
 
-    if (value === "@") {
-      setHandleName("");
-      return;
-    }
-
+    // 빈 입력은 허용
     setHandleName(value);
   };
 
-  const onHandleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // @ 뒤의 텍스트가 없는 상태에서 백스페이스를 누르면 막기
-    if (
-      e.key === "Backspace" &&
-      e.currentTarget.selectionStart !== null &&
-      e.currentTarget.selectionStart <= 1
-    ) {
-      e.preventDefault();
-    }
-  };
-
   const onHandleNameClick = (e: React.MouseEvent<HTMLInputElement>) => {
-    // 클릭했을 때 커서가 @ 앞에 오지 않도록 처리
-    if (
-      e.currentTarget.selectionStart !== null &&
-      e.currentTarget.selectionStart < 1
-    ) {
+    const pos = e.currentTarget.selectionStart ?? 0;
+
+    // 커서를 @ 앞에 두려고 할 때 막기
+    if (pos < 1) {
       e.currentTarget.setSelectionRange(1, 1);
     }
   };
 
-  const useEditProfile = () => {
-    return useMutation({
-      mutationFn: (handleId: string) => getProfileHandleExists(handleId),
-      onSuccess: async (res, handleId) => {
-        const exists = res?.data?.data?.exists;
+  const onHandleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const pos = e.currentTarget.selectionStart ?? 0;
 
-        if (exists) {
-          setToastMessage("이미 존재하는 프로필 아이디에요.");
-          return;
-        }
-
-        try {
-          const profileRes = await putProfileHandle(handleId);
-          const data = profileRes.data;
-
-          setHandleName(handleId);
-          setCurrentHandleName(handleId);
-          setProfileData(data);
-          setToastMessage("프로필 아이디가 수정됐어요.");
-          router.replace(routePaths.profile(handleId));
-        } catch (error) {
-          setToastMessage("프로필 아이디 수정 중 오류가 발생했어요.");
-        }
-      },
-      onError: (error: any) => {
-        if (error.response?.status === 409) {
-          setToastMessage("이미 존재하는 프로필 아이디에요.");
-        } else {
-          setToastMessage("프로필 아이디 수정 중 오류가 발생했어요.");
-        }
-      }
-    });
+    // 백스페이스로 @ 지우려고 할 때 막기
+    if (e.key === "Backspace" && pos <= 1) {
+      e.preventDefault();
+    }
   };
 
-  const createProfileMutation = useEditProfile();
+  const editProfileMutation = useMutation({
+    mutationFn: async (handleId: string) => {
+      const exists = await getProfileHandleExists(handleId);
+
+      if (exists.data.exists) {
+        setToastMessage("이미 존재하는 프로필 아이디에요.");
+        return;
+      }
+
+      return await putProfileHandle(loginProfileId, handleId);
+    },
+    onSuccess: (data, handleId) => {
+      setHandleName(handleId);
+      setCurrentHandleName(handleId);
+      setProfileData(data);
+      setToastMessage("프로필 아이디가 수정됐어요.");
+      router.replace(routePaths.profile(handleId));
+    },
+    onError: (error: any) => {
+      if (error.message === "이미 존재하는 프로필 아이디에요.") {
+        setToastMessage(error.message);
+      } else {
+        setHandleName(currentHandleName);
+        setToastMessage("프로필 아이디 수정 중 오류가 발생했어요.");
+      }
+    }
+  });
 
   const onSaveClick = () => {
-    createProfileMutation.mutate(handleName);
+    editProfileMutation.mutate(handleName);
     setHandleNameEditModal(false);
   };
 
@@ -119,7 +105,7 @@ const HandleNameEditModal = () => {
   return (
     handleNameEditModal && (
       <section className="fixed inset-0 z-[50] flex h-auto w-full items-center justify-center overflow-auto bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark">
-        <div className="interaction-default relative my-20 flex h-auto w-full max-w-[1024px] animate-enter flex-col items-center justify-center rounded-3xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
+        <div className="interaction-default relative my-20 flex h-auto w-[480px] animate-enter flex-col items-center justify-center rounded-3xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
           <ModalHeader name="프로필 아이디 변경" onClick={onModalClose} />
           <div className="scrollbar dark:dark-scrollbar flex h-auto max-h-[80vh] w-full max-w-[1280px] flex-col gap-4 overflow-auto overscroll-contain rounded-3xl p-6">
             <TextInput

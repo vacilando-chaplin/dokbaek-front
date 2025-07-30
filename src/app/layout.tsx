@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   title: "filogram",
   description: "배우 프로필 제작 서비스",
   icons: {
-    icon: "/icons/Logo.svg"
+    icon: "/icons/favicon.png",
+    shortcut: "/favicon.ico"
   }
 };
 

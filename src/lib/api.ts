@@ -37,7 +37,7 @@ export const getProfileByProfileId = async (
 export const getProfileMe = async () => {
   try {
     const res = await api.get("/profile/me");
-    return res.data;
+    return res;
   } catch (error) {
     throw error;
   }

@@ -45,7 +45,7 @@ const HandleInitializer = ({
   const setProfileData = useSetRecoilState(profileViewState);
   const setIsMyProfile = useSetRecoilState(isMyProfileState);
   const setHandleName = useSetRecoilState(handleNameState);
-  const setHandleNameModal = useSetRecoilState(handleNameEditModalState);
+  const setHandleNameEditModal = useSetRecoilState(handleNameEditModalState);
   const setFilmoCategoryList = useSetRecoilState(profileFilmoCategoryState);
 
   const setMainPhotoModalState = useSetRecoilState(mainPhotoModalState);
@@ -68,7 +68,7 @@ const HandleInitializer = ({
     setHandleName(handleName);
     setProfileData(profileData);
     setIsMyProfile(isMyProfile);
-    setHandleNameModal(false);
+    setHandleNameEditModal(false);
     setFilmoCategoryList(filmoCategories);
 
     setMainPhotoModalState(profilePhotoModalInit);

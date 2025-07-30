@@ -55,7 +55,7 @@ const HandleNameCreateModal = () => {
     return useMutation({
       mutationFn: (handleId: string) => getProfileHandleExists(handleId),
       onSuccess: async (res, handleId) => {
-        const exists = res?.data?.data?.exists;
+        const exists = res?.data?.exists;
 
         if (exists === false) {
           try {
@@ -75,12 +75,8 @@ const HandleNameCreateModal = () => {
           setToastMessage("이미 존재하는 프로필 아이디에요.");
         }
       },
-      onError: (error: any) => {
-        if (error.response?.status === 409) {
-          setToastMessage("프로필 아이디는 하나만 생성할 수 있어요.");
-        } else {
-          setToastMessage("프로필 생성 중 오류가 발생했어요.");
-        }
+      onError: () => {
+        setToastMessage("프로필 생성 중 오류가 발생했어요.");
       }
     });
   };

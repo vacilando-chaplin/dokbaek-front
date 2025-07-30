@@ -9,7 +9,6 @@ import UserProfileShowcase from "./userProfileShowcase";
 import PhotoOriginModal from "../photo/photoOriginModal";
 import FilmoShowcaseModal from "../filmo/filmoShowcaseModal";
 import FilmoYoutubeModal from "../filmo/filmoYoutubeModal";
-import HandleNameCreateModal from "../handleName/handleNameCreateModal";
 import HandleNameEditModal from "../handleName/handleNameEditModal";
 
 const UserProfileContainer = () => {
@@ -41,7 +40,6 @@ const UserProfileContainer = () => {
       <PhotoOriginModal />
       <FilmoShowcaseModal />
       <FilmoYoutubeModal />
-      <HandleNameCreateModal />
       <HandleNameEditModal />
     </div>
   );
