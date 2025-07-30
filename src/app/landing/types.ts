@@ -1,5 +1,6 @@
 export interface ProfileShowcaseResponseType {
   id?: number | null;
+  handleId: string;
   status?: string | null;
   name?: string | null;
   bornYear?: number | null;

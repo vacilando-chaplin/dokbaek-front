@@ -4,17 +4,12 @@ import { currentPath, loginErrorState, toastMessage } from "@/lib/atoms";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  useSetLoginForm,
-  useSetLoginProfileId,
-  useSetToken
-} from "@/lib/hooks";
 import { postOauthSignIn } from "./api";
-import { getProfileMe } from "@/lib/api";
 import { loginErrorMessages } from "@/lib/data";
 import { useMutation } from "@tanstack/react-query";
 import { OAuthMutationParams, OAuthMutationResult } from "./types";
 import { routePaths } from "@/constants/routes";
+import { setLoginForm, setToken } from "@/lib/utils";
 
 const Callback = () => {
   const router = useRouter();
@@ -34,21 +29,15 @@ const Callback = () => {
       const res = await postOauthSignIn({ domain, tempCode });
       const data = res.data;
 
-      useSetToken("jwt", data.token.jwt);
-      useSetToken("refresh_token", data.token.refreshToken);
-
-      const profileRes = await getProfileMe();
-
       return {
-        profileId: profileRes.data.id,
+        token: data.token,
         state: state
       };
     },
     onSuccess: (data) => {
-      const loginProfileId = data.profileId;
-
-      useSetLoginProfileId("loginProfileId", String(loginProfileId));
-      useSetLoginForm("login_form", data.state);
+      setToken("jwt", data.token.jwt);
+      setToken("refresh_token", data.token.refreshToken);
+      setLoginForm("login_form", data.state);
 
       router.replace(`${currentPathName}`);
     },

@@ -3,6 +3,7 @@
 import {
   filmoViewAllModalState,
   filmoYoutubeModalState,
+  handleNameEditModalState,
   handleNameState,
   isMyProfileState,
   mainPhotoCropImageState,
@@ -44,6 +45,7 @@ const HandleInitializer = ({
   const setProfileData = useSetRecoilState(profileViewState);
   const setIsMyProfile = useSetRecoilState(isMyProfileState);
   const setHandleName = useSetRecoilState(handleNameState);
+  const setHandleNameEditModal = useSetRecoilState(handleNameEditModalState);
   const setFilmoCategoryList = useSetRecoilState(profileFilmoCategoryState);
 
   const setMainPhotoModalState = useSetRecoilState(mainPhotoModalState);
@@ -63,9 +65,10 @@ const HandleInitializer = ({
   const setFilmoYoutubeModalState = useSetRecoilState(filmoYoutubeModalState);
 
   useLayoutEffect(() => {
+    setHandleName(handleName);
     setProfileData(profileData);
     setIsMyProfile(isMyProfile);
-    setHandleName(handleName);
+    setHandleNameEditModal(false);
     setFilmoCategoryList(filmoCategories);
 
     setMainPhotoModalState(profilePhotoModalInit);
