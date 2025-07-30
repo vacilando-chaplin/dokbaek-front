@@ -29,6 +29,11 @@ export const handleNameState = atom<string>({
   default: ""
 });
 
+export const handleNameEditModalState = atom<boolean>({
+  key: "handleNameEditModalState",
+  default: false
+});
+
 export const mainPhotoModalState = atom<ProfilePhotoModalType>({
   key: "mainPhotoModalState",
   default: profilePhotoModalInit

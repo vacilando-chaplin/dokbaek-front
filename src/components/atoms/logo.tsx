@@ -5,7 +5,7 @@ import Link from "next/link";
 const Logo = () => {
   return (
     <Link href={routePaths.home()} className="outline-none">
-      <LogoHorizontal width="96" height="20" />
+      <LogoHorizontal width="52" height="28" />
     </Link>
   );
 };

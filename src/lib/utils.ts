@@ -68,3 +68,34 @@ export const removeStorageData = () => {
   Cookies.remove("loginProfileId", { path: "/" });
   localStorage.removeItem("recoil-persist");
 };
+
+export const setToken = (name: string, token: string) => {
+  Cookies.set(name, token, {
+    expires: 7,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    sameSite: "strict"
+  });
+};
+
+export const setLoginProfileId = (name: string, loginProfileId: string) => {
+  Cookies.set(name, loginProfileId, {
+    expires: 7,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    sameSite: "strict"
+  });
+};
+
+export const setLoginForm = (name: string, loginForm: string) => {
+  Cookies.set(name, loginForm, {
+    expires: 7,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    sameSite: "strict"
+  });
+};
+
+export const isValidHandle = (handle: string) => {
+  return handle.length > 2 && /^[a-zA-Z0-9]+$/.test(handle);
+};

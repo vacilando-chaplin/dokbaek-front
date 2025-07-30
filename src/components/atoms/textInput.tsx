@@ -16,6 +16,8 @@ interface TextInputProps {
   placeholder?: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = ({
@@ -30,7 +32,9 @@ const TextInput = ({
   maxLength,
   placeholder,
   onChange,
-  onBlur
+  onBlur,
+  onKeyDown,
+  onClick
 }: TextInputProps) => {
   const sizeStyle: sizeStyleType = {
     large: "h-[49px] typography-body2 gap-2 rounded-[14px] py-3.5 px-4",
@@ -74,6 +78,8 @@ const TextInput = ({
         className="h-auto w-full bg-background-surface-light text-content-primary-light placeholder-content-alternative-light outline-none dark:bg-background-surface-dark dark:text-content-primary-dark dark:placeholder-content-alternative-dark"
         onChange={onChange}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
+        onClick={onClick}
       />
       {parameter && (
         <div className="text-content-secondary-light dark:text-content-secondary-dark">

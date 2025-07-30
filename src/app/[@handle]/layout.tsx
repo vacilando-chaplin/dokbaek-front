@@ -1,10 +1,11 @@
 import { cookies } from "next/headers";
 import Toast from "@/components/atoms/toast";
-import TopNavigation from "@/components/organisms/topNavigation";
 import HandleInitializer from "./components/provider/initializer";
 import { notFound } from "next/navigation";
-import { getProfileOtherUser } from "@/lib/api";
-import { getFilmoCategories } from "./api";
+import { getFilmoCategories, getProfileByHandleId } from "./api";
+import HandleNameCreatePage from "./handleNameCreatePage";
+import { profileInit } from "@/lib/data";
+import dynamic from "next/dynamic";
 
 const Layout = async ({
   params,
@@ -13,24 +14,39 @@ const Layout = async ({
   params: { "@handle": string };
   children: React.ReactNode;
 }) => {
-  // 로그인 프로필 Id 핸들네임으로 교체 해야 함
-  const loginProfileId = cookies().get("loginProfileId")?.value;
-  const handleName = params["@handle"];
-  // const isMyProfile = loginProfileId === handleName;
+  const loginProfileId = Number(cookies().get("loginProfileId")?.value);
+  const rawHandle = params["@handle"];
+  const handleName = decodeURIComponent(rawHandle).substring(1);
 
-  // const res = await getProfile(handleName);
-  // const profileData = res.data;
+  const TopNavigation = dynamic(
+    () => import("@/components/organisms/topNavigation"),
+    {
+      ssr: false
+    }
+  );
 
-  // if (res.status === 404) {
-  //   notFound();
-  // }
+  // 회원 가입 후 프로필 ID 존재 여부 확인, 프로필 ID가 없다면 프로필 ID 생성 페이지 보여줌
+  if (handleName === "@new") {
+    return (
+      <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">
+        <Toast kind="info" fullWidth={false} placement="top" />
+        <TopNavigation />
+        <HandleNameCreatePage />
+      </div>
+    );
+  }
 
-  const res = await getProfileOtherUser(Number(loginProfileId));
-  const profileData = res.data;
-  const isMyProfile = true;
+  const res = await getProfileByHandleId(handleName);
+
+  if (!res) {
+    notFound();
+  }
 
   const categoryRes = await getFilmoCategories();
   const filmoCategories = categoryRes.data;
+
+  const profileData = res ? res?.data : profileInit;
+  const isMyProfile = loginProfileId === profileData?.id;
 
   return (
     <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">

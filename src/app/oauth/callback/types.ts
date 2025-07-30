@@ -28,6 +28,9 @@ export interface OAuthMutationParams {
 }
 
 export interface OAuthMutationResult {
-  profileId: string;
+  token: {
+    jwt: string;
+    refreshToken: string;
+  };
   state: string;
 }

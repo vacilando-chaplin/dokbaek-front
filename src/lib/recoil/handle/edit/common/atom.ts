@@ -8,6 +8,7 @@ export const profileDraftData = atom<ProfileDraftDataType>({
   key: "profileDraftData",
   default: {
     id: 0,
+    handleId: "",
     userId: null,
     status: null,
     info: {
@@ -42,10 +43,4 @@ export const profileDraftData = atom<ProfileDraftDataType>({
 export const profileDraftModalState = atom<string>({
   key: "profiledraftModalState",
   default: ""
-});
-
-export const viewedProfileId = atom<number | null | undefined>({
-  key: "viewedProfileId",
-  default: null,
-  effects_UNSTABLE: [persistAtom]
 });

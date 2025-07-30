@@ -3,20 +3,13 @@
 import { TermAgreementsType } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loginErrorState, toastMessage } from "@/lib/atoms";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  useSetLoginForm,
-  useSetLoginProfileId,
-  useSetToken
-} from "@/lib/hooks";
+import { useSetRecoilState } from "recoil";
 import { postOauthSignUp } from "../../callback/api";
-import { getProfileMe } from "@/lib/api";
 import BoxButton from "@/components/atoms/boxButton";
-import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
 import { useMutation } from "@tanstack/react-query";
 import { TermsMutationParams, TermsMutationResult } from "../type";
 import { routePaths } from "@/constants/routes";
-import { handleNameState } from "@/lib/recoil/handle/atom";
+import { setLoginForm, setToken } from "@/lib/utils";
 
 interface TermAgreementButtonProps {
   termAgreements: TermAgreementsType[];
@@ -32,9 +25,6 @@ const TermAgreementButton = ({
   const code = urlParams.get("code");
   const state = urlParams.get("state");
 
-  const handleName = useRecoilValue(handleNameState);
-
-  const setViewProfileId = useSetRecoilState(viewedProfileId);
   const setToastMessage = useSetRecoilState(toastMessage);
   const setLoginErrorState = useSetRecoilState(loginErrorState);
 
@@ -51,24 +41,16 @@ const TermAgreementButton = ({
       });
       const data = res.data;
 
-      useSetToken("jwt", data.token.jwt);
-      useSetToken("refresh_token", data.token.refreshToken);
-
-      const profileRes = await getProfileMe();
-
       return {
-        profileId: profileRes.data.id,
+        token: data.token,
         state: state
       };
     },
     onSuccess: (data) => {
-      const loginProfileId = data.profileId;
-
-      setViewProfileId(Number(loginProfileId));
-      useSetLoginProfileId("loginProfileId", String(loginProfileId));
-      useSetLoginForm("login_form", data.state);
-
-      router.replace(routePaths.profile(handleName));
+      setToken("jwt", data.token.jwt);
+      setToken("refresh_token", data.token.refreshToken);
+      setLoginForm("login_form", data.state);
+      router.replace(routePaths.profile("new"));
     },
     onError: () => {
       setLoginErrorState(true);

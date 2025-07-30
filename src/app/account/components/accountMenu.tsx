@@ -6,13 +6,14 @@ import { useRouter } from "next/navigation";
 import AccountContainer from "./accountContainer";
 import { removeStorageData } from "@/lib/utils";
 import { useSetRecoilState } from "recoil";
-import { toastMessage } from "@/lib/atoms";
+import { loginState, toastMessage } from "@/lib/atoms";
 import AccountMenuItem from "./accountMenuItem";
 import { routePaths } from "@/constants/routes";
 
 const AccountMenu = () => {
   const router = useRouter();
   const setToastMessage = useSetRecoilState(toastMessage);
+  const setLogin = useSetRecoilState(loginState);
 
   const onLogOut = async () => {
     const refreshToken = Cookies.get("refresh_token");
@@ -20,6 +21,8 @@ const AccountMenu = () => {
     if (refreshToken) {
       await deleteSignOut(refreshToken);
       removeStorageData();
+
+      setLogin(false);
       setToastMessage("안전하게 로그아웃됐어요.");
       router.replace(routePaths.home());
     }

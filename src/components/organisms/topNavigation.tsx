@@ -2,18 +2,16 @@
 
 import Logo from "../atoms/logo";
 import { usePathname, useRouter } from "next/navigation";
-import { deleteSignOut } from "@/lib/api";
+import { deleteSignOut, getProfileMe } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { currentPath, toastMessage } from "@/lib/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { currentPath, loginState, toastMessage } from "@/lib/atoms";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
-import { useEffect, useState } from "react";
-import { removeStorageData } from "@/lib/utils";
-import { viewedProfileId } from "@/lib/recoil/handle/edit/common/atom";
-import { useSetLoginProfileId, useSetToken } from "@/lib/hooks";
+import { useState } from "react";
+import { removeStorageData, setLoginProfileId } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { routePaths } from "@/constants/routes";
 import { handleNameState } from "@/lib/recoil/handle/atom";
@@ -27,15 +25,11 @@ const TopNavigation = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const loginProfileId = Number(Cookies.get("loginProfileId"));
-
-  const handleName = useRecoilValue(handleNameState);
-
   const setPathName = useSetRecoilState(currentPath);
   const setToastMessage = useSetRecoilState(toastMessage);
-  const setViewProfileId = useSetRecoilState(viewedProfileId);
 
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const [handleName, setHandleName] = useRecoilState(handleNameState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userMenuActive, setUserMenuActive] = useState(false);
 
   const onLogIn = () => {
@@ -66,12 +60,36 @@ const TopNavigation = () => {
     }
   });
 
-  const onMoveMyProrfile = () => {
-    setViewProfileId(loginProfileId);
-  };
-
   const onUserMenuClick = () => {
     setUserMenuActive(!userMenuActive);
+  };
+
+  const moveMyProfileMutation = useMutation({
+    mutationFn: getProfileMe,
+    onSuccess: (res) => {
+      const data = res.data.data;
+
+      if (data.handleId) {
+        setHandleName(data.handleId);
+        setLoginProfileId("loginProfileId", data.id);
+        router.push(routePaths.profile(data.handleId));
+      } else {
+        router.push(routePaths.profile("new"));
+      }
+    },
+    onError: (error: any) => {
+      const status = error.response?.status;
+
+      if (status === 404) {
+        router.push(routePaths.profile("new"));
+      } else {
+        setToastMessage("내 프로필을 불러 올 수 없어요. 다시 시도해 주세요.");
+      }
+    }
+  });
+
+  const onMoveMyProfile = () => {
+    moveMyProfileMutation.mutate();
   };
 
   const userMenu = [
@@ -88,14 +106,8 @@ const TopNavigation = () => {
     }
   ];
 
-  useEffect(() => {
-    const refreshToken = Cookies.get("refresh_token");
-
-    setIsLoggedIn(refreshToken ? true : false);
-  }, []);
-
   return (
-    <section className="fixed top-0 z-50 flex h-12 w-full items-center border-b-[1px] border-border-default-light bg-background-elevated-light px-6 shadow-drop dark:border-border-default-dark dark:bg-background-elevated-dark">
+    <section className="fixed top-0 z-[48] flex h-12 w-full items-center border-b-[1px] border-border-default-light bg-background-elevated-light px-8 shadow-drop dark:border-border-default-dark dark:bg-background-elevated-dark">
       <nav className="flex w-full items-center justify-between">
         <Logo />
         {isLoggedIn === true && (
@@ -106,13 +118,13 @@ const TopNavigation = () => {
             >
               배우 찾기
             </Link>
-            <Link
-              href={routePaths.profile(handleName)}
+            <button
+              type="button"
               className="typography-body3 flex items-center font-semibold text-content-secondary-light hover:text-accent-primary-light dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
-              onClick={onMoveMyProrfile}
+              onClick={onMoveMyProfile}
             >
               내 프로필
-            </Link>
+            </button>
             <Link href={routePaths.likes()} className="flex items-center">
               <Heart
                 width="20"

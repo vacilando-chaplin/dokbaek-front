@@ -60,6 +60,7 @@ export const educationEnum = {
 
 export const profileInit = {
   id: 0,
+  handleId: "",
   userId: 0,
   status: "",
   info: {

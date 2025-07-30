@@ -3,10 +3,9 @@
 import ArrowDirectionLeft from "../../../../../public/icons/ArrowDirectionLeft.svg";
 import BoxButton from "@/components/atoms/boxButton";
 import ProgressBar from "./progressBar";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
-import { putInfoDraft } from "../info/api";
 import { postProfileDraftPublish } from "../../api";
 import { routePaths } from "@/constants/routes";
 import { handleNameState } from "@/lib/recoil/handle/atom";
@@ -17,7 +16,6 @@ interface BottomBarProps {
 
 const BottomBar = ({ profileId }: BottomBarProps) => {
   const router = useRouter();
-  const pathname = usePathname();
   const profileData = useRecoilValue(profileDraftData);
   const handleName = useRecoilValue(handleNameState);
 
@@ -33,14 +31,7 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
 
   const profileURL = routePaths.profile(handleName);
 
-  const onSaveInfo = async () => {
-    if (pathname.endsWith("/info") && profileData?.info) {
-      await putInfoDraft(profileId, profileData.info);
-    }
-  };
-
   const onSave = async () => {
-    await onSaveInfo();
     await postProfileDraftPublish(profileId);
 
     router.prefetch(profileURL);
@@ -48,8 +39,6 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
   };
 
   const onBack = async () => {
-    await onSaveInfo();
-
     router.prefetch(profileURL);
     router.push(profileURL);
   };
