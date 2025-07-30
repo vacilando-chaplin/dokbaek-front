@@ -3,14 +3,14 @@ import React from "react";
 const FooterCompany = () => {
   return (
     <div>
-      <p className="mb-2 text-body2 font-semibold text-content-tertiary-light dark:text-content-tertiary-dark">
-        플라투디오
+      <p className="typography-body2 mb-2 font-semibold text-content-tertiary-light dark:text-content-tertiary-dark">
+        {process.env.NEXT_PUBLIC_COMPANY_NAME}
       </p>
-      <p className="text-caption1 font-regular text-content-tertiary-light dark:text-content-tertiary-dark">
-        대표: 김승은 | 사업자 등록번호: 100-00-10010 | 통신판매업신고번호
-        제2024-서울종로-1234호
+      <p className="typography-caption1 font-regular text-content-tertiary-light dark:text-content-tertiary-dark">
+        대표: {process.env.NEXT_PUBLIC_REPRESENTATIVE_NAME} | 사업자 등록번호:
+        {process.env.NEXT_PUBLIC_BUSINESS_NO}
         <br />
-        10545 경기 고양시 덕양구 꽃마을로 34 11층 1108호
+        {process.env.NEXT_PUBLIC_BUSINESS_ADDRESS}
       </p>
     </div>
   );

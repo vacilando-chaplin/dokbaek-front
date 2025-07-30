@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import ProfileCard from "../../../components/molecules/profileCard";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";

@@ -1,17 +1,22 @@
-"use client";
-
-import { routePaths } from "@/constants/routes";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import dynamic from "next/dynamic";
+import LandingContainer from "./landing/components/landingContainer";
+import ToastClientWrapper from "./landing/components/toastClientWrapper";
 
 const Home = () => {
-  const router = useRouter();
+  const TopNavigation = dynamic(
+    () => import("@/components/organisms/topNavigation"),
+    {
+      ssr: false
+    }
+  );
 
-  useEffect(() => {
-    router.prefetch(routePaths.home());
-    router.push(routePaths.home());
-  }, []);
-  return <main className=""></main>;
+  return (
+    <div className="flex min-h-dvh w-full flex-col items-center bg-background-surface-light dark:bg-background-surface-dark">
+      <TopNavigation />
+      <ToastClientWrapper />
+      <LandingContainer />
+    </div>
+  );
 };
 
 export default Home;
