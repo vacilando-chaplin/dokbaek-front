@@ -3,7 +3,7 @@ export const absoluteRoutePaths = {
   profile: (handleName: string) =>
     `${process.env.NEXT_PUBLIC_BASEURL}/@${handleName}`,
   profilePDF: (loginProfileId: number) =>
-    `https://filogram.my/api/pdf/v1/profile/${loginProfileId}`
+    `https://dokbaek.com/api/pdf/v1/profile/${loginProfileId}`
 };
 
 // 상대 경로 route

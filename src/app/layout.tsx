@@ -6,7 +6,7 @@ import QueryRootProvider from "../lib/providers/queryRootProvider";
 import AuthInitializer from "@/lib/providers/authInitializer";
 
 export const metadata: Metadata = {
-  title: "filogram",
+  title: "dokbaek",
   description: "배우 프로필 제작 서비스",
   icons: {
     icon: "/icons/favicon.png",
