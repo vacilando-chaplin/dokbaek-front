@@ -8,7 +8,7 @@ export const absoluteRoutePaths = {
 
 // 상대 경로 route
 export const routePaths = {
-  home: () => "/landing",
+  home: () => "/",
   login: () => "/login",
   likes: () => "/likes",
   profiles: () => "/profiles",
