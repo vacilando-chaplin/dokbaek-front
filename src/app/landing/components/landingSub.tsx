@@ -11,7 +11,6 @@ import { handleNameState } from "@/lib/recoil/handle/atom";
 import { routePaths } from "@/constants/routes";
 
 const LandingSub = () => {
-  const userId = Number(Cookies.get("loginProfileId"));
   const handleName = useRecoilValue(handleNameState);
 
   const router = useRouter();
@@ -51,7 +50,7 @@ const LandingSub = () => {
               style={{ lineHeight: "40px" }}
               className="text-display font-bold text-accent-primary-light dark:text-accent-primary-dark"
             >
-              필로그램
+              독백
             </p>
           </div>
         </div>
