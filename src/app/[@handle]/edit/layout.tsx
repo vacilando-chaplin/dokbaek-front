@@ -30,7 +30,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
-      <ListMenu profileId={profileId} />
+      <ListMenu />
       <Initializer profileInitData={nullCheckedData}>{children}</Initializer>
       <BottomBar profileId={profileId} />
       {profileInitData?.hasDraft && <DraftModal profileId={profileId} />}

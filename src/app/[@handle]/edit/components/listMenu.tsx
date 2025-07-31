@@ -4,26 +4,15 @@ import { StepperType } from "../types";
 import { usePathname, useRouter } from "next/navigation";
 import { stepperList } from "../data";
 import { useRecoilValue } from "recoil";
-import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
-import { putInfoDraft } from "../info/api";
 import ListItem from "@/components/atoms/listItem";
 import { handleNameState } from "@/lib/recoil/handle/atom";
 
-interface ListMenuProps {
-  profileId: number;
-}
-
-const ListMenu = ({ profileId }: ListMenuProps) => {
+const ListMenu = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const profileData = useRecoilValue(profileDraftData);
   const handleName = useRecoilValue(handleNameState);
 
-  const onStepper = async (index: number) => {
-    if (pathname.endsWith("/info") && profileData?.info) {
-      await putInfoDraft(profileId, profileData.info);
-    }
-
+  const onStepper = (index: number) => {
     const nextPath = `/@${handleName}/edit/${stepperList[index].path}`;
     router.push(nextPath);
   };

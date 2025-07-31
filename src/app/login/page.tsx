@@ -37,9 +37,9 @@ const Login = () => {
   return (
     <main className="relative flex h-auto w-auto flex-col items-center gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20 dark:border-border-default-dark dark:bg-background-surface-dark">
       <div className="flex flex-col items-center justify-center gap-4">
-        <LogoVertical width="103" height="56" />
+        <LogoVertical width="85" height="46" />
         <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
-          필로그램으로 쉽고 빠르게 프로필을 만들어 보세요.
+          독백으로 쉽고 빠르게 프로필을 만들어 보세요.
         </label>
       </div>
       <div className="flex h-auto w-full flex-col gap-2">

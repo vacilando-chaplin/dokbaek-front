@@ -2,31 +2,60 @@
 
 import BoxButton from "@/components/atoms/boxButton";
 import React, { useState } from "react";
-import Cookies from "js-cookie";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 import { useRouter } from "next/navigation";
 import LoginModal from "@/components/organisms/loginModal";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { handleNameState } from "@/lib/recoil/handle/atom";
 import { routePaths } from "@/constants/routes";
+import { useMutation } from "@tanstack/react-query";
+import { getProfileMe } from "@/lib/api";
+import { loginState, toastMessage } from "@/lib/atoms";
+import { setLoginProfileId } from "@/lib/utils";
 
 const LandingSub = () => {
-  const userId = Number(Cookies.get("loginProfileId"));
-  const handleName = useRecoilValue(handleNameState);
-
   const router = useRouter();
   const [loginModal, setLoginModal] = useState(false);
-  const jwt = Cookies.get("jwt");
 
-  const onClickProfileCreate = () => {
-    if (!jwt) {
+  const isLoggedIn = useRecoilValue(loginState);
+
+  const setHandleName = useSetRecoilState(handleNameState);
+  const setToastMessage = useSetRecoilState(toastMessage);
+
+  const moveMyProfileMutation = useMutation({
+    mutationFn: getProfileMe,
+    onSuccess: (res) => {
+      const data = res.data.data;
+
+      if (data.handleId) {
+        setHandleName(data.handleId);
+        setLoginProfileId("loginProfileId", data.id);
+        router.prefetch(routePaths.profileEditInfo(data.handleId));
+        router.push(routePaths.profileEditInfo(data.handleId));
+      } else {
+        router.push(routePaths.profile("new"));
+      }
+    },
+    onError: (error: any) => {
+      const status = error.response?.status;
+
+      if (status === 404) {
+        router.push(routePaths.profile("new"));
+      } else {
+        setToastMessage("내 프로필을 불러 올 수 없어요. 다시 시도해 주세요.");
+      }
+    }
+  });
+
+  const onMoveProfileEdit = () => {
+    if (!isLoggedIn) {
       setLoginModal(true);
       return;
-    } else {
-      router.prefetch(routePaths.profileEditInfo(handleName));
-      router.push(routePaths.profileEditInfo(handleName));
     }
+
+    moveMyProfileMutation.mutate();
   };
+
   return (
     <div className="mx-[auto] mt-[40px] flex w-[100%] flex-col rounded-2xl">
       <div
@@ -51,12 +80,12 @@ const LandingSub = () => {
               style={{ lineHeight: "40px" }}
               className="text-display font-bold text-accent-primary-light dark:text-accent-primary-dark"
             >
-              필로그램
+              독백
             </p>
           </div>
         </div>
         <div className="absolute right-[100px] top-[95px]">
-          <BoxButton onClick={onClickProfileCreate} type="primary" size="large">
+          <BoxButton onClick={onMoveProfileEdit} type="primary" size="large">
             프로필 만들기
             <ArrowDirectionRight
               width="16"

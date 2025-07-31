@@ -38,7 +38,7 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
     router.push(profileURL);
   };
 
-  const onBack = async () => {
+  const onBack = () => {
     router.prefetch(profileURL);
     router.push(profileURL);
   };

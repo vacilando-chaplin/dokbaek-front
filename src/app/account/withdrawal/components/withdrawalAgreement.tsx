@@ -9,7 +9,7 @@ const WithdrawalAgreement = () => {
 
   return (
     <WithdrawalCheckbox
-      label="회원 탈퇴를 진행하여 필로그램에 귀속된 모든 정보를 삭제하는 데 동의합니다."
+      label="회원 탈퇴를 진행하여 독백에 귀속된 모든 정보를 삭제하는 데 동의합니다."
       checked={agreement}
       onCheck={() => setAgreement(!agreement)}
     />

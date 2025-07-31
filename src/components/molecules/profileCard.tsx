@@ -62,6 +62,8 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
     }
   };
 
+  console.log(profile.height);
+
   return (
     <div
       onClick={onClickProfile}
@@ -129,10 +131,18 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
           </button>
         </div>
         <div className="typography-caption1 flex font-regular text-content-tertiary-light dark:text-content-primary-dark">
-          {profile.height}cm
-          <span className="mx-1">·</span>
-          {profile.weight}kg
-          <span className="mx-1">·</span>
+          {typeof profile.height === "number" && profile.height !== 0 && (
+            <>
+              {profile.height}cm
+              <span className="mx-1">·</span>
+            </>
+          )}
+          {typeof profile.weight === "number" && profile.weight !== 0 && (
+            <>
+              {profile.weight}kg
+              <span className="mx-1">·</span>
+            </>
+          )}
           {profile.bornYear && (
             <span>
               {calculateBornYearShort(profile.bornYear)}년생(

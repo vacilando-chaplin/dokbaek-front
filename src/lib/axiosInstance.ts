@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { setToken } from "./utils";
+import { removeStorageData, setToken } from "./utils";
 
 const token = Cookies.get("jwt");
 export const baseURL = process.env.NEXT_PUBLIC_API_BASEURL;
@@ -15,6 +15,7 @@ const api = axios.create({
 const refreshToken = async () => {
   const refresh_token = Cookies.get("refresh_token");
   if (!refresh_token) {
+    removeStorageData();
     throw new Error("Refresh token not found");
   }
 
