@@ -27,8 +27,8 @@ const TopNavigation = () => {
 
   const setPathName = useSetRecoilState(currentPath);
   const setToastMessage = useSetRecoilState(toastMessage);
+  const setHandleName = useSetRecoilState(handleNameState);
 
-  const [handleName, setHandleName] = useRecoilState(handleNameState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userMenuActive, setUserMenuActive] = useState(false);
 
