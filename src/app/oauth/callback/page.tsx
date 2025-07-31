@@ -1,6 +1,11 @@
 "use client";
 
-import { currentPath, loginErrorState, toastMessage } from "@/lib/atoms";
+import {
+  currentPath,
+  loginErrorState,
+  loginState,
+  toastMessage
+} from "@/lib/atoms";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -17,6 +22,7 @@ const Callback = () => {
   const urlParams = useSearchParams();
 
   const currentPathName = useRecoilValue(currentPath);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const setToastMessage = useSetRecoilState(toastMessage);
   const setLoginErrorState = useSetRecoilState(loginErrorState);
 
@@ -35,6 +41,7 @@ const Callback = () => {
       };
     },
     onSuccess: (data) => {
+      setIsLoggedIn(true);
       setToken("jwt", data.token.jwt);
       setToken("refresh_token", data.token.refreshToken);
       setLoginForm("login_form", data.state);
