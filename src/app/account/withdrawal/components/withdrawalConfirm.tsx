@@ -40,8 +40,8 @@ const WithdrawalConfirm = ({ initialReasons }: WithdrawalConfirmProps) => {
     await postWithdrawReason(reasonIds);
     await deleteWithdraw();
 
-    setLogin(false);
     removeStorageData();
+    setLogin(false);
 
     router.replace(routePaths.accountWithdrawalComplete());
   };
