@@ -62,8 +62,6 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
     }
   };
 
-  console.log(profile.height);
-
   return (
     <div
       onClick={onClickProfile}

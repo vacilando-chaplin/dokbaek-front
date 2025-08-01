@@ -8,10 +8,10 @@ import AuthInitializer from "@/lib/providers/authInitializer";
 export const metadata: Metadata = {
   title: "dokbaek",
   description: "배우 프로필 제작 서비스",
-  icons: {
-    icon: "/icons/favicon.png",
-    shortcut: "/favicon.ico"
-  }
+  icons: [
+    { rel: "icon", url: "/favicon.ico" },
+    { rel: "shortcut icon", url: "/favicon.ico" }
+  ]
 };
 
 const pretendard = localFont({
