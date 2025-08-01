@@ -27,7 +27,7 @@ const ProfileMeta = () => {
     <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-3 text-content-on_color-light dark:bg-background-base_inverse-dark dark:text-static-black">
       <div className="flex flex-row items-center gap-3">
         <span className="typography-body1 font-semibold">
-          {profileData.info.name ?? ""}
+          {profileData.info?.name ?? ""}
         </span>
         {isMyProfile && (
           <div className="flex flex-row gap-1.5 rounded-lg bg-[#FFFFFF1A] px-1.5 py-0.5">

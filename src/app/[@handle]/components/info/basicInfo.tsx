@@ -30,7 +30,7 @@ const BasicInfo = () => {
         {height && <span>{height}cm</span>}
         {weight && <span>{weight}kg</span>}
       </div>
-      <span className="typography-body2">
+      <span className="typography-body2 font-normal text-content-primary-light dark:text-content-primary-dark">
         {finalEducation && (
           <div>
             <span>{finalEducation.school.name} </span>
@@ -39,7 +39,6 @@ const BasicInfo = () => {
           </div>
         )}
       </span>
-      <span className="typography-body2"></span>
     </ProfileInfoFrame>
   ) : (
     <ProfileEmptyFrame text="정보가 없어요." />

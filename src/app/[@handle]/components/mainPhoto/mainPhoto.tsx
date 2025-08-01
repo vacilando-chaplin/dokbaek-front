@@ -62,22 +62,23 @@ const MainPhoto = () => {
   const useProfileLikeMutation = () => {
     return useMutation({
       mutationFn: async ({
-        loginProfileId,
+        profileId,
         action
       }: {
-        loginProfileId: number;
+        profileId: number;
         action: "like" | "unlike";
       }) => {
         if (action === "like") {
-          return await postProfileLike(loginProfileId);
+          return await postProfileLike(profileId);
         } else {
-          return await deleteProfileLike(loginProfileId);
+          return await deleteProfileLike(profileId);
         }
       },
       onSuccess: (_, { action }) => {
         setProfileData((prev) => ({
           ...prev,
-          likedByMe: action === "like"
+          likedByMe: action === "like",
+          likesCount: prev.likesCount + (action === "like" ? 1 : -1)
         }));
       },
       onError: () => {
@@ -92,12 +93,10 @@ const MainPhoto = () => {
   const onLike = async () => {
     if (isNaN(loginProfileId)) {
       setToastMessage("해당 기능은 로그인 후 이용할 수 있어요.");
-    } else if (loginProfileId) {
-      if (profileData.likedByMe) {
-        const action = profileData.likedByMe ? "unlike" : "like";
-        likeMutation.mutate({ loginProfileId, action });
-      }
     }
+
+    const action = profileData.likedByMe ? "unlike" : "like";
+    likeMutation.mutate({ profileId: profileData.id, action });
   };
 
   return mainPhotoPreview ? (
@@ -134,16 +133,16 @@ const MainPhoto = () => {
             onClick={onLike}
           >
             {profileData.likedByMe ? (
+              <HeartFill
+                width="14"
+                height="14"
+                className="fill-current text-state-negative-light dark:text-state-negative-dark"
+              />
+            ) : (
               <Heart
                 width="14"
                 height="14"
                 className="fill-current text-static-white"
-              />
-            ) : (
-              <HeartFill
-                width="14"
-                height="14"
-                className="fill-current text-content-primary-light dark:text-content-primary-dark"
               />
             )}
             <span className="typography-caption1 font-medium text-static-white">
