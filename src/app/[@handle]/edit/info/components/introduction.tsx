@@ -15,7 +15,7 @@ interface IntroductionProps {
 const Introduction = ({ profileId }: IntroductionProps) => {
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
 
-  const { introduction } = profileData.info || {};
+  const { introduction } = profileData.info ?? {};
 
   const { mutate } = useMutation({
     mutationFn: (newInfo: ProfileInfoDataType) =>

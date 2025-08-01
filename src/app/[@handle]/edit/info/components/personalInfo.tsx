@@ -44,7 +44,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     email,
     instagramLink,
     youtubeLink
-  } = profileData?.info || {};
+  } = profileData?.info ?? {};
 
   const { mutate } = useMutation({
     mutationFn: (newInfo: ProfileInfoDataType) =>

@@ -10,7 +10,7 @@ import YoutubeIcon from "../../../../../public/icons/YoutubeIcon.svg";
 const SocialLinks = () => {
   const profileData = useRecoilValue(profileViewState);
 
-  const { instagramLink, youtubeLink } = profileData.info || {};
+  const { instagramLink, youtubeLink } = profileData.info ?? {};
 
   return (
     (instagramLink || youtubeLink) && (
