@@ -62,14 +62,21 @@ export const convertToBase64 = (file: File): Promise<string> => {
   });
 };
 
-const COOKIE_OPTIONS = {
+const loginOptions = {
+  expires: 1,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  sameSite: "strict" as const
+};
+
+const refreshTokenOptions = {
   expires: 7,
   secure: process.env.NODE_ENV === "production",
   path: "/",
   sameSite: "strict" as const
 };
 
-const COOKIE_REMOVE_OPTIONS = {
+const cookieRemoveOptions = {
   secure: process.env.NODE_ENV === "production",
   path: "/",
   sameSite: "strict" as const
@@ -78,21 +85,25 @@ const COOKIE_REMOVE_OPTIONS = {
 export const removeStorageData = () => {
   localStorage.removeItem("recoil-persist");
 
-  Cookies.remove("jwt", COOKIE_REMOVE_OPTIONS);
-  Cookies.remove("refresh_token", COOKIE_REMOVE_OPTIONS);
-  Cookies.remove("loginProfileId", COOKIE_REMOVE_OPTIONS);
+  Cookies.remove("jwt", cookieRemoveOptions);
+  Cookies.remove("refresh_token", cookieRemoveOptions);
+  Cookies.remove("loginProfileId", cookieRemoveOptions);
 };
 
 export const setToken = (name: string, token: string) => {
-  Cookies.set(name, token, COOKIE_OPTIONS);
+  Cookies.set(name, token, loginOptions);
+};
+
+export const setRefreshToken = (name: string, refreshToken: string) => {
+  Cookies.set(name, refreshToken, refreshTokenOptions);
 };
 
 export const setLoginProfileId = (name: string, loginProfileId: string) => {
-  Cookies.set(name, loginProfileId, COOKIE_OPTIONS);
+  Cookies.set(name, loginProfileId, loginOptions);
 };
 
 export const setLoginForm = (name: string, loginForm: string) => {
-  Cookies.set(name, loginForm, COOKIE_OPTIONS);
+  Cookies.set(name, loginForm, loginOptions);
 };
 
 export const isValidHandle = (handle: string) => {
