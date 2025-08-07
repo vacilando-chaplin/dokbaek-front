@@ -12,13 +12,15 @@ interface PhotoLimitLabelProps {
 const PhotoLimitLabel = ({ limit, category }: PhotoLimitLabelProps) => {
   const profileData = useRecoilValue(profileDraftData);
 
+  const photos = profileData?.photos || [];
+  const stillCuts = profileData?.stillCuts || [];
+
   const photoListLength =
-    profileData &&
-    (category === "photos"
-      ? profileData.photos.length
+    category === "photos"
+      ? photos.length
       : category === "stillCuts"
-        ? profileData.stillCuts.length
-        : 0);
+        ? stillCuts.length
+        : 0;
 
   return (
     <div className="typography-caption1 flex h-fit w-fit flex-row gap-0.5 rounded-[100px] bg-gray-100 px-2 py-[1px] font-medium">

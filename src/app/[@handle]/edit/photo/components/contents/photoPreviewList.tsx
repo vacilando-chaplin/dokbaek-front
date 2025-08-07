@@ -24,12 +24,11 @@ const PhotoPreviewList = ({ category }: PhotoPreviewListProps) => {
   const { onDrop } = usePhotoDrop(category, "");
 
   const photoList: ProfilePhotoDataType[] =
-    profileData &&
-    (category === "photos"
-      ? profileData.photos
+    category === "photos"
+      ? profileData?.photos || []
       : category === "stillCuts"
-        ? profileData.stillCuts
-        : []);
+        ? profileData?.stillCuts || []
+        : [];
 
   // 사진 추가 모달 열기
   const onCropModalOpen = (category: string) => {
@@ -52,13 +51,13 @@ const PhotoPreviewList = ({ category }: PhotoPreviewListProps) => {
       setToastMessage("지원하지 않는 파일 형식이거나 파일 개수가 너무 많아요.");
     },
     multiple: true,
-    maxFiles: 20 - photoList.length,
+    maxFiles: 20 - (photoList?.length || 0),
     maxSize: 10000000
   });
 
   return (
     <>
-      {photoList.length >= 1 && (
+      {photoList?.length >= 1 && (
         <div
           className={`grid w-full cursor-pointer grid-cols-4 gap-2 rounded-xl hover:border hover:border-dotted hover:border-accent-primary-light hover:bg-accent-light-light dark:hover:border-accent-primary-dark dark:hover:bg-accent-light-dark ${isDragAccept ? "border border-dotted border-accent-primary-light bg-accent-light-light dark:border-accent-primary-dark dark:bg-accent-light-dark" : "border-gray-150 bg-gray-50 dark:border-border-active-light dark:bg-gray-800"}`}
           {...getRootProps()}
