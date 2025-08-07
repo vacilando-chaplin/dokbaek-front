@@ -14,14 +14,12 @@ const VideoLinkModal = () => {
   };
 
   return (
-    <>
-      {videoLink.active && (
-        <LinkModal
-          link={videoLink.url}
-          onLinkModalClose={onVideoLinkModalClose}
-        />
-      )}
-    </>
+    videoLink.active && (
+      <LinkModal
+        link={videoLink.url}
+        onLinkModalClose={onVideoLinkModalClose}
+      />
+    )
   );
 };
 

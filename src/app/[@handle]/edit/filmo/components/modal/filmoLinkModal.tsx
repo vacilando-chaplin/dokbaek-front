@@ -13,11 +13,9 @@ const FilmoLinkModal = () => {
   };
 
   return (
-    <>
-      {linkModal.active && (
-        <LinkModal link={linkModal.url} onLinkModalClose={onLinkModalClose} />
-      )}
-    </>
+    linkModal.active && (
+      <LinkModal link={linkModal.url} onLinkModalClose={onLinkModalClose} />
+    )
   );
 };
 

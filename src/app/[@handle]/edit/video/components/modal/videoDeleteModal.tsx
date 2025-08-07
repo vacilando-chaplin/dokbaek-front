@@ -66,17 +66,15 @@ const VideoDeleteModal = ({
     });
   };
   return (
-    <>
-      {videoDeleteModalActive && (
-        <DeleteModal
-          text="이 영상을 삭제할까요?"
-          id={String(videoId)}
-          category=""
-          onCancel={onVideoDeleteModalClose}
-          onDelete={onVideoDeleteClick}
-        />
-      )}
-    </>
+    videoDeleteModalActive && (
+      <DeleteModal
+        text="이 영상을 삭제할까요?"
+        id={String(videoId)}
+        category=""
+        onCancel={onVideoDeleteModalClose}
+        onDelete={onVideoDeleteClick}
+      />
+    )
   );
 };
 

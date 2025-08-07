@@ -122,27 +122,25 @@ const VideoModal = () => {
   };
 
   return (
-    <>
-      {videoModal.active && (
-        <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
-          <div className="interaction-default relative flex h-auto w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
-            <ModalHeader name={videoModal.name} onClick={onVideoModalClose} />
-            <VideoModalContents
-              videoInputs={videoInputs}
-              onVideoInputChange={onVideoInputChange}
-            />
-            <ModalFooter
-              text={videoModal.buttonText}
-              disabled={!disabled}
-              onCloseClick={onVideoModalClose}
-              onSaveClick={
-                videoModal.state === "add" ? onVideoModalSave : onVideoModalEdit
-              }
-            />
-          </div>
-        </section>
-      )}
-    </>
+    videoModal.active && (
+      <section className="fixed inset-0 z-[999] flex h-auto max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
+        <div className="interaction-default relative flex h-auto w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
+          <ModalHeader name={videoModal.name} onClick={onVideoModalClose} />
+          <VideoModalContents
+            videoInputs={videoInputs}
+            onVideoInputChange={onVideoInputChange}
+          />
+          <ModalFooter
+            text={videoModal.buttonText}
+            disabled={!disabled}
+            onCloseClick={onVideoModalClose}
+            onSaveClick={
+              videoModal.state === "add" ? onVideoModalSave : onVideoModalEdit
+            }
+          />
+        </div>
+      </section>
+    )
   );
 };
 
