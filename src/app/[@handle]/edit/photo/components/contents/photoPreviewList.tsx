@@ -25,9 +25,9 @@ const PhotoPreviewList = ({ category }: PhotoPreviewListProps) => {
 
   const photoList: ProfilePhotoDataType[] =
     category === "photos"
-      ? profileData?.photos || []
+      ? (profileData?.photos ?? [])
       : category === "stillCuts"
-        ? profileData?.stillCuts || []
+        ? (profileData?.stillCuts ?? [])
         : [];
 
   // 사진 추가 모달 열기
@@ -51,7 +51,7 @@ const PhotoPreviewList = ({ category }: PhotoPreviewListProps) => {
       setToastMessage("지원하지 않는 파일 형식이거나 파일 개수가 너무 많아요.");
     },
     multiple: true,
-    maxFiles: 20 - (photoList?.length || 0),
+    maxFiles: 20 - (photoList?.length ?? 0),
     maxSize: 10000000
   });
 

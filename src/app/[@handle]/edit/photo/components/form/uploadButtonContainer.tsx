@@ -18,8 +18,8 @@ const UploadButtonContainer = ({ category }: UploadButtonContainerProps) => {
 
   const { onSelectFile } = useImageSelector();
 
-  const photos = profileData?.photos || [];
-  const stillCuts = profileData?.stillCuts || [];
+  const photos = profileData?.photos ?? [];
+  const stillCuts = profileData?.stillCuts ?? [];
 
   const photoListLength =
     category === "photos"

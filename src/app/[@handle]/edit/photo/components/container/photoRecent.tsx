@@ -17,7 +17,7 @@ const PhotoRecent = ({ category }: PhotoRecentProps) => {
   const profileData = useRecoilValue(profileDraftData);
 
   const recentPhotoList: ProfileRecentPhotoDataType[] =
-    profileData?.recentPhotos || [];
+    profileData?.recentPhotos ?? [];
 
   return (
     <section className="flex h-auto w-full flex-col gap-6 rounded-2xl bg-background-surface-light p-8 dark:bg-background-surface-dark">

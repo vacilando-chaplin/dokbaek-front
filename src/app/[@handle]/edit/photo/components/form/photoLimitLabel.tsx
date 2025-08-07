@@ -12,8 +12,8 @@ interface PhotoLimitLabelProps {
 const PhotoLimitLabel = ({ limit, category }: PhotoLimitLabelProps) => {
   const profileData = useRecoilValue(profileDraftData);
 
-  const photos = profileData?.photos || [];
-  const stillCuts = profileData?.stillCuts || [];
+  const photos = profileData?.photos ?? [];
+  const stillCuts = profileData?.stillCuts ?? [];
 
   const photoListLength =
     category === "photos"
