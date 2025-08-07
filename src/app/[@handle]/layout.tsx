@@ -6,6 +6,7 @@ import { getFilmoCategories, getProfileByHandleId } from "./api";
 import HandleNameCreatePage from "./handleNameCreatePage";
 import { profileInit } from "@/lib/data";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
 const Layout = async ({
   params,
@@ -30,7 +31,9 @@ const Layout = async ({
     return (
       <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">
         <Toast kind="info" fullWidth={false} placement="top" />
-        <TopNavigation />
+        <Suspense fallback={<></>}>
+          <TopNavigation />
+        </Suspense>
         <HandleNameCreatePage />
       </div>
     );
