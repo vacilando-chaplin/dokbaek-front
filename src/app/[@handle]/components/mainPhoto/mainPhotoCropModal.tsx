@@ -59,7 +59,10 @@ const MainPhotoCropModal = () => {
           cropImage
         );
         const data = res.data;
-        return { path: data.path, previewPath: data.previewPath };
+        return {
+          path: data.mainPhotoPath,
+          previewPath: data.mainPhotoPreviewPath
+        };
       },
       onSuccess: ({ path, previewPath }) => {
         setProfileData((prev) => ({
@@ -88,7 +91,10 @@ const MainPhotoCropModal = () => {
       }) => {
         const res = await patchProfilePhotoMain(loginProfileId, cropImage);
         const data = res.data;
-        return { path: data.path, previewPath: data.previewPath };
+        return {
+          path: data.mainPhotoPath,
+          previewPath: data.mainPhotoPreviewPath
+        };
       },
       onSuccess: ({ path, previewPath }) => {
         setProfileData((prev) => ({
@@ -124,7 +130,10 @@ const MainPhotoCropModal = () => {
           cropImage
         );
         const data = res.data;
-        return { path: data.path, previewPath: data.previewPath };
+        return {
+          path: data.mainPhotoPath,
+          previewPath: data.mainPhotoPreviewPath
+        };
       },
       onSuccess: ({ path, previewPath }) => {
         setProfileData((prev) => ({
