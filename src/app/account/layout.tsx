@@ -2,6 +2,7 @@ import Footer from "@/components/organisms/footer";
 import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const token = cookies().get("jwt")?.value;
@@ -19,7 +20,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <main className="flex min-h-dvh w-full flex-col items-center justify-center bg-background-base-light dark:bg-background-base-dark">
-      <TopNavigation />
+      <Suspense fallback={<></>}>
+        <TopNavigation />
+      </Suspense>
       {children}
       <Footer />
     </main>
