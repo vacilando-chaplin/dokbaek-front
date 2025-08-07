@@ -18,13 +18,15 @@ const UploadButtonContainer = ({ category }: UploadButtonContainerProps) => {
 
   const { onSelectFile } = useImageSelector();
 
+  const photos = profileData?.photos ?? [];
+  const stillCuts = profileData?.stillCuts ?? [];
+
   const photoListLength =
-    profileData &&
-    (category === "photos"
-      ? profileData.photos.length
+    category === "photos"
+      ? photos.length
       : category === "stillCuts"
-        ? profileData.stillCuts.length
-        : 0);
+        ? stillCuts.length
+        : 0;
 
   // 사진 추가 모달 열기
   const onCropModalOpen = (category: string) => {

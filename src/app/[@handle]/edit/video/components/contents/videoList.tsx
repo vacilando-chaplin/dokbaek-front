@@ -9,7 +9,7 @@ import VideoItem from "./videoItem";
 const VideoList = () => {
   const profileData = useRecoilValue(profileDraftData);
 
-  const videoList = profileData?.videos || [];
+  const videoList = profileData?.videos ?? [];
 
   return (
     <div className="flex h-auto w-full flex-wrap gap-2">

@@ -9,7 +9,7 @@ import BoxButton from "@/components/atoms/boxButton";
 import { useMutation } from "@tanstack/react-query";
 import { TermsMutationParams, TermsMutationResult } from "../type";
 import { routePaths } from "@/constants/routes";
-import { setLoginForm, setToken } from "@/lib/utils";
+import { setLoginForm, setRefreshToken, setToken } from "@/lib/utils";
 
 interface TermAgreementButtonProps {
   termAgreements: TermAgreementsType[];
@@ -48,7 +48,7 @@ const TermAgreementButton = ({
     },
     onSuccess: (data) => {
       setToken("jwt", data.token.jwt);
-      setToken("refresh_token", data.token.refreshToken);
+      setRefreshToken("refresh_token", data.token.refreshToken);
       setLoginForm("login_form", data.state);
       router.replace(routePaths.profile("new"));
     },

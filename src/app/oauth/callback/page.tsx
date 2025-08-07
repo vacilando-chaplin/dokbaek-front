@@ -14,7 +14,7 @@ import { loginErrorMessages } from "@/lib/data";
 import { useMutation } from "@tanstack/react-query";
 import { OAuthMutationParams, OAuthMutationResult } from "./types";
 import { routePaths } from "@/constants/routes";
-import { setLoginForm, setToken } from "@/lib/utils";
+import { setLoginForm, setRefreshToken, setToken } from "@/lib/utils";
 
 const Callback = () => {
   const router = useRouter();
@@ -43,7 +43,7 @@ const Callback = () => {
     onSuccess: (data) => {
       setIsLoggedIn(true);
       setToken("jwt", data.token.jwt);
-      setToken("refresh_token", data.token.refreshToken);
+      setRefreshToken("refresh_token", data.token.refreshToken);
       setLoginForm("login_form", data.state);
 
       router.replace(`${currentPathName}`);

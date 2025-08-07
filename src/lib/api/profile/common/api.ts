@@ -28,7 +28,7 @@ export const postProfileDraftServer = async (profileId: number) => {
 
   try {
     const res = await api.post(`/profile/${profileId}/draft`);
-    return res;
+    return { data: res.data, hasDraft: true };
   } catch (error) {
     throw error;
   }

@@ -1,7 +1,10 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import DraftModal from "./components/draftModal";
-import { getProfileDraftServer } from "@/lib/api/profile/common/api";
+import {
+  getProfileDraftServer,
+  postProfileDraftServer
+} from "@/lib/api/profile/common/api";
 import Initializer from "./components/Initializer";
 import ListMenu from "./components/listMenu";
 import BottomBar from "./components/bottomBar";
@@ -13,7 +16,12 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   const profileId = Number(cookies().get("loginProfileId")?.value);
 
-  const profileInitData = await getProfileDraftServer(profileId);
+  let profileInitData = await getProfileDraftServer(profileId);
+
+  if (!profileInitData?.hasDraft) {
+    profileInitData = await postProfileDraftServer(profileId);
+  }
+
   const profileData = profileInitData?.data?.data;
   const nullCheckedData = {
     ...profileData,

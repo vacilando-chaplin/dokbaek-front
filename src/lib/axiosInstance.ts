@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { removeStorageData, setToken } from "./utils";
+import { removeStorageData, setRefreshToken, setToken } from "./utils";
 
 const token = Cookies.get("jwt");
 export const baseURL = process.env.NEXT_PUBLIC_API_BASEURL;
@@ -32,7 +32,7 @@ const refreshToken = async () => {
     );
     const { jwt, refreshToken } = data.data.token;
     setToken("jwt", jwt);
-    setToken("refresh_token", refreshToken);
+    setRefreshToken("refresh_token", refreshToken);
     return jwt;
   } catch (error) {
     console.error(error);

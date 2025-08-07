@@ -20,7 +20,7 @@ export const profileProgress = selector<number>({
       {
         value: data.info?.gender,
         validate: (value: any) =>
-          typeof value === "string" && value.length === 1
+          typeof value === "string" && (value === "M" || value === "W")
       },
       {
         value: data.info?.height,

@@ -18,7 +18,7 @@ import {
   specialtyModalState
 } from "@/lib/recoil/handle/atom";
 import { FilmoCategoryType } from "@/lib/types";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import {
   photoOriginModalInit,
@@ -26,6 +26,7 @@ import {
   youtubeModalInit
 } from "../../data";
 import { ProfileDraftDataType } from "../../edit/types";
+import { getProfileByHandleId } from "../../api";
 
 interface HandleInitializerProps {
   children: React.ReactNode;
@@ -84,6 +85,19 @@ const HandleInitializer = ({
 
     setFilmoViewAllModalState(false);
     setFilmoYoutubeModalState(youtubeModalInit);
+  }, []);
+
+  useEffect(() => {
+    if (!isMyProfile) return;
+
+    const getCurrentProfile = async () => {
+      const res = await getProfileByHandleId(handleName);
+      const data = res.data;
+
+      setProfileData(data);
+    };
+
+    getCurrentProfile();
   }, []);
 
   return <>{children}</>;

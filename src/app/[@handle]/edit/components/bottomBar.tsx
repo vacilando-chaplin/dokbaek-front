@@ -4,11 +4,13 @@ import ArrowDirectionLeft from "../../../../../public/icons/ArrowDirectionLeft.s
 import BoxButton from "@/components/atoms/boxButton";
 import ProgressBar from "./progressBar";
 import { useRouter } from "next/navigation";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
 import { postProfileDraftPublish } from "../../api";
 import { routePaths } from "@/constants/routes";
-import { handleNameState } from "@/lib/recoil/handle/atom";
+import { handleNameState, profileViewState } from "@/lib/recoil/handle/atom";
+import { useMutation } from "@tanstack/react-query";
+import { toastMessage } from "@/lib/atoms";
 
 interface BottomBarProps {
   profileId: number;
@@ -19,7 +21,10 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
   const profileData = useRecoilValue(profileDraftData);
   const handleName = useRecoilValue(handleNameState);
 
-  const { name, gender, bornYear, contact } = profileData.info ?? {};
+  const setProfileData = useSetRecoilState(profileViewState);
+  const setToastMessage = useSetRecoilState(toastMessage);
+
+  const { name, gender, bornYear, contact } = profileData.info || {};
   const valid =
     name !== null &&
     name.trim() !== "" &&
@@ -31,11 +36,35 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
 
   const profileURL = routePaths.profile(handleName);
 
-  const onSave = async () => {
-    await postProfileDraftPublish(profileId);
+  const onDraftPublish = useMutation({
+    mutationFn: async () => {
+      const res = await postProfileDraftPublish(profileId);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      setProfileData((prev) => ({
+        ...prev,
+        info: {
+          ...data.info
+        },
+        education: data.education,
+        specialties: data.specialties,
+        photos: data.photos,
+        recentPhotos: data.recentPhotos,
+        stillCuts: data.stillCuts,
+        filmos: data.filmos,
+        videos: data.videos
+      }));
 
-    router.prefetch(profileURL);
-    router.push(profileURL);
+      router.replace(profileURL);
+    },
+    onError: () => {
+      setToastMessage("프로필 저장에 실패했어요. 다시 시도해 주세요.");
+    }
+  });
+
+  const onSave = () => {
+    onDraftPublish.mutate();
   };
 
   const onBack = () => {
@@ -60,7 +89,7 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
         <BoxButton
           type="primary"
           size="medium"
-          disabled={!valid}
+          disabled={!valid || onDraftPublish.isPending}
           onClick={onSave}
         >
           프로필 저장

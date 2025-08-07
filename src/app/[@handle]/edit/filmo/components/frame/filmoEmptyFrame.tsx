@@ -9,11 +9,7 @@ const FilmoEmptyFrame = () => {
 
   const filmoList = profileData?.filmos ?? [];
   return (
-    <>
-      {filmoList.length === 0 && (
-        <EmptyFrame text="작품 활동을 추가해주세요." />
-      )}
-    </>
+    filmoList.length === 0 && <EmptyFrame text="작품 활동을 추가해주세요." />
   );
 };
 

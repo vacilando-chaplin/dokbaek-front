@@ -14,6 +14,7 @@ const Initializer = ({ children, profileInitData }: InitializerProps) => {
   const setData = useSetRecoilState(profileDraftData);
 
   useLayoutEffect(() => {
+    console.log(profileInitData);
     setData(profileInitData);
   }, []);
   return <>{children}</>;

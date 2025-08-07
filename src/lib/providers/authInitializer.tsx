@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "../atoms";
-import { setToken } from "../utils";
+import { setRefreshToken, setToken } from "../utils";
 
 export default function AuthInitializer() {
   const setIsLoggedIn = useSetRecoilState(loginState);

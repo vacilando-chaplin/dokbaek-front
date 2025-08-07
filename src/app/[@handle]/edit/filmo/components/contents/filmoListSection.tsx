@@ -34,22 +34,24 @@ const FilmoListSection = () => {
   );
 
   return (
-    <section className="flex flex-col gap-6">
-      {repFilmoList.length >= 1 && (
-        <FilmoList category="대표작" filmoList={repFilmoList} />
-      )}
-      {categoryList.map((category) => (
-        <FilmoList
-          key={category.id}
-          category={category.name}
-          filmoList={filmoList.filter(
-            (filmo: ProfileFilmoDataType) =>
-              filmo.production.category.name === category.name &&
-              filmo.featured === false
-          )}
-        />
-      ))}
-    </section>
+    filmoList.length >= 1 && (
+      <section className="flex flex-col gap-6">
+        {repFilmoList.length >= 1 && (
+          <FilmoList category="대표작" filmoList={repFilmoList} />
+        )}
+        {categoryList.map((category) => (
+          <FilmoList
+            key={category.id}
+            category={category.name}
+            filmoList={filmoList.filter(
+              (filmo: ProfileFilmoDataType) =>
+                filmo.production.category.name === category.name &&
+                filmo.featured === false
+            )}
+          />
+        ))}
+      </section>
+    )
   );
 };
 
