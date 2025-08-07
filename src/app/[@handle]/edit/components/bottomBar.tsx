@@ -19,7 +19,7 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
   const profileData = useRecoilValue(profileDraftData);
   const handleName = useRecoilValue(handleNameState);
 
-  const { name, gender, bornYear, contact } = profileData.info ?? {};
+  const { name, gender, bornYear, contact } = profileData.info || {};
   const valid =
     name !== null &&
     name.trim() !== "" &&
