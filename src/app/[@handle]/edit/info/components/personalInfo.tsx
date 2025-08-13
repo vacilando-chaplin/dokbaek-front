@@ -48,24 +48,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
 
   const { mutate } = useMutation({
     mutationFn: (newInfo: ProfileInfoDataType) =>
-      putInfoDraft(profileId, newInfo),
-    onMutate: () => {
-      setProfileData((prev) => ({
-        ...prev,
-        info: {
-          ...prev.info,
-          name: name,
-          bornYear: bornYear,
-          gender: gender,
-          height: height,
-          weight: weight,
-          contact: contact,
-          email: email,
-          instagramLink: instagramLink,
-          youtubeLink: youtubeLink
-        }
-      }));
-    }
+      putInfoDraft(profileId, newInfo)
   });
 
   // 기본 정보 저장
@@ -79,7 +62,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     setProfileData((prev) => ({
       ...prev,
       info: {
-        ...profileData.info,
+        ...prev.info,
         [name]: value
       }
     }));
@@ -92,7 +75,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     setProfileData((prev) => ({
       ...prev,
       info: {
-        ...profileData.info,
+        ...prev.info,
         [name]: changeNumber
       }
     }));
@@ -109,7 +92,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     const changeNumber = setOnlyNumber(value);
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, [name]: changeNumber }
+      info: { ...prev.info, [name]: changeNumber }
     }));
   };
 
@@ -119,7 +102,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     const inputContact = contactFormat(value);
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, [name]: inputContact }
+      info: { ...prev.info, [name]: inputContact }
     }));
   };
 
@@ -130,20 +113,32 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
 
   // 드랍다운 아이템 클릭
   const onDropdownClick = (name: string, item: string) => {
+    const updatedInfo = {
+      ...profileData.info,
+      [name]: item
+    };
+
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, [name]: item }
+      info: { ...prev.info, [name]: item }
     }));
-    mutate(profileData.info);
+    mutate(updatedInfo);
   };
 
   // 성별 선택
   const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedGender = e.target.id;
+
+    const updatedInfo = {
+      ...profileData.info,
+      gender: selectedGender
+    };
+
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, gender: e.target.id }
+      info: { ...prev.info, gender: selectedGender }
     }));
-    mutate(profileData.info);
+    mutate(updatedInfo);
   };
 
   const onSpecialtyFormModalOpen = async () => {

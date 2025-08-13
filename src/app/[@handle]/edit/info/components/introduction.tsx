@@ -19,16 +19,7 @@ const Introduction = ({ profileId }: IntroductionProps) => {
 
   const { mutate } = useMutation({
     mutationFn: (newInfo: ProfileInfoDataType) =>
-      putInfoDraft(profileId, newInfo),
-    onMutate: (newInfo) => {
-      setProfileData((prev) => ({
-        ...prev,
-        info: {
-          ...prev.info,
-          info: newInfo
-        }
-      }));
-    }
+      putInfoDraft(profileId, newInfo)
   });
 
   // 자기소개 저장
