@@ -51,7 +51,7 @@ const LandingMain = () => {
           style={{
             width: "100%",
             maxWidth: "1272px",
-            margin: "46px auto 0",
+            margin: "24px auto 0",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(224px, 1fr))",
             gap: "13px"

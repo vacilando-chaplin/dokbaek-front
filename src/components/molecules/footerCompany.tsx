@@ -2,8 +2,8 @@ import React from "react";
 
 const FooterCompany = () => {
   return (
-    <div>
-      <p className="typography-body2 mb-2 font-semibold text-content-tertiary-light dark:text-content-tertiary-dark">
+    <div className="flex h-auto w-full max-w-[1272px] flex-col gap-2">
+      <p className="typography-body2 flex font-semibold text-content-tertiary-light dark:text-content-tertiary-dark">
         {process.env.NEXT_PUBLIC_COMPANY_NAME}
       </p>
       <p className="typography-caption1 font-regular text-content-tertiary-light dark:text-content-tertiary-dark">

@@ -2,6 +2,7 @@ import LandingContainer from "./landing/components/landingContainer";
 import ToastClientWrapper from "./landing/components/toastClientWrapper";
 import { Suspense } from "react";
 import TopNavigation from "@/components/organisms/topNavigation";
+import Footer from "@/components/organisms/footer";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       </Suspense>
       <ToastClientWrapper />
       <LandingContainer />
+      <Footer />
     </div>
   );
 };
