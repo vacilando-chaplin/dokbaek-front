@@ -85,10 +85,24 @@ const EducationForm = ({ item, profileId, onDelete }: EducationFormProps) => {
 
   // 학교 이름 드랍다운 요소 클릭
   const onSchoolDropdownClick = async (name: string, value: string) => {
+    const schoolList = await getSchoolName(value);
+
+    const matchedSchool = schoolList.find(
+      (school: any) => school.schoolName === value
+    );
+
     const updateEducation = profileData.education.map((edu) => {
-      return edu.id === item.id
-        ? { ...edu, school: { ...edu.school, name: value } }
-        : edu;
+      if (edu.id === item.id) {
+        return {
+          ...edu,
+          school: {
+            name: value,
+            schoolType: matchedSchool?.schoolType || "",
+            schoolGubun: matchedSchool?.schoolGubun || ""
+          }
+        };
+      }
+      return edu;
     });
 
     setProfileData((prev) => ({
