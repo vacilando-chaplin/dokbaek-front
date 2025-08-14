@@ -1,5 +1,6 @@
 import { api } from "@/lib/axiosInstance";
 import { ProfileEducationRequestType, ProfileInfoDataType } from "../types";
+import { base64ToBlob } from "@/lib/utils";
 
 export const putInfoDraft = async (
   profileId: number,
@@ -50,14 +51,44 @@ export const getSpecialty = async (
 
 export const postSpecialty = async (specialtyName: string) => {
   try {
-    const res = await api.post(`/specialty`, { specialtyName });
+    const res = await api.post("/specialty", { specialtyName });
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const postUserProfileSpecialty = async (
+export const putSpecialtyMediaUrl = async (
+  profileId: number,
+  specialtyId: number,
+  mediaUrl: string
+) => {
+  try {
+    const res = await api.put(
+      `/profile/${profileId}/draft/specialty/${specialtyId}`,
+      { specialtyId, mediaUrl }
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteSpecialty = async (
+  profileId: number,
+  specialtyId: number
+) => {
+  try {
+    const res = await api.delete(
+      `/profile/${profileId}/draft/specialty/${specialtyId}`
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postDraftSpecialty = async (
   profileId: number,
   specialtyId: number,
   mediaUrl: string
@@ -67,6 +98,26 @@ export const postUserProfileSpecialty = async (
       specialtyId,
       mediaUrl
     });
+    return res.data.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postSpecialtyImage = async (
+  profileId: number,
+  specialtyId: number,
+  image: string
+) => {
+  const formData = new FormData();
+  const imageOrigin = base64ToBlob(image);
+  formData.append("image", imageOrigin);
+
+  try {
+    const res = await api.post(
+      `/profile/${profileId}/draft/specialty/${specialtyId}/image`,
+      formData
+    );
     return res.data.data;
   } catch (error) {
     throw error;

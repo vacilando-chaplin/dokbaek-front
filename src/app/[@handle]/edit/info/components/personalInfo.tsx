@@ -5,7 +5,7 @@ import TextInput from "@/components/atoms/textInput";
 import Title from "@/components/atoms/title";
 import SearchDropdown from "@/components/molecules/searchDropdown";
 import { yearList } from "@/lib/data";
-import { SpecialtyType } from "../types";
+import { SpecialtyItemType, SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
 import Plus from "../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { contactFormat, setOnlyNumber } from "@/lib/utils";
 import { ProfileInfoDataType } from "../../types";
-import { putInfoDraft } from "../api";
+import { deleteSpecialty, putInfoDraft } from "../api";
 import {
   profileSpecialtyModalState,
   specialtyData
@@ -141,16 +141,32 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     mutate(updatedInfo);
   };
 
-  const onSpecialtyFormModalOpen = async () => {
+  const onSpecialtyFormModalOpen = () => {
+    if (profileData.specialties.length >= 1) {
+      const currnetSpecialties = profileData.specialties.map(
+        (specialty: SpecialtyItemType) => {
+          return {
+            id: specialty.id,
+            specialtyName: specialty.specialty.specialtyName,
+            imageUrl: specialty.imageUrl ?? "",
+            mediaUrl: specialty.mediaUrl ?? ""
+          };
+        }
+      );
+
+      setSpecialties(currnetSpecialties);
+    }
     setProfileSpecialtyModal(true);
   };
 
-  const onDeleteSpecialty = (specialtyId: number) => {
-    return () => {
-      setSpecialties((prev) =>
-        prev.filter((specialty) => specialty.id !== specialtyId)
-      );
-    };
+  const onDeleteSpecialty = async (specialtyId: number) => {
+    await deleteSpecialty(profileId, specialtyId);
+    setProfileData((prev) => ({
+      ...prev,
+      specialties: prev.specialties.filter(
+        (specialty) => specialty.id !== specialtyId
+      )
+    }));
   };
 
   return (
@@ -310,14 +326,13 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               </BoxButton>
             </div>
             <div className="mt-2 flex h-auto gap-1">
-              {specialties.map((item: SpecialtyType) => {
-                const { id, specialtyName } = item;
+              {profileData.specialties.map((specialty: SpecialtyItemType) => {
                 return (
                   <Chips
-                    key={id}
-                    text={specialtyName}
+                    key={specialty.id}
+                    text={specialty.specialty?.specialtyName}
                     icon
-                    onClick={onDeleteSpecialty(id)}
+                    onClick={() => onDeleteSpecialty(specialty.id)}
                   />
                 );
               })}

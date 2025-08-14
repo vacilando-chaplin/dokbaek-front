@@ -12,7 +12,7 @@ const Info = () => {
       <PersonalInfo profileId={profileId} />
       <Education profileId={profileId} />
       <Introduction profileId={profileId} />
-      <ProfileSpecialtyFormModal type="add" profileId={profileId} />
+      <ProfileSpecialtyFormModal profileId={profileId} />
     </div>
   );
 };
