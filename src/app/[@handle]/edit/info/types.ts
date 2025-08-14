@@ -14,6 +14,7 @@ export interface SchoolType {
 
 export interface SpecialtyType {
   id: number;
+  specialtyId: number;
   specialtyName: string;
   imageUrl?: string;
   mediaUrl?: string;
@@ -21,9 +22,9 @@ export interface SpecialtyType {
 export interface SpecialtyItemType {
   createdAt: string | null;
   displayOrder: number | null;
-  id: number | null;
+  id: number;
   imageUrl: string | null;
   mediaUrl: string | null;
-  specialty: { id: number; specialtyName: string } | null;
+  specialty: { id: number; specialtyName: string };
   updatedAt: string | null;
 }

@@ -6,7 +6,6 @@ import {
 } from "@/lib/recoil/handle/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import ProfileInfoFrame from "../container/profileInfoFrame";
-import ChipItem from "@/components/atoms/chipItem";
 
 const Specialty = () => {
   const profileData = useRecoilValue(profileViewState);
@@ -24,9 +23,16 @@ const Specialty = () => {
         <div className="flex flex-row gap-1">
           {specialties.map((specialty) => {
             return (
-              <ChipItem key={specialty.id} onClick={onSpecialtyModalOpen}>
-                <span>{specialty.specialty.specialtyName}</span>
-              </ChipItem>
+              <button
+                key={specialty.id}
+                type="button"
+                onClick={onSpecialtyModalOpen}
+                className="flex h-auto w-auto items-center gap-0.5 rounded-lg bg-accent-light-light px-2 py-[5px] dark:bg-accent-light-dark"
+              >
+                <span className="typography-body3 font-normal text-accent-primary-light dark:text-accent-primary-dark">
+                  {specialty.specialty.specialtyName}
+                </span>
+              </button>
             );
           })}
         </div>

@@ -2,7 +2,7 @@ import { sizeStyleType } from "@/lib/types";
 import X from "../../../public/icons/X.svg";
 
 interface ChipsProps {
-  text: string;
+  text: string | undefined;
   size?: "large" | "medium" | "small";
   icon?: boolean;
   disabled?: boolean;

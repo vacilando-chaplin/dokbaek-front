@@ -1,3 +1,4 @@
+import { getVideoId } from "@/lib/utils";
 import YouTube from "react-youtube";
 
 interface YoutubeVideoProps {
@@ -5,6 +6,8 @@ interface YoutubeVideoProps {
 }
 
 const YoutubeVideo = ({ link }: YoutubeVideoProps) => {
+  const videoId = getVideoId(link);
+
   const opts = {
     playerVars: {
       modestbranding: 1,
@@ -15,11 +18,7 @@ const YoutubeVideo = ({ link }: YoutubeVideoProps) => {
 
   return (
     <YouTube
-      videoId={
-        link.includes("https://www.youtube.com")
-          ? link.slice(32, 43)
-          : link.slice(17, 48)
-      }
+      videoId={videoId}
       iframeClassName="iframe-border iframe-video"
       className="iframe-wrap iframe-size"
       opts={opts}

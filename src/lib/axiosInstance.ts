@@ -2,14 +2,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { removeStorageData, setRefreshToken, setToken } from "./utils";
 
-const token = Cookies.get("jwt");
 export const baseURL = process.env.NEXT_PUBLIC_API_BASEURL;
 
 const api = axios.create({
-  baseURL: baseURL,
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
+  baseURL: baseURL
 });
 
 const refreshToken = async () => {
@@ -35,11 +31,13 @@ const refreshToken = async () => {
     setRefreshToken("refresh_token", refreshToken);
     return jwt;
   } catch (error) {
-    console.error(error);
+    console.error("Refresh token failed:", error);
+    removeStorageData(); // 리프레시 실패 시 모든 토큰 제거
     throw error;
   }
 };
 
+// Request 인터셉터
 api.interceptors.request.use(
   (config) => {
     const token = Cookies.get("jwt");
@@ -53,30 +51,31 @@ api.interceptors.request.use(
   }
 );
 
-const addResponseInterceptor = (axiosInstance: any) => {
-  axiosInstance.interceptors.response.use(
-    (response: any) => {
-      return response;
-    },
-    async (error: any) => {
-      const originalRequest = error.config;
-      if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        await refreshToken();
-        try {
-          const newToken = await refreshToken();
-          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
-          return axiosInstance(originalRequest);
-        } catch (refreshError) {
-          console.error("Token refresh failed:", refreshError);
-          return Promise.reject(refreshError);
-        }
-      }
-      return Promise.reject(error);
-    }
-  );
-};
+// Response 인터셉터
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
 
-addResponseInterceptor(api);
+    // 401 에러이고 아직 재시도하지 않은 경우
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const newToken = await refreshToken();
+        originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export { api };

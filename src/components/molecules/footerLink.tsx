@@ -29,39 +29,41 @@ const FooterLink = () => {
   }, []);
 
   return (
-    <div>
-      <ul className="flex">
-        <li>
-          <Link
-            href={businessInfo}
-            target="_blank"
-            className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
-          >
-            사업자정보 확인
-          </Link>
-        </li>
-        <div className="mx-1 text-gray-400">·</div>
-        <li>
-          <Link
-            href={termsServices}
-            target="_blank"
-            className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
-          >
-            서비스 이용약관
-          </Link>
-        </li>
-        <div className="mx-1 text-gray-400">·</div>
-        <li>
-          <Link
-            href={privacyPolicy}
-            target="_blank"
-            className="typography-caption1 font-medium text-content-primary-light dark:text-content-primary-dark"
-          >
-            개인정보 처리방침
-          </Link>
-        </li>
-      </ul>
-    </div>
+    <ul className="flex h-auto w-full max-w-[1272px] gap-1">
+      <li>
+        <Link
+          href={businessInfo}
+          target="_blank"
+          className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
+        >
+          사업자정보 확인
+        </Link>
+      </li>
+      <div className="text-content-alternative-light dark:text-content-alternative-dark">
+        ·
+      </div>
+      <li>
+        <Link
+          href={termsServices}
+          target="_blank"
+          className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
+        >
+          서비스 이용약관
+        </Link>
+      </li>
+      <div className="text-content-alternative-light dark:text-content-alternative-dark">
+        ·
+      </div>
+      <li>
+        <Link
+          href={privacyPolicy}
+          target="_blank"
+          className="typography-caption1 font-medium text-content-primary-light dark:text-content-primary-dark"
+        >
+          개인정보 처리방침
+        </Link>
+      </li>
+    </ul>
   );
 };
 

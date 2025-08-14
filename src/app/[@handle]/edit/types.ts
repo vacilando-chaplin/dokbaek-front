@@ -97,7 +97,7 @@ export interface ProfileSpecialtyType {
     id: number;
     specialtyName: string;
   };
-  imageUrl: string;
+  imageUrl: string | null;
   mediaUrl: string;
   displayOrder: number;
   createdAt: string;

@@ -10,6 +10,8 @@ import PhotoOriginModal from "../photo/photoOriginModal";
 import FilmoShowcaseModal from "../filmo/filmoShowcaseModal";
 import FilmoYoutubeModal from "../filmo/filmoYoutubeModal";
 import HandleNameEditModal from "../handleName/handleNameEditModal";
+import SpecialtyYoutubeModal from "../info/specialtyYoutubeModal";
+import SpecialtyImageModal from "../info/specialtyImageModal";
 
 const UserProfileContainer = () => {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -37,6 +39,8 @@ const UserProfileContainer = () => {
       <MainPhotoCropModal />
       <MainPhotoDeleteModal />
       <SpecialtyModal />
+      <SpecialtyImageModal />
+      <SpecialtyYoutubeModal />
       <PhotoOriginModal />
       <FilmoShowcaseModal />
       <FilmoYoutubeModal />

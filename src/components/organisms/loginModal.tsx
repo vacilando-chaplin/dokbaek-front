@@ -1,5 +1,5 @@
 import X from "../../../public/icons/X.svg";
-import LogoVertical from "../../../public/icons/LogoVertical.svg";
+import LogoHorizontal from "../../../public/icons/LogoHorizontal.svg";
 import KakaoLogin from "@/app/login/components/kakaoLogin";
 import NaverLogin from "@/app/login/components/naverLogin";
 import GoogleLogin from "@/app/login/components/googleLogin";
@@ -53,7 +53,7 @@ const LoginModal = ({ onLoginModalClose }: LoginModalProps) => {
         </div>
         <div className="mx-[80px] mb-[72px] mt-[88px]">
           <div className="flex flex-col items-center justify-center gap-4">
-            <LogoVertical width="85" height="46" />
+            <LogoHorizontal width="85" height="46" />
             <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
               쉽고 빠르게 프로필을 만들어보세요.
             </label>

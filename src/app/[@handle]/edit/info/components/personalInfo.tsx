@@ -5,7 +5,7 @@ import TextInput from "@/components/atoms/textInput";
 import Title from "@/components/atoms/title";
 import SearchDropdown from "@/components/molecules/searchDropdown";
 import { yearList } from "@/lib/data";
-import { SpecialtyType } from "../types";
+import { SpecialtyItemType, SpecialtyType } from "../types";
 import BoxButton from "@/components/atoms/boxButton";
 import Plus from "../../../../../../public/icons/Plus.svg";
 import Chips from "@/components/atoms/chips";
@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { contactFormat, setOnlyNumber } from "@/lib/utils";
 import { ProfileInfoDataType } from "../../types";
-import { putInfoDraft } from "../api";
+import { deleteSpecialty, putInfoDraft } from "../api";
 import {
   profileSpecialtyModalState,
   specialtyData
@@ -48,24 +48,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
 
   const { mutate } = useMutation({
     mutationFn: (newInfo: ProfileInfoDataType) =>
-      putInfoDraft(profileId, newInfo),
-    onMutate: () => {
-      setProfileData((prev) => ({
-        ...prev,
-        info: {
-          ...prev.info,
-          name: name,
-          bornYear: bornYear,
-          gender: gender,
-          height: height,
-          weight: weight,
-          contact: contact,
-          email: email,
-          instagramLink: instagramLink,
-          youtubeLink: youtubeLink
-        }
-      }));
-    }
+      putInfoDraft(profileId, newInfo)
   });
 
   // 기본 정보 저장
@@ -79,7 +62,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     setProfileData((prev) => ({
       ...prev,
       info: {
-        ...profileData.info,
+        ...prev.info,
         [name]: value
       }
     }));
@@ -92,7 +75,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     setProfileData((prev) => ({
       ...prev,
       info: {
-        ...profileData.info,
+        ...prev.info,
         [name]: changeNumber
       }
     }));
@@ -109,7 +92,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     const changeNumber = setOnlyNumber(value);
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, [name]: changeNumber }
+      info: { ...prev.info, [name]: changeNumber }
     }));
   };
 
@@ -119,7 +102,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
     const inputContact = contactFormat(value);
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, [name]: inputContact }
+      info: { ...prev.info, [name]: inputContact }
     }));
   };
 
@@ -130,32 +113,61 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
 
   // 드랍다운 아이템 클릭
   const onDropdownClick = (name: string, item: string) => {
+    const updatedInfo = {
+      ...profileData.info,
+      [name]: item
+    };
+
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, [name]: item }
+      info: { ...prev.info, [name]: item }
     }));
-    mutate(profileData.info);
+    mutate(updatedInfo);
   };
 
   // 성별 선택
   const onSelectGender = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedGender = e.target.id;
+
+    const updatedInfo = {
+      ...profileData.info,
+      gender: selectedGender
+    };
+
     setProfileData((prev) => ({
       ...prev,
-      info: { ...profileData.info, gender: e.target.id }
+      info: { ...prev.info, gender: selectedGender }
     }));
-    mutate(profileData.info);
+    mutate(updatedInfo);
   };
 
-  const onSpecialtyFormModalOpen = async () => {
+  const onSpecialtyFormModalOpen = () => {
+    if (profileData.specialties.length >= 1) {
+      const currnetSpecialties = profileData.specialties.map(
+        (specialty: SpecialtyItemType) => {
+          return {
+            id: specialty.id,
+            specialtyId: specialty.specialty.id,
+            specialtyName: specialty.specialty.specialtyName,
+            imageUrl: specialty.imageUrl ?? "",
+            mediaUrl: specialty.mediaUrl ?? ""
+          };
+        }
+      );
+
+      setSpecialties(currnetSpecialties);
+    }
     setProfileSpecialtyModal(true);
   };
 
-  const onDeleteSpecialty = (specialtyId: number) => {
-    return () => {
-      setSpecialties((prev) =>
-        prev.filter((specialty) => specialty.id !== specialtyId)
-      );
-    };
+  const onDeleteSpecialty = async (specialtyId: number) => {
+    await deleteSpecialty(profileId, specialtyId);
+    setProfileData((prev) => ({
+      ...prev,
+      specialties: prev.specialties.filter(
+        (specialty) => specialty.id !== specialtyId
+      )
+    }));
   };
 
   return (
@@ -315,14 +327,13 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               </BoxButton>
             </div>
             <div className="mt-2 flex h-auto gap-1">
-              {specialties.map((item: SpecialtyType) => {
-                const { id, specialtyName } = item;
+              {profileData.specialties.map((specialty: SpecialtyItemType) => {
                 return (
                   <Chips
-                    key={id}
-                    text={specialtyName}
+                    key={specialty.id}
+                    text={specialty.specialty?.specialtyName}
                     icon
-                    onClick={onDeleteSpecialty(id)}
+                    onClick={() => onDeleteSpecialty(specialty.id)}
                   />
                 );
               })}

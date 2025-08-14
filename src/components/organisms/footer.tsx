@@ -6,20 +6,15 @@ import FooterCopyright from "../molecules/footerCopyright";
 
 const Footer = () => {
   return (
-    <div className="mt-16 flex w-[100%] justify-center bg-background-base-light dark:bg-background-base-dark">
-      <div
-        className="container-max w-[90%] items-center sm:w-[90%] md:w-[85%] lg:w-[70%]"
-        style={{ margin: "50px auto" }}
-      >
-        <FooterCompany />
-        <div className="mt-5">
+    <footer className="flex h-auto w-full gap-2.5 pt-16">
+      <div className="flex h-auto w-full bg-background-base-light py-20 dark:bg-background-base-dark">
+        <div className="container-max m-[auto] flex w-[90%] flex-col items-center gap-5 sm:w-[90%] md:w-[85%] lg:w-[70%]">
+          <FooterCompany />
           <FooterLink />
-        </div>
-        <div className="mt-5">
           <FooterCopyright />
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

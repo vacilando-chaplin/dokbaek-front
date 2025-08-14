@@ -112,7 +112,7 @@ const PhotoOriginModal = () => {
               <LoadingSpinner
                 width="24"
                 height="24"
-                className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
+                className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-dark dark:text-content-primary-dark"
               />
             )}
             {!isError && (

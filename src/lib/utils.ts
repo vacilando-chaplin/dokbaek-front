@@ -63,7 +63,7 @@ export const convertToBase64 = (file: File): Promise<string> => {
 };
 
 const loginOptions = {
-  expires: 1,
+  expires: 0.5,
   secure: process.env.NODE_ENV === "production",
   path: "/",
   sameSite: "strict" as const
@@ -108,4 +108,20 @@ export const setLoginForm = (name: string, loginForm: string) => {
 
 export const isValidHandle = (handle: string) => {
   return handle.length > 2 && /^[a-zA-Z0-9]+$/.test(handle);
+};
+
+export const getVideoId = (url: string) => {
+  const urlObj = new URL(url);
+
+  // youtube.com/watch?v= 형태
+  if (urlObj.hostname.includes("youtube.com")) {
+    return urlObj.searchParams.get("v");
+  }
+
+  // youtu.be/ 형태
+  if (urlObj.hostname.includes("youtu.be")) {
+    return urlObj.pathname.slice(1);
+  }
+
+  return null;
 };

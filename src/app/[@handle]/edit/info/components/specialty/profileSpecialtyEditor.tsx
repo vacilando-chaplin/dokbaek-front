@@ -16,7 +16,7 @@ interface ProfileSpecialtyEditorProps {
   onAddSpecialty: (newSpecialty: string) => void;
   onSpecialtyDropdownClick: (name: string, item: string) => void;
   onSpecialtyChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onDeleteSpecialty: (specialtyId: number) => () => void;
+  onDeleteSpecialty: (specialtyId: number) => void;
 }
 const ProfileSpecialtyEditor = ({
   specialties,
@@ -42,6 +42,7 @@ const ProfileSpecialtyEditor = ({
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const reader = new FileReader();
+      const inputElement = e.currentTarget;
 
       reader.addEventListener("load", async () => {
         const imageUrl = reader.result?.toString() || "";
@@ -54,7 +55,9 @@ const ProfileSpecialtyEditor = ({
         );
         setSpecialties(updatedSpecialties);
 
-        e.currentTarget.value = "";
+        if (inputElement) {
+          inputElement.value = "";
+        }
       });
 
       reader.readAsDataURL(file);
@@ -140,13 +143,14 @@ const ProfileSpecialtyEditor = ({
                   <div className="flex gap-2">
                     <label
                       htmlFor={`upload-${specialty.id}`}
-                      className="flex cursor-pointer items-center font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
+                      className={`flex items-center font-medium ${!specialty.imageUrl && "cursor-pointer"}`}
                     >
                       <input
                         id={`upload-${specialty.id}`}
                         type="file"
                         accept="image/*"
                         className="hidden"
+                        disabled={specialty.imageUrl ? true : false}
                         onChange={(e) =>
                           onChangeProfileSpecialtyPhoto(e, specialty.id)
                         }
@@ -154,13 +158,19 @@ const ProfileSpecialtyEditor = ({
                       <PlusCircle
                         width="12"
                         height="12"
-                        className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+                        className={`fill-current text-content-alternative-light dark:text-content-alternative-dark ${specialty.imageUrl && "opacity-40"}`}
                       />
-                      <span style={{ marginLeft: "2px" }}>사진</span>
+                      <span
+                        style={{ marginLeft: "2px" }}
+                        className={`typography-caption1 text-content-tertiary-light dark:text-content-tertiary-dark ${specialty.imageUrl && "opacity-40"}`}
+                      >
+                        사진
+                      </span>
                     </label>
                     <button
                       type="button"
                       className="flex items-center font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
+                      disabled={specialty.mediaUrl ? true : false}
                       onClick={() =>
                         onProfileSpecialtyMediaModalOpen(specialty.id)
                       }
@@ -168,14 +178,19 @@ const ProfileSpecialtyEditor = ({
                       <PlusCircle
                         width="12"
                         height="12"
-                        className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+                        className={`fill-current text-content-alternative-light dark:text-content-alternative-dark ${specialty.mediaUrl && "opacity-40"}`}
                       />
-                      <span style={{ marginLeft: "2px" }}>영상</span>
+                      <span
+                        style={{ marginLeft: "2px" }}
+                        className={`typography-caption1 text-content-tertiary-light dark:text-content-tertiary-dark ${specialty.mediaUrl && "opacity-40"}`}
+                      >
+                        영상
+                      </span>
                     </button>
                     <button
                       type="button"
                       className="flex items-center font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
-                      onClick={onDeleteSpecialty(specialty.id)}
+                      onClick={() => onDeleteSpecialty(specialty.id)}
                     >
                       <XCircleFill
                         width="16"
@@ -204,7 +219,7 @@ const ProfileSpecialtyEditor = ({
                         <XCircleFill
                           width="16"
                           height="16"
-                          className="fill-current text-content-primary-light"
+                          className="fill-current text-content-primary-light dark:text-content-primary-dark"
                         />
                       </button>
                     </div>
@@ -231,7 +246,7 @@ const ProfileSpecialtyEditor = ({
                         <XCircleFill
                           width="16"
                           height="16"
-                          className="fill-current text-content-primary-light"
+                          className="fill-current text-content-primary-light dark:text-content-primary-dark"
                         />
                       </button>
                     </div>
