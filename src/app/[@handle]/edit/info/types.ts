@@ -14,6 +14,7 @@ export interface SchoolType {
 
 export interface SpecialtyType {
   id: number;
+  specialtyId: number;
   specialtyName: string;
   imageUrl?: string;
   mediaUrl?: string;

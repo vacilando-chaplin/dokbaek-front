@@ -9,6 +9,11 @@ export interface PhotoOriginModalType {
   index: number;
 }
 
+export interface ImageModalType {
+  imageUrl: string;
+  active: boolean;
+}
+
 export interface YoutubeModalType {
   url: string;
   active: boolean;

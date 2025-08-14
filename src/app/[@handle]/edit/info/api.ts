@@ -61,11 +61,12 @@ export const postSpecialty = async (specialtyName: string) => {
 export const putSpecialtyMediaUrl = async (
   profileId: number,
   specialtyId: number,
+  profileSpecialtyId: number,
   mediaUrl: string
 ) => {
   try {
     const res = await api.put(
-      `/profile/${profileId}/draft/specialty/${specialtyId}`,
+      `/profile/${profileId}/draft/specialty/${profileSpecialtyId}`,
       { specialtyId, mediaUrl }
     );
     return res.data;
@@ -119,6 +120,20 @@ export const postSpecialtyImage = async (
       formData
     );
     return res.data.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteSpecialtyImage = async (
+  profileId: number,
+  specialtyId: number
+) => {
+  try {
+    const res = await api.delete(
+      `/profile/${profileId}/draft/specialty/${specialtyId}/image`
+    );
+    return res.data;
   } catch (error) {
     throw error;
   }

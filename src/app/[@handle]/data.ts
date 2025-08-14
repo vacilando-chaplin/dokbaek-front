@@ -5,6 +5,11 @@ export const photoOriginModalInit = {
   index: 0
 };
 
+export const imageModalInit = {
+  imageUrl: "",
+  active: false
+};
+
 export const youtubeModalInit = {
   url: "",
   active: false

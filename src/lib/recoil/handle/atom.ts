@@ -1,10 +1,12 @@
 import {
+  imageModalInit,
   photoOriginModalInit,
   profilePhotoModalInit,
   youtubeModalInit
 } from "@/app/[@handle]/data";
 import { ProfileDraftDataType } from "@/app/[@handle]/edit/types";
 import {
+  ImageModalType,
   PhotoOriginModalType,
   ProfilePhotoModalType,
   SelectedPhotoLabelType,
@@ -57,6 +59,16 @@ export const mainPhotoDeleteModalActiveState = atom<boolean>({
 export const specialtyModalState = atom<boolean>({
   key: "specialtyModalState",
   default: false
+});
+
+export const specialtyImageModalState = atom<ImageModalType>({
+  key: "specialtyImageModalState",
+  default: imageModalInit
+});
+
+export const specialtyYoutubeModalState = atom<YoutubeModalType>({
+  key: "specialtyYoutubeModalState",
+  default: youtubeModalInit
 });
 
 export const selectedPhotoLabelState = atom<SelectedPhotoLabelType>({

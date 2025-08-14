@@ -12,6 +12,7 @@ import {
 } from "@/lib/recoil/handle/edit/info/atom";
 import {
   deleteSpecialty,
+  deleteSpecialtyImage,
   postDraftSpecialty,
   postSpecialty,
   postSpecialtyImage,
@@ -39,6 +40,7 @@ const ProfileSpecialtyFormModal = ({
   const [searchSpecialty, setSearchSpecialty] = useState<any[]>([]);
   const [specialty, setSpecialty] = useState<SpecialtyType>({
     id: 0,
+    specialtyId: 0,
     specialtyName: "",
     imageUrl: "",
     mediaUrl: ""
@@ -53,13 +55,20 @@ const ProfileSpecialtyFormModal = ({
   const onAddSpecialty = async (newSpecialty: string) => {
     const res = await postSpecialty(newSpecialty);
     const data = {
-      id: res.data.id,
+      id: 0,
+      specialtyId: res.data.id,
       specialtyName: res.data.specialtyName,
       imageUrl: "",
       mediaUrl: ""
     };
     setSpecialties((prev) => [...prev, data]);
-    setSpecialty({ id: 0, specialtyName: "", imageUrl: "", mediaUrl: "" });
+    setSpecialty({
+      id: 0,
+      specialtyId: 0,
+      specialtyName: "",
+      imageUrl: "",
+      mediaUrl: ""
+    });
     setProfileSpecialtyModal(true);
   };
 
@@ -82,13 +91,13 @@ const ProfileSpecialtyFormModal = ({
     }
 
     for (const specialty of specialties) {
-      const specialtyId = specialty.id;
+      const id = specialty.id;
+      const specialtyId = specialty.specialtyId;
       const mediaUrl = specialty.mediaUrl ?? "";
       const imageUrl = specialty.imageUrl ?? null;
 
       const existingSpecialty = profileData.specialties.find(
-        (existing) =>
-          existing.id === specialtyId && !deletedIds.includes(specialtyId)
+        (existing) => existing.id === id && !deletedIds.includes(id)
       );
 
       // 기존에 없던 특기 일 경우
@@ -108,11 +117,37 @@ const ProfileSpecialtyFormModal = ({
       } else {
         // 기존에 있던 특기에서 이미지를 추가하는 경우
         if (!existingSpecialty.imageUrl && imageUrl) {
-          const imageRes = await postSpecialtyImage(
-            profileId,
-            specialtyId,
-            imageUrl
-          );
+          const imageRes = await postSpecialtyImage(profileId, id, imageUrl);
+
+          setProfileData((prev) => ({
+            ...prev,
+            specialties: prev.specialties.map((item) =>
+              item.id === existingSpecialty.id
+                ? { ...item, imageUrl: imageRes.imageUrl }
+                : item
+            )
+          }));
+        } else if (existingSpecialty.imageUrl && !imageUrl) {
+          // 기존에 있던 특기에서 이미지를 삭제하는 경우
+          await deleteSpecialtyImage(profileId, id);
+
+          setProfileData((prev) => ({
+            ...prev,
+            specialties: prev.specialties.map((item) =>
+              item.id === existingSpecialty.id
+                ? { ...item, imageUrl: null }
+                : item
+            )
+          }));
+        } else if (
+          existingSpecialty.imageUrl &&
+          imageUrl &&
+          existingSpecialty.imageUrl !== imageUrl
+        ) {
+          // 기존에 있던 특기에서 이미지를 삭제하고 다시 추가하는 경우
+          await deleteSpecialtyImage(profileId, id);
+
+          const imageRes = await postSpecialtyImage(profileId, id, imageUrl);
 
           setProfileData((prev) => ({
             ...prev,
@@ -124,16 +159,12 @@ const ProfileSpecialtyFormModal = ({
           }));
         }
 
-        // 기존 특기에서 이미지를 삭제 했을 때 deleteSpecialtyImage 추가 되어야 함
-        // else if (existingSpecialty.imageUrl && !imageUrl) {
-        //   delete
-        // }
-
         // 기존에 있던 특기에서 영상이 변경된 경우
         if (existingSpecialty.mediaUrl !== mediaUrl) {
           const res = await putSpecialtyMediaUrl(
             profileId,
             specialtyId,
+            id,
             mediaUrl
           );
 
@@ -141,7 +172,7 @@ const ProfileSpecialtyFormModal = ({
             ...prev,
             specialties: prev.specialties.map((item) =>
               item.id === existingSpecialty.id
-                ? { ...item, mediaUrl: res.mediaUrl }
+                ? { ...item, mediaUrl: res.data.mediaUrl }
                 : item
             )
           }));
@@ -171,13 +202,20 @@ const ProfileSpecialtyFormModal = ({
       !specialties.some((specialty) => specialty.specialtyName === item)
     ) {
       const data = {
-        id: selectedSpecialty.id,
+        id: 0,
+        specialtyId: selectedSpecialty.id,
         specialtyName: selectedSpecialty.specialtyName,
         imageUrl: "",
         mediaUrl: ""
       };
       setSpecialties((prev) => [...prev, data]);
-      setSpecialty({ id: 0, specialtyName: "", imageUrl: "", mediaUrl: "" });
+      setSpecialty({
+        id: 0,
+        specialtyId: 0,
+        specialtyName: "",
+        imageUrl: "",
+        mediaUrl: ""
+      });
     }
   };
 

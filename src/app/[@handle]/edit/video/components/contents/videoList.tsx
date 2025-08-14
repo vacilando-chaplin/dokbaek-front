@@ -5,6 +5,7 @@ import EmptyFrame from "@/components/atoms/emptyFrame";
 import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
 import { ProfileVideoDataType } from "../../../types";
 import VideoItem from "./videoItem";
+import { getVideoId } from "@/lib/utils";
 
 const VideoList = () => {
   const profileData = useRecoilValue(profileDraftData);
@@ -16,9 +17,7 @@ const VideoList = () => {
       {videoList.length >= 1 ? (
         <div className="grid h-auto w-full grid-cols-3 gap-2">
           {videoList.map((video: ProfileVideoDataType) => {
-            const videoId = video.url.includes("https://www.youtube.com")
-              ? video.url.slice(32, 43)
-              : video.url.slice(17, 28);
+            const videoId = getVideoId(video.url);
             const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
             return (

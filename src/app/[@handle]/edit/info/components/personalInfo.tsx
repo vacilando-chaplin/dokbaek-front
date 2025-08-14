@@ -147,6 +147,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
         (specialty: SpecialtyItemType) => {
           return {
             id: specialty.id,
+            specialtyId: specialty.specialty.id,
             specialtyName: specialty.specialty.specialtyName,
             imageUrl: specialty.imageUrl ?? "",
             mediaUrl: specialty.mediaUrl ?? ""
