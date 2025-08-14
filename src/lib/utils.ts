@@ -63,7 +63,7 @@ export const convertToBase64 = (file: File): Promise<string> => {
 };
 
 const loginOptions = {
-  expires: 1,
+  expires: 0.5,
   secure: process.env.NODE_ENV === "production",
   path: "/",
   sameSite: "strict" as const
