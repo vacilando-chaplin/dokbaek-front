@@ -103,7 +103,7 @@ export const setLoginProfileId = (name: string, loginProfileId: string) => {
 };
 
 export const setLoginForm = (name: string, loginForm: string) => {
-  Cookies.set(name, loginForm, loginOptions);
+  Cookies.set(name, loginForm, refreshTokenOptions);
 };
 
 export const isValidHandle = (handle: string) => {

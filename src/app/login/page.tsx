@@ -8,11 +8,22 @@ import { useEffect, useState } from "react";
 import LogoHorizontal from "../../../public/icons/LogoHorizontal.svg";
 import Tooltip from "@/components/atoms/tooltip";
 import Cookies from "js-cookie";
+import { useRecoilValue } from "recoil";
+import { loginState } from "@/lib/atoms";
+import { useRouter } from "next/navigation";
+import { routePaths } from "@/constants/routes";
 
 const Login = () => {
+  const router = useRouter();
+
   const [loginForm, setLoginForm] = useState<string | null>(null);
+  const isLoggedIn = useRecoilValue(loginState);
 
   useEffect(() => {
+    if (isLoggedIn) {
+      router.replace(routePaths.home());
+    }
+
     const currentLoginForm = Cookies.get("login_form");
     setLoginForm(currentLoginForm || null);
   }, []);

@@ -10,8 +10,8 @@ export default function AuthInitializer() {
   const setIsLoggedIn = useSetRecoilState(loginState);
 
   useEffect(() => {
-    const refreshToken = Cookies.get("refresh_token");
-    setIsLoggedIn(!!refreshToken);
+    const jwt = Cookies.get("jwt");
+    setIsLoggedIn(!!jwt);
   }, []);
 
   return null;

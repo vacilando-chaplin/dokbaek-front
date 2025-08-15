@@ -2,17 +2,9 @@ import axios from "axios";
 import { api } from "./axiosInstance";
 import { profileInit } from "./data";
 
-export const deleteSignOut = async (refreshToken: string) => {
+export const deleteSignOut = async (jwt: string) => {
   try {
-    const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_API_BASEURL}/auth/signout`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${refreshToken}`
-        }
-      }
-    );
+    const res = await api.delete("/auth/signout");
     return res.data;
   } catch (error) {
     throw error;

@@ -41,13 +41,13 @@ const TopNavigationClient = () => {
 
   const onLogOutMutation = useMutation({
     mutationFn: async () => {
-      const refreshToken = Cookies.get("refresh_token");
+      const jwt = Cookies.get("jwt");
 
-      if (!refreshToken) {
+      if (!jwt) {
         throw new Error();
       }
 
-      await deleteSignOut(refreshToken);
+      await deleteSignOut(jwt);
     },
     onSuccess: () => {
       removeStorageData();

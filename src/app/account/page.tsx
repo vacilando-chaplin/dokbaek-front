@@ -9,7 +9,7 @@ const Account = async () => {
 
   return (
     <section className="flex h-auto min-w-[560px] max-w-[560px] flex-col items-center justify-center gap-10 pb-28 pt-24">
-      <h1 className="typography-heading2 font-semibold">""님, 안녕하세요</h1>
+      <h1 className="typography-heading2 font-semibold">배우님, 안녕하세요</h1>
       <div className="flex flex-col gap-2">
         <AccountPolicies policies={policies.data.terms} />
         <AccountMenu />

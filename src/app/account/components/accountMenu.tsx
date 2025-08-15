@@ -16,10 +16,10 @@ const AccountMenu = () => {
   const setLogin = useSetRecoilState(loginState);
 
   const onLogOut = async () => {
-    const refreshToken = Cookies.get("refresh_token");
+    const jwt = Cookies.get("jwt");
 
-    if (refreshToken) {
-      await deleteSignOut(refreshToken);
+    if (jwt) {
+      await deleteSignOut(jwt);
       removeStorageData();
 
       setLogin(false);
