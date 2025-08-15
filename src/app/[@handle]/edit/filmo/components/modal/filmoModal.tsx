@@ -59,7 +59,12 @@ const FilmoModal = () => {
         const filmoData = filmoRes.data;
 
         if (thumbnail !== "") {
-          await postFilmographyThumbnail(profileId, filmoData.id, thumbnail);
+          const thumbnailRes = await postFilmographyThumbnail(
+            profileId,
+            filmoData.id,
+            thumbnail
+          );
+          filmoData.thumbnailPath = thumbnailRes.data.thumbnailPath;
         }
 
         return filmoData;
