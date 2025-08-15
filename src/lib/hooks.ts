@@ -135,8 +135,7 @@ export const usePhotoEditModal = () => {
     const blob = await response.blob();
     const file = new File([blob], "image", { type: mimeType });
 
-    const downSizedFile = await imageCompression(file, imageCompressionOptions);
-    const downSizedImage = await convertToBase64(downSizedFile);
+    const downSizedImage = await convertToBase64(file);
 
     setCropImage(downSizedImage);
     setSelectImage(downSizedImage);

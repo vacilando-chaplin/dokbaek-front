@@ -19,7 +19,8 @@ const Withdrawal = async () => {
     <section className="flex h-auto w-[560px] max-w-[560px] flex-col gap-10 pb-28 pt-24">
       <WithdrawalContainer title="탈퇴하기 전에 확인해주세요.">
         <span className="typography-body1 font-normal text-content-primary-light dark:text-content-primary-dark">
-          독백에 등록된 ""님의 모든 정보가 영구적으로 삭제되어 복구할 수 없어요.
+          독백에 등록된 배우님의 모든 정보가 영구적으로 삭제되어 복구할 수
+          없어요.
         </span>
       </WithdrawalContainer>
       <WithdrawalReasons initialReasons={initialReasons} />
