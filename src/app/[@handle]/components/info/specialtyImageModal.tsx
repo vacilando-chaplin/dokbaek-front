@@ -52,7 +52,7 @@ const SpecialtyImageModal = () => {
                   quality={95}
                   sizes="100vw"
                   priority
-                  className="rounded-2xl object-contain"
+                  className="rounded-2xl object-cover"
                   onLoad={() => setIsLoaded(true)}
                   onError={() => {
                     setIsError(true);

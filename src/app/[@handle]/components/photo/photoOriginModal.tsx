@@ -86,79 +86,81 @@ const PhotoOriginModal = () => {
             className="fill-current text-content-on_color-light dark:text-static-black"
           />
         </button>
-        <div
-          className={`flex h-full w-full items-center justify-center ${photoLabel === "stillCuts" ? "gap-8" : "gap-4"}`}
-        >
-          {/* Prev Button */}
-          <button
-            className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
-              currentIndex === 0 && "opacity-40"
-            }`}
-            type="button"
-            disabled={currentIndex === 0}
-            onClick={(e) => {
-              onPrevButton();
-              e.stopPropagation();
-            }}
+        <div className="flex h-full w-full items-center justify-center">
+          <div
+            className={`flex items-center ${photoLabel === "stillCuts" ? "gap-20" : "gap-40"}`}
           >
-            <ArrowChevronLeft
-              width="16"
-              height="16"
-              className="fill-current text-content-on_color-light dark:text-static-black"
-            />
-          </button>
-          <div className="relative flex h-full max-h-[80vh] w-full max-w-7xl animate-enter flex-col items-center justify-center">
-            {!isLoaded && !isError && (
-              <LoadingSpinner
-                width="24"
-                height="24"
-                className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-dark dark:text-content-primary-dark"
+            {/* Prev Button */}
+            <button
+              className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
+                currentIndex === 0 && "opacity-40"
+              }`}
+              type="button"
+              disabled={currentIndex === 0}
+              onClick={(e) => {
+                onPrevButton();
+                e.stopPropagation();
+              }}
+            >
+              <ArrowChevronLeft
+                width="16"
+                height="16"
+                className="fill-current text-content-on_color-light dark:text-static-black"
               />
-            )}
-            {!isError && (
-              <div
-                className={`relative max-h-[75vh] overflow-hidden rounded-2xl ${
-                  photoLabel === "stillCuts"
-                    ? "aspect-video min-w-[50vw]"
-                    : "aspect-[3/4] min-w-[30vw]"
-                }`}
-              >
-                <Image
-                  src={selectedPhotoList[currentIndex].path}
-                  alt="photo"
-                  fill
-                  quality={95}
-                  sizes="100vw"
-                  priority
-                  className="rounded-2xl object-cover"
-                  onLoad={() => setIsLoaded(true)}
-                  onError={() => {
-                    setIsError(true);
-                    setIsLoaded(true);
-                  }}
+            </button>
+            <div className="relative flex h-full max-h-[80vh] w-full animate-enter flex-col items-center justify-center">
+              {!isLoaded && !isError && (
+                <LoadingSpinner
+                  width="24"
+                  height="24"
+                  className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-dark dark:text-content-primary-dark"
                 />
-              </div>
-            )}
-            {isError && <EmptyImage />}
+              )}
+              {!isError && (
+                <div
+                  className={`relative max-h-[75vh] overflow-hidden rounded-2xl ${
+                    photoLabel === "stillCuts"
+                      ? "aspect-video min-w-[50vw]"
+                      : "aspect-[3/4] min-w-[30vw]"
+                  }`}
+                >
+                  <Image
+                    src={selectedPhotoList[currentIndex].path}
+                    alt="photo"
+                    fill
+                    quality={95}
+                    sizes="100vw"
+                    priority
+                    className="rounded-2xl object-cover"
+                    onLoad={() => setIsLoaded(true)}
+                    onError={() => {
+                      setIsError(true);
+                      setIsLoaded(true);
+                    }}
+                  />
+                </div>
+              )}
+              {isError && <EmptyImage />}
+            </div>
+            {/* Next Button */}
+            <button
+              className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
+                currentIndex === selectedPhotoList.length - 1 && "opacity-40"
+              }`}
+              type="button"
+              disabled={currentIndex === selectedPhotoList.length - 1}
+              onClick={(e) => {
+                onNextButton();
+                e.stopPropagation();
+              }}
+            >
+              <ArrowChevronRight
+                width="16"
+                height="16"
+                className="fill-current text-content-on_color-light dark:text-static-black"
+              />
+            </button>
           </div>
-          {/* Next Button */}
-          <button
-            className={`flex h-12 w-12 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
-              currentIndex === selectedPhotoList.length - 1 && "opacity-40"
-            }`}
-            type="button"
-            disabled={currentIndex === selectedPhotoList.length - 1}
-            onClick={(e) => {
-              onNextButton();
-              e.stopPropagation();
-            }}
-          >
-            <ArrowChevronRight
-              width="16"
-              height="16"
-              className="fill-current text-content-on_color-light dark:text-static-black"
-            />
-          </button>
         </div>
       </div>
     )

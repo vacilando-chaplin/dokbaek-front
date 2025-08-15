@@ -93,6 +93,7 @@ const MainPhoto = () => {
   const onLike = async () => {
     if (isNaN(loginProfileId)) {
       setToastMessage("해당 기능은 로그인 후 이용할 수 있어요.");
+      return;
     }
 
     const action = profileData.likedByMe ? "unlike" : "like";
