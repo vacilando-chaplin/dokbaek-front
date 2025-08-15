@@ -329,84 +329,83 @@ const PhotoCropModal = () => {
   };
 
   return (
-    <>
-      {cropModal.active && selectedImages?.length >= 1 && (
-        <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
-          <div className="interaction-default relative flex h-auto max-h-[88vh] w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
-            <ModalHeader name={cropModal.name} onClick={onCropModalClose} />
-            <div
-              className={`flex w-full flex-col items-center justify-center ${selectedImages.length >= 2 ? "h-[60vh] max-h-[60vh]" : "h-[70vh] max-h-[70vh]"}`}
-            >
-              <ImageCropper
-                cropData={
-                  selectedImages[selectedIndex].cropData
-                    ? selectedImages[selectedIndex].cropData
-                    : cropDataInit
-                }
-                cropType={cropModal.category}
-                selectImage={selectImage}
-                setCropData={setCropData}
-                setCropImage={setCropedImage}
-              />
-            </div>
-            {selectedImages.length >= 2 && (
-              <div
-                className="no-scrollbar flex w-full flex-row overflow-x-auto overflow-y-hidden px-2 py-4"
-                ref={scrollRef}
-                onMouseDown={onMouseDown}
-                onMouseMove={onMouseMove}
-                onMouseUp={onMouseUp}
-                onMouseLeave={onMouseLeave}
-              >
-                {selectedImages.map((images: SelectedImagesType) => {
-                  return (
-                    <div
-                      key={images.id}
-                      tabIndex={0}
-                      className="group relative mx-2 h-20 w-14 shrink-0 cursor-pointer"
-                      onClick={() => onSelectImage(images.id)}
-                    >
-                      <Image
-                        src={images.originImage}
-                        alt="originImage"
-                        layout="fill"
-                        priority
-                      />
-                      {selectedPhotoId !== images.id && (
-                        <button
-                          className="absolute right-1 top-1 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-0.5 opacity-0 outline-none transition-opacity group-hover:opacity-100 dark:border-border-default-dark dark:bg-background-surface-dark"
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onRemoveImage(images.id);
-                          }}
-                        >
-                          <X
-                            width="12"
-                            height="12"
-                            className="fill-current text-state-negative-light dark:text-state-negative-dark"
-                          />
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            <ModalFooter
-              text={cropModal.buttonText}
-              disabled={
-                selectImage === "" ||
-                onAddPhotoMutation.isPending ||
-                onEditPhotoMutation.isPending
+    cropModal.active &&
+    selectedImages?.length >= 1 && (
+      <section className="fixed inset-0 z-[999] flex h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
+        <div className="interaction-default relative flex h-auto max-h-[88vh] w-full max-w-[720px] animate-enter flex-col items-center justify-center rounded-2xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark">
+          <ModalHeader name={cropModal.name} onClick={onCropModalClose} />
+          <div
+            className={`flex w-full flex-col items-center justify-center ${selectedImages.length >= 2 ? "h-[60vh] max-h-[60vh]" : "h-[70vh] max-h-[70vh]"}`}
+          >
+            <ImageCropper
+              cropData={
+                selectedImages[selectedIndex].cropData
+                  ? selectedImages[selectedIndex].cropData
+                  : cropDataInit
               }
-              onCloseClick={onCropModalClose}
-              onSaveClick={onCropSaveClick}
+              cropType={cropModal.category}
+              selectImage={selectImage}
+              setCropData={setCropData}
+              setCropImage={setCropedImage}
             />
           </div>
-        </section>
-      )}
-    </>
+          {selectedImages.length >= 2 && (
+            <div
+              className="no-scrollbar flex w-full flex-row overflow-x-auto overflow-y-hidden px-2 py-4"
+              ref={scrollRef}
+              onMouseDown={onMouseDown}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseUp}
+              onMouseLeave={onMouseLeave}
+            >
+              {selectedImages.map((images: SelectedImagesType) => {
+                return (
+                  <div
+                    key={images.id}
+                    tabIndex={0}
+                    className="group relative mx-2 h-20 w-14 shrink-0 cursor-pointer"
+                    onClick={() => onSelectImage(images.id)}
+                  >
+                    <Image
+                      src={images.originImage}
+                      alt="originImage"
+                      layout="fill"
+                      priority
+                    />
+                    {selectedPhotoId !== images.id && (
+                      <button
+                        className="absolute right-1 top-1 h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-0.5 opacity-0 outline-none transition-opacity group-hover:opacity-100 dark:border-border-default-dark dark:bg-background-surface-dark"
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRemoveImage(images.id);
+                        }}
+                      >
+                        <X
+                          width="12"
+                          height="12"
+                          className="fill-current text-state-negative-light dark:text-state-negative-dark"
+                        />
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          <ModalFooter
+            text={cropModal.buttonText}
+            disabled={
+              selectImage === "" ||
+              onAddPhotoMutation.isPending ||
+              onEditPhotoMutation.isPending
+            }
+            onCloseClick={onCropModalClose}
+            onSaveClick={onCropSaveClick}
+          />
+        </div>
+      </section>
+    )
   );
 };
 
