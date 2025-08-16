@@ -78,7 +78,7 @@ const TermAgreementButton = ({
   return (
     <BoxButton
       type="primary"
-      size="medium"
+      size="large"
       width="full"
       onClick={onTermAgreement}
       disabled={!code || !state || !isAllRequiredTermsAgreed}
