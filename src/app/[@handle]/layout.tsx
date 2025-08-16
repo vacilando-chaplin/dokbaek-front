@@ -3,7 +3,6 @@ import Toast from "@/components/atoms/toast";
 import HandleInitializer from "./components/provider/initializer";
 import { notFound } from "next/navigation";
 import { getFilmoCategories, getProfileByHandleId } from "./api";
-import HandleNameCreatePage from "./handleNameCreatePage";
 import { profileInit } from "@/lib/data";
 import { Suspense } from "react";
 import TopNavigation from "@/components/organisms/topNavigation";
@@ -18,19 +17,6 @@ const Layout = async ({
   const loginProfileId = Number(cookies().get("loginProfileId")?.value);
   const rawHandle = params["@handle"];
   const handleName = decodeURIComponent(rawHandle).substring(1);
-
-  // 회원 가입 후 프로필 ID 존재 여부 확인, 프로필 ID가 없다면 프로필 ID 생성 페이지 보여줌
-  if (handleName === "@new") {
-    return (
-      <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">
-        <Toast kind="info" fullWidth={false} placement="top" />
-        <Suspense fallback={<></>}>
-          <TopNavigation />
-        </Suspense>
-        <HandleNameCreatePage />
-      </div>
-    );
-  }
 
   const res = await getProfileByHandleId(handleName);
 

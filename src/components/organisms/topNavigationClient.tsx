@@ -74,14 +74,14 @@ const TopNavigationClient = () => {
         setLoginProfileId("loginProfileId", data.id);
         router.push(routePaths.profile(data.handleId));
       } else {
-        router.push(routePaths.profile("new"));
+        router.push(routePaths.createProfile());
       }
     },
     onError: (error: any) => {
       const status = error.response?.status;
 
       if (status === 404) {
-        router.push(routePaths.profile("new"));
+        router.push(routePaths.createProfile());
       } else {
         setToastMessage("내 프로필을 불러 올 수 없어요. 다시 시도해 주세요.");
       }
