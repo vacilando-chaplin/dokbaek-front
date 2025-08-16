@@ -128,9 +128,9 @@ const PhotoOriginModal = () => {
                     src={selectedPhotoList[currentIndex].path}
                     alt="photo"
                     fill
-                    quality={95}
+                    quality={40}
                     sizes="100vw"
-                    priority
+                    loading="lazy"
                     className="rounded-2xl object-cover"
                     onLoad={() => setIsLoaded(true)}
                     onError={() => {
