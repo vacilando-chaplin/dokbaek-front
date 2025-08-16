@@ -2,7 +2,7 @@
 
 import { TermAgreementsType } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { loginErrorState, toastMessage } from "@/lib/atoms";
+import { loginErrorState, loginState, toastMessage } from "@/lib/atoms";
 import { useSetRecoilState } from "recoil";
 import { postOauthSignUp } from "../../callback/api";
 import BoxButton from "@/components/atoms/boxButton";
@@ -26,6 +26,7 @@ const TermAgreementButton = ({
   const state = urlParams.get("state");
 
   const setToastMessage = useSetRecoilState(toastMessage);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const setLoginErrorState = useSetRecoilState(loginErrorState);
 
   const onMutateAgreement = useMutation<
@@ -50,6 +51,7 @@ const TermAgreementButton = ({
       setToken("jwt", data.token.jwt);
       setRefreshToken("refresh_token", data.token.refreshToken);
       setLoginForm("login_form", data.state);
+      setIsLoggedIn(true);
       router.replace(routePaths.createProfile());
     },
     onError: () => {
