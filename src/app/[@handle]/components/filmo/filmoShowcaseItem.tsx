@@ -84,6 +84,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
               alt={production.title}
               fill
               className="object-cover"
+              unoptimized={true}
               onLoad={() => setIsLoaded(true)}
               onError={() => {
                 setIsError(true);

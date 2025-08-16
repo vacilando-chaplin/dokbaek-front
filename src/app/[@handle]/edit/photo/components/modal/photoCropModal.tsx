@@ -370,7 +370,8 @@ const PhotoCropModal = () => {
                       src={images.originImage}
                       alt="originImage"
                       layout="fill"
-                      priority
+                      loading="lazy"
+                      unoptimized={true}
                     />
                     {selectedPhotoId !== images.id && (
                       <button

@@ -118,7 +118,8 @@ const MainPhoto = () => {
         alt="대표 사진"
         quality={75}
         fill
-        priority
+        loading="lazy"
+        unoptimized={true}
         onLoad={() => setIsLoaded(true)}
         onError={() => {
           setIsError(true);

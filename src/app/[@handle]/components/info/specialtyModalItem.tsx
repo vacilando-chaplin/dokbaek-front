@@ -47,6 +47,8 @@ const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
               alt="특기 이미지"
               width={80}
               height={80}
+              loading="lazy"
+              unoptimized={true}
               className="cursor-pointer rounded-lg bg-background-surface-light shadow-[0_0_0_1px_rgba(0,0,0,0.1)] dark:bg-background-surface-dark"
               onClick={() => onImageModalOpen(imageUrl)}
             />

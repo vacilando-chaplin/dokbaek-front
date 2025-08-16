@@ -182,6 +182,8 @@ const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
               src={filmo.thumbnailPath}
               alt={production.title}
               fill
+              loading="lazy"
+              unoptimized={true}
               className="object-cover"
             />
           </div>

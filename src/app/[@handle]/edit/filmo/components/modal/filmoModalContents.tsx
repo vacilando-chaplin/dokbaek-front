@@ -230,6 +230,8 @@ const FilmoModalContents = () => {
                   src={thumbnail}
                   alt="thumbnail"
                   fill
+                  loading="lazy"
+                  unoptimized={true}
                   className="object-cover"
                 />
                 <button

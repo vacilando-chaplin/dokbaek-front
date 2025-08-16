@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import { convertToBase64, getFileMimeTypeFromUrl } from "./utils";
 import { imageCompressionOptions } from "./data";
 import imageCompression from "browser-image-compression";
