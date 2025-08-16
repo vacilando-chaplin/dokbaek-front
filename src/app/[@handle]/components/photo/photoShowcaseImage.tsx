@@ -58,9 +58,8 @@ const PhotoShowcaseImage = ({ photo, index }: PhotoShowcaseImageProps) => {
           src={photo.previewPath}
           alt={photo.id}
           sizes="100vw, 80vw"
-          quality={95}
           fill
-          priority
+          loading="lazy"
           className="rounded-2xl object-cover opacity-100 hover:opacity-30"
           onLoad={() => setIsLoaded(true)}
           onError={() => {

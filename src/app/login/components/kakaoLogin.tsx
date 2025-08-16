@@ -9,7 +9,6 @@ const KakaoLogin = () => {
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI}&state=kakao_login_${Math.random().toString(36).substring(2, 15)}`;
 
   const onKakaoLogin = () => {
-    router.prefetch(KAKAO_AUTH_URL);
     router.push(KAKAO_AUTH_URL);
   };
 
