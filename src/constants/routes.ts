@@ -17,6 +17,8 @@ export const routePaths = {
   accountWithdrawal: () => "/account/withdrawal",
   accountWithdrawalComplete: () => "/account/withdrawal/complete",
 
+  createProfile: () => "/create-profile",
+
   profile: (handleName: string) => `/@${handleName}`,
   profileEditInfo: (handleName: string) => `/@${handleName}/edit/info`,
   profileEditPhoto: (handleName: string) => `/@${handleName}/edit/photo`,

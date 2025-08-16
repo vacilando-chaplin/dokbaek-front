@@ -50,7 +50,7 @@ const TermAgreementButton = ({
       setToken("jwt", data.token.jwt);
       setRefreshToken("refresh_token", data.token.refreshToken);
       setLoginForm("login_form", data.state);
-      router.replace(routePaths.profile("new"));
+      router.replace(routePaths.createProfile());
     },
     onError: () => {
       setLoginErrorState(true);
