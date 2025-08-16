@@ -49,9 +49,10 @@ const SpecialtyImageModal = () => {
                   src={imageModal.imageUrl}
                   alt="specialtyImage"
                   fill
-                  quality={95}
+                  quality={50}
                   sizes="100vw"
-                  priority
+                  loading="lazy"
+                  unoptimized={true}
                   className="rounded-2xl object-cover"
                   onLoad={() => setIsLoaded(true)}
                   onError={() => {

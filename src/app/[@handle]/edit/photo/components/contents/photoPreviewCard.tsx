@@ -103,7 +103,8 @@ const PhotoPreviewCard = ({
         alt="미리보기 이미지"
         sizes="100vw, 50vw"
         fill
-        priority
+        loading="lazy"
+        unoptimized={true}
         className={`rounded-lg object-cover transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
         onLoad={() => setIsLoaded(true)}
         onError={() => {

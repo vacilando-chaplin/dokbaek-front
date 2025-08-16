@@ -74,6 +74,8 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             alt="photo"
             width={212}
             height={271}
+            loading="lazy"
+            unoptimized={true}
             className="h-full w-full rounded-[8px]"
           />
         ) : (
@@ -82,6 +84,8 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
             alt="photo"
             width={212}
             height={271}
+            loading="lazy"
+            unoptimized={true}
             className="h-full w-full rounded-[8px]"
           />
         )}
