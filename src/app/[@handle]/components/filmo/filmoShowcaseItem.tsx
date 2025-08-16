@@ -6,6 +6,9 @@ import LogoHorizontalSmall from "../../../../../public/icons/LogoHorizontalSmall
 import { useSetRecoilState } from "recoil";
 import { filmoYoutubeModalState } from "@/lib/recoil/handle/atom";
 import { ProfileFilmoDataType } from "../../edit/types";
+import { useState } from "react";
+import LoadingSpinner from "../../../../../public/icons/LoadingSpinner.svg";
+import EmptyImage from "@/components/atoms/emptyImage";
 
 interface FilmoShowcaseItemProps {
   filmo: ProfileFilmoDataType;
@@ -14,6 +17,9 @@ interface FilmoShowcaseItemProps {
 const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
   const { role, customRole, character, production } = filmo;
   const setYoutubeModal = useSetRecoilState(filmoYoutubeModalState);
+
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   // 필모그래피 링크 모달 오픈
   const onYoutubeModalOpen = (link: string) => {
@@ -66,12 +72,25 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
           />
         ) : (
           <div className="relative h-[114px] w-[76px] overflow-hidden rounded-lg bg-gray-100">
+            {!isLoaded && !isError && (
+              <LoadingSpinner
+                width="24"
+                height="24"
+                className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
+              />
+            )}
             <Image
               src={filmo.thumbnailPath}
               alt={production.title}
               fill
               className="object-cover"
+              onLoad={() => setIsLoaded(true)}
+              onError={() => {
+                setIsError(true);
+                setIsLoaded(true);
+              }}
             />
+            {isError && <EmptyImage />}
           </div>
         )}
       </div>

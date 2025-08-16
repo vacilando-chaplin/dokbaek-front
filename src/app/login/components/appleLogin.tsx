@@ -18,7 +18,6 @@ const AppleLogin = () => {
     });
 
   const onAppleLogin = () => {
-    router.prefetch(APPLE_AUTH_URL);
     router.push(APPLE_AUTH_URL);
   };
   return (
