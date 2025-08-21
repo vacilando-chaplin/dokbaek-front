@@ -39,8 +39,3 @@ export const profileDraftData = atom<ProfileDraftDataType>({
     updatedAt: ""
   }
 });
-
-export const profileDraftModalState = atom<string>({
-  key: "profiledraftModalState",
-  default: ""
-});

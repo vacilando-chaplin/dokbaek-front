@@ -58,17 +58,6 @@ const LandingSub = () => {
 
   return (
     <div className="relative mx-auto mt-10 flex h-60 w-full max-w-[1272px] flex-row items-center justify-between rounded-[40px] bg-[linear-gradient(to_bottom,#000000,#000003)] px-[100px]">
-      <img
-        src="/images/homeBannerImage.png"
-        alt="homeBannerImage"
-        className="absolute left-1/2 top-1/2 z-10 hidden h-[431px] w-[288px] -translate-x-1/2 -translate-y-1/2 object-contain shadow-[0_0_50px_0_rgba(0,0,0,0)] grayscale md:block"
-      />
-      <div
-        className="absolute left-1/2 top-1/2 z-[8] hidden h-[240px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-opacity-50 bg-gradient-to-b from-static-white/30 to-static-white/0 md:block"
-        style={{
-          filter: "blur(50px)"
-        }}
-      />
       <span className="text-[40px] font-bold leading-[100%] tracking-[-1%] text-static-white">
         프로필은 독백에서
       </span>
