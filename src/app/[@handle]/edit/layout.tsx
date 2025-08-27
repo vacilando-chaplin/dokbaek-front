@@ -20,6 +20,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   const originalDraftExists = draftResponse?.hasDraft ?? false;
 
   let profileInitData;
+
   if (originalDraftExists) {
     profileInitData = draftResponse;
   } else {
@@ -43,9 +44,11 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
       <ListMenu />
-      <Initializer profileInitData={nullCheckedData}>{children}</Initializer>
+      <Initializer profileId={profileId} profileInitData={nullCheckedData}>
+        {children}
+      </Initializer>
       <BottomBar profileId={profileId} />
-      {originalDraftExists && <DraftModal profileId={profileId} />}
+      <DraftModal profileId={profileId} />
     </div>
   );
 };

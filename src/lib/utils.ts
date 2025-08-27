@@ -125,3 +125,65 @@ export const getVideoId = (url: string) => {
 
   return null;
 };
+
+export const sortObject = (obj: any): any => {
+  if (Array.isArray(obj)) {
+    return obj.map(sortObject).sort((a, b) => {
+      if (a?.displayOrder !== undefined && b?.displayOrder !== undefined) {
+        return a.displayOrder - b.displayOrder;
+      }
+      return 0;
+    });
+  }
+  if (obj && typeof obj === "object") {
+    const sorted: any = {};
+    Object.keys(obj)
+      .sort()
+      .forEach((key) => {
+        // id 필드는 제외하고 정렬
+        if (key !== "id") {
+          sorted[key] = sortObject(obj[key]);
+        }
+      });
+    return sorted;
+  }
+  return obj;
+};
+
+// 기존 프로필 비교
+export const hasProfileChanges = (original: any, draft: any): boolean => {
+  const originalData = original?.data;
+  const draftData = draft?.data.data;
+
+  if (!originalData || !draftData) return true;
+
+  // info 객체 비교
+  const originalInfo = sortObject(originalData.info || {});
+  const draftInfo = sortObject(draftData.info || {});
+
+  if (JSON.stringify(originalInfo) !== JSON.stringify(draftInfo)) {
+    return true;
+  }
+
+  // 배열 객체 비교
+  const arrayFields = [
+    "education",
+    "specialties",
+    "photos",
+    "stillCuts",
+    "recentPhotos",
+    "filmos",
+    "videos"
+  ];
+
+  for (const field of arrayFields) {
+    const originalArray = sortObject(originalData[field] || []);
+    const draftArray = sortObject(draftData[field] || []);
+
+    if (JSON.stringify(originalArray) !== JSON.stringify(draftArray)) {
+      return true;
+    }
+  }
+
+  return false;
+};

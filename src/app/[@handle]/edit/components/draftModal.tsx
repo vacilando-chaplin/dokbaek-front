@@ -1,38 +1,44 @@
 "use client";
 
 import ConfirmModal from "@/components/organisms/confirmModal";
-import { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
-import { deleteProfileDraftClient, postProfileDraftClient } from "../../api";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  draftModalState,
+  profileDraftData
+} from "@/lib/recoil/handle/edit/common/atom";
+import {
+  deleteProfileDraftClient,
+  getProfileDraftClient,
+  postProfileDraftClient
+} from "../../api";
 
 interface DraftModalProps {
   profileId: number;
 }
 
 const DraftModal = ({ profileId }: DraftModalProps) => {
-  const [modalState, setModalState] = useState(true);
+  const [draftModal, setDraftModal] = useRecoilState(draftModalState);
   const setData = useSetRecoilState(profileDraftData);
 
-  const onReject = async () => {
+  const onCreateDraft = async () => {
     await deleteProfileDraftClient(profileId);
     const res = await postProfileDraftClient(profileId);
     const data = await res.data.data;
 
     setData(data);
-    setModalState(false);
+    setDraftModal(false);
   };
 
-  const onConfirm = async () => {
-    const res = await postProfileDraftClient(profileId);
-    const data = await res.data.data;
+  const onLoadDraft = async () => {
+    const res = await getProfileDraftClient(profileId);
+    const data = await res?.data.data;
 
     setData(data);
-    setModalState(false);
+    setDraftModal(false);
   };
 
   return (
-    modalState && (
+    draftModal && (
       <ConfirmModal
         dense={false}
         resizing="fixed"
@@ -41,8 +47,8 @@ const DraftModal = ({ profileId }: DraftModalProps) => {
         confirmText="불러오기"
         cancelButtonType="secondaryOutlined"
         confirmButtonType="primary"
-        onCancel={onReject}
-        onConfirm={onConfirm}
+        onCancel={onCreateDraft}
+        onConfirm={onLoadDraft}
       />
     )
   );
