@@ -71,12 +71,12 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
             className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
           />
         ) : (
-          <div className="relative h-[114px] w-[76px] overflow-hidden rounded-lg bg-gray-100">
+          <div className="relative flex h-[114px] w-[76px] items-center justify-center overflow-hidden rounded-lg bg-gray-100">
             {!isLoaded && !isError && (
               <LoadingSpinner
                 width="24"
                 height="24"
-                className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
+                className="fill-current animate-spin text-content-primary-light dark:text-content-primary-dark"
               />
             )}
             <Image

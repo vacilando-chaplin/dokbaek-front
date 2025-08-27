@@ -43,7 +43,7 @@ const PhotoShowcaseImage = ({ photo, index }: PhotoShowcaseImageProps) => {
       onClick={() => onPhotoModalOpen(photo.path, photo.id, index)}
     >
       <div
-        className={`relative w-full ${
+        className={`relative flex w-full items-center justify-center ${
           photoLabel === "stillCuts" ? "aspect-video" : "aspect-[258/330]"
         }`}
       >
@@ -51,7 +51,7 @@ const PhotoShowcaseImage = ({ photo, index }: PhotoShowcaseImageProps) => {
           <LoadingSpinner
             width="24"
             height="24"
-            className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
+            className="fill-current animate-spin text-content-primary-light dark:text-content-primary-dark"
           />
         )}
         <Image
