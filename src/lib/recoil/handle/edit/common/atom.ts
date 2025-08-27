@@ -40,7 +40,7 @@ export const profileDraftData = atom<ProfileDraftDataType>({
   }
 });
 
-export const profileDraftModalState = atom<string>({
-  key: "profiledraftModalState",
-  default: ""
+export const draftModalState = atom<boolean>({
+  key: "draftModalState",
+  default: false
 });

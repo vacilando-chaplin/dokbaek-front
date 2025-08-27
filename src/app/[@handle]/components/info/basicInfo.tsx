@@ -24,11 +24,11 @@ const BasicInfo = () => {
       <div className="typography-body2 flex flex-row items-center gap-1 font-normal text-content-primary-light dark:text-content-primary-dark">
         {bornYear && (
           <span>
-            {bornYear}년생 {(height || height) && "·"}
+            {bornYear}년생 {(Number(height) > 0 || Number(weight) > 0) && "·"}
           </span>
         )}
-        {height && <span>{height}cm</span>}
-        {weight && <span>{weight}kg</span>}
+        {Number(height) > 0 && <span>{height}cm</span>}
+        {Number(weight) > 0 && <span>{weight}kg</span>}
       </div>
       <span className="typography-body2 font-normal text-content-primary-light dark:text-content-primary-dark">
         {finalEducation && (

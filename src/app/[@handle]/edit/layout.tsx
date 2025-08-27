@@ -16,9 +16,14 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   const profileId = Number(cookies().get("loginProfileId")?.value);
 
-  let profileInitData = await getProfileDraftServer(profileId);
+  const draftResponse = await getProfileDraftServer(profileId);
+  const originalDraftExists = draftResponse?.hasDraft ?? false;
 
-  if (!profileInitData?.hasDraft) {
+  let profileInitData;
+
+  if (originalDraftExists) {
+    profileInitData = draftResponse;
+  } else {
     profileInitData = await postProfileDraftServer(profileId);
   }
 
@@ -39,9 +44,11 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
       <ListMenu />
-      <Initializer profileInitData={nullCheckedData}>{children}</Initializer>
+      <Initializer profileId={profileId} profileInitData={nullCheckedData}>
+        {children}
+      </Initializer>
       <BottomBar profileId={profileId} />
-      {profileInitData?.hasDraft && <DraftModal profileId={profileId} />}
+      <DraftModal profileId={profileId} />
     </div>
   );
 };

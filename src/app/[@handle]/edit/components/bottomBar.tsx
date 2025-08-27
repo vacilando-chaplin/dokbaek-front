@@ -56,6 +56,7 @@ const BottomBar = ({ profileId }: BottomBarProps) => {
         videos: data.videos
       }));
 
+      router.refresh();
       router.replace(profileURL);
     },
     onError: () => {
