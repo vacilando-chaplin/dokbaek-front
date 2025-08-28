@@ -11,7 +11,18 @@ export const metadata: Metadata = {
   icons: [
     { rel: "icon", url: "/favicon.ico" },
     { rel: "shortcut icon", url: "/favicon.ico" }
-  ]
+  ],
+  openGraph: {
+    images: [
+      {
+        url: "https://dokbaek.com/images/LogoHorizontalDokBaek.png",
+        alt: "dokbaek"
+      }
+    ]
+  },
+  twitter: {
+    images: ["https://dokbaek.com/images/LogoHorizontalDokBaek.png"]
+  }
 };
 
 const pretendard = localFont({
