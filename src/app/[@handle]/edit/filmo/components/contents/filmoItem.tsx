@@ -5,56 +5,26 @@ import Edit from "../../../../../../../public/icons/Edit.svg";
 import X from "../../../../../../../public/icons/X.svg";
 import PlayCircle from "../../../../../../../public/icons/PlayCircle.svg";
 import LogoHorizontalSmall from "../../../../../../../public/icons/LogoHorizontalSmall.svg";
-import Checkbox from "@/components/atoms/checkbox";
 import { ProfileFilmoDataType } from "../../../types";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import {
   filmoDeleteModalState,
   filmoInputState,
   filmoModalState,
-  filmoRepActiveState,
-  filmoRepEditListState,
   filmoYoutubeLinkModalState
 } from "@/lib/recoil/handle/edit/filmo/atom";
 
 interface FilmoItemProps {
   filmo: ProfileFilmoDataType;
-  filmoList: ProfileFilmoDataType[];
 }
 
-const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
+const FilmoItem = ({ filmo }: FilmoItemProps) => {
   const { id, role, customRole, character, production } = filmo;
 
-  const [filmoRepEditList, setFilmoRepEditList] = useRecoilState(
-    filmoRepEditListState
-  );
-  const filmoRepActive = useRecoilValue(filmoRepActiveState);
   const setFilmoInputs = useSetRecoilState(filmoInputState);
   const setFilmoModal = useSetRecoilState(filmoModalState);
   const setYoutubeLinkModal = useSetRecoilState(filmoYoutubeLinkModalState);
   const setFilmoDeleteModal = useSetRecoilState(filmoDeleteModalState);
-
-  const checked = filmoRepEditList.find((rep) => rep.id === filmo.id)
-    ? true
-    : false;
-  const checkRep = filmoRepEditList.length >= 6;
-
-  // 필모그래피 대표작 설정 체크
-  const onFilmoRepCheck = (id: number) => {
-    const findFilmo = filmoList.find((item) => item.id === id);
-
-    if (!findFilmo) {
-      return;
-    }
-
-    const isAlreadySelected = filmoRepEditList.some((item) => item.id === id);
-
-    if (isAlreadySelected) {
-      setFilmoRepEditList(filmoRepEditList.filter((filmo) => filmo.id !== id));
-    } else {
-      setFilmoRepEditList([...filmoRepEditList, findFilmo]);
-    }
-  };
 
   // 필모그래피 편집 모달 오픈
   const onFilmoEditModalOpen = (filmo: ProfileFilmoDataType) => {
@@ -97,43 +67,32 @@ const FilmoItem = ({ filmo, filmoList }: FilmoItemProps) => {
 
   return (
     <div className="flex h-[154px] w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark">
-      {filmoRepActive && (
-        <Checkbox
-          type="checkboxInput"
-          size="medium"
-          checked={checked}
-          disabled={checkRep && !checked}
-          onChange={() => onFilmoRepCheck(id)}
-        />
-      )}
-      {!filmoRepActive && (
-        <div className="flex flex-col gap-1">
-          {/* edit */}
-          <button
-            className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
-            type="button"
-            onClick={() => onFilmoEditModalOpen(filmo)}
-          >
-            <Edit
-              width="12"
-              height="12"
-              className="fill-current text-content-primary-light dark:text-content-primary-dark"
-            />
-          </button>
-          {/* delete */}
-          <button
-            className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
-            type="button"
-            onClick={() => onFilmoDeleteModalOpen(id)}
-          >
-            <X
-              width="12"
-              height="12"
-              className="fill-current text-state-negative-light dark:text-state-negative-dark"
-            />
-          </button>
-        </div>
-      )}
+      <div className="flex flex-col gap-1">
+        {/* edit */}
+        <button
+          className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
+          type="button"
+          onClick={() => onFilmoEditModalOpen(filmo)}
+        >
+          <Edit
+            width="12"
+            height="12"
+            className="fill-current text-content-primary-light dark:text-content-primary-dark"
+          />
+        </button>
+        {/* delete */}
+        <button
+          className="h-auto w-auto rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
+          type="button"
+          onClick={() => onFilmoDeleteModalOpen(id)}
+        >
+          <X
+            width="12"
+            height="12"
+            className="fill-current text-state-negative-light dark:text-state-negative-dark"
+          />
+        </button>
+      </div>
       <div className="flex h-full w-full flex-col justify-between">
         <div className="flex h-auto w-full flex-col gap-1.5">
           <div className="flex h-auto w-full flex-col gap-1">
