@@ -64,21 +64,19 @@ const FilmoDeleteModal = () => {
   };
 
   return (
-    <>
-      {filmoDeleteModal.active && (
-        <ConfirmModal
-          dense={false}
-          resizing="fixed"
-          titleText="작품 활동을 삭제할까요?"
-          cancelText="취소"
-          confirmText="삭제"
-          cancelButtonType="secondaryOutlined"
-          confirmButtonType="negative"
-          onCancel={onFilmoDeleteModalClose}
-          onConfirm={onFilmoDeleteClick}
-        />
-      )}
-    </>
+    filmoDeleteModal.active && (
+      <ConfirmModal
+        dense={false}
+        resizing="fixed"
+        titleText="작품 활동을 삭제할까요?"
+        cancelText="취소"
+        confirmText="삭제"
+        cancelButtonType="secondaryOutlined"
+        confirmButtonType="negative"
+        onCancel={onFilmoDeleteModalClose}
+        onConfirm={onFilmoDeleteClick}
+      />
+    )
   );
 };
 

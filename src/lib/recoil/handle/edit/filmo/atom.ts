@@ -55,3 +55,13 @@ export const filmoDeleteModalState = atom<FilmoDeleteModalType>({
   key: "filmoDeleteModalState",
   default: filmoDeleteModalInit
 });
+
+export const filmoRepModalState = atom<boolean>({
+  key: "filmoRepModalState",
+  default: false
+});
+
+export const filmoRepInitCountState = atom<number>({
+  key: "filmoRepInitCountState",
+  default: 0
+});

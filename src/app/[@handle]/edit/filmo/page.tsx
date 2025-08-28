@@ -3,6 +3,7 @@ import FilmoModal from "./components/modal/filmoModal";
 import FilmoLinkModal from "./components/modal/filmoLinkModal";
 import FilmoInintializer from "./components/provider/filmoInitializer";
 import FilmoDeleteModal from "./components/modal/filmoDeleteModal";
+import FilmoRepModal from "./components/modal/filmoRepModal";
 
 const Filmography = () => {
   return (
@@ -12,6 +13,7 @@ const Filmography = () => {
         <FilmoModal />
         <FilmoDeleteModal />
         <FilmoLinkModal />
+        <FilmoRepModal />
       </FilmoInintializer>
     </div>
   );

@@ -1,12 +1,12 @@
 import { ProfileFilmoDataType } from "../../../types";
-import FilmoItem from "./filmoItem";
+import FilmoRepModalItem from "./filmoRepModalItem";
 
-interface FilmoListProps {
+interface FilmoRepModalListProps {
   category: string;
   filmoList: ProfileFilmoDataType[];
 }
 
-const FilmoList = ({ category, filmoList }: FilmoListProps) => {
+const FilmoRepModalList = ({ category, filmoList }: FilmoRepModalListProps) => {
   return (
     <div className="flex h-auto w-full flex-col gap-2">
       <label
@@ -15,10 +15,10 @@ const FilmoList = ({ category, filmoList }: FilmoListProps) => {
         {category}
       </label>
       {filmoList.map((filmo: ProfileFilmoDataType) => {
-        return <FilmoItem key={filmo.id} filmo={filmo} />;
+        return <FilmoRepModalItem key={filmo.id} filmo={filmo} />;
       })}
     </div>
   );
 };
 
-export default FilmoList;
+export default FilmoRepModalList;
