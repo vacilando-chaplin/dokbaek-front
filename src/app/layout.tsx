@@ -15,13 +15,13 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "https://dokbaek.com/images/LogoHorizontalDokBaek.png",
+        url: "https://dokbaek.com/images/DokbaekOpenGraphImage.png",
         alt: "dokbaek"
       }
     ]
   },
   twitter: {
-    images: ["https://dokbaek.com/images/LogoHorizontalDokBaek.png"]
+    images: ["https://dokbaek.com/images/DokbaekOpenGraphImage.png"]
   }
 };
 
