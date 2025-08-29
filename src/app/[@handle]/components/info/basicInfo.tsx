@@ -10,7 +10,7 @@ import { educationEngList, educationList } from "@/lib/data";
 const BasicInfo = () => {
   const profileData = useRecoilValue(profileViewState);
 
-  const { bornYear, height, weight } = profileData?.info || {};
+  const { bornYear, height, weight, email } = profileData?.info ?? {};
   const education = profileData?.education || [];
 
   const finalEducation = useGetFinalEducation(education);
@@ -30,15 +30,20 @@ const BasicInfo = () => {
         {Number(height) > 0 && <span>{height}cm</span>}
         {Number(weight) > 0 && <span>{weight}kg</span>}
       </div>
-      <span className="typography-body2 font-normal text-content-primary-light dark:text-content-primary-dark">
-        {finalEducation && (
+      {finalEducation && (
+        <span className="typography-body2 font-normal text-content-primary-light dark:text-content-primary-dark">
           <div>
             <span>{finalEducation.school.name} </span>
             <span>{finalEducation.major} 전공 </span>
             <span>{status}</span>
           </div>
-        )}
-      </span>
+        </span>
+      )}
+      {email && (
+        <span className="typography-body2 font-normal text-content-primary-light dark:text-content-primary-dark">
+          {email}
+        </span>
+      )}
     </ProfileInfoFrame>
   ) : (
     <ProfileEmptyFrame text="정보가 없어요." />
