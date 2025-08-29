@@ -27,15 +27,16 @@ export const generateMetadata = async ({
     }
 
     const profileData = res.data;
+    const profileName = profileData.info.name;
     const profileImage =
       profileData.mainPhotoPath || "/images/LogoHorizontalDokBaek.png";
 
     return {
-      title: `${profileData.name}님의 프로필`,
-      description: `${profileData.name}님의 프로필을 확인하세요.`,
+      title: `${profileName}님의 프로필`,
+      description: `${profileName}님의 프로필을 확인하세요.`,
       openGraph: {
-        title: `${profileData.name}님의 프로필`,
-        description: `${profileData.name}님의 프로필을 확인하세요.`,
+        title: `${profileName}님의 프로필`,
+        description: `${profileName}님의 프로필을 확인하세요.`,
         url: `https://dokbaek.com/@${handleName}`,
         siteName: "dokbaek",
         images: [
@@ -43,7 +44,7 @@ export const generateMetadata = async ({
             url: profileImage,
             width: 1200,
             height: 630,
-            alt: `${profileData.name}님의 프로필 이미지`
+            alt: `${profileName}님의 프로필 이미지`
           }
         ],
         locale: "ko_KR",
@@ -51,8 +52,8 @@ export const generateMetadata = async ({
       },
       twitter: {
         card: "summary_large_image",
-        title: `${profileData.name} (@${handleName})`,
-        description: `${profileData.name}님의 프로필을 확인하세요.`,
+        title: `${profileName}님의 프로필`,
+        description: `${profileName}님의 프로필을 확인하세요.`,
         images: [profileImage]
       },
       // 공개 프로필일 때의 웹 크롤링 설정
