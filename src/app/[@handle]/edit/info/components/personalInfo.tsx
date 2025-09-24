@@ -59,11 +59,12 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
   // 문자열, 숫자 상관없는 입력
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setProfileData((prev) => ({
       ...prev,
       info: {
         ...prev.info,
-        [name]: value
+        [name]: name === "name" ? value.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi, '') : value
       }
     }));
   };
