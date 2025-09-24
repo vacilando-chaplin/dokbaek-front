@@ -6,8 +6,8 @@ import QueryRootProvider from "../lib/providers/queryRootProvider";
 import AuthInitializer from "@/lib/providers/authInitializer";
 
 export const metadata: Metadata = {
-  title: "dokbaek",
-  description: "배우 프로필 제작 서비스",
+  title: "독백 | 아티스트 섭외 플랫폼",
+  description: "아티스트 섭외 플랫폼",
   icons: [
     { rel: "icon", url: "/favicon.ico" },
     { rel: "shortcut icon", url: "/favicon.ico" }
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://dokbaek.com/images/DokbaekOpenGraphImage.png",
-        alt: "dokbaek"
+        alt: "dokbaekOpenGraphImage"
       }
     ]
   },
