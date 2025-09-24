@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import HomeButton from "./components/homeButton";
+
+export const metadata: Metadata = {
+  title: "독백 | 회원 탈퇴 완료",
+  description: "회원 탈퇴가 완료되었습니다"
+};
 
 const WithdrawalComplete = () => {
   return (

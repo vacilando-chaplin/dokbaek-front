@@ -2,6 +2,12 @@ import VideoListSection from "./components/container/videoListSection";
 import VideoModal from "./components/modal/videoModal";
 import VideoInitializer from "./components/provider/videoInitializer";
 import VideoLinkModal from "./components/modal/videoLinkModal";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "독백 | 영상 편집",
+  description: "내 프로필 영상 편집"
+};
 
 const Video = () => {
   return (

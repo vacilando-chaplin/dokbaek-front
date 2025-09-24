@@ -1,8 +1,18 @@
 import Footer from "@/components/organisms/footer";
 import TopNavigation from "@/components/organisms/topNavigation";
+import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    noarchive: true,
+    nosnippet: true
+  }
+};
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const token = cookies().get("jwt")?.value;

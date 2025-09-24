@@ -1,6 +1,12 @@
 import { getTerms } from "@/lib/api";
 import AccountMenu from "./components/accountMenu";
 import AccountPolicies from "./components/accountPolicies";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "독백 | 계정 설정",
+  description: "계정 정보 및 설정 관리"
+};
 
 const Account = async () => {
   // name 로그인 시 가져와야 함

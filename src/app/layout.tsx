@@ -6,22 +6,38 @@ import QueryRootProvider from "../lib/providers/queryRootProvider";
 import AuthInitializer from "@/lib/providers/authInitializer";
 
 export const metadata: Metadata = {
-  title: "dokbaek",
-  description: "배우 프로필 제작 서비스",
+  title: "독백 | 아티스트 섭외 플랫폼",
+  description: "아티스트 섭외 플랫폼",
+  keywords: "아티스트, 배우, 섭외, 캐스팅, 플랫폼",
   icons: [
     { rel: "icon", url: "/favicon.ico" },
     { rel: "shortcut icon", url: "/favicon.ico" }
   ],
   openGraph: {
+    title: "독백 | 아티스트 섭외 플랫폼",
+    description: "아티스트 섭외 플랫폼",
+    url: "https://dokbaek.com",
+    siteName: "독백",
+    locale: "ko_KR",
+    type: "website",
     images: [
       {
         url: "https://dokbaek.com/images/DokbaekOpenGraphImage.png",
-        alt: "dokbaek"
+        width: 1200,
+        height: 630,
+        alt: "독백 | 아티스트 섭외 플랫폼"
       }
     ]
   },
   twitter: {
+    card: "summary_large_image",
+    title: "독백 | 아티스트 섭외 플랫폼",
+    description: "아티스트 섭외 플랫폼",
     images: ["https://dokbaek.com/images/DokbaekOpenGraphImage.png"]
+  },
+  robots: {
+    index: true,
+    follow: true
   }
 };
 
