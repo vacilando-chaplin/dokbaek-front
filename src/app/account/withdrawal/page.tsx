@@ -4,6 +4,12 @@ import WithdrawalConfirm from "./components/withdrawalConfirm";
 import WithdrawalReasons from "./components/withdrawalReasons";
 import { ReasonType } from "./type";
 import { getWithdrawReasonServer } from "@/lib/api/withdraw/api";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "독백 | 회원 탈퇴",
+  description: "회원 탈퇴 진행"
+};
 
 const Withdrawal = async () => {
   const getReasons = await getWithdrawReasonServer();
