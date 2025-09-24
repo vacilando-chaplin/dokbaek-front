@@ -27,7 +27,7 @@ export const generateMetadata = async ({
     }
 
     const profileData = res.data;
-    const profileName = profileData.info.name;
+    const profileName = profileData.info.name || "배우";
     const profileImage =
       profileData.mainPhotoPath || "/images/LogoHorizontalDokBaek.png";
 
