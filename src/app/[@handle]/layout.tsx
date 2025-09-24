@@ -38,7 +38,9 @@ export const generateMetadata = async ({
         title: `${profileName}님의 프로필`,
         description: `${profileName}님의 프로필을 확인하세요.`,
         url: `https://dokbaek.com/@${handleName}`,
-        siteName: "dokbaek",
+        siteName: "독백",
+        locale: "ko_KR",
+        type: "profile",
         images: [
           {
             url: profileImage,
@@ -46,9 +48,7 @@ export const generateMetadata = async ({
             height: 630,
             alt: `${profileName}님의 프로필 이미지`
           }
-        ],
-        locale: "ko_KR",
-        type: "profile"
+        ]
       },
       twitter: {
         card: "summary_large_image",
