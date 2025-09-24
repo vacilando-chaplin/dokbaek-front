@@ -14,7 +14,7 @@ const Info = () => {
   const profileId = Number(cookies().get("loginProfileId")?.value);
 
   return (
-    <div className="flex w-[65vw] flex-col gap-3">
+    <div className="flex w-[65vw] max-w-[728px] flex-col gap-3">
       <PersonalInfo profileId={profileId} />
       <Education profileId={profileId} />
       <Introduction profileId={profileId} />
