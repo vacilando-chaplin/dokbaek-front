@@ -6,13 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "독백 | 영상 편집",
-  description: "내 프로필 영상 편집",
-  robots: {
-    index: false,
-    follow: false,
-    noarchive: true,
-    nosnippet: true
-  }
+  description: "내 프로필 영상 편집"
 };
 
 const Video = () => {

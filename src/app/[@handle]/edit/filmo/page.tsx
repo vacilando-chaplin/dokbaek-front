@@ -8,13 +8,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "독백 | 작품 활동 편집",
-  description: "내 작품 활동 정보 편집",
-  robots: {
-    index: false,
-    follow: false,
-    noarchive: true,
-    nosnippet: true
-  }
+  description: "내 작품 활동 정보 편집"
 };
 
 const Filmography = () => {

@@ -4,13 +4,7 @@ import PhotoUploadSection from "./components/container/photoUploadSection";
 
 export const metadata: Metadata = {
   title: "독백 | 사진 편집",
-  description: "내 프로필 사진 편집",
-  robots: {
-    index: false,
-    follow: false,
-    noarchive: true,
-    nosnippet: true
-  }
+  description: "내 프로필 사진 편집"
 };
 
 const Photo = () => {

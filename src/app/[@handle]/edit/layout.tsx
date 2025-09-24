@@ -8,6 +8,16 @@ import {
 import Initializer from "./components/Initializer";
 import ListMenu from "./components/listMenu";
 import BottomBar from "./components/bottomBar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    noarchive: true,
+    nosnippet: true
+  }
+};
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const cookie = await cookies();
