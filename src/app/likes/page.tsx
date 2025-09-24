@@ -1,6 +1,16 @@
-"use client";
-
+import { Metadata } from "next";
 import LikeProfiles from "./components/likeProfiles";
+
+export const metadata: Metadata = {
+  title: "독백 | 좋아요한 프로필",
+  description: "내가 좋아요한 배우 프로필 모음",
+  robots: {
+    index: false,
+    follow: false,
+    noarchive: true,
+    nosnippet: true
+  }
+};
 
 const Page = () => {
   return (
