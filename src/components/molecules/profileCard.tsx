@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ProfileShowcaseResponseType } from "@/app/landing/types";
 import { deleteProfileLike, postProfileLike } from "@/app/profiles/api";
 import Heart from "../../../public/icons/Heart.svg";
-import Like from "../../../public/icons/Like.svg";
+import HeartFill from "../../../public/icons/HeartFill.svg";
 import EyeOn from "../../../public/icons/EyeOn.svg";
 import Account from "../../../public/icons/Account.svg";
 import LoadingSpinner from "../../../public/icons/LoadingSpinner.svg";
@@ -139,11 +139,19 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
               onClickProfileLike();
             }}
           >
-            <Like
-              width="16"
-              height="16"
-              className={`fill-current ${liked ? "text-state-negative-light dark:text-state-negative-dark" : "text-content-alternative-light dark:text-content-alternative-dark"}`}
-            />
+            {liked ? (
+              <HeartFill
+                width="16"
+                height="16"
+                className="fill-current text-state-negative-light dark:text-state-negative-dark"
+              />
+            ) : (
+              <Heart
+                width="16"
+                height="16"
+                className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+              />
+            )}
           </button>
         </div>
         <div className="typography-caption1 flex font-regular text-content-tertiary-light dark:text-content-primary-dark">
