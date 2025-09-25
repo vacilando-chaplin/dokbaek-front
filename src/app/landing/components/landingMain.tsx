@@ -8,8 +8,13 @@ import { ProfileShowcaseResponseType } from "@/app/landing/types";
 import { useRouter } from "next/navigation";
 import TextButton from "@/components/atoms/textButton";
 import { routePaths } from "@/constants/routes";
+import { MyProfileIdType } from "@/lib/types";
 
-const LandingMain = () => {
+interface LandingMainProps {
+  myProfileId: MyProfileIdType;
+}
+
+const LandingMain = ({ myProfileId }: LandingMainProps) => {
   const router = useRouter();
   const [profiles, setProfiles] = React.useState<ProfileShowcaseResponseType[]>(
     []
@@ -57,10 +62,11 @@ const LandingMain = () => {
             gap: "13px"
           }}
         >
-          {profiles.map((profile, index) => (
+          {profiles.map((profile) => (
             <ProfileCard
-              profile={profile}
               key={profile.id}
+              profile={profile}
+              myProfileId={myProfileId}
               fetchProfiles={fetchProfileShowcase}
             />
           ))}

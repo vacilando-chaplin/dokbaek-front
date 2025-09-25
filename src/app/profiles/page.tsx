@@ -18,7 +18,7 @@ import {
   DEFAULT_MAX_WEIGHT
 } from "@/constants/constants";
 
-const Page = () => {
+const Profiles = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const isInitialLoad = useRef(true);
@@ -211,4 +211,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Profiles;
