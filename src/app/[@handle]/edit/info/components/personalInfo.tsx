@@ -64,7 +64,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
       ...prev,
       info: {
         ...prev.info,
-        [name]: name === "name" ? value.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi, '') : value
+        [name]: name === "name" ? value.replace(/[A-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g, '') : value
       }
     }));
   };
