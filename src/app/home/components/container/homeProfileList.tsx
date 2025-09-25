@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
-import ProfileCard from "../../../components/molecules/profileCard";
+import { useEffect, useState } from "react";
+import ProfileCard from "../../../../components/molecules/profileCard";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
 import { getProfileShowcase } from "@/app/home/api";
 import { ProfileShowcaseResponseType } from "@/app/home/types";
@@ -10,15 +10,13 @@ import TextButton from "@/components/atoms/textButton";
 import { routePaths } from "@/constants/routes";
 import { MyProfileIdType } from "@/lib/types";
 
-interface LandingMainProps {
+interface HomeProfileListProps {
   myProfileId: MyProfileIdType;
 }
 
-const LandingMain = ({ myProfileId }: LandingMainProps) => {
+const HomeProfileList = ({ myProfileId }: HomeProfileListProps) => {
   const router = useRouter();
-  const [profiles, setProfiles] = React.useState<ProfileShowcaseResponseType[]>(
-    []
-  );
+  const [profiles, setProfiles] = useState<ProfileShowcaseResponseType[]>([]);
 
   const fetchProfileShowcase = async () => {
     const page = 0;
@@ -31,12 +29,12 @@ const LandingMain = ({ myProfileId }: LandingMainProps) => {
     fetchProfileShowcase();
   }, []);
   return (
-    <section className={`mx-[auto] flex w-[100%] flex-col gap-2`}>
+    <section className="mx-auto flex w-full flex-col gap-2">
       <div className="my-16">
         <div className="mb-6 flex items-center justify-between">
-          <p className="text-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
+          <h2 className="typography-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
             새로 올라온 프로필
-          </p>
+          </h2>
           <TextButton
             type="secondary"
             size="large"
@@ -52,16 +50,7 @@ const LandingMain = ({ myProfileId }: LandingMainProps) => {
             />
           </TextButton>
         </div>
-        <div
-          style={{
-            width: "100%",
-            maxWidth: "1272px",
-            margin: "24px auto 0",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(224px, 1fr))",
-            gap: "13px"
-          }}
-        >
+        <div className="mx-auto mt-6 grid w-full max-w-[1272px] grid-cols-[repeat(auto-fill,_minmax(224px,_1fr))] gap-[13px]">
           {profiles.map((profile) => (
             <ProfileCard
               key={profile.id}
@@ -76,4 +65,4 @@ const LandingMain = ({ myProfileId }: LandingMainProps) => {
   );
 };
 
-export default LandingMain;
+export default HomeProfileList;

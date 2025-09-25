@@ -4,10 +4,10 @@ import TopNavigation from "@/components/organisms/topNavigation";
 import Footer from "@/components/organisms/footer";
 import { cookies } from "next/headers";
 import { getProfileMeServer } from "@/lib/api/common/api";
-import LandingMain from "./home/components/landingMain";
 import LoginModal from "@/components/organisms/loginModal";
 import HomeContainer from "./home/components/container/homeContainer";
 import HomeBanner from "./home/components/container/homeBanner";
+import HomeProfileList from "./home/components/container/homeProfileList";
 
 const Home = async () => {
   const cookieStore = cookies();
@@ -24,7 +24,7 @@ const Home = async () => {
       <LoginModal />
       <HomeContainer>
         <HomeBanner myProfileData={myProfileData} />
-        <LandingMain myProfileId={myProfileData?.id} />
+        <HomeProfileList myProfileId={myProfileData?.id} />
       </HomeContainer>
       <Footer />
     </div>

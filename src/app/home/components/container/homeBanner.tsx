@@ -7,12 +7,12 @@ interface HomeBannerProps {
 
 const HomeBanner = ({ myProfileData }: HomeBannerProps) => {
   return (
-    <div className="relative mx-auto mt-10 flex h-60 w-full max-w-[1272px] flex-row items-center justify-between rounded-[40px] bg-[linear-gradient(to_bottom,#000000,#000003)] px-[100px]">
-      <span className="text-display font-bold leading-[100%] tracking-[-1%] text-static-white">
+    <section className="relative mx-auto mt-10 flex h-60 w-full max-w-[1272px] flex-row items-center justify-between rounded-[40px] bg-[linear-gradient(to_bottom,#000000,#000003)] px-[100px]">
+      <h1 className="text-display font-bold leading-[100%] tracking-[-1%] text-static-white">
         프로필은 독백에서
-      </span>
+      </h1>
       <HomeBannerButton myProfileData={myProfileData} />
-    </div>
+    </section>
   );
 };
 
