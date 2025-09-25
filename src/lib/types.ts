@@ -46,3 +46,5 @@ export interface SignInRequestType {
 }
 
 export type ProfilePathType = "info" | "photo" | "filmo" | "video";
+
+export type MyProfileIdType = number | undefined | null;

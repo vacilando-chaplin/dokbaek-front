@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   }
 };
 
-const Page = () => {
+const Likes = async () => {
   return (
     <div className="container-max m-[auto] mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
       <section className="mt-11">
@@ -25,4 +25,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Likes;

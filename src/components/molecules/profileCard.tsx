@@ -15,13 +15,19 @@ import LoginModal from "../organisms/loginModal";
 import { routePaths } from "@/constants/routes";
 import { getProfileByProfileId } from "@/lib/api";
 import { getProfileImageUrl } from "@/lib/utils";
+import { MyProfileIdType } from "@/lib/types";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
+  myProfileId?: MyProfileIdType;
   fetchProfiles: () => void;
 }
 
-const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
+const ProfileCard = ({
+  profile,
+  myProfileId,
+  fetchProfiles
+}: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
   const [loginModal, setLoginModal] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -133,6 +139,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
           </p>
           <button
             type="button"
+            disabled={profile.id === myProfileId}
             className="p-0.5 hover:rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-800"
             onClick={(e) => {
               e.stopPropagation();
