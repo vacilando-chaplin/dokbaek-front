@@ -1,4 +1,3 @@
-import ToastClientWrapper from "./home/components/toastClientWrapper";
 import { Suspense } from "react";
 import TopNavigation from "@/components/organisms/topNavigation";
 import Footer from "@/components/organisms/footer";
@@ -8,6 +7,7 @@ import LoginModal from "@/components/organisms/loginModal";
 import HomeContainer from "./home/components/container/homeContainer";
 import HomeBanner from "./home/components/container/homeBanner";
 import HomeProfileList from "./home/components/container/homeProfileList";
+import ToastClientWrapper from "./home/components/wrapper/toastClientWrapper";
 
 const Home = async () => {
   const cookieStore = cookies();
