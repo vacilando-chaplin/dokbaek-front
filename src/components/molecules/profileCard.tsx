@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { ProfileShowcaseResponseType } from "@/app/landing/types";
+import { ProfileShowcaseResponseType } from "@/app/home/types";
 import { deleteProfileLike, postProfileLike } from "@/app/profiles/api";
 import Heart from "../../../public/icons/Heart.svg";
 import HeartFill from "../../../public/icons/HeartFill.svg";

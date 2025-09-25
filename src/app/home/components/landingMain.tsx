@@ -3,8 +3,8 @@
 import React, { useEffect } from "react";
 import ProfileCard from "../../../components/molecules/profileCard";
 import ArrowDirectionRight from "../../../../public/icons/ArrowDirectionRight.svg";
-import { getProfileShowcase } from "@/app/landing/api";
-import { ProfileShowcaseResponseType } from "@/app/landing/types";
+import { getProfileShowcase } from "@/app/home/api";
+import { ProfileShowcaseResponseType } from "@/app/home/types";
 import { useRouter } from "next/navigation";
 import TextButton from "@/components/atoms/textButton";
 import { routePaths } from "@/constants/routes";

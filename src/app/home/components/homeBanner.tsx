@@ -13,7 +13,7 @@ import { getProfileMe } from "@/lib/api";
 import { loginState, toastMessage } from "@/lib/atoms";
 import { setLoginProfileId } from "@/lib/utils";
 
-const LandingSub = () => {
+const HomeBanner = () => {
   const router = useRouter();
   const [loginModal, setLoginModal] = useState(false);
 
@@ -80,4 +80,4 @@ const LandingSub = () => {
   );
 };
 
-export default LandingSub;
+export default HomeBanner;

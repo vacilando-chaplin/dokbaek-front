@@ -1,10 +1,12 @@
-import LandingContainer from "./landing/components/landingContainer";
-import ToastClientWrapper from "./landing/components/toastClientWrapper";
+import ToastClientWrapper from "./home/components/toastClientWrapper";
 import { Suspense } from "react";
 import TopNavigation from "@/components/organisms/topNavigation";
 import Footer from "@/components/organisms/footer";
 import { cookies } from "next/headers";
 import { getProfileMeServer } from "@/lib/api/common/api";
+import LandingMain from "./home/components/landingMain";
+import HomeContainer from "./home/components/homeContainer";
+import HomeBanner from "./home/components/homeBanner";
 
 const Home = async () => {
   const cookieStore = cookies();
@@ -18,7 +20,10 @@ const Home = async () => {
         <TopNavigation />
       </Suspense>
       <ToastClientWrapper />
-      <LandingContainer myProfileId={myProfileId?.id} />
+      <HomeContainer>
+        <HomeBanner />
+        <LandingMain myProfileId={myProfileId} />
+      </HomeContainer>
       <Footer />
     </div>
   );

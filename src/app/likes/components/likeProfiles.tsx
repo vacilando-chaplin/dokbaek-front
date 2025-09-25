@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import ProfileCard from "../../../components/molecules/profileCard";
-import { ProfileShowcaseResponseType } from "@/app/landing/types";
+import { ProfileShowcaseResponseType } from "@/app/home/types";
 import InfoCircle from "../../../../public/icons/InfoCircle.svg";
 import { getLikedProfiles } from "@/app/likes/api";
 

@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
-} from "@/app/landing/types";
+} from "@/app/home/types";
 import {
   DEFAULT_MIN_BORN_YEAR,
   DEFAULT_MAX_BORN_YEAR,

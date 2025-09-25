@@ -3,7 +3,7 @@ import ProfileCard from "../../../components/molecules/profileCard";
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
-} from "@/app/landing/types";
+} from "@/app/home/types";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/organisms/pagination";
 
