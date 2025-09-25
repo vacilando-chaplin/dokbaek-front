@@ -296,6 +296,7 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               onChange={onContactChange}
               onBlur={onSaveInfo}
             />
+            <p className="typography-caption1 mt-[5px] text-content-tertiary-light dark:text-content-tertiary-dark">전화번호는 다른 사람에게 보이지 않아요.</p>
           </div>
           <div className="flex w-full flex-col">
             <Label label="이메일" />
