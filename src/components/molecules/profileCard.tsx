@@ -11,7 +11,6 @@ import Account from "../../../public/icons/Account.svg";
 import LoadingSpinner from "../../../public/icons/LoadingSpinner.svg";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import LoginModal from "../organisms/loginModal";
 import { routePaths } from "@/constants/routes";
 import { getProfileByProfileId } from "@/lib/api";
 import { getProfileImageUrl } from "@/lib/utils";
@@ -182,9 +181,6 @@ const ProfileCard = ({
           )}
         </div>
       </div>
-      {loginModal && (
-        <LoginModal onLoginModalClose={() => setLoginModal(false)} />
-      )}
     </div>
   );
 };

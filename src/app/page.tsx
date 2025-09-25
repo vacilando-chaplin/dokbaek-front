@@ -5,14 +5,15 @@ import Footer from "@/components/organisms/footer";
 import { cookies } from "next/headers";
 import { getProfileMeServer } from "@/lib/api/common/api";
 import LandingMain from "./home/components/landingMain";
-import HomeContainer from "./home/components/homeContainer";
-import HomeBanner from "./home/components/homeBanner";
+import LoginModal from "@/components/organisms/loginModal";
+import HomeContainer from "./home/components/container/homeContainer";
+import HomeBanner from "./home/components/container/homeBanner";
 
 const Home = async () => {
   const cookieStore = cookies();
   const jwt = cookieStore.get("jwt")?.value;
 
-  const myProfileId = jwt ? await getProfileMeServer() : null;
+  const myProfileData = jwt ? await getProfileMeServer() : null;
 
   return (
     <div className="flex min-h-dvh w-full flex-col items-center bg-background-surface-light dark:bg-background-surface-dark">
@@ -20,9 +21,10 @@ const Home = async () => {
         <TopNavigation />
       </Suspense>
       <ToastClientWrapper />
+      <LoginModal />
       <HomeContainer>
-        <HomeBanner />
-        <LandingMain myProfileId={myProfileId} />
+        <HomeBanner myProfileData={myProfileData} />
+        <LandingMain myProfileId={myProfileData?.id} />
       </HomeContainer>
       <Footer />
     </div>
