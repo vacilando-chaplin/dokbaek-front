@@ -1,3 +1,5 @@
+import { ProfileShowcaseResponseType } from "@/app/home/types";
+
 declare global {
   interface Window {
     Kakao: any;
@@ -48,3 +50,12 @@ export interface SignInRequestType {
 export type ProfilePathType = "info" | "photo" | "filmo" | "video";
 
 export type MyProfileIdType = number | undefined | null;
+
+export interface ProfileShowcaseType {
+  profiles: ProfileShowcaseResponseType[];
+  currentPage: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
+  isLoading: boolean;
+}

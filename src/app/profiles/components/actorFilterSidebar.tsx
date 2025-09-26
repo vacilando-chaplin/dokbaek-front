@@ -15,7 +15,7 @@ import Reset from "../../../../public/icons/Reset.svg";
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
-} from "@/app/landing/types";
+} from "@/app/home/types";
 import RangeSlider from "@/components/molecules/rangeSlider";
 import SearchInput from "./searchInput";
 import { useRouter } from "next/navigation";

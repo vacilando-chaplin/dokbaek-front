@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { ProfileShowcaseResponseType } from "@/app/landing/types";
+import { ProfileShowcaseResponseType } from "@/app/home/types";
 import { deleteProfileLike, postProfileLike } from "@/app/profiles/api";
 import Heart from "../../../public/icons/Heart.svg";
 import HeartFill from "../../../public/icons/HeartFill.svg";
@@ -11,7 +11,6 @@ import Account from "../../../public/icons/Account.svg";
 import LoadingSpinner from "../../../public/icons/LoadingSpinner.svg";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import LoginModal from "../organisms/loginModal";
 import { routePaths } from "@/constants/routes";
 import { getProfileByProfileId } from "@/lib/api";
 import { getProfileImageUrl } from "@/lib/utils";
@@ -20,14 +19,9 @@ import { MyProfileIdType } from "@/lib/types";
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
   myProfileId?: MyProfileIdType;
-  fetchProfiles: () => void;
 }
 
-const ProfileCard = ({
-  profile,
-  myProfileId,
-  fetchProfiles
-}: ProfileCardProps) => {
+const ProfileCard = ({ profile, myProfileId }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
   const [loginModal, setLoginModal] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -69,8 +63,6 @@ const ProfileCard = ({
       }
     } catch (error) {
       setLiked((prev) => !prev);
-    } finally {
-      fetchProfiles();
     }
   };
 
@@ -182,9 +174,6 @@ const ProfileCard = ({
           )}
         </div>
       </div>
-      {loginModal && (
-        <LoginModal onLoginModalClose={() => setLoginModal(false)} />
-      )}
     </div>
   );
 };
