@@ -1,26 +1,34 @@
+"use client";
+
 import ProfileCard from "@/components/molecules/profileCard";
-import { ProfileShowcaseResponseType } from "../../types";
-import { MyProfileIdType } from "@/lib/types";
+import { profileShowcaseState } from "@/lib/recoil/home/atom";
+import { MyProfileIdType, ProfileShowcaseType } from "@/lib/types";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
 
 interface HomeProfileListShowcaseProps {
-  profiles: ProfileShowcaseResponseType[];
   myProfileId: MyProfileIdType;
-  fetchProfileShowcase: () => void;
+  profileShowcase: ProfileShowcaseType;
 }
 
 const HomeProfileListShowcase = ({
-  profiles,
   myProfileId,
-  fetchProfileShowcase
+  profileShowcase
 }: HomeProfileListShowcaseProps) => {
+  const [profileShowcaseList, setProfileShowcaseList] =
+    useRecoilState(profileShowcaseState);
+
+  useEffect(() => {
+    setProfileShowcaseList(profileShowcase);
+  }, []);
+
   return (
-    <div className="mx-auto mt-6 grid w-full max-w-[1272px] grid-cols-[repeat(auto-fill,_minmax(224px,_1fr))] gap-[13px]">
-      {profiles.map((profile) => (
+    <div className="mx-auto grid w-full max-w-[1272px] grid-cols-[repeat(auto-fill,_minmax(224px,_1fr))] gap-[13px]">
+      {profileShowcaseList.profiles.map((profile) => (
         <ProfileCard
           key={profile.id}
           profile={profile}
           myProfileId={myProfileId}
-          fetchProfiles={fetchProfileShowcase}
         />
       ))}
     </div>

@@ -19,14 +19,9 @@ import { MyProfileIdType } from "@/lib/types";
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
   myProfileId?: MyProfileIdType;
-  fetchProfiles: () => void;
 }
 
-const ProfileCard = ({
-  profile,
-  myProfileId,
-  fetchProfiles
-}: ProfileCardProps) => {
+const ProfileCard = ({ profile, myProfileId }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
   const [loginModal, setLoginModal] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -68,8 +63,6 @@ const ProfileCard = ({
       }
     } catch (error) {
       setLiked((prev) => !prev);
-    } finally {
-      fetchProfiles();
     }
   };
 
