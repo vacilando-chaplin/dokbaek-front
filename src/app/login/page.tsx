@@ -12,6 +12,7 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "@/lib/atoms";
 import { useRouter } from "next/navigation";
 import { routePaths } from "@/constants/routes";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -47,12 +48,15 @@ const Login = () => {
 
   return (
     <main className="relative flex h-auto w-auto flex-col items-center gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20 dark:border-border-default-dark dark:bg-background-surface-dark">
-      <div className="flex flex-col items-center justify-center gap-4">
+      <Link
+        href={routePaths.home()}
+        className="flex flex-col items-center justify-center gap-4"
+      >
         <LogoHorizontal width="85" height="46" />
-        <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
+        <span className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
           독백으로 쉽고 빠르게 프로필을 만들어 보세요.
-        </label>
-      </div>
+        </span>
+      </Link>
       <div className="flex h-auto w-full flex-col gap-2">
         <LoginButton type="kakao" Component={KakaoLogin} />
         <LoginButton type="naver" Component={NaverLogin} />
