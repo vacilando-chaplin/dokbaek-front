@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import ProfileCard from "../../../components/molecules/profileCard";
 import {
   ProfileShowcaseResponseType,
@@ -10,13 +9,8 @@ import Pagination from "@/components/organisms/pagination";
 interface ProfilesMainProps {
   profiles: ProfileShowcaseResponseType[];
   profilesData: ProfilesResponseType | undefined;
-  fetchProfiles: () => void;
 }
-const ProfilesMain = ({
-  profiles,
-  profilesData,
-  fetchProfiles
-}: ProfilesMainProps) => {
+const ProfilesMain = ({ profiles, profilesData }: ProfilesMainProps) => {
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 0;
 
@@ -32,16 +26,13 @@ const ProfilesMain = ({
             }}
           >
             {profiles.map((profile) => (
-              <ProfileCard
-                profile={profile}
-                key={profile.id}
-                fetchProfiles={fetchProfiles}
-              />
+              <ProfileCard profile={profile} key={profile.id} />
             ))}
           </div>
           <div className="mt-6">
             {profilesData && (
               <Pagination
+                pageName="profiles"
                 currentPage={currentPage}
                 totalPages={profilesData?.totalPages || 0}
               />

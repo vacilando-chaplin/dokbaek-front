@@ -19,9 +19,10 @@ import { MyProfileIdType } from "@/lib/types";
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
   myProfileId?: MyProfileIdType;
+  onUnlike?: (profileId: number) => void;
 }
 
-const ProfileCard = ({ profile, myProfileId }: ProfileCardProps) => {
+const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
   const [loginModal, setLoginModal] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -58,6 +59,7 @@ const ProfileCard = ({ profile, myProfileId }: ProfileCardProps) => {
     try {
       if (liked) {
         await deleteProfileLike(profile.id);
+        onUnlike?.(profile.id);
       } else {
         await postProfileLike(profile.id);
       }
