@@ -13,9 +13,14 @@ export const metadata: Metadata = {
   }
 };
 
-const Likes = async () => {
-  const page = 0;
+interface LikesProps {
+  params: { page?: string };
+}
+
+const Likes = async ({ params }: LikesProps) => {
+  const page = Number(params.page) || 0;
   const size = 20;
+
   const res = await getLikedProfilesServer(page, size);
 
   const initialProfileShowcaseData = {
@@ -28,7 +33,10 @@ const Likes = async () => {
 
   return (
     <div className="container-max m-[auto] mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
-      <LikeProfiles likedProfiles={initialProfileShowcaseData} />
+      <LikeProfiles
+        currentPage={page}
+        likedProfiles={initialProfileShowcaseData}
+      />
     </div>
   );
 };
