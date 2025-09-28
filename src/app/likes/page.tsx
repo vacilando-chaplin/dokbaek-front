@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 };
 
 interface LikesProps {
-  params: { page?: string };
+  searchParams: { page?: string };
 }
 
-const Likes = async ({ params }: LikesProps) => {
-  const page = Number(params.page) || 0;
+const Likes = async ({ searchParams }: LikesProps) => {
+  const page = Number(searchParams.page) || 0;
   const size = 20;
 
   const res = await getLikedProfilesServer(page, size);
