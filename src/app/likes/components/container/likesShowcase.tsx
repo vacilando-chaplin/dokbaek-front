@@ -4,17 +4,14 @@ import ProfileCard from "@/components/molecules/profileCard";
 import { LikedProfileShowcaseType } from "../../types";
 import { useState } from "react";
 import LikesEmptyFrame from "./likesEmptyFrame";
-import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/organisms/pagination";
 
 interface LikesShowcaseProps {
+  currentPage: number;
   likedProfiles: LikedProfileShowcaseType;
 }
 
-const LikesShowcase = ({ likedProfiles }: LikesShowcaseProps) => {
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 0;
-
+const LikesShowcase = ({ currentPage, likedProfiles }: LikesShowcaseProps) => {
   const [likedProfileShowcase, setLikedProfileShowcase] = useState(
     likedProfiles.profiles
   );
