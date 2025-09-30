@@ -6,7 +6,7 @@ interface FilterInputProps {
   step: number;
   unit: string;
   value: number;
-  onChange: any;
+  onChange: (value: number) => void;
 }
 
 const FilterInput = ({
@@ -20,9 +20,6 @@ const FilterInput = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
 
-    if (min !== undefined && newValue < min) return;
-    if (max !== undefined && newValue > max) return;
-
     onChange(newValue);
   };
 
@@ -35,7 +32,7 @@ const FilterInput = ({
         max={max}
         step={step}
         className="h-auto w-full bg-background-surface-light text-content-primary-light placeholder-content-alternative-light outline-none dark:bg-background-surface-dark dark:text-content-primary-dark dark:placeholder-content-alternative-dark"
-        onChange={() => handleChange}
+        onChange={handleChange}
       />
       {unit && (
         <div className="text-[12px] text-content-secondary-light dark:text-content-secondary-dark">

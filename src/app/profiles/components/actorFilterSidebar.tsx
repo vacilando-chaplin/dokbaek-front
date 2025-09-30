@@ -1,25 +1,20 @@
 import BoxButton from "@/components/atoms/boxButton";
 import React, { useEffect, useState } from "react";
 import {
-  DEFAULT_MIN_BORN_YEAR,
-  DEFAULT_MAX_BORN_YEAR,
   DEFAULT_MIN_HEIGHT,
   DEFAULT_MAX_HEIGHT,
   DEFAULT_MIN_WEIGHT,
-  DEFAULT_MAX_WEIGHT
+  DEFAULT_MAX_WEIGHT,
+  DEFAULT_MIN_AGE,
+  DEFAULT_MAX_AGE
 } from "@/constants/constants";
-import TextInput from "@/components/atoms/textInput";
-import ArrowChevronDown from "../../../../public/icons/ArrowChevronDown.svg";
 import Reset from "../../../../public/icons/Reset.svg";
 
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
 } from "@/app/home/types";
-import RangeSlider from "@/components/molecules/rangeSlider";
 import SearchInput from "./searchInput";
-import RadioGroup from "@/components/organisms/radioGroup";
-import FilterBox from "./filter/filterBox";
 import FilterGender from "./filter/filterGender";
 import FilterRangeInput from "./filter/filterRangeInput";
 
@@ -75,12 +70,9 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     { label: "남성", value: "M" }
   ];
 
-  const [minBornYear, setMinBornYear] = useState(DEFAULT_MIN_BORN_YEAR);
-  const [maxBornYear, setMaxBornYear] = useState(DEFAULT_MAX_BORN_YEAR);
-  const [bornYearRange, setBornYearRange] = useState<[number, number]>([
-    minBornYear,
-    maxBornYear
-  ]);
+  const [minAge, setMinAge] = useState(DEFAULT_MIN_AGE);
+  const [maxAge, setMaxAge] = useState(DEFAULT_MAX_AGE);
+  const [ageRange, setAgeRange] = useState<[number, number]>([minAge, maxAge]);
   const [minHeight, setMinHeight] = useState(DEFAULT_MIN_HEIGHT);
   const [maxHeight, setMaxHeight] = useState(DEFAULT_MAX_HEIGHT);
   const [heightRange, setHeightRange] = useState<[number, number]>([
@@ -94,18 +86,15 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     maxWeight
   ]);
 
-  const [isGenderOpen, setIsGenderOpen] = useState(true);
-  const [isBornYearOpen, setIsBornYearOpen] = useState(true);
-  const [isHeightOpen, setIsHeightOpen] = useState(true);
-  const [isWeightOpen, setIsWeightOpen] = useState(true);
-
   const [gender, setGender] = useState<string | null>(null);
 
   useEffect(() => {
+    const yearToAge = (year: number) => maxBornYear - year;
+
     setKeyword(currKeyword || "");
     if (currGender) setGender(currGender);
-    if (currMinBornYear) setMinBornYear(currMinBornYear);
-    if (currMaxBornYear) setMaxBornYear(currMaxBornYear);
+    if (currMinBornYear) setMinAge(yearToAge(currMaxBornYear));
+    if (currMaxBornYear) setMaxAge(yearToAge(currMinBornYear));
     if (currMinHeight) setMinHeight(currMinHeight);
     if (currMaxHeight) setMaxHeight(currMaxHeight);
     if (currMinWeight) setMinWeight(currMinWeight);
@@ -120,6 +109,13 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     currMinWeight,
     currMaxWeight
   ]);
+
+  const bornYearMax = new Date().getFullYear();
+
+  const ageToYear = (age: number) => bornYearMax - age;
+
+  const minBornYear = ageToYear(DEFAULT_MAX_AGE);
+  const maxBornYear = ageToYear(DEFAULT_MIN_AGE);
 
   const onSubmit = () => {
     handleSubmit({
@@ -142,44 +138,41 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     setGender(gender);
   };
 
-  const handleMinBornYearChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setMinBornYear(Number(event.target.value));
+  const handleMinAgeChange = (value: number) => {
+    const newMin = Math.max(DEFAULT_MIN_AGE, Math.min(value, DEFAULT_MAX_AGE));
+    setMinAge(newMin);
+    if (maxAge <= newMin) {
+      setMaxAge(Math.min(newMin + 1, DEFAULT_MAX_AGE));
+    }
   };
-  const handleMaxBornYearChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setMaxBornYear(Number(event.target.value));
-  };
-
-  const handleMinHeightChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setMinHeight(Number(event.target.value));
-  };
-  const handleMaxHeightChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setMaxHeight(Number(event.target.value));
+  const handleMaxAgeChange = (value: number) => {
+    const newMax = Math.min(Math.max(value, DEFAULT_MIN_AGE), DEFAULT_MAX_AGE);
+    if (newMax <= minAge) {
+      setMaxAge(Math.min(minAge + 1, DEFAULT_MAX_AGE));
+    } else {
+      setMaxAge(newMax);
+    }
   };
 
-  const handleMinWeightChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setMinWeight(Number(event.target.value));
+  const handleMinHeightChange = (value: number) => {
+    setMinHeight(value);
   };
-  const handleMaxWeightChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setMaxWeight(Number(event.target.value));
+  const handleMaxHeightChange = (value: number) => {
+    setMaxHeight(value);
+  };
+
+  const handleMinWeightChange = (value: number) => {
+    setMinWeight(value);
+  };
+  const handleMaxWeightChange = (value: number) => {
+    setMaxWeight(value);
   };
 
   const onClickFilterReset = () => {
     setKeyword("");
     setGender(null);
-    setMinBornYear(DEFAULT_MIN_BORN_YEAR);
-    setMaxBornYear(DEFAULT_MAX_BORN_YEAR);
+    setMinAge(DEFAULT_MIN_AGE);
+    setMaxAge(DEFAULT_MAX_AGE);
     setMinHeight(DEFAULT_MIN_HEIGHT);
     setMaxHeight(DEFAULT_MAX_HEIGHT);
     setMinWeight(DEFAULT_MIN_WEIGHT);
@@ -188,8 +181,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     handleSubmit({
       keyword: "",
       gender: null,
-      minBornYear: DEFAULT_MIN_BORN_YEAR,
-      maxBornYear: DEFAULT_MAX_BORN_YEAR,
+      minBornYear: DEFAULT_MIN_AGE,
+      maxBornYear: DEFAULT_MAX_AGE,
       minHeight: DEFAULT_MIN_HEIGHT,
       maxHeight: DEFAULT_MAX_HEIGHT,
       minWeight: DEFAULT_MIN_WEIGHT,
@@ -197,10 +190,10 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     });
   };
 
-  const handleBornYearRangeChange = (newRange: [number, number]) => {
-    setBornYearRange(newRange);
-    setMinBornYear(newRange[0]);
-    setMaxBornYear(newRange[1]);
+  const handleageRangeChange = (newRange: [number, number]) => {
+    setAgeRange(newRange);
+    setMinAge(newRange[0]);
+    setMaxAge(newRange[1]);
   };
 
   const handleHeightRangeChange = (newRange: [number, number]) => {
@@ -223,10 +216,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           "전체"
         );
       case "bornYear":
-        if (
-          minBornYear == DEFAULT_MIN_BORN_YEAR &&
-          maxBornYear == DEFAULT_MAX_BORN_YEAR
-        ) {
+        if (minBornYear == DEFAULT_MIN_AGE && maxBornYear == DEFAULT_MAX_AGE) {
           return "전체";
         } else {
           return `${minBornYear} - ${maxBornYear} 년생`;
@@ -257,7 +247,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   }, [gender]);
 
   useEffect(() => {
-    setBornYearRange([minBornYear, maxBornYear]);
+    setAgeRange([minBornYear, maxBornYear]);
     const timer = setTimeout(() => {
       onSubmit();
     }, 1000);
@@ -347,21 +337,55 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
         max={100}
         step={1}
         name="age"
-        title="나이"
         unit="세"
-        range={[minBornYear, maxBornYear]}
-        minValue={minBornYear}
-        maxValue={maxBornYear}
+        title="나이"
+        range={[minAge, maxAge]}
+        minValue={minAge}
+        maxValue={maxAge}
         onReset={() => {
-          setMinBornYear(0);
-          setMaxBornYear(100);
+          setMinAge(DEFAULT_MIN_AGE);
+          setMaxAge(DEFAULT_MAX_AGE);
         }}
-        onMinChange={handleMinBornYearChange}
-        onMaxChange={handleMaxBornYearChange}
-        onRangeChange={handleBornYearRangeChange}
+        onMinChange={handleMinAgeChange}
+        onMaxChange={handleMaxAgeChange}
+        onRangeChange={handleageRangeChange}
       />
-      {/* <FilterRangeInput />
-      <FilterRangeInput /> */}
+      <FilterRangeInput
+        min={0}
+        max={220}
+        step={1}
+        name="height"
+        unit="cm"
+        title="키"
+        range={[minHeight, maxHeight]}
+        minValue={minHeight}
+        maxValue={maxHeight}
+        onReset={() => {
+          setMinHeight(DEFAULT_MIN_HEIGHT);
+          setMaxHeight(DEFAULT_MAX_HEIGHT);
+        }}
+        onMinChange={handleMinHeightChange}
+        onMaxChange={handleMaxHeightChange}
+        onRangeChange={handleHeightRangeChange}
+      />
+      <FilterRangeInput
+        min={0}
+        max={120}
+        step={1}
+        name="weight"
+        unit="kg"
+        title="몸무게"
+        range={[minWeight, maxWeight]}
+        minValue={minWeight}
+        maxValue={maxWeight}
+        onReset={() => {
+          setMinWeight(DEFAULT_MIN_WEIGHT);
+          setMaxWeight(DEFAULT_MAX_WEIGHT);
+        }}
+        onMinChange={handleMinWeightChange}
+        onMaxChange={handleMaxWeightChange}
+        onRangeChange={handleWeightRangeChange}
+      />
     </aside>
   );
 };

@@ -4,6 +4,7 @@ import RadioGroup from "@/components/organisms/radioGroup";
 import FilterBox from "./filterBox";
 import FilterHeader from "./filterHeader";
 import { useActive } from "@/lib/hooks";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface FilterGenderProps {
   gender: string | null;
@@ -30,15 +31,25 @@ const FilterGender = ({ gender, onReset, onChange }: FilterGenderProps) => {
         onReset={onReset}
         onActive={onActive}
       />
-      {active && (
-        <RadioGroup
-          name="성별"
-          size="medium"
-          options={genderOptions}
-          value={gender || null}
-          onChange={onChange}
-        />
-      )}
+      <AnimatePresence initial={false}>
+        {active && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.1, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <RadioGroup
+              name="성별"
+              size="medium"
+              options={genderOptions}
+              value={gender || null}
+              onChange={onChange}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </FilterBox>
   );
 };
