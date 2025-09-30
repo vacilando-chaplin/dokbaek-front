@@ -18,8 +18,10 @@ import {
 } from "@/app/home/types";
 import RangeSlider from "@/components/molecules/rangeSlider";
 import SearchInput from "./searchInput";
-import { useRouter } from "next/navigation";
 import RadioGroup from "@/components/organisms/radioGroup";
+import FilterBox from "./filter/filterBox";
+import FilterGender from "./filter/filterGender";
+import FilterRangeInput from "./filter/filterRangeInput";
 
 interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];
@@ -58,11 +60,9 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     currMaxWeight,
     handleSubmit
   } = props;
-  const router = useRouter();
   const [shouldSubmit, setShouldSubmit] = useState(false);
 
   const [keyword, setKeyword] = useState("");
-  const [gender, setGender] = useState<string | null>(null);
 
   type RadioOption = {
     label: string;
@@ -98,6 +98,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const [isBornYearOpen, setIsBornYearOpen] = useState(true);
   const [isHeightOpen, setIsHeightOpen] = useState(true);
   const [isWeightOpen, setIsWeightOpen] = useState(true);
+
+  const [gender, setGender] = useState<string | null>(null);
 
   useEffect(() => {
     setKeyword(currKeyword || "");
@@ -136,7 +138,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     setKeyword(keyword.trim());
   };
 
-  const handleGenderChange = (gender: string) => {
+  const handleGenderChange = (gender: string | null) => {
     setGender(gender);
   };
 
@@ -293,12 +295,16 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     shouldSubmit
   ]);
 
+  const onGenderReset = () => {
+    setGender(null);
+  };
+
   return (
-    <aside className="h-fit w-[320px] rounded-2xl border border-border-default-light bg-background-surface-light dark:border-border-default-dark dark:bg-background-surface-dark">
-      <div className="border-b border-border-default-light py-4 dark:border-border-default-dark">
+    <aside className="flex h-fit w-80 flex-col gap-4 rounded-2xl border border-border-default-light bg-background-surface-light py-5 dark:border-border-default-dark dark:bg-background-surface-dark">
+      <div className="border-b border-border-default-light pb-4 dark:border-border-default-dark">
         <div className="flex items-center justify-between px-5">
           <div className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
-            {profilesData?.totalElements}명
+            {profilesData?.totalElements?.toLocaleString()}명
           </div>
           <BoxButton
             type="secondaryOutlined"
@@ -316,298 +322,46 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
           </BoxButton>
         </div>
       </div>
-      <div className="border-b-[1px] border-border-default-light py-4 dark:border-border-default-dark">
-        <div className="px-5">
-          <div className="typography-body3 mb-2 font-medium text-content-primary-light dark:text-content-primary-dark">
-            키워드
-          </div>
-          <div className="flex items-center gap-2">
-            <SearchInput
-              text={keyword}
-              onChange={handleKeywordChange}
-              onSubmit={onSubmit}
-            ></SearchInput>
-            <BoxButton
-              type="secondaryOutlined"
-              size="medium"
-              onClick={onSubmit}
-            >
-              검색
-            </BoxButton>
-          </div>
+      <div className="flex w-full flex-col gap-2 border-b border-border-default-light px-5 pb-4 dark:border-border-default-dark">
+        <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
+          키워드
+        </div>
+        <div className="flex h-10 w-full flex-row items-center gap-1">
+          <SearchInput
+            text={keyword}
+            onChange={handleKeywordChange}
+            onSubmit={onSubmit}
+          />
+          <BoxButton type="secondaryOutlined" size="medium" onClick={onSubmit}>
+            검색
+          </BoxButton>
         </div>
       </div>
-      <div className="border-b-[1px] border-border-default-light px-5 py-4 dark:border-border-default-dark">
-        <div className="flex items-center justify-between">
-          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
-            성별
-            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
-              {getTypeLabel("gender")}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                setGender(null);
-              }}
-              className="flex items-center gap-1"
-            >
-              <Reset
-                width="12"
-                height="12"
-                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
-              />
-              <span
-                style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
-              >
-                초기화
-              </span>
-            </button>
-            <button
-              onClick={() => setIsGenderOpen((prev) => !prev)}
-              className="transition-transform duration-200"
-            >
-              <ArrowChevronDown
-                width="16"
-                height="16"
-                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isGenderOpen ? "rotate-180" : "rotate-0"}`}
-              />
-            </button>
-          </div>
-        </div>
-        {isGenderOpen && (
-          <div className="mt-4">
-            <div className="flex items-center gap-2">
-              <RadioGroup
-                name="성별"
-                size="medium"
-                options={genderOptions as RadioOption[]}
-                value={gender || null}
-                onChange={handleGenderChange as (value: string | null) => void}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="border-b-[1px] border-border-default-light px-5 py-4 dark:border-border-default-dark">
-        <div className="flex items-center justify-between">
-          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
-            나이(년생)
-            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
-              {getTypeLabel("bornYear")}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                setMinBornYear(DEFAULT_MIN_BORN_YEAR);
-                setMaxBornYear(DEFAULT_MAX_BORN_YEAR);
-                setShouldSubmit(true);
-              }}
-              className="flex items-center gap-1"
-            >
-              <Reset
-                width="12"
-                height="12"
-                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
-              />
-              <span
-                style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 font-medium text-content-tertiary-light"
-              >
-                초기화
-              </span>
-            </button>
-            <button
-              onClick={() => setIsBornYearOpen((prev) => !prev)}
-              className="transition-transform duration-200"
-            >
-              <ArrowChevronDown
-                width="16"
-                height="16"
-                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isBornYearOpen ? "rotate-180" : "rotate-0"}`}
-              />
-            </button>
-          </div>
-        </div>
-        {isBornYearOpen && (
-          <div className="mt-4">
-            <div className="mb-4 flex items-center gap-2">
-              <TextInput
-                type="number"
-                size="medium"
-                name="minBornYear"
-                value={minBornYear}
-                onChange={handleMinBornYearChange}
-              />
-              ~
-              <TextInput
-                type="number"
-                size="medium"
-                name="maxBornYear"
-                value={maxBornYear}
-                onChange={handleMaxBornYearChange}
-              />
-            </div>
-            <div className="mb-2">
-              <RangeSlider
-                value={bornYearRange}
-                setValue={handleBornYearRangeChange}
-                min={DEFAULT_MIN_BORN_YEAR}
-                max={DEFAULT_MAX_BORN_YEAR}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="border-b-[1px] border-border-default-light px-5 py-4 dark:border-border-default-dark">
-        <div className="flex items-center justify-between">
-          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
-            키
-            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
-              {getTypeLabel("height")}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                setMinHeight(DEFAULT_MIN_HEIGHT);
-                setMaxHeight(DEFAULT_MAX_HEIGHT);
-                setShouldSubmit(true);
-              }}
-              className="flex items-center gap-1"
-            >
-              <Reset
-                width="12"
-                height="12"
-                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
-              />
-              <span
-                style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 font-medium text-content-tertiary-light dark:text-content-tertiary-dark"
-              >
-                초기화
-              </span>
-            </button>
-            <button
-              onClick={() => setIsHeightOpen((prev) => !prev)}
-              className="transition-transform duration-200"
-            >
-              <ArrowChevronDown
-                width="16"
-                height="16"
-                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isHeightOpen ? "rotate-180" : "rotate-0"}`}
-              />
-            </button>
-          </div>
-        </div>
-        {isHeightOpen && (
-          <div className="mt-4">
-            <div className="mb-4 flex items-center gap-2">
-              <TextInput
-                type="number"
-                size="medium"
-                name="minHeight"
-                value={minHeight}
-                parameter={"cm"}
-                onChange={handleMinHeightChange}
-              />
-              ~
-              <TextInput
-                type="number"
-                size="medium"
-                name="maxHeight"
-                value={maxHeight}
-                parameter={"cm"}
-                onChange={handleMaxHeightChange}
-              />
-            </div>
-            <div className="mb-2">
-              <RangeSlider
-                value={heightRange}
-                setValue={handleHeightRangeChange}
-                min={DEFAULT_MIN_HEIGHT}
-                max={DEFAULT_MAX_HEIGHT}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="px-5 py-4">
-        <div className="flex items-center justify-between">
-          <div className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
-            몸무게
-            <span className="ml-2 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
-              {getTypeLabel("weight")}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                setMinWeight(DEFAULT_MIN_WEIGHT);
-                setMaxWeight(DEFAULT_MAX_WEIGHT);
-                setShouldSubmit(true);
-              }}
-              className="flex items-center gap-1"
-            >
-              <Reset
-                width="12"
-                height="12"
-                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
-              />
-              <span
-                style={{ wordBreak: "keep-all" }}
-                className="typography-caption1 font-medium text-content-tertiary-light"
-              >
-                초기화
-              </span>
-            </button>
-            <button
-              onClick={() => setIsWeightOpen((prev) => !prev)}
-              className="transition-transform duration-200"
-            >
-              <ArrowChevronDown
-                width="16"
-                height="16"
-                className={`fill-current text-content-tertiary-light dark:text-content-tertiary-dark ${isWeightOpen ? "rotate-180" : "rotate-0"}`}
-              />
-            </button>
-          </div>
-        </div>
-        {isWeightOpen && (
-          <div className="mt-4">
-            <div className="mb-4 flex items-center gap-2">
-              <TextInput
-                type="number"
-                size="medium"
-                name="minWeight"
-                value={minWeight}
-                parameter={"kg"}
-                onChange={handleMinWeightChange}
-              />
-              ~
-              <TextInput
-                type="number"
-                size="medium"
-                name="maxWeight"
-                value={maxWeight}
-                parameter={"kg"}
-                onChange={handleMaxWeightChange}
-              />
-            </div>
-            <div className="mb-2">
-              <RangeSlider
-                value={WeightRange}
-                setValue={handleWeightRangeChange}
-                min={DEFAULT_MIN_WEIGHT}
-                max={DEFAULT_MAX_WEIGHT}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+      <FilterGender
+        gender={gender}
+        onReset={onGenderReset}
+        onChange={handleGenderChange}
+      />
+      <FilterRangeInput
+        min={0}
+        max={100}
+        step={1}
+        name="age"
+        title="나이"
+        unit="세"
+        range={[minBornYear, maxBornYear]}
+        minValue={minBornYear}
+        maxValue={maxBornYear}
+        onReset={() => {
+          setMinBornYear(0);
+          setMaxBornYear(100);
+        }}
+        onMinChange={handleMinBornYearChange}
+        onMaxChange={handleMaxBornYearChange}
+        onRangeChange={handleBornYearRangeChange}
+      />
+      {/* <FilterRangeInput />
+      <FilterRangeInput /> */}
     </aside>
   );
 };

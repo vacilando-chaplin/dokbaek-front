@@ -181,12 +181,14 @@ const Profiles = () => {
   ]);
 
   return (
-    <div className="container-max m-[auto] mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
-      <section className="mt-11">
-        <p className="mb-6 text-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
-          배우 찾기
-        </p>
-        <div className="mb-4 flex flex-row justify-center gap-6">
+    <div className="container-max m-auto mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
+      <section className="mt-11 flex flex-col gap-6">
+        <div className="flew-row flex w-full justify-between">
+          <p className="typography-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
+            배우 찾기
+          </p>
+        </div>
+        <div className="flex flex-row justify-center gap-6">
           <ActorFilterSidebar
             currKeyword={filterState.keyword}
             currGender={filterState.gender}
@@ -200,11 +202,7 @@ const Profiles = () => {
             profiles={profiles}
             profilesData={profilesData}
           />
-          <ProfilesMain
-            profiles={profiles}
-            profilesData={profilesData}
-            fetchProfiles={fetchProfiles}
-          />
+          <ProfilesMain profiles={profiles} profilesData={profilesData} />
         </div>
       </section>
     </div>
