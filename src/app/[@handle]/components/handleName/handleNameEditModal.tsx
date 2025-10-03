@@ -33,7 +33,7 @@ const HandleNameEditModal = () => {
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const onModalClose = () => {
-    setHandleName("");
+    setHandleName(currentHandleName);
     setHandleNameEditModal(false);
   };
 
@@ -71,32 +71,26 @@ const HandleNameEditModal = () => {
 
       if (exists.data.exists) {
         setToastMessage("이미 존재하는 프로필 아이디에요.");
-        return;
+        return null;
       }
 
       return await putProfileHandle(loginProfileId, handleId);
     },
     onSuccess: (data, handleId) => {
+      if (!data) return;
+
       const profileData = data.data;
       setHandleName(handleId);
       setCurrentHandleName(handleId);
       setProfileData(profileData);
       setToastMessage("프로필 아이디가 변경됐어요.");
+      setHandleNameEditModal(false);
       router.replace(routePaths.profile(handleName));
-    },
-    onError: (error: any) => {
-      if (error.message === "이미 존재하는 프로필 아이디에요.") {
-        setToastMessage(error.message);
-      } else {
-        setHandleName(currentHandleName);
-        setToastMessage("프로필 아이디 변경 중 오류가 발생했어요.");
-      }
     }
   });
 
   const onSaveClick = () => {
     editProfileMutation.mutate(handleName);
-    setHandleNameEditModal(false);
   };
 
   useEffect(() => {

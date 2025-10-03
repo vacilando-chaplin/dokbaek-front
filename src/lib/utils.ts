@@ -107,7 +107,7 @@ export const setLoginForm = (name: string, loginForm: string) => {
 };
 
 export const isValidHandle = (handle: string) => {
-  return handle.length > 2 && /^[a-zA-Z0-9]+$/.test(handle);
+  return handle.length > 2 && /^[a-z0-9]+$/.test(handle);
 };
 
 export const getVideoId = (url: string) => {
