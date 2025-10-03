@@ -171,3 +171,52 @@ export const useActive = (initialActive: boolean = false) => {
 
   return { active, onActive };
 };
+
+export const useRange = (defaultMin: number, defaultMax: number) => {
+  const [min, setMin] = useState(defaultMin);
+  const [max, setMax] = useState(defaultMax);
+
+  const onReset = useCallback(() => {
+    setMin(defaultMin);
+    setMax(defaultMax);
+  }, [defaultMin, defaultMax]);
+
+  const onRangeChange = useCallback((newRange: [number, number]) => {
+    setMin(newRange[0]);
+    setMax(newRange[1]);
+  }, []);
+
+  const onMinChange = useCallback(
+    (value: number) => {
+      if (value > defaultMax) {
+        setMin(defaultMax);
+        return;
+      }
+
+      setMin(value);
+    },
+    [max]
+  );
+
+  const onMaxChange = useCallback(
+    (value: number) => {
+      if (value > defaultMax) {
+        setMax(defaultMax);
+        return;
+      }
+
+      setMax(value);
+    },
+    [min]
+  );
+
+  return {
+    min,
+    max,
+    value: [min, max] as [number, number],
+    onReset,
+    onMinChange,
+    onMaxChange,
+    onRangeChange
+  };
+};

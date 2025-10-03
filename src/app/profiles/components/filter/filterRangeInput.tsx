@@ -5,15 +5,16 @@ import FilterBox from "./filterBox";
 import FilterHeader from "./filterHeader";
 import FilterInput from "./filterInput";
 import { motion, AnimatePresence } from "framer-motion";
+import RangeSlider from "./rangeSlider";
 
 interface FilterRangeInputProps {
   min: number;
   max: number;
   step: number;
   name: "age" | "height" | "weight";
+  value: [number, number];
   title: "나이" | "키" | "몸무게";
   unit: "세" | "cm" | "kg";
-  range: [number, number];
   minValue: number;
   maxValue: number;
   onReset: () => void;
@@ -27,9 +28,9 @@ const FilterRangeInput = ({
   max,
   step,
   name,
+  value,
   title,
   unit,
-  range,
   minValue,
   maxValue,
   onReset,
@@ -59,7 +60,7 @@ const FilterRangeInput = ({
             transition={{ duration: 0.1, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-6">
               <div className="flex w-full flex-row items-center gap-2">
                 <FilterInput
                   min={min}
@@ -81,6 +82,12 @@ const FilterRangeInput = ({
                   onChange={onMaxChange}
                 />
               </div>
+              <RangeSlider
+                min={min}
+                max={max}
+                value={value}
+                onChange={onRangeChange}
+              />
             </div>
           </motion.div>
         )}

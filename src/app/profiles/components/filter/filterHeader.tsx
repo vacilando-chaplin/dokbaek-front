@@ -9,6 +9,7 @@ interface FilterHeaderProps {
   value?: string | null;
   range?: string;
   isActive: boolean;
+  specialties?: [];
   isChangedValue?: boolean;
   onReset: () => void;
   onActive: () => void;
@@ -20,6 +21,7 @@ const FilterHeader = ({
   value,
   range,
   isActive,
+  specialties,
   isChangedValue,
   onReset,
   onActive
@@ -34,6 +36,10 @@ const FilterHeader = ({
 
     if (name === "age" || name === "height" || name === "weight") {
       return isChangedValue ? range : "전체";
+    }
+
+    if (name === "specialty") {
+      return specialties?.length ? specialties.join(", ") : "전체";
     }
 
     return "전체";

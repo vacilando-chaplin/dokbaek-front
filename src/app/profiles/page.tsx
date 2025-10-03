@@ -17,6 +17,7 @@ import {
   DEFAULT_MIN_WEIGHT,
   DEFAULT_MAX_WEIGHT
 } from "@/constants/constants";
+import SelectDropdown from "@/components/molecules/selectDropdown";
 
 const Profiles = () => {
   const searchParams = useSearchParams();
@@ -32,7 +33,8 @@ const Profiles = () => {
     minHeight: DEFAULT_MIN_HEIGHT,
     maxHeight: DEFAULT_MAX_HEIGHT,
     minWeight: DEFAULT_MIN_WEIGHT,
-    maxWeight: DEFAULT_MAX_WEIGHT
+    maxWeight: DEFAULT_MAX_WEIGHT,
+    specialties: [] as number[]
   });
 
   const [profiles, setProfiles] = useState<ProfileShowcaseResponseType[]>([]);
@@ -72,7 +74,8 @@ const Profiles = () => {
       minHeight: getParam("minHeight", DEFAULT_MIN_HEIGHT),
       maxHeight: getParam("maxHeight", DEFAULT_MAX_HEIGHT),
       minWeight: getParam("minWeight", DEFAULT_MIN_WEIGHT),
-      maxWeight: getParam("maxWeight", DEFAULT_MAX_WEIGHT)
+      maxWeight: getParam("maxWeight", DEFAULT_MAX_WEIGHT),
+      specialties: []
     });
   }, [searchParams]);
 
@@ -84,7 +87,8 @@ const Profiles = () => {
     minHeight,
     maxHeight,
     minWeight,
-    maxWeight
+    maxWeight,
+    specialties
   }: {
     keyword: string;
     gender: string | null;
@@ -94,6 +98,7 @@ const Profiles = () => {
     maxHeight: number;
     minWeight: number;
     maxWeight: number;
+    specialties: number[];
   }) => {
     setFilterState({
       keyword: keyword,
@@ -103,7 +108,8 @@ const Profiles = () => {
       minHeight,
       maxHeight,
       minWeight,
-      maxWeight
+      maxWeight,
+      specialties
     });
 
     const params = new URLSearchParams();
@@ -127,7 +133,6 @@ const Profiles = () => {
   };
 
   const getSearchParams = () => {
-    console.log("getSearchParams", filterState.keyword);
     const params = new URLSearchParams();
     params.set("size", String(pageSize.current));
     params.set("sort", "RECENT_UPDATED");
@@ -187,6 +192,7 @@ const Profiles = () => {
           <p className="typography-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
             배우 찾기
           </p>
+          {/* <SelectDropdown /> */}
         </div>
         <div className="flex flex-row justify-center gap-6">
           <ActorFilterSidebar
