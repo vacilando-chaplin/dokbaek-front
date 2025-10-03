@@ -25,7 +25,7 @@ const FilmoShowcaseList = () => {
       })}
     </div>
   ) : (
-    <ProfileShowcaseEmptyFrame text="작품 활동이 없어요." />
+    <ProfileShowcaseEmptyFrame text="작품 활동이 없어요." type="filmo" />
   );
 };
 
