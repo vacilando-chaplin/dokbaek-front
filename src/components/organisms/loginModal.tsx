@@ -44,19 +44,26 @@ const LoginModal = () => {
   );
 
   return (
-    loginModal && (
-      <section className="fixed inset-0 z-[999] flex max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
-        <div
-          className={`interaction-default relative flex h-auto w-[487px] max-w-[487px] animate-enter flex-col rounded-3xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark`}
-        >
-          <div className="absolute right-6 top-6">
-            <button type="button" className="p-2" onClick={onLoginModalClose}>
-              <X
-                width="20"
-                height="20"
-                className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
-              />
-            </button>
+    <section className="fixed inset-0 z-[999] flex max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0" onClick={onLoginModalClose}>
+      <div
+        className={`interaction-default relative flex h-auto w-[487px] max-w-[487px] animate-enter flex-col rounded-3xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark`}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="absolute right-6 top-6">
+          <button type="button" className="p-2" onClick={onLoginModalClose}>
+            <X
+              width="20"
+              height="20"
+              className="fill-current text-content-tertiary-light dark:text-content-tertiary-dark"
+            />
+          </button>
+        </div>
+        <div className="mx-[80px] mb-[72px] mt-[88px]">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <LogoHorizontal width="85" height="46" />
+            <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
+              쉽고 빠르게 프로필을 만들어보세요.
+            </label>
           </div>
           <div className="mx-[80px] mb-[72px] mt-[88px]">
             <div className="flex flex-col items-center justify-center gap-4">

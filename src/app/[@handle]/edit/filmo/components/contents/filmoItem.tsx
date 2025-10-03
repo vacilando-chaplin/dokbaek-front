@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Edit from "../../../../../../../public/icons/Edit.svg";
 import X from "../../../../../../../public/icons/X.svg";
-import PlayCircle from "../../../../../../../public/icons/PlayCircle.svg";
+import PlayFill from "../../../../../../../public/icons/PlayFill.svg";
 import LogoHorizontalSmall from "../../../../../../../public/icons/LogoHorizontalSmall.svg";
 import { ProfileFilmoDataType } from "../../../types";
 import { useSetRecoilState } from "recoil";
@@ -116,15 +116,16 @@ const FilmoItem = ({ filmo }: FilmoItemProps) => {
         {/* link */}
         <button
           type="button"
-          className="hidden w-fit sm:block"
+          className="hidden md:flex items-center justify-center gap-0.5 py-[3px] px-[8px] pl-[6px] bg-[#EAF2FE] w-fit h-[20px] rounded-lg typography-caption2 text-accent-primary-light dark:text-accent-primary-light"
           disabled={!production.videoUrl}
           onClick={() => onLinkModalOpen(production.videoUrl)}
         >
-          <PlayCircle
-            width="16"
-            height="16"
-            className={`fill-current ${production.videoUrl ? "text-content-primary-light dark:text-content-primary-dark" : "text-content-alternative-light dark:text-content-alternative-dark"}`}
+          <PlayFill
+              width="12"
+              height="12"
+              className={`fill-current ${production.videoUrl ? "text-accent-primary-light dark:text-accent-primary-light" : "text-accent-primary-light dark:text-accent-primary-light"}`}
           />
+          재생
         </button>
       </div>
       <div className="flex min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100">
