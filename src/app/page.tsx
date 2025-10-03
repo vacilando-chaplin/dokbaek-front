@@ -14,7 +14,8 @@ const Home = async () => {
   const cookieStore = cookies();
   const jwt = cookieStore.get("jwt")?.value;
 
-  const myProfileData = jwt ? await getProfileMeServer() : null;
+  const profileRes = jwt ? await getProfileMeServer() : null;
+  const myProfileData = profileRes?.data.data ?? null;
 
   const page = 0;
   const size = 20;
