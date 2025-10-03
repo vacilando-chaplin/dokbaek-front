@@ -4,17 +4,21 @@ import Tooltip from "@/components/atoms/tooltip";
 import UploadButton from "@/components/atoms/uploadButton";
 import {
   isMyProfileState,
-  mainPhotoModalState
+  mainPhotoModalState,
+  profileViewState
 } from "@/lib/recoil/handle/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import Account from "../../../../../public/icons/Account.svg";
 import Plus from "../../../../../public/icons/Plus.svg";
+import Heart from "../../../../../public/icons/Heart.svg";
+import EyeOn from "../../../../../public/icons/EyeOn.svg";
 
 interface MainPhotoEmptyProps {
   onSelectFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const MainPhotoEmpty = ({ onSelectFile }: MainPhotoEmptyProps) => {
+  const profileData = useRecoilValue(profileViewState);
   const isMyProfile = useRecoilValue(isMyProfileState);
 
   const setMainPhotoModal = useSetRecoilState(mainPhotoModalState);
@@ -59,6 +63,28 @@ const MainPhotoEmpty = ({ onSelectFile }: MainPhotoEmptyProps) => {
             </div>
           </div>
         )}
+        <div className="absolute bottom-2 right-2 flex flex-row gap-1.5 rounded-lg bg-background-scrim-light px-2 py-1 dark:bg-background-scrim-dark">
+          <div className="flex flex-row items-center gap-1">
+            <Heart
+              width="14"
+              height="14"
+              className="fill-current text-static-white"
+            />
+            <span className="typography-caption1 font-medium text-static-white">
+              {profileData.likesCount ?? 0}
+            </span>
+          </div>
+          <div className="flex flex-row items-center gap-1">
+            <EyeOn
+              width="14"
+              height="14"
+              className="fill-current text-static-white"
+            />
+            <span className="typography-caption1 font-medium text-static-white">
+              {profileData.viewsCount ?? 0}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
