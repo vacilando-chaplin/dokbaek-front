@@ -2,34 +2,54 @@
 
 import { useActive } from "@/lib/hooks";
 import FilterHeader from "./filterHeader";
-import SearchDropdown from "@/components/molecules/searchDropdown";
 import { useEffect, useState } from "react";
 import { getSpecialty } from "@/app/[@handle]/edit/info/api";
 import { motion, AnimatePresence } from "framer-motion";
 import Chips from "@/components/atoms/chips";
-import { SpecialtyItemType } from "@/app/[@handle]/edit/info/types";
+import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
+import SpecialtySearchDropdown from "./specialtySearchDropdown";
 
-interface FilterSpecialtyProps {}
+interface FilterSpecialtyProps {
+  specialties: SpecialtyType[];
+  onReset: () => void;
+  onSelect: (specialty: SpecialtyType) => void;
+  onRemove: (id: number) => void;
+}
 
-const FilterSpecialty = ({}: FilterSpecialtyProps) => {
+const FilterSpecialty = ({
+  specialties,
+  onReset,
+  onSelect,
+  onRemove
+}: FilterSpecialtyProps) => {
   const boxActive = useActive(false);
   const searchActive = useActive(false);
 
   const [searchSpecialty, setSearchSpecialty] = useState("");
-  const [specialtyList, setSpecialtyList] = useState<string[]>([]);
-  const [selectedSpecialties, setSelectedSpecialties] = useState([]);
+  const [specialtyList, setSpecialtyList] = useState<SpecialtyType[]>([]);
+
+  const SpecialtyNameList: string[] = specialties.map(
+    (item) => item.specialtyName
+  );
 
   const onSearchSpecialty = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (searchSpecialty) {
+      searchActive.onOpen();
+    }
+
     setSearchSpecialty(e.target.value);
   };
 
   useEffect(() => {
-    // 딜레이 적용 해야함
     const fetchSpecialtyList = async () => {
-      const getSpecialtyList = await getSpecialty(searchSpecialty, 1, 5);
+      const getSpecialtyList = await getSpecialty(searchSpecialty, 0, 5);
       setSpecialtyList(getSpecialtyList);
     };
     fetchSpecialtyList();
+
+    if (searchSpecialty === "") {
+      searchActive.onClose();
+    }
   }, [searchSpecialty]);
 
   return (
@@ -39,8 +59,12 @@ const FilterSpecialty = ({}: FilterSpecialtyProps) => {
           name="specialty"
           title="특기"
           isActive={boxActive.active}
-          specialties={[]}
-          onReset={() => {}}
+          specialties={SpecialtyNameList}
+          onReset={() => {
+            onReset();
+            searchActive.onClose();
+            setSpecialtyList([]);
+          }}
           onActive={boxActive.onActive}
         />
         <AnimatePresence initial={false}>
@@ -50,32 +74,36 @@ const FilterSpecialty = ({}: FilterSpecialtyProps) => {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.1, ease: "easeInOut" }}
-              className="flex h-auto w-full flex-col gap-2 overflow-hidden"
+              className="flex h-auto w-full flex-col gap-2"
             >
-              <SearchDropdown
+              <SpecialtySearchDropdown
                 size="medium"
                 name="specialty"
                 list={specialtyList}
                 value={searchSpecialty}
                 active={searchActive.active}
                 selected={""}
-                onClick={() => {}}
+                isEmpty={specialtyList.length === 0}
+                placeholder="특기를 검색해보세요."
+                onClick={(item: SpecialtyType) => {
+                  onSelect({ id: item.id, specialtyName: item.specialtyName });
+                  setSearchSpecialty("");
+                  searchActive.onClose();
+                }}
                 onActive={searchActive.onActive}
                 onChange={onSearchSpecialty}
               />
-              <div className="flex w-full flex-row gap-1">
-                {selectedSpecialties.map(
-                  (specialty: SpecialtyItemType, index) => {
-                    return (
-                      <Chips
-                        key={specialty.id}
-                        text={specialty.specialty?.specialtyName}
-                        icon
-                        onClick={() => {}}
-                      />
-                    );
-                  }
-                )}
+              <div className="flex w-full flex-row flex-wrap gap-1">
+                {specialties.map((specialty: SpecialtyType) => {
+                  return (
+                    <Chips
+                      key={specialty.id}
+                      text={specialty.specialtyName}
+                      icon
+                      onClick={() => onRemove(specialty.id)}
+                    />
+                  );
+                })}
               </div>
             </motion.div>
           )}

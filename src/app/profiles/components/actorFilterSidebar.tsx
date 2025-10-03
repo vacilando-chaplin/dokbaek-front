@@ -21,6 +21,7 @@ import FilterGender from "./filter/filterGender";
 import FilterRangeInput from "./filter/filterRangeInput";
 import { useRange } from "@/lib/hooks";
 import FilterSpecialty from "./filter/filterSpecialty";
+import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
 
 interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];
@@ -67,6 +68,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const height = useRange(DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
   const weight = useRange(DEFAULT_MIN_WEIGHT, DEFAULT_MAX_WEIGHT);
 
+  const [specialties, setSpecialties] = useState<SpecialtyType[]>([]);
+
   useEffect(() => {
     const bornYearMax = new Date().getFullYear();
     const yearToAge = (year: number) => bornYearMax - year;
@@ -109,7 +112,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
       maxHeight: height.max,
       minWeight: weight.min,
       maxWeight: weight.max,
-      specialties: []
+      specialties: specialties.map((item) => item.id)
     });
   };
 
@@ -121,12 +124,31 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     setGender(gender);
   };
 
+  const onSelectSpecialty = (specialty: SpecialtyType) => {
+    setSpecialties((prev) => {
+      // 이미 선택된 경우 추가 X
+      if (prev.some((s) => s.id === specialty.id)) return prev;
+      // 최대 5개 제한
+      if (prev.length >= 5) return prev;
+      return [...prev, specialty];
+    });
+  };
+
+  const onRemoveSpecialty = (id: number) => {
+    setSpecialties((prev) => prev.filter((s) => s.id !== id));
+  };
+
+  const onResetSpecialty = () => {
+    setSpecialties([]);
+  };
+
   const onClickFilterReset = () => {
     setKeyword("");
     setGender(null);
     age.onRangeChange([DEFAULT_MIN_AGE, DEFAULT_MAX_AGE]);
     height.onRangeChange([DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT]);
     weight.onRangeChange([DEFAULT_MIN_WEIGHT, DEFAULT_MAX_WEIGHT]);
+    setSpecialties([]);
 
     handleSubmit({
       keyword: "",
@@ -153,7 +175,8 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     height.min,
     height.max,
     weight.min,
-    weight.max
+    weight.max,
+    specialties
   ]);
 
   return (
@@ -244,7 +267,12 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
         onMaxChange={weight.onMaxChange}
         onRangeChange={weight.onRangeChange}
       />
-      <FilterSpecialty />
+      <FilterSpecialty
+        specialties={specialties}
+        onReset={onResetSpecialty}
+        onSelect={onSelectSpecialty}
+        onRemove={onRemoveSpecialty}
+      />
     </aside>
   );
 };

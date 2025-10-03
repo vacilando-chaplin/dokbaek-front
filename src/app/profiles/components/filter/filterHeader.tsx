@@ -9,7 +9,7 @@ interface FilterHeaderProps {
   value?: string | null;
   range?: string;
   isActive: boolean;
-  specialties?: [];
+  specialties?: string[];
   isChangedValue?: boolean;
   onReset: () => void;
   onActive: () => void;
@@ -48,10 +48,10 @@ const FilterHeader = ({
   return (
     <div className="flex h-[22px] w-full flex-row items-center justify-between gap-2">
       <div className="flex w-full flex-row items-center gap-1">
-        <span className="typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark">
+        <span className="typography-body3 whitespace-nowrap font-medium text-content-primary-light dark:text-content-primary-dark">
           {title}
         </span>
-        <span className="typography-body3 font-semibold text-accent-primary-light dark:text-accent-primary-dark">
+        <span className="typography-body3 block w-[160px] overflow-hidden text-ellipsis whitespace-nowrap font-semibold text-accent-primary-light dark:text-accent-primary-dark">
           {getDisplayValue()}
         </span>
       </div>

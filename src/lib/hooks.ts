@@ -169,7 +169,15 @@ export const useActive = (initialActive: boolean = false) => {
     setActive((prev) => !prev);
   }, []);
 
-  return { active, onActive };
+  const onOpen = useCallback(() => {
+    setActive(true);
+  }, []);
+
+  const onClose = useCallback(() => {
+    setActive(false);
+  }, []);
+
+  return { active, onOpen, onClose, onActive };
 };
 
 export const useRange = (defaultMin: number, defaultMax: number) => {

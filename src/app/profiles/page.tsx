@@ -17,7 +17,6 @@ import {
   DEFAULT_MIN_WEIGHT,
   DEFAULT_MAX_WEIGHT
 } from "@/constants/constants";
-import SelectDropdown from "@/components/molecules/selectDropdown";
 
 const Profiles = () => {
   const searchParams = useSearchParams();
@@ -128,6 +127,10 @@ const Profiles = () => {
     if (minWeight > -1) params.set("minWeight", String(minWeight));
     if (maxWeight > -1) params.set("maxWeight", String(maxWeight));
 
+    if (specialties.length > 0) {
+      params.set("specialties", specialties.join(","));
+    }
+
     const newUrl = `/profiles?${params.toString()}`;
     replace(newUrl, { scroll: false });
   };
@@ -154,6 +157,10 @@ const Profiles = () => {
     params.set("maxHeight", String(filterState.maxHeight));
     params.set("minWeight", String(filterState.minWeight));
     params.set("maxWeight", String(filterState.maxWeight));
+
+    if (filterState.specialties.length > 0) {
+      params.set("specialties", filterState.specialties.join(","));
+    }
 
     return params;
   };
