@@ -10,12 +10,12 @@ import { useEffect, useState } from "react";
 import Tooltip from "@/components/atoms/tooltip";
 import Cookies from "js-cookie";
 import { useRecoilState } from "recoil";
-import { homeLoginModalState } from "@/lib/recoil/home/atom";
+import { loginModalState } from "@/lib/recoil/home/atom";
 
 const LoginModal = () => {
   const [loginForm, setLoginForm] = useState<string | null>(null);
 
-  const [loginModal, setLoginModal] = useRecoilState(homeLoginModalState);
+  const [loginModal, setLoginModal] = useRecoilState(loginModalState);
 
   const onLoginModalClose = () => {
     setLoginModal(false);
@@ -45,9 +45,13 @@ const LoginModal = () => {
 
   return (
     loginModal && (
-      <section className="fixed inset-0 z-[999] flex max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
+      <section
+        className="fixed inset-0 z-[999] flex max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0"
+        onClick={onLoginModalClose}
+      >
         <div
           className={`interaction-default relative flex h-auto w-[487px] max-w-[487px] animate-enter flex-col rounded-3xl bg-background-surface-light shadow-medium dark:bg-background-surface-dark`}
+          onClick={(event) => event.stopPropagation()}
         >
           <div className="absolute right-6 top-6">
             <button type="button" className="p-2" onClick={onLoginModalClose}>

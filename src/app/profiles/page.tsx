@@ -25,6 +25,7 @@ import {
   SORT_OPTIONS,
   SortType
 } from "@/constants/sort";
+import LoginModal from "@/components/organisms/loginModal";
 
 const Profiles = () => {
   const searchParams = useSearchParams();
@@ -231,6 +232,7 @@ const Profiles = () => {
 
   return (
     <div className="container-max m-auto mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
+      <LoginModal />
       <section className="mt-11 flex flex-col gap-6">
         <div className="flew-row flex w-full justify-between">
           <p className="typography-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">

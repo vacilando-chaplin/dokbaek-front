@@ -1,8 +1,8 @@
 import { ProfileShowcaseType } from "@/lib/types";
 import { atom } from "recoil";
 
-export const homeLoginModalState = atom<boolean>({
-  key: "homeLoginModalState",
+export const loginModalState = atom<boolean>({
+  key: "loginModalState",
   default: false
 });
 
