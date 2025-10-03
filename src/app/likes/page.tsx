@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import LikeProfiles from "./components/likeProfiles";
+import LikeProfiles from "./components/container/likeProfiles";
+import { getLikedProfilesServer } from "@/lib/api/likes/api";
 
 export const metadata: Metadata = {
   title: "독백 | 좋아요한 프로필",
@@ -12,17 +13,32 @@ export const metadata: Metadata = {
   }
 };
 
-const Page = () => {
+interface LikesProps {
+  searchParams: { page?: string };
+}
+
+const Likes = async ({ searchParams }: LikesProps) => {
+  const page = Number(searchParams.page) || 0;
+  const size = 20;
+
+  const res = await getLikedProfilesServer(page, size);
+
+  const initialProfileShowcaseData = {
+    profiles: res.content || [],
+    currentPage: res.page || 0,
+    totalElements: res.totalElements || 0,
+    totalPages: res.totalPages || 0,
+    hasNext: res.hasNext
+  };
+
   return (
     <div className="container-max m-[auto] mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
-      <section className="mt-11">
-        <p className="mb-6 text-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
-          좋아요한 프로필
-        </p>
-        <LikeProfiles />
-      </section>
+      <LikeProfiles
+        currentPage={page}
+        likedProfiles={initialProfileShowcaseData}
+      />
     </div>
   );
 };
 
-export default Page;
+export default Likes;

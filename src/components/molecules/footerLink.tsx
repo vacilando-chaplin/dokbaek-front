@@ -6,7 +6,7 @@ import { getTerms } from "@/lib/api";
 import { TermsDataType } from "@/lib/types";
 
 const FooterLink = () => {
-  const businessInfo = `https://www.ftc.go.kr/bizCommPop.do?wrkr_no=${process.env.NEXT_PUBLIC_BUSINESS_REG_NO}`;
+  const businessInfo = `https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=43&tm2lIdx=4306000000&tm3lIdx=4306080000`;
   const [termsServices, setTermsServices] = useState("");
   const [privacyPolicy, setPrivacyPolicy] = useState("");
 

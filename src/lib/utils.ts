@@ -187,3 +187,14 @@ export const hasProfileChanges = (original: any, draft: any): boolean => {
 
   return false;
 };
+
+export const getProfileImageUrl = (url: string | null | undefined) => {
+  if (!url) return null;
+
+  // 기본 S3 도메인만 있는 경우 (대표사진 없음)
+  if (url === "https://filogram.s3.ap-northeast-2.amazonaws.com/") {
+    return null;
+  }
+
+  return url;
+};

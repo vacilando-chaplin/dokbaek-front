@@ -1,3 +1,5 @@
+"use client";
+
 import X from "../../../public/icons/X.svg";
 import LogoHorizontal from "../../../public/icons/LogoHorizontal.svg";
 import KakaoLogin from "@/app/login/components/kakaoLogin";
@@ -7,13 +9,17 @@ import AppleLogin from "@/app/login/components/appleLogin";
 import { useEffect, useState } from "react";
 import Tooltip from "@/components/atoms/tooltip";
 import Cookies from "js-cookie";
+import { useRecoilState } from "recoil";
+import { homeLoginModalState } from "@/lib/recoil/home/atom";
 
-interface LoginModalProps {
-  onLoginModalClose: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-const LoginModal = ({ onLoginModalClose }: LoginModalProps) => {
+const LoginModal = () => {
   const [loginForm, setLoginForm] = useState<string | null>(null);
+
+  const [loginModal, setLoginModal] = useRecoilState(homeLoginModalState);
+
+  const onLoginModalClose = () => {
+    setLoginModal(false);
+  };
 
   useEffect(() => {
     const currentLoginForm = Cookies.get("login_form");
@@ -59,15 +65,23 @@ const LoginModal = ({ onLoginModalClose }: LoginModalProps) => {
               쉽고 빠르게 프로필을 만들어보세요.
             </label>
           </div>
-          <div className="mt-10 flex h-auto w-full flex-col gap-2">
-            <LoginButton type="카카오" Component={KakaoLogin} />
-            <LoginButton type="네이버" Component={NaverLogin} />
-            <LoginButton type="애플" Component={AppleLogin} />
-            <LoginButton type="구글" Component={GoogleLogin} />
+          <div className="mx-[80px] mb-[72px] mt-[88px]">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <LogoHorizontal width="85" height="46" />
+              <label className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
+                쉽고 빠르게 프로필을 만들어보세요.
+              </label>
+            </div>
+            <div className="mt-10 flex h-auto w-full flex-col gap-2">
+              <LoginButton type="카카오" Component={KakaoLogin} />
+              <LoginButton type="네이버" Component={NaverLogin} />
+              <LoginButton type="애플" Component={AppleLogin} />
+              <LoginButton type="구글" Component={GoogleLogin} />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    )
   );
 };
 

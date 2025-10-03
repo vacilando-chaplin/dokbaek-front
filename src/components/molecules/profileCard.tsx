@@ -2,29 +2,36 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Profile from "../../../public/images/samples/profile.png";
-import { ProfileShowcaseResponseType } from "@/app/landing/types";
+import { ProfileShowcaseResponseType } from "@/app/home/types";
 import { deleteProfileLike, postProfileLike } from "@/app/profiles/api";
 import Heart from "../../../public/icons/Heart.svg";
-import Like from "../../../public/icons/Like.svg";
+import HeartFill from "../../../public/icons/HeartFill.svg";
 import EyeOn from "../../../public/icons/EyeOn.svg";
+import Account from "../../../public/icons/Account.svg";
+import LoadingSpinner from "../../../public/icons/LoadingSpinner.svg";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import LoginModal from "../organisms/loginModal";
 import { routePaths } from "@/constants/routes";
 import { getProfileByProfileId } from "@/lib/api";
+import { getProfileImageUrl } from "@/lib/utils";
+import { MyProfileIdType } from "@/lib/types";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
-  fetchProfiles: () => void;
+  myProfileId?: MyProfileIdType;
+  onUnlike?: (profileId: number) => void;
 }
 
-const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
+const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
   const [loginModal, setLoginModal] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const jwt = Cookies.get("jwt");
   const router = useRouter();
+
+  const profileImage = getProfileImageUrl(profile.mainPhotoPreviewPath);
 
   const onClickProfile = async () => {
     if (loginModal) return;
@@ -52,45 +59,52 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
     try {
       if (liked) {
         await deleteProfileLike(profile.id);
+        onUnlike?.(profile.id);
       } else {
         await postProfileLike(profile.id);
       }
     } catch (error) {
       setLiked((prev) => !prev);
-    } finally {
-      fetchProfiles();
     }
   };
 
   return (
     <div
       onClick={onClickProfile}
-      className="w-[100%] cursor-pointer rounded-[16px] border border-gray-100 bg-background-base-light p-4 hover:border-gray-300 dark:border-gray-900 dark:bg-background-base-dark dark:hover:border-gray-700"
+      className="w-full cursor-pointer rounded-2xl border border-gray-100 bg-background-base-light p-4 hover:border-gray-300 dark:border-gray-900 dark:bg-background-base-dark dark:hover:border-gray-700"
     >
-      <div className="relative">
-        {profile.mainPhotoPreviewPath ? (
-          <Image
-            src={profile.mainPhotoPreviewPath}
-            alt="photo"
-            width={212}
-            height={271}
-            loading="lazy"
-            unoptimized={true}
-            className="h-full w-full rounded-[8px]"
-          />
-        ) : (
-          <Image
-            src={Profile}
-            alt="photo"
-            width={212}
-            height={271}
-            loading="lazy"
-            unoptimized={true}
-            className="h-full w-full rounded-[8px]"
+      <div className="relative flex aspect-[212/271] items-center justify-center rounded-lg">
+        {!isLoaded && !isError && profileImage && (
+          <LoadingSpinner
+            width="24"
+            height="24"
+            className="fill-current left-1/2 top-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
           />
         )}
-        <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-[4px] rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1 dark:bg-background-scrim-dark">
-          <div className="flex items-center gap-[2px]">
+        {profileImage && (
+          <Image
+            src={profileImage}
+            alt="photo"
+            fill
+            loading="lazy"
+            unoptimized={true}
+            className="h-full w-full rounded-lg object-cover"
+            onLoad={() => setIsLoaded(true)}
+            onError={() => {
+              setIsError(true);
+              setIsLoaded(true);
+            }}
+          />
+        )}
+        {(!profileImage || isError) && (
+          <Account
+            width="24"
+            height="24"
+            className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+          />
+        )}
+        <div className="absolute bottom-2 right-2 flex h-[18px] items-center justify-center gap-1 rounded-full bg-background-scrim-light bg-opacity-40 px-2 py-1 dark:bg-background-scrim-dark">
+          <div className="flex items-center gap-0.5">
             <Heart
               width="14"
               height="14"
@@ -100,7 +114,7 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
               {profile.likesCount}
             </div>
           </div>
-          <div className="flex items-center gap-[2px]">
+          <div className="flex items-center gap-0.5">
             <EyeOn
               width="14"
               height="14"
@@ -119,17 +133,26 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
           </p>
           <button
             type="button"
+            disabled={profile.id === myProfileId}
             className="p-0.5 hover:rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-800"
             onClick={(e) => {
               e.stopPropagation();
               onClickProfileLike();
             }}
           >
-            <Like
-              width="16"
-              height="16"
-              className={`fill-current ${liked ? "text-state-negative-light dark:text-state-negative-dark" : "text-content-alternative-light dark:text-content-alternative-dark"}`}
-            />
+            {liked ? (
+              <HeartFill
+                width="16"
+                height="16"
+                className="fill-current text-state-negative-light dark:text-state-negative-dark"
+              />
+            ) : (
+              <Heart
+                width="16"
+                height="16"
+                className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
+              />
+            )}
           </button>
         </div>
         <div className="typography-caption1 flex font-regular text-content-tertiary-light dark:text-content-primary-dark">
@@ -153,9 +176,6 @@ const ProfileCard = ({ profile, fetchProfiles }: ProfileCardProps) => {
           )}
         </div>
       </div>
-      {loginModal && (
-        <LoginModal onLoginModalClose={() => setLoginModal(false)} />
-      )}
     </div>
   );
 };

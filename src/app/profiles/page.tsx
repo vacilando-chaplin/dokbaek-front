@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
-} from "@/app/landing/types";
+} from "@/app/home/types";
 import {
   DEFAULT_MIN_BORN_YEAR,
   DEFAULT_MAX_BORN_YEAR,
@@ -18,7 +18,7 @@ import {
   DEFAULT_MAX_WEIGHT
 } from "@/constants/constants";
 
-const Page = () => {
+const Profiles = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const isInitialLoad = useRef(true);
@@ -211,4 +211,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Profiles;
