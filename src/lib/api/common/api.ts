@@ -12,8 +12,11 @@ export const getProfileMeServer = async () => {
 
   try {
     const res = await api.get("/profile/me");
-    return res.data.data;
-  } catch (error) {
+    return res;
+  } catch (error: any) {
+    if (error.response?.status === 404) {
+      return null;
+    }
     throw error;
   }
 };

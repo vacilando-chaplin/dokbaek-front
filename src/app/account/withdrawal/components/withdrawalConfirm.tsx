@@ -60,7 +60,7 @@ const WithdrawalConfirm = ({ initialReasons }: WithdrawalConfirmProps) => {
         type="primary"
         size="large"
         width="full"
-        disabled={!agreement}
+        disabled={!agreement || reasonIds.length === 0}
         onClick={onConfirm}
       >
         회원 탈퇴
