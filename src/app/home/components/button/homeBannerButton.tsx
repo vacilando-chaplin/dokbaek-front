@@ -9,7 +9,7 @@ import { loginState, toastMessage } from "@/lib/atoms";
 import { setLoginProfileId } from "@/lib/utils";
 import { routePaths } from "@/constants/routes";
 import { ProfileDraftDataType } from "@/app/[@handle]/edit/types";
-import { homeLoginModalState } from "@/lib/recoil/home/atom";
+import { loginModalState } from "@/lib/recoil/home/atom";
 
 interface HomeBannerButtonProps {
   myProfileData: ProfileDraftDataType | null;
@@ -20,7 +20,7 @@ const HomeBannerButton = ({ myProfileData }: HomeBannerButtonProps) => {
 
   const isLoggedIn = useRecoilValue(loginState);
 
-  const setLoginModal = useSetRecoilState(homeLoginModalState);
+  const setLoginModal = useSetRecoilState(loginModalState);
   const setHandleName = useSetRecoilState(handleNameState);
   const setToastMessage = useSetRecoilState(toastMessage);
 

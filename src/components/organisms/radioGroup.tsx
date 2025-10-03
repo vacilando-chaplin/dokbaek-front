@@ -10,7 +10,7 @@ interface RadioGroupProps {
   name: string;
   options: Option[];
   value?: string | null;
-  onChange?: (value: string | null) => void;
+  onChange?: (value: any) => void;
 }
 
 const RadioGroup = ({
@@ -23,7 +23,7 @@ const RadioGroup = ({
 }: RadioGroupProps) => {
   return (
     <div
-      className={`flex ${direction === "horizontal" ? "gap-6" : "flex-col gap-4"}`}
+      className={`flex ${direction === "horizontal" ? "gap-3" : "flex-col gap-3"}`}
     >
       {options.map((option) => (
         <RadioButton

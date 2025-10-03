@@ -32,7 +32,7 @@ const RadioButton = ({
   const getBorderClasses = (checked: boolean) =>
     checked
       ? "border-[5px] border-accent-primary-light dark:border-accent-primary-dark"
-      : "border-2 border-border-default-light dark:border-border-default-dark hover:border-accent-primary-light dark:hover:border-accent-primary-dark";
+      : "border-[1.5px] border-border-default-light dark:border-border-default-dark hover:border-accent-primary-light dark:hover:border-accent-primary-dark";
 
   return (
     <label
@@ -51,8 +51,8 @@ const RadioButton = ({
       />
       <div
         className={`flex items-center rounded-full ${inputSizeStyle[size]} ${getBorderClasses(checked ?? false)}`}
-      ></div>
-      <span className="typography-body3 font-regular text-content-primary-light dark:text-content-primary-dark">
+      />
+      <span className="typography-body2 font-regular text-content-primary-light dark:text-content-primary-dark">
         {label}
       </span>
     </label>

@@ -31,15 +31,21 @@ const SelectDropdown = ({
   onActive
 }: SelectDropdownProps) => {
   const sizeStyle: sizeStyleType = {
-    large: "rounded-[14px]",
-    medium: "rounded-xl",
-    small: ""
+    large: "rounded-[14px] h-10",
+    medium: "rounded-xl h-10",
+    small: "rounded-lg h-7 px-0 pl-2 pr-2 py-[3px]"
+  };
+
+  const dropdonwStyle: sizeStyleType = {
+    large: "rounded-[14px] top-11",
+    medium: "rounded-xl top-11",
+    small: "rounded-lg top-8"
   };
 
   return (
     <div className="relative flex w-full flex-col gap-1 font-normal">
       <div
-        className={`${sizeStyle[size]} interaction-default flex h-10 w-full cursor-pointer flex-row gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light dark:border-border-default-dark dark:bg-background-surface-dark dark:focus-within:border-border-active-dark dark:hover:border-border-active-dark`}
+        className={`${sizeStyle[size]} interaction-default flex h-10 w-full cursor-pointer flex-row items-center gap-1 border border-border-default-light bg-background-surface-light px-3 py-[11px] focus-within:border-border-active-light hover:border-border-active-light dark:border-border-default-dark dark:bg-background-surface-dark dark:focus-within:border-border-active-dark dark:hover:border-border-active-dark`}
         onClick={() => onActive(name, active)}
       >
         <input
@@ -65,7 +71,7 @@ const SelectDropdown = ({
       {helperText && <HelperText type="info" text={helperText} />}
       {active && (
         <ul
-          className={`scrollbar dark:dark-scrollbar-dropdown interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
+          className={`scrollbar dark:dark-scrollbar-dropdown interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${dropdonwStyle[size]}`}
         >
           {list.map((item: string, index: number) => {
             return (

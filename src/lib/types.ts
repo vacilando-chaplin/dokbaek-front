@@ -59,3 +59,5 @@ export interface ProfileShowcaseType {
   hasNext: boolean;
   isLoading: boolean;
 }
+
+export type GenderType = "U" | "M" | "F";

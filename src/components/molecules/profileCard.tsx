@@ -15,6 +15,8 @@ import { routePaths } from "@/constants/routes";
 import { getProfileByProfileId } from "@/lib/api";
 import { getProfileImageUrl } from "@/lib/utils";
 import { MyProfileIdType } from "@/lib/types";
+import { useRecoilState } from "recoil";
+import { loginModalState } from "@/lib/recoil/home/atom";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
@@ -24,7 +26,7 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
   const [liked, setLiked] = useState(profile.likedByMe);
-  const [loginModal, setLoginModal] = useState(false);
+  const [loginModal, setLoginModal] = useRecoilState(loginModalState);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -54,17 +56,18 @@ const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
       return;
     }
 
-    setLiked((prev) => !prev);
-
     try {
       if (liked) {
         await deleteProfileLike(profile.id);
         onUnlike?.(profile.id);
+        setLiked(false);
       } else {
         await postProfileLike(profile.id);
+        setLiked(true);
       }
+      router.refresh();
     } catch (error) {
-      setLiked((prev) => !prev);
+      console.log(error);
     }
   };
 

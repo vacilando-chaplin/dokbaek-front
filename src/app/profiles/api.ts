@@ -1,5 +1,4 @@
 import { api } from "@/lib/axiosInstance";
-import { ProfileSearchParams } from "./types";
 
 export const getProfiles = async (query: string) => {
   try {
