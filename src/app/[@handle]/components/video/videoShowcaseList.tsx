@@ -18,7 +18,7 @@ const VideoShowcaseList = () => {
       })}
     </div>
   ) : (
-    <ProfileShowcaseEmptyFrame text="영상이 없어요." />
+    <ProfileShowcaseEmptyFrame text="영상이 없어요." type="video" />
   );
 };
 

@@ -106,19 +106,38 @@ const VideoModal = () => {
 
   // 비디오 모달 저장 버튼 클릭
   const onVideoModalSave = () => {
-    addVideoMutation.mutate({
-      profileId,
-      videoInput: videoInputs
-    });
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
+    const match = videoInputs.match(regex);
+    // 정상적인 youtube id면 뒤에 다른 텍스트가 붙어도 정상 작동
+    // ex) https://www.youtube.com/watch?v=pDvBiB1waBk&list=RDpDvBiB1waBk&start_radio=1&rv=pDvBiB1waBk
+    // 같이 재생목로으로 가져와도 해당 영상만 저장
+    if (match && match[1]) {
+      addVideoMutation.mutate({
+        profileId,
+        videoInput: match[0]
+      });
+    } else {
+      // 추가 수정 필요 (토스트 팝업 or 클릭 이전에 버튼 비활성화)
+      console.log('잘못된 유튜브 링크');
+    }
   };
 
   // 비디오 편집 모달 편집 완료
   const onVideoModalEdit = () => {
-    editVideoMutation.mutate({
-      profileId,
-      videoId: videoModal.id,
-      videoInput: videoInputs
-    });
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
+    const match = videoInputs.match(regex);
+
+    console.log(videoInputs);
+    if (match && match[1]) {
+      editVideoMutation.mutate({
+        profileId,
+        videoId: videoModal.id,
+        videoInput: match[0]
+      });
+    } else {
+      // 추가 수정 필요 (토스트 팝업 or 클릭 이전에 버튼 비활성화)
+      console.log('잘못된 유튜브 링크');
+    }
   };
 
   return (

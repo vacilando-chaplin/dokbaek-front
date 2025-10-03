@@ -49,7 +49,7 @@ const PhotoShowcaseList = () => {
       </div>
     </div>
   ) : (
-    <ProfileShowcaseEmptyFrame text="사진이 없어요." />
+    <ProfileShowcaseEmptyFrame text="사진이 없어요." type="photo" />
   );
 };
 
