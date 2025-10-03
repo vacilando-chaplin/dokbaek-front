@@ -17,6 +17,14 @@ import {
   DEFAULT_MIN_WEIGHT,
   DEFAULT_MAX_WEIGHT
 } from "@/constants/constants";
+import SelectDropdown from "@/components/molecules/selectDropdown";
+import { useActive } from "@/lib/hooks";
+import {
+  getSortKey,
+  getSortLabel,
+  SORT_OPTIONS,
+  SortType
+} from "@/constants/sort";
 
 const Profiles = () => {
   const searchParams = useSearchParams();
@@ -33,11 +41,30 @@ const Profiles = () => {
     maxHeight: DEFAULT_MAX_HEIGHT,
     minWeight: DEFAULT_MIN_WEIGHT,
     maxWeight: DEFAULT_MAX_WEIGHT,
-    specialties: [] as number[]
+    specialties: [] as number[],
+    sort: "RECENT_UPDATED" as SortType
   });
 
   const [profiles, setProfiles] = useState<ProfileShowcaseResponseType[]>([]);
   const [profilesData, setProfilesData] = useState<ProfilesResponseType>();
+
+  const { active, onActive } = useActive();
+
+  const onSortChange = (sortLabel: string) => {
+    const sortKey = getSortKey(sortLabel);
+
+    setFilterState((prev) => ({
+      ...prev,
+      sort: sortKey
+    }));
+
+    const params = getSearchParams();
+    params.set("sort", sortKey);
+    params.set("page", "0");
+
+    const newUrl = `/profiles?${params.toString()}`;
+    replace(newUrl, { scroll: false });
+  };
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -65,6 +92,8 @@ const Profiles = () => {
   };
 
   useEffect(() => {
+    const sortParam = searchParams.get("sort") || "RECENT_UPDATED";
+
     setFilterState({
       keyword: searchParams.get("keyword") || "",
       gender: searchParams.get("gender") || null,
@@ -74,11 +103,15 @@ const Profiles = () => {
       maxHeight: getParam("maxHeight", DEFAULT_MAX_HEIGHT),
       minWeight: getParam("minWeight", DEFAULT_MIN_WEIGHT),
       maxWeight: getParam("maxWeight", DEFAULT_MAX_WEIGHT),
-      specialties: []
+      specialties: [],
+      sort: (sortParam === "MOST_LIKED"
+        ? "MOST_LIKED"
+        : "RECENT_UPDATED") as SortType
     });
   }, [searchParams]);
 
   const onSubmit = ({
+    sort,
     keyword,
     gender,
     minBornYear,
@@ -89,6 +122,7 @@ const Profiles = () => {
     maxWeight,
     specialties
   }: {
+    sort: SortType;
     keyword: string;
     gender: string | null;
     minBornYear: number;
@@ -99,7 +133,9 @@ const Profiles = () => {
     maxWeight: number;
     specialties: number[];
   }) => {
-    setFilterState({
+    setFilterState((prev) => ({
+      ...prev,
+      sort,
       keyword: keyword,
       gender,
       minBornYear,
@@ -109,7 +145,7 @@ const Profiles = () => {
       minWeight,
       maxWeight,
       specialties
-    });
+    }));
 
     const params = new URLSearchParams();
     params.set("keyword", keyword);
@@ -118,7 +154,7 @@ const Profiles = () => {
     }
     params.set("page", String(0));
     params.set("size", String(pageSize.current));
-    params.set("sort", "RECENT_UPDATED");
+    params.set("sort", sort);
 
     if (minBornYear > 0) params.set("minBornYear", String(minBornYear));
     if (maxBornYear > 0) params.set("maxBornYear", String(maxBornYear));
@@ -138,7 +174,7 @@ const Profiles = () => {
   const getSearchParams = () => {
     const params = new URLSearchParams();
     params.set("size", String(pageSize.current));
-    params.set("sort", "RECENT_UPDATED");
+    params.set("sort", filterState.sort);
 
     const page = searchParams.get("page");
     if (page) {
@@ -189,7 +225,8 @@ const Profiles = () => {
     filterState.minHeight,
     filterState.maxHeight,
     filterState.minWeight,
-    filterState.maxWeight
+    filterState.maxWeight,
+    filterState.sort
   ]);
 
   return (
@@ -199,10 +236,24 @@ const Profiles = () => {
           <p className="typography-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
             배우 찾기
           </p>
-          {/* <SelectDropdown /> */}
+          <div className="h-auto w-[120px]">
+            <SelectDropdown
+              size="small"
+              name="sort"
+              list={Object.values(SORT_OPTIONS)}
+              value={getSortLabel(filterState.sort)}
+              active={active}
+              selected={getSortLabel(filterState.sort)}
+              onActive={onActive}
+              onClick={(name: string, item: string) => {
+                onSortChange(item);
+              }}
+            />
+          </div>
         </div>
         <div className="flex flex-row justify-center gap-6">
           <ActorFilterSidebar
+            currSort={filterState.sort}
             currKeyword={filterState.keyword}
             currGender={filterState.gender}
             currMinBornYear={filterState.minBornYear}

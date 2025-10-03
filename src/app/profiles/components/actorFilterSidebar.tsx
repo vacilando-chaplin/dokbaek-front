@@ -22,10 +22,12 @@ import FilterRangeInput from "./filter/filterRangeInput";
 import { useRange } from "@/lib/hooks";
 import FilterSpecialty from "./filter/filterSpecialty";
 import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
+import { SortType } from "@/constants/sort";
 
 interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];
   profilesData: ProfilesResponseType | undefined;
+  currSort: SortType;
   currKeyword?: string;
   currGender?: string | null;
   currMinBornYear: number;
@@ -35,6 +37,7 @@ interface ActorFilterSidebarProps {
   currMinWeight: number;
   currMaxWeight: number;
   handleSubmit: (data: {
+    sort: SortType;
     keyword: string;
     gender: string | null;
     minBornYear: number;
@@ -51,6 +54,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
   const {
     profiles: [],
     profilesData,
+    currSort,
     currKeyword,
     currGender,
     currMinBornYear,
@@ -104,6 +108,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     const ageToYear = (age: number) => bornYearMax - age;
 
     handleSubmit({
+      sort: currSort,
       keyword,
       gender,
       minBornYear: ageToYear(age.max),
@@ -151,6 +156,7 @@ const ActorFilterSidebar = (props: ActorFilterSidebarProps) => {
     setSpecialties([]);
 
     handleSubmit({
+      sort: currSort,
       keyword: "",
       gender: null,
       minBornYear: DEFAULT_MIN_BORN_YEAR,
