@@ -19,7 +19,7 @@ import {
 } from "@/lib/recoil/handle/atom";
 import { FilmoCategoryType } from "@/lib/types";
 import { useEffect, useLayoutEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   photoOriginModalInit,
   profilePhotoModalInit,
@@ -27,6 +27,9 @@ import {
 } from "../../data";
 import { ProfileDraftDataType } from "../../edit/types";
 import { getProfileByHandleId } from "../../api";
+import { loginState } from "@/lib/atoms";
+import { getProfileMe } from "@/lib/api";
+import { setLoginProfileId } from "@/lib/utils";
 
 interface HandleInitializerProps {
   children: React.ReactNode;
@@ -43,6 +46,8 @@ const HandleInitializer = ({
   handleName,
   filmoCategories
 }: HandleInitializerProps) => {
+  const isLoggedIn = useRecoilValue(loginState);
+
   const setProfileData = useSetRecoilState(profileViewState);
   const setIsMyProfile = useSetRecoilState(isMyProfileState);
   const setHandleName = useSetRecoilState(handleNameState);
@@ -88,16 +93,24 @@ const HandleInitializer = ({
   }, []);
 
   useEffect(() => {
-    if (!isMyProfile) return;
-
     const getCurrentProfile = async () => {
       const res = await getProfileByHandleId(handleName);
       const data = res.data;
 
       setProfileData(data);
     };
+    const getMyProfileId = async () => {
+      if (isLoggedIn) {
+        const res = await getProfileMe();
+        const MyId = res.data.data.id;
 
+        if (MyId) {
+          setLoginProfileId("loginProfileId", String(MyId));
+        }
+      }
+    };
     getCurrentProfile();
+    getMyProfileId();
   }, []);
 
   return <>{children}</>;

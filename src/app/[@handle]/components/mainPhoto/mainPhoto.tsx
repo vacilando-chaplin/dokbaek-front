@@ -128,7 +128,7 @@ const MainPhoto = () => {
         className="h-full w-full rounded-2xl object-cover"
       />
       <div className="absolute bottom-2 right-2 flex flex-row gap-1.5 rounded-lg bg-background-scrim-light px-2 py-1 dark:bg-background-scrim-dark">
-        {!isMyProfile && (
+        {!isMyProfile ? (
           <button
             type="button"
             className="flex flex-row items-center gap-1"
@@ -151,6 +151,17 @@ const MainPhoto = () => {
               {profileData.likesCount ?? 0}
             </span>
           </button>
+        ) : (
+          <div className="flex flex-row items-center gap-1">
+            <Heart
+              width="14"
+              height="14"
+              className="fill-current text-static-white"
+            />
+            <span className="typography-caption1 font-medium text-static-white">
+              {profileData.likesCount ?? 0}
+            </span>
+          </div>
         )}
         <div className="flex flex-row items-center gap-1">
           <EyeOn
