@@ -71,8 +71,24 @@ export const profileProgress = selector<number>({
         validate: (value: any) => Array.isArray(value) && value.length > 0
       },
       {
-        value: data.recentPhotos,
-        validate: (value: any) => Array.isArray(value) && value.length > 0
+        value:
+          data.recentPhotos.find((p) => p.photoType === "FULL_BODY") ?? null,
+        validate: (value: any) => value !== null
+      },
+      {
+        value:
+          data.recentPhotos.find((p) => p.photoType === "FRONT_FACE") ?? null,
+        validate: (value: any) => value !== null
+      },
+      {
+        value:
+          data.recentPhotos.find((p) => p.photoType === "LEFT_FACE") ?? null,
+        validate: (value: any) => value !== null
+      },
+      {
+        value:
+          data.recentPhotos.find((p) => p.photoType === "RIGHT_FACE") ?? null,
+        validate: (value: any) => value !== null
       },
       {
         value: data.filmos,
