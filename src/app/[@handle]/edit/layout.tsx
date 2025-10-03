@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import DraftModal from "./components/draftModal";
 import {
   getProfileDraftServer,
   postProfileDraftServer
@@ -58,7 +57,6 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
         {children}
       </Initializer>
       <BottomBar profileId={profileId} />
-      <DraftModal profileId={profileId} />
     </div>
   );
 };
