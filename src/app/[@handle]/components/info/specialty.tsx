@@ -27,7 +27,7 @@ const Specialty = () => {
                 key={specialty.id}
                 type="button"
                 onClick={onSpecialtyModalOpen}
-                className="flex h-auto w-auto items-center gap-0.5 rounded-lg bg-accent-light-light px-2 py-[5px] dark:bg-accent-light-dark"
+                className="interaction-default flex h-auto w-auto items-center gap-0.5 rounded-lg bg-accent-light-light px-2 py-[5px] hover:bg-[#1E85EF26] active:bg-[#1E85EF33] dark:bg-accent-light-dark"
               >
                 <span className="typography-body3 font-normal text-accent-primary-light dark:text-accent-primary-dark">
                   {specialty.specialty.specialtyName}
