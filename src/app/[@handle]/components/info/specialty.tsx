@@ -2,6 +2,7 @@
 
 import {
   profileViewState,
+  specialtyItemIdState,
   specialtyModalState
 } from "@/lib/recoil/handle/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -10,10 +11,12 @@ import ProfileInfoFrame from "../container/profileInfoFrame";
 const Specialty = () => {
   const profileData = useRecoilValue(profileViewState);
   const setModalState = useSetRecoilState(specialtyModalState);
+  const setSpecialtyId = useSetRecoilState(specialtyItemIdState);
 
   const specialties = profileData?.specialties || [];
 
-  const onSpecialtyModalOpen = () => {
+  const onSpecialtyModalOpen = (specialtyId: number) => {
+    setSpecialtyId(specialtyId);
     setModalState((prev) => !prev);
   };
 
@@ -26,7 +29,7 @@ const Specialty = () => {
               <button
                 key={specialty.id}
                 type="button"
-                onClick={onSpecialtyModalOpen}
+                onClick={() => onSpecialtyModalOpen(specialty.specialty.id)}
                 className="interaction-default flex h-auto w-auto items-center gap-0.5 rounded-lg bg-accent-light-light px-2 py-[5px] hover:bg-[#1E85EF26] active:bg-[#1E85EF33] dark:bg-accent-light-dark"
               >
                 <span className="typography-body3 font-normal text-accent-primary-light dark:text-accent-primary-dark">

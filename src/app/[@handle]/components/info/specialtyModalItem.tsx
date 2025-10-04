@@ -4,19 +4,24 @@ import { useActive } from "@/lib/hooks";
 import Image from "next/image";
 import { ProfileSpecialtyType } from "../../edit/types";
 import { getVideoId } from "@/lib/utils";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   specialtyImageModalState,
+  specialtyItemIdState,
   specialtyYoutubeModalState
 } from "@/lib/recoil/handle/atom";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 
 interface SpecialtyModalItemProps {
   specialty: ProfileSpecialtyType;
 }
 
 const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
-  const { active, onActive } = useActive(false);
+  const { active, onOpen, onActive } = useActive(false);
   const { imageUrl, mediaUrl } = specialty;
+
+  const specialtyId = useRecoilValue(specialtyItemIdState);
 
   const setImageModal = useSetRecoilState(specialtyImageModalState);
   const setYoutubeModal = useSetRecoilState(specialtyYoutubeModalState);
@@ -29,6 +34,12 @@ const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
     setYoutubeModal({ url: mediaUrl, active: true });
   };
 
+  useEffect(() => {
+    if (specialty.specialty.id === specialtyId && (imageUrl || mediaUrl)) {
+      onOpen();
+    }
+  }, [specialtyId]);
+
   return (
     <div className="flex h-auto w-full flex-col gap-3 rounded-xl bg-gray-100 p-3">
       <button
@@ -39,31 +50,39 @@ const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
       >
         {specialty.specialty.specialtyName}
       </button>
-      {active && (
-        <div className="flex h-auto w-auto animate-enter flex-row gap-2 transition-all duration-300 ease-linear">
-          {imageUrl && (
-            <Image
-              src={imageUrl}
-              alt="특기 이미지"
-              width={80}
-              height={80}
-              loading="lazy"
-              unoptimized={true}
-              className="cursor-pointer rounded-lg bg-background-surface-light shadow-[0_0_0_1px_rgba(0,0,0,0.1)] dark:bg-background-surface-dark"
-              onClick={() => onImageModalOpen(imageUrl)}
-            />
-          )}
-          {mediaUrl && (
-            <div
-              className="pointer-events-auto relative h-20 w-[142px] cursor-pointer rounded-lg bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${`https://img.youtube.com/vi/${getVideoId(mediaUrl)}/hqdefault.jpg`})`
-              }}
-              onClick={() => onYoutubeModalOpen(mediaUrl)}
-            />
-          )}
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {active && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
+            className="flex w-auto animate-enter flex-row gap-2 overflow-hidden"
+          >
+            {imageUrl && (
+              <Image
+                src={imageUrl}
+                alt="특기 이미지"
+                width={0}
+                height={80}
+                loading="lazy"
+                unoptimized={true}
+                className="h-20 w-auto cursor-pointer rounded-lg bg-background-surface-light shadow-[0_0_0_1px_rgba(0,0,0,0.1)] dark:bg-background-surface-dark"
+                onClick={() => onImageModalOpen(imageUrl)}
+              />
+            )}
+            {mediaUrl && (
+              <div
+                className="pointer-events-auto relative h-20 w-[142px] cursor-pointer rounded-lg bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${`https://img.youtube.com/vi/${getVideoId(mediaUrl)}/hqdefault.jpg`})`
+                }}
+                onClick={() => onYoutubeModalOpen(mediaUrl)}
+              />
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
