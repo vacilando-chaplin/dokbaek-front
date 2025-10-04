@@ -61,6 +61,11 @@ export const specialtyModalState = atom<boolean>({
   default: false
 });
 
+export const specialtyItemIdState = atom<number>({
+  key: "specialtyItemIdState",
+  default: 0
+});
+
 export const specialtyImageModalState = atom<ImageModalType>({
   key: "specialtyImageModalState",
   default: imageModalInit
