@@ -7,6 +7,7 @@ import { profileInit } from "@/lib/data";
 import { Suspense } from "react";
 import TopNavigation from "@/components/organisms/topNavigation";
 import { Metadata } from "next";
+import { ProfileFilmoDataType } from "./edit/types";
 
 export const generateMetadata = async ({
   params
@@ -31,9 +32,15 @@ export const generateMetadata = async ({
     const profileImage =
       profileData.mainPhotoPath || "/images/LogoHorizontalDokBaek.png";
 
+    const keywordsFromFilmos =
+      profileData.filmos
+        ?.filter((filmo: ProfileFilmoDataType) => filmo.featured)
+        .map((filmo: ProfileFilmoDataType) => filmo.production.title) || [];
+
     return {
       title: `${profileName}님의 프로필`,
       description: `${profileName}님의 프로필을 확인하세요.`,
+      keywords: ["배우", profileName, ...keywordsFromFilmos],
       openGraph: {
         title: `${profileName}님의 프로필`,
         description: `${profileName}님의 프로필을 확인하세요.`,

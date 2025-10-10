@@ -8,7 +8,7 @@ import AuthInitializer from "@/lib/providers/authInitializer";
 export const metadata: Metadata = {
   title: "독백 | 아티스트 섭외 플랫폼",
   description: "아티스트 섭외 플랫폼",
-  keywords: "아티스트, 배우, 섭외, 캐스팅, 플랫폼",
+  keywords: ["아티스트, 배우, 섭외, 캐스팅, 플랫폼"],
   icons: [
     { rel: "icon", url: "/favicon.ico" },
     { rel: "shortcut icon", url: "/favicon.ico" }
@@ -38,6 +38,12 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true
+  },
+  verification: {
+    google: "5Ea2iwbh8ni_RPYUTmjyxaaEOzvmHNsK0"
+  },
+  other: {
+    "naver-site-verification": "e03b1cbc9e244e05b85731941e13b6baab682e9a"
   }
 };
 
