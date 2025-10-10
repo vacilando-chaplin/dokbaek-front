@@ -1,10 +1,10 @@
-import ProfileCard from "../../../../components/molecules/profileCard";
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
 } from "@/app/home/types";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/organisms/pagination";
+import ProfileCard from "@/components/molecules/profileCard";
 
 interface FilteredProfilesListProps {
   profiles: ProfileShowcaseResponseType[];

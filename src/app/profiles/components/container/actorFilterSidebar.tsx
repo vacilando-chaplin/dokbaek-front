@@ -10,8 +10,6 @@ import {
   DEFAULT_MIN_BORN_YEAR,
   DEFAULT_MAX_BORN_YEAR
 } from "@/constants/constants";
-import Reset from "../../../../public/icons/Reset.svg";
-
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
@@ -23,6 +21,7 @@ import FilterSpecialty from "../filter/filterSpecialty";
 import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
 import { SortType } from "@/constants/sort";
 import SearchInput from "../filter/searchInput";
+import Reset from "../../../../../public/icons/Reset.svg";
 
 interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];
