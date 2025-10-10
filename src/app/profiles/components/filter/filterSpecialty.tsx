@@ -1,6 +1,6 @@
 "use client";
 
-import { useActive } from "@/lib/hooks";
+import { useActive, useDebounce } from "@/lib/hooks";
 import FilterHeader from "./filterHeader";
 import { useEffect, useState } from "react";
 import { getSpecialty } from "@/app/[@handle]/edit/info/api";
@@ -32,6 +32,8 @@ const FilterSpecialty = ({
     (item) => item.specialtyName
   );
 
+  const debouncedSearch = useDebounce(searchSpecialty, 300);
+
   const onSearchSpecialty = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (searchSpecialty) {
       searchActive.onOpen();
@@ -42,15 +44,18 @@ const FilterSpecialty = ({
 
   useEffect(() => {
     const fetchSpecialtyList = async () => {
-      const getSpecialtyList = await getSpecialty(searchSpecialty, 0, 5);
+      const getSpecialtyList = await getSpecialty(debouncedSearch, 0, 5);
       setSpecialtyList(getSpecialtyList);
     };
-    fetchSpecialtyList();
 
-    if (searchSpecialty === "") {
+    if (debouncedSearch === "") {
       searchActive.onClose();
+      setSpecialtyList([]);
+      return;
     }
-  }, [searchSpecialty]);
+
+    fetchSpecialtyList();
+  }, [debouncedSearch]);
 
   return (
     <div className="flex w-full flex-col gap-2 px-5">
