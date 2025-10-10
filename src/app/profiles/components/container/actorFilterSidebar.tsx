@@ -10,19 +10,18 @@ import {
   DEFAULT_MIN_BORN_YEAR,
   DEFAULT_MAX_BORN_YEAR
 } from "@/constants/constants";
-import Reset from "../../../../public/icons/Reset.svg";
-
 import {
   ProfileShowcaseResponseType,
   ProfilesResponseType
 } from "@/app/home/types";
-import SearchInput from "./searchInput";
-import FilterGender from "./filter/filterGender";
-import FilterRangeInput from "./filter/filterRangeInput";
+import FilterGender from "../filter/filterGender";
+import FilterRangeInput from "../filter/filterRangeInput";
 import { useRange } from "@/lib/hooks";
-import FilterSpecialty from "./filter/filterSpecialty";
+import FilterSpecialty from "../filter/filterSpecialty";
 import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
 import { SortType } from "@/constants/sort";
+import SearchInput from "../filter/searchInput";
+import Reset from "../../../../../public/icons/Reset.svg";
 
 interface ActorFilterSidebarProps {
   profiles: ProfileShowcaseResponseType[];

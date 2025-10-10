@@ -184,6 +184,9 @@ export const useRange = (defaultMin: number, defaultMax: number) => {
   const [min, setMin] = useState(defaultMin);
   const [max, setMax] = useState(defaultMax);
 
+  const debouncedMin = useDebounce(min, 500);
+  const debouncedMax = useDebounce(max, 500);
+
   const onReset = useCallback(() => {
     setMin(defaultMin);
     setMax(defaultMax);
@@ -197,7 +200,7 @@ export const useRange = (defaultMin: number, defaultMax: number) => {
   const onMinChange = useCallback(
     (value: number) => {
       if (value > defaultMax) {
-        setMin(defaultMax);
+        setMin(defaultMax - 1);
         return;
       }
 
@@ -212,11 +215,49 @@ export const useRange = (defaultMin: number, defaultMax: number) => {
         setMax(defaultMax);
         return;
       }
-
       setMax(value);
     },
-    [min]
+    [max]
   );
+
+  useEffect(() => {
+    let correctedMin = debouncedMin;
+    let correctedMax = debouncedMax;
+    let minChanged = false;
+    let maxChanged = false;
+
+    if (correctedMin < defaultMin) {
+      correctedMin = defaultMin;
+      minChanged = true;
+    }
+
+    if (correctedMax > defaultMax) {
+      correctedMax = defaultMax;
+      maxChanged = true;
+    }
+
+    if (correctedMin >= correctedMax) {
+      correctedMax = correctedMin + 1;
+      maxChanged = true;
+
+      if (correctedMax > defaultMax) {
+        correctedMax = defaultMax;
+        correctedMin = correctedMax - 1;
+        minChanged = true;
+
+        if (correctedMin < defaultMin) {
+          correctedMin = defaultMin;
+        }
+      }
+    }
+
+    if (minChanged) {
+      setMin(correctedMin);
+    }
+    if (maxChanged) {
+      setMax(correctedMax);
+    }
+  }, [debouncedMin, debouncedMax, defaultMin, defaultMax]);
 
   return {
     min,

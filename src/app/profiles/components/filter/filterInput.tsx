@@ -18,7 +18,12 @@ const FilterInput = ({
   onChange
 }: FilterInputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value);
+    const inputValue = e.target.value;
+
+    if (!/^\d*$/.test(inputValue)) return;
+
+    const trimmedValue = inputValue.replace(/^0+(?=\d)/, "");
+    const newValue = trimmedValue === "" ? 0 : Number(trimmedValue);
 
     onChange(newValue);
   };
@@ -26,7 +31,8 @@ const FilterInput = ({
   return (
     <div className="typography-body3 interaction-default flex h-10 w-full items-center gap-2 rounded-xl border border-border-default-light px-3 py-[11px] font-regular focus-within:border-border-active-light hover:border-border-active-light dark:border-border-default-dark dark:focus-within:border-border-active-dark dark:hover:border-border-active-dark">
       <input
-        type="number"
+        type="text"
+        inputMode="numeric"
         value={value || 0}
         min={min}
         max={max}

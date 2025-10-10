@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import ProfilesMain from "@/app/profiles/components/profilesMain";
-import ActorFilterSidebar from "./components/actorFilterSidebar";
 import { getProfiles } from "@/app/profiles/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -26,6 +24,8 @@ import {
   SortType
 } from "@/constants/sort";
 import LoginModal from "@/components/organisms/loginModal";
+import ActorFilterSidebar from "./components/container/actorFilterSidebar";
+import FilteredProfilesList from "./components/container/filteredProfilesList";
 
 const Profiles = () => {
   const searchParams = useSearchParams();
@@ -268,7 +268,10 @@ const Profiles = () => {
             profiles={profiles}
             profilesData={profilesData}
           />
-          <ProfilesMain profiles={profiles} profilesData={profilesData} />
+          <FilteredProfilesList
+            profiles={profiles}
+            profilesData={profilesData}
+          />
         </div>
       </section>
     </div>

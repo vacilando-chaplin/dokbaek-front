@@ -103,6 +103,27 @@ const RangeSlider = ({ min, max, value, onChange }: RangeSliderProps) => {
     }
   };
 
+  const handleRangeClick = (e: React.MouseEvent) => {
+    if (!sliderRef.current) return;
+
+    const rect = sliderRef.current.getBoundingClientRect();
+    const percent = ((e.clientX - rect.left) / rect.width) * 100;
+    const clickedValue = percentToValue(percent);
+
+    const distToMin = Math.abs(clickedValue - minValue);
+    const distToMax = Math.abs(clickedValue - maxValue);
+
+    if (distToMin < distToMax) {
+      const newMin = Math.min(clickedValue, maxValue - 1);
+      setMinValue(newMin);
+      onChange?.([newMin, maxValue]);
+    } else {
+      const newMax = Math.max(clickedValue, minValue + 1);
+      setMaxValue(newMax);
+      onChange?.([minValue, newMax]);
+    }
+  };
+
   const handleEnd = () => {
     setActiveThumb(null);
   };
@@ -133,12 +154,19 @@ const RangeSlider = ({ min, max, value, onChange }: RangeSliderProps) => {
 
   return (
     <div className="w-full px-2.5 pb-5">
-      <div className="relative" ref={sliderRef}>
+      <div
+        className="relative"
+        ref={sliderRef}
+        style={{ userSelect: activeThumb ? "none" : "auto" }}
+      >
         {/* SliderTrack */}
-        <div className="relative h-0.5 w-full rounded-full bg-content-alternative-light dark:bg-content-alternative-dark">
+        <div
+          className="relative h-0.5 w-full cursor-pointer rounded-full bg-content-alternative-light dark:bg-content-alternative-dark"
+          onClick={handleRangeClick}
+        >
           {/* SliderRange */}
           <div
-            className="absolute h-full rounded-full bg-content-primary-light transition-all duration-150 dark:bg-content-primary-dark"
+            className={`absolute h-full rounded-full bg-content-primary-light dark:bg-content-primary-dark ${activeThumb === null && "duration-50 transition-all"}`}
             style={{
               left: `${minPercent}%`,
               width: `${maxPercent - minPercent}%`
@@ -146,7 +174,7 @@ const RangeSlider = ({ min, max, value, onChange }: RangeSliderProps) => {
           />
           {/* Min Thumb */}
           <div
-            className="absolute top-1/2 z-[5] h-4 w-4 -translate-y-1/2 cursor-pointer rounded-full border border-gray-300 bg-static-white shadow-md transition-all duration-100 hover:scale-110"
+            className={`absolute top-1/2 z-[5] h-4 w-4 -translate-y-1/2 cursor-pointer rounded-full border border-gray-300 bg-static-white shadow-md hover:scale-110 ${activeThumb === null && "duration-50 transition-all"}`}
             style={{
               left: `${minPercent}%`,
               transform: "translate(-50%, -50%)"
@@ -156,7 +184,7 @@ const RangeSlider = ({ min, max, value, onChange }: RangeSliderProps) => {
           />
           {/* Max Thumb */}
           <div
-            className="absolute top-1/2 z-[5] h-4 w-4 -translate-y-1/2 cursor-pointer rounded-full border border-gray-300 bg-static-white shadow-md transition-all duration-100 hover:scale-110"
+            className={`absolute top-1/2 z-[5] h-4 w-4 -translate-y-1/2 cursor-pointer rounded-full border border-gray-300 bg-static-white shadow-md hover:scale-110 ${activeThumb === null && "duration-50 transition-all"}`}
             style={{
               left: `${maxPercent}%`,
               transform: "translate(-50%, -50%)"

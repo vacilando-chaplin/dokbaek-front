@@ -48,15 +48,14 @@ const Login = () => {
 
   return (
     <main className="relative flex h-auto w-auto flex-col items-center gap-10 rounded-[40px] border border-border-default-light bg-background-surface-light p-20 dark:border-border-default-dark dark:bg-background-surface-dark">
-      <Link
-        href={routePaths.home()}
-        className="flex flex-col items-center justify-center gap-4"
-      >
-        <LogoHorizontal width="85" height="46" />
+      <div className="flex flex-col items-center justify-center gap-4">
+        <Link href={routePaths.home()}>
+          <LogoHorizontal width="85" height="46" />
+        </Link>
         <span className="typography-body2 font-semibold text-content-primary-light dark:text-content-primary-dark">
           독백으로 쉽고 빠르게 프로필을 만들어 보세요.
         </span>
-      </Link>
+      </div>
       <div className="flex h-auto w-full flex-col gap-2">
         <LoginButton type="kakao" Component={KakaoLogin} />
         <LoginButton type="naver" Component={NaverLogin} />
