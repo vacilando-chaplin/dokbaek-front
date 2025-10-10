@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const Filmography = () => {
   return (
-    <div className="flex w-[65vw] flex-col gap-3">
+    <div className="flex w-[65vw] max-w-[728px] flex-col gap-3">
       <FilmoInintializer>
         <FilmoSection />
         <FilmoModal />

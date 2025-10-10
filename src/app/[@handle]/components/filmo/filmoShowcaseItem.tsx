@@ -38,11 +38,15 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
           <div className="flex h-auto w-full flex-col gap-1">
             <label className="typography-caption1 hidden font-medium text-content-tertiary-light dark:text-content-tertiary-dark md:block">
               { featured
-                ? <span><b className="font-semibold text-accent-primary-light dark:text-accent-primary-light">대표작</b> | </span>
+                ?
+                  <span>
+                    <b className="font-semibold text-accent-primary-light dark:text-accent-primary-light">대표작</b>
+                    <b className="text-gray-200"> | </b>
+                  </span>
                 : ''
               }
               {production.productionYear >= 1
-                ? `${production.productionYear + " | " + production.category.name}`
+                ? <>{production.productionYear} <b className="text-gray-200"> | </b> {production.category.name}</>
                 : production.category.name}
             </label>
             <label className="typography-body1 font-semibold text-content-primary-light dark:text-content-primary-dark">
@@ -58,19 +62,26 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
           </div>
         </div>
         {/* link */}
-        <button
-          type="button"
-          className="hidden md:flex items-center justify-center gap-0.5 py-[3px] px-[8px] pl-[6px] bg-[#EAF2FE] w-fit h-[20px] rounded-lg typography-caption2 text-accent-primary-light dark:text-accent-primary-light"
-          disabled={!production.videoUrl}
-          onClick={() => onYoutubeModalOpen(production.videoUrl)}
-        >
-          <PlayFill
-            width="12"
-            height="12"
-            className={`fill-current flex-shrink-0 align-middle ${production.videoUrl ? "text-accent-primary-light dark:text-accent-primary-light" : "text-accent-primary-light dark:text-accent-primary-light"}`}
-          />
-          재생
-        </button>
+        {
+          production.videoUrl ?
+            <>
+              <button
+                type="button"
+                className="hidden md:flex items-center justify-center gap-0.5 py-[3px] px-[8px] pl-[6px] bg-[#EAF2FE] w-fit h-[20px] rounded-[100px] typography-caption2 text-accent-primary-light dark:text-accent-primary-light"
+                disabled={!production.videoUrl}
+                onClick={() => onYoutubeModalOpen(production.videoUrl)}
+              >
+                <PlayFill
+                  width="12"
+                  height="12"
+                  className={`fill-current flex-shrink-0 align-middle ${production.videoUrl ? "text-accent-primary-light dark:text-accent-primary-light" : "text-accent-primary-light dark:text-accent-primary-light"}`}
+                />
+                재생
+              </button>
+            </>
+            :
+            <></>
+        }
       </div>
       <div className="hidden min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100 md:flex">
         {filmo.thumbnailPath === null ||

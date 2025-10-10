@@ -5,7 +5,7 @@ interface ProfileShowcaseEmptyFrameProps {
   type: string;
 }
 import Plus from "/public/icons/Plus.svg";
-import {handleNameState} from "@/lib/recoil/handle/atom";
+import {handleNameState, isMyProfileState} from "@/lib/recoil/handle/atom";
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import { routePaths } from "@/constants/routes";
 import {toastMessage} from "@/lib/atoms";
@@ -17,6 +17,7 @@ const ProfileShowcaseEmptyFrame = ({
 }: ProfileShowcaseEmptyFrameProps) => {
   const router = useRouter();
   const handleName = useRecoilValue(handleNameState);
+  const isMyProfile = useRecoilValue(isMyProfileState);
   const setToastMessage = useSetRecoilState(toastMessage);
 
   const onMoveToCreate = () => {
@@ -44,7 +45,7 @@ const ProfileShowcaseEmptyFrame = ({
         {text}
       </span>
       <button
-        className="flex items-center py-[7px] px-[12px] mt-[16px] w-fit h-[32px] bg-static-white border border-border-default-light rounded-xl typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark"
+        className={`${ isMyProfile ? '' : 'hidden' } flex items-center py-[7px] px-[12px] mt-[16px] w-fit h-[32px] bg-static-white border border-border-default-light rounded-xl typography-body3 font-medium text-content-primary-light dark:text-content-primary-dark`}
         onClick={onMoveToCreate}
       >
         <Plus

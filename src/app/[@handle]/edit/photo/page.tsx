@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const Photo = () => {
   return (
-    <div className="flex w-[65vw] flex-col gap-4">
+    <div className="flex w-[65vw] max-w-[728px] flex-col gap-4">
       <PhotoUploadSection category="photos" />
       <PhotoUploadSection category="stillCuts" />
       <PhotoRecent category="recentPhotos" />
