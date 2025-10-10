@@ -226,54 +226,37 @@ export const useRange = (defaultMin: number, defaultMax: number) => {
     let minChanged = false;
     let maxChanged = false;
 
-    // 1. 기본 범위 (defaultMin, defaultMax) 클램핑
-
-    // min이 defaultMin보다 작아지면 defaultMin으로 변경
     if (correctedMin < defaultMin) {
       correctedMin = defaultMin;
       minChanged = true;
     }
 
-    // max가 defaultMax보다 커지면 defaultMax로 변경 (요청 사항)
     if (correctedMax > defaultMax) {
       correctedMax = defaultMax;
       maxChanged = true;
     }
 
-    // 2. **min >= max 교차 검사 및 수정 (요청 사항 반영)**
-    // min이 max 이상이 되면 max를 min + 1로 변경
     if (correctedMin >= correctedMax) {
-      // max를 min + 1로 설정하여 최소 1의 차이 보장 (min < max)
       correctedMax = correctedMin + 1;
       maxChanged = true;
 
-      // 만약 min + 1이 defaultMax를 초과한다면,
-      // max는 defaultMax가 되고, min도 max - 1로 조정해야 합니다.
       if (correctedMax > defaultMax) {
         correctedMax = defaultMax;
-
-        // min을 max - 1로 재조정
         correctedMin = correctedMax - 1;
         minChanged = true;
 
-        // min이 defaultMin보다 작아지는 것을 방지하기 위해 다시 클램핑
         if (correctedMin < defaultMin) {
           correctedMin = defaultMin;
-          // 이 경우 max는 min + 1이 되지만, 이 로직은 주로 defaultMin < defaultMax를 전제로 합니다.
         }
       }
     }
 
-    // 3. 상태 업데이트
-    // 디바운스된 값이 유효성 검사를 통과하여 변경되었을 때만 setMin/setMax 호출
     if (minChanged) {
       setMin(correctedMin);
     }
     if (maxChanged) {
       setMax(correctedMax);
     }
-
-    // 이펙트는 debounced 값과 default 값에만 의존합니다.
   }, [debouncedMin, debouncedMax, defaultMin, defaultMax]);
 
   return {
