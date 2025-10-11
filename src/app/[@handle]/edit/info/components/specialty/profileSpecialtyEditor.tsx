@@ -208,7 +208,7 @@ const ProfileSpecialtyEditor = ({
                       <img
                         src={specialty.imageUrl}
                         alt="Image Preview"
-                        className="h-[80px] w-[fit] rounded-lg border border-gray-400"
+                        className="h-[120px] w-[fit] rounded-lg border border-gray-400"
                       />
                       <button
                         type="button"
@@ -235,7 +235,7 @@ const ProfileSpecialtyEditor = ({
                             : specialty.mediaUrl.slice(17, 48)
                         }/maxresdefault.jpg`}
                         alt="YouTube Thumbnail"
-                        className="h-[80px] w-[142px] rounded-lg"
+                        className="h-[120px] w-[142px] rounded-lg"
                       />
                       <button
                         type="button"
