@@ -32,7 +32,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
   };
 
   return (
-    <div className="flex h-auto w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark" onClick={onClickEvent}>
+    <div className="flex h-auto w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark max-lg:flex-col" onClick={onClickEvent}>
       <div className="flex h-full w-full flex-col justify-between">
         <div className="flex h-auto w-full flex-col gap-1s">
           <div className="flex h-auto w-full flex-col gap-1">
@@ -67,7 +67,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
             <>
               <button
                 type="button"
-                className="hidden md:flex items-center justify-center gap-0.5 py-[3px] px-[8px] pl-[6px] bg-[#EAF2FE] w-fit h-[20px] rounded-[100px] typography-caption2 text-accent-primary-light dark:text-accent-primary-light"
+                className="hidden md:flex items-center justify-center gap-0.5 py-[3px] px-[8px] pl-[6px] bg-[#EAF2FE] w-fit h-[20px] rounded-[100px] max-lg:mt-1.5 typography-caption2 text-accent-primary-light dark:text-accent-primary-light"
                 disabled={!production.videoUrl}
                 onClick={() => onYoutubeModalOpen(production.videoUrl)}
               >
@@ -83,7 +83,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
             <></>
         }
       </div>
-      <div className="hidden min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100 md:flex">
+      <div className="hidden min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100 md:flex max-lg:min-w-full">
         {filmo.thumbnailPath === null ||
         filmo.thumbnailPath.endsWith("null") ? (
           <LogoHorizontalSmall
@@ -92,7 +92,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
             className="fill-current text-content-alternative-light dark:text-content-alternative-dark"
           />
         ) : (
-          <div className="relative flex h-[114px] w-[76px] items-center justify-center overflow-hidden rounded-lg bg-gray-100">
+          <div className="relative flex h-[114px] w-[76px] items-center justify-center overflow-hidden rounded-lg bg-gray-100 max-lg:w-full">
             {!isLoaded && !isError && (
               <LoadingSpinner
                 width="24"
