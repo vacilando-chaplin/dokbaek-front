@@ -64,16 +64,16 @@ const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
                 src={imageUrl}
                 alt="특기 이미지"
                 width={0}
-                height={80}
+                height={120}
                 loading="lazy"
                 unoptimized={true}
-                className="h-20 w-auto cursor-pointer rounded-lg bg-background-surface-light shadow-[0_0_0_1px_rgba(0,0,0,0.1)] dark:bg-background-surface-dark"
+                className="h-[120px] w-auto cursor-pointer rounded-lg bg-background-surface-light shadow-[0_0_0_1px_rgba(0,0,0,0.1)] dark:bg-background-surface-dark"
                 onClick={() => onImageModalOpen(imageUrl)}
               />
             )}
             {mediaUrl && (
               <div
-                className="pointer-events-auto relative h-20 w-[142px] cursor-pointer rounded-lg bg-cover bg-center"
+                className="pointer-events-auto relative h-[120px] w-[142px] cursor-pointer rounded-lg bg-cover bg-center"
                 style={{
                   backgroundImage: `url(${`https://img.youtube.com/vi/${getVideoId(mediaUrl)}/hqdefault.jpg`})`
                 }}
