@@ -38,3 +38,8 @@ export const deleteModalActiveIdState = atom<string | null>({
   key: "deleteModalActiveState",
   default: null
 });
+
+export const selectedImageIdState = atom<number>({
+  key: "selectedImageIdState",
+  default: 0
+});
