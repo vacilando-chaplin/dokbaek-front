@@ -6,7 +6,6 @@ import { imageModalInit } from "../../data";
 import X from "../../../../../public/icons/X.svg";
 import LoadingSpinner from "../../../../../public/icons/LoadingSpinner.svg";
 import { useState } from "react";
-import Image from "next/image";
 import EmptyImage from "@/components/atoms/emptyImage";
 
 const SpecialtyImageModal = () => {
@@ -44,23 +43,16 @@ const SpecialtyImageModal = () => {
               />
             )}
             {!isError && (
-              <div className="relative h-[70vh] w-[50vw] overflow-hidden rounded-2xl">
-                <Image
-                  src={imageModal.imageUrl}
-                  alt="specialtyImage"
-                  fill
-                  quality={50}
-                  sizes="100vw"
-                  loading="lazy"
-                  unoptimized={true}
-                  className="rounded-2xl object-cover"
-                  onLoad={() => setIsLoaded(true)}
-                  onError={() => {
-                    setIsError(true);
-                    setIsLoaded(true);
-                  }}
-                />
-              </div>
+              <img
+                src={imageModal.imageUrl}
+                alt="specialtyImage"
+                className="max-h-[70vh] max-w-full rounded-2xl object-contain"
+                onLoad={() => setIsLoaded(true)}
+                onError={() => {
+                  setIsError(true);
+                  setIsLoaded(true);
+                }}
+              />
             )}
             {isError && <EmptyImage />}
           </div>

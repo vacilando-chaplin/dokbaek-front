@@ -5,7 +5,6 @@ import {
   profileViewState,
   selectedPhotoLabelState
 } from "@/lib/recoil/handle/atom";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { photoOriginModalInit } from "../../data";
@@ -86,29 +85,29 @@ const PhotoOriginModal = () => {
             className="fill-current text-content-on_color-light dark:text-static-black"
           />
         </button>
+        {/* Prev Button */}
+        <button
+          className={`fixed left-48 top-1/2 z-10 flex h-12 w-12 flex-shrink-0 -translate-y-1/2 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
+            currentIndex === 0 && "opacity-40"
+          }`}
+          type="button"
+          disabled={currentIndex === 0}
+          onClick={(e) => {
+            onPrevButton();
+            e.stopPropagation();
+          }}
+        >
+          <ArrowChevronLeft
+            width="16"
+            height="16"
+            className="fill-current text-content-on_color-light dark:text-static-black"
+          />
+        </button>
         <div className="flex h-full w-full items-center justify-center">
           <div
             className={`flex items-center ${photoLabel === "stillCuts" ? "gap-20" : "gap-40"}`}
           >
-            {/* Prev Button */}
-            <button
-              className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
-                currentIndex === 0 && "opacity-40"
-              }`}
-              type="button"
-              disabled={currentIndex === 0}
-              onClick={(e) => {
-                onPrevButton();
-                e.stopPropagation();
-              }}
-            >
-              <ArrowChevronLeft
-                width="16"
-                height="16"
-                className="fill-current text-content-on_color-light dark:text-static-black"
-              />
-            </button>
-            <div className="relative flex h-full max-h-[80vh] w-full animate-enter flex-col items-center justify-center">
+            <div className="relative flex h-full max-h-[70vh] w-full animate-enter flex-col items-center justify-center overflow-hidden md:max-w-lg xl:max-w-2xl 2xl:max-w-5xl">
               {!isLoaded && !isError && (
                 <LoadingSpinner
                   width="24"
@@ -117,52 +116,41 @@ const PhotoOriginModal = () => {
                 />
               )}
               {!isError && (
-                <div
-                  className={`relative max-h-[75vh] overflow-hidden rounded-2xl ${
-                    photoLabel === "stillCuts"
-                      ? "aspect-video min-w-[50vw]"
-                      : "aspect-[3/4] min-w-[30vw]"
+                <img
+                  src={selectedPhotoList[currentIndex].path}
+                  alt="photo"
+                  className={`max-h-[70vh] w-full rounded-2xl ${
+                    photoLabel === "stillCuts" ? "min-w-[40vw]" : "min-w-[20vw]"
                   }`}
-                >
-                  <Image
-                    src={selectedPhotoList[currentIndex].path}
-                    alt="photo"
-                    fill
-                    quality={50}
-                    sizes="100vw"
-                    loading="lazy"
-                    unoptimized={true}
-                    className="rounded-2xl object-cover"
-                    onLoad={() => setIsLoaded(true)}
-                    onError={() => {
-                      setIsError(true);
-                      setIsLoaded(true);
-                    }}
-                  />
-                </div>
+                  onLoad={() => setIsLoaded(true)}
+                  onError={() => {
+                    setIsError(true);
+                    setIsLoaded(true);
+                  }}
+                />
               )}
               {isError && <EmptyImage />}
             </div>
-            {/* Next Button */}
-            <button
-              className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
-                currentIndex === selectedPhotoList.length - 1 && "opacity-40"
-              }`}
-              type="button"
-              disabled={currentIndex === selectedPhotoList.length - 1}
-              onClick={(e) => {
-                onNextButton();
-                e.stopPropagation();
-              }}
-            >
-              <ArrowChevronRight
-                width="16"
-                height="16"
-                className="fill-current text-content-on_color-light dark:text-static-black"
-              />
-            </button>
           </div>
         </div>
+        {/* Next Button */}
+        <button
+          className={`fixed right-48 top-1/2 z-10 flex h-12 w-12 flex-shrink-0 -translate-y-1/2 items-center justify-center rounded-full bg-content-primary-light p-1.5 dark:bg-content-primary-dark ${
+            currentIndex === selectedPhotoList.length - 1 && "opacity-40"
+          }`}
+          type="button"
+          disabled={currentIndex === selectedPhotoList.length - 1}
+          onClick={(e) => {
+            onNextButton();
+            e.stopPropagation();
+          }}
+        >
+          <ArrowChevronRight
+            width="16"
+            height="16"
+            className="fill-current text-content-on_color-light dark:text-static-black"
+          />
+        </button>
       </div>
     )
   );
