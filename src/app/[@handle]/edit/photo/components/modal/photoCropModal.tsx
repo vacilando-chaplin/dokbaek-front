@@ -5,7 +5,7 @@ import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
 import Image from "next/image";
 import { PhotoModalType, SelectedImagesType } from "../../../../types";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
 import { categoryMap, photoModalInit } from "../../data";
@@ -22,6 +22,7 @@ import {
   cropImageState,
   cropModalState,
   recentPhotoTypeState,
+  selectedImageIdState,
   selectedImagesState,
   selectImageState
 } from "@/lib/recoil/handle/edit/photo/atom";
@@ -46,9 +47,8 @@ const PhotoCropModal = () => {
     useRecoilState(selectedImagesState);
   const [recentPhotoType, setRecentPhotoType] =
     useRecoilState(recentPhotoTypeState);
-
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedPhotoId, setSelectedPhotoId] = useState(0);
+  const [selectedPhotoId, setSelectedPhotoId] =
+    useRecoilState<number>(selectedImageIdState);
 
   // 사진 추가 모달 닫기
   const onCropModalClose = () => {
@@ -56,7 +56,6 @@ const PhotoCropModal = () => {
     setSelectImage("");
     setSelectedImages([]);
     setCropModal(photoModalInit);
-    setSelectedIndex(0);
     setSelectedPhotoId(0);
     setRecentPhotoType("");
   };
@@ -64,50 +63,45 @@ const PhotoCropModal = () => {
   // 모달에서 사진 여러개 업로드 시 사진 선택
   const onSelectImage = (id: number) => {
     const index = selectedImages.findIndex((item) => item.id === id);
-    if (index === -1) {
-      setToastMessage("선택한 이미지를 찾을 수 없습니다.");
-      return;
-    }
-
     const selectedIndexToUpdate = selectedImages.findIndex(
       (item) => item.id === selectedPhotoId
     );
 
     const updateImages = [...selectedImages];
 
-    if (selectedIndexToUpdate !== -1) {
+    if (selectedIndexToUpdate !== -1 && cropImage) {
       updateImages[selectedIndexToUpdate] = {
         ...updateImages[selectedIndexToUpdate],
-        preview: cropImage,
-        originImage: selectImage
+        preview: cropImage
       };
     }
+
     const currentImage = updateImages[index];
 
     setSelectedImages(updateImages);
-    setSelectedIndex(index);
     setSelectedPhotoId(id);
-    setCropImage(currentImage.preview);
-    setSelectImage(currentImage.originImage);
+    setCropImage(currentImage.preview || currentImage.origin);
+    setSelectImage(currentImage.originImage || currentImage.origin);
   };
 
   const onRemoveImage = (id: number) => {
-    setSelectedImages((prev) => {
-      const updatedImages = prev.filter((item) => item.id !== id);
+    const findImageIndex = selectedImages.findIndex((image) => image.id === id);
+    let newImageItem = selectedImages[findImageIndex];
 
-      const currentSelectedImage = prev[selectedIndex];
-      const newSelectedIndex = updatedImages.findIndex(
-        (img) => img.id === currentSelectedImage?.id
-      );
+    if (findImageIndex === selectedImages.length - 1) {
+      newImageItem = selectedImages[findImageIndex - 1];
+    }
 
-      if (newSelectedIndex === -1 || selectedIndex >= updatedImages.length) {
-        setSelectedIndex(Math.max(0, updatedImages.length - 1));
-      } else {
-        setSelectedIndex(newSelectedIndex);
-      }
+    if (findImageIndex === 0) {
+      newImageItem = selectedImages[1];
+    }
 
-      return updatedImages;
-    });
+    const updatedImages = selectedImages.filter((item) => item.id !== id);
+
+    setSelectedImages(updatedImages);
+    setSelectImage(newImageItem.originImage);
+    setCropImage(newImageItem.preview);
+    setSelectedPhotoId(newImageItem.id);
   };
 
   // 사진 추가
@@ -116,15 +110,11 @@ const PhotoCropModal = () => {
       mutationFn: async ({
         profileId,
         selectedImages,
-        cropImage,
-        selectedPhotoId,
         category,
         recentPhotoType
       }: {
         profileId: number;
         selectedImages: SelectedImagesType[];
-        cropImage: string;
-        selectedPhotoId: number;
         category: CategoryKey;
         recentPhotoType: RecentPhotoCategory;
       }) => {
@@ -134,10 +124,11 @@ const PhotoCropModal = () => {
         if (selectedImages.length > 1) {
           if (category === "photos" || category === "stillCuts") {
             for (const [_, images] of selectedImages.entries()) {
+              const imageToUpload = images.preview || images.origin;
               const result = await postPhoto(
                 profileId,
                 images.origin,
-                selectedPhotoId === images.id ? cropImage : images.preview,
+                imageToUpload,
                 categoryMap[category]
               );
               photoList.push(result.data);
@@ -145,18 +136,22 @@ const PhotoCropModal = () => {
           }
         } else {
           if (recentPhotoType !== "") {
+            const imageToUpload =
+              selectedImages[0].preview || selectedImages[0].origin;
             const result = await postRecentPhoto(
               profileId,
               selectedImages[0].origin,
-              cropImage,
+              imageToUpload,
               recentPhotoType
             );
             photoList.push(result.data);
           } else if (category === "photos" || category === "stillCuts") {
+            const imageToUpload =
+              selectedImages[0].preview || selectedImages[0].origin;
             const result = await postPhoto(
               profileId,
               selectedImages[0].origin,
-              cropImage,
+              imageToUpload,
               categoryMap[category]
             );
             photoList.push(result.data);
@@ -175,7 +170,7 @@ const PhotoCropModal = () => {
         setRecentPhotoType("");
         setSelectImage("");
         setCropImage("");
-        setSelectedIndex(0);
+        setSelectedPhotoId(0);
         setSelectedImages([]);
         setToastMessage("사진을 추가했어요.");
       },
@@ -252,8 +247,6 @@ const PhotoCropModal = () => {
       onAddPhotoMutation.mutate({
         profileId,
         selectedImages,
-        cropImage,
-        selectedPhotoId,
         category: cropModal.category as CategoryKey,
         recentPhotoType
       });
@@ -306,6 +299,10 @@ const PhotoCropModal = () => {
   };
 
   const setCropData = (newCropData: Coordinates) => {
+    const selectedIndex = selectedImages.findIndex(
+      (item) => item.id === selectedPhotoId
+    );
+
     setSelectedImages((prev) => {
       const updated = [...prev];
       updated[selectedIndex] = {
@@ -316,16 +313,22 @@ const PhotoCropModal = () => {
     });
   };
 
-  const setCropedImage = (newImage: string) => {
-    setCropImage(newImage);
-    setSelectedImages((prev) => {
-      const updated = [...prev];
-      updated[selectedIndex] = {
-        ...updated[selectedIndex],
-        preview: newImage
-      };
-      return updated;
-    });
+  const setCroppedImage = (newImage: string) => {
+    const selectedIndex = selectedImages.findIndex(
+      (item) => item.id === selectedPhotoId
+    );
+    if (selectedIndex !== -1) {
+      setSelectedImages((prev) => {
+        const updated = [...prev];
+        updated[selectedIndex] = {
+          ...updated[selectedIndex],
+          preview: newImage
+        };
+        return updated;
+      });
+
+      setCropImage(newImage);
+    }
   };
 
   return (
@@ -339,14 +342,18 @@ const PhotoCropModal = () => {
           >
             <ImageCropper
               cropData={
-                selectedImages[selectedIndex].cropData
-                  ? selectedImages[selectedIndex].cropData
-                  : cropDataInit
+                selectedImages[
+                  selectedImages.findIndex(
+                    (item) => item.id === selectedPhotoId
+                  )
+                ]?.cropData ?? cropDataInit
               }
               cropType={cropModal.category}
               selectImage={selectImage}
               setCropData={setCropData}
-              setCropImage={setCropedImage}
+              setCropImage={(img: string) => {
+                setCroppedImage(img);
+              }}
             />
           </div>
           {selectedImages.length >= 2 && (

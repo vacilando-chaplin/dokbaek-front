@@ -9,6 +9,7 @@ import {
   cropImageState,
   cropModalState,
   recentPhotoTypeState,
+  selectedImageIdState,
   selectedImagesState,
   selectImageState
 } from "./recoil/handle/edit/photo/atom";
@@ -41,6 +42,7 @@ export const useImageSelector = () => {
   const setSelectImage = useSetRecoilState(selectImageState);
   const setCropImage = useSetRecoilState(cropImageState);
   const setSelectedImages = useSetRecoilState(selectedImagesState);
+  const setSelectedImageId = useSetRecoilState(selectedImageIdState);
 
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -51,12 +53,14 @@ export const useImageSelector = () => {
         imageCompressionOptions
       );
       const downSizedImage = await convertToBase64(downSizedFile);
+      const newId = Date.now() + Math.random();
 
+      setSelectedImageId(newId);
       setSelectImage(downSizedImage);
       setCropImage(downSizedImage);
       setSelectedImages([
         {
-          id: Math.random(),
+          id: newId,
           origin: originImage,
           preview: downSizedImage,
           originImage: originImage,
@@ -79,6 +83,7 @@ export const usePhotoDrop = (
   const setSelectedImages = useSetRecoilState(selectedImagesState);
   const setCropModal = useSetRecoilState(cropModalState);
   const setRecentPhotoType = useSetRecoilState(recentPhotoTypeState);
+  const setSelectedImageId = useSetRecoilState(selectedImageIdState);
 
   const onDrop = async (images: File[], rejectedFiles: FileRejection[]) => {
     if (rejectedFiles.length > 0) return;
@@ -92,7 +97,7 @@ export const usePhotoDrop = (
         const downSizedImage = await convertToBase64(downSizedFile);
 
         return {
-          id: Math.random(),
+          id: Date.now() + Math.random(),
           origin: downSizedImage,
           preview: downSizedImage,
           originImage: downSizedImage,
@@ -103,6 +108,7 @@ export const usePhotoDrop = (
 
     if (photoType) setRecentPhotoType(photoType);
 
+    setSelectedImageId(fileData[0].id);
     setCropImage(fileData[0].preview);
     setSelectImage(fileData[0].originImage);
     setSelectedImages(fileData);

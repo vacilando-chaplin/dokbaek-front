@@ -27,7 +27,9 @@ const PhotoLimitLabel = ({ limit, category }: PhotoLimitLabelProps) => {
       <label className="text-accent-primary-light dark:text-accent-primary-dark">
         {photoListLength}
       </label>
-      <label> / </label>
+      <label className="text-content-tertiary-light dark:text-content-tertiary-dark">
+        /
+      </label>
       <label className="text-content-tertiary-light dark:text-content-tertiary-dark">
         {limit}
       </label>

@@ -28,24 +28,26 @@ const ImageCropper = ({
   const cropperRef = useRef<CropperRef>(null);
   const lastLoadedImageRef = useRef<string | null>(null);
   const imageCropDataRef = useRef<Map<string, Coordinates>>(new Map());
+  const isInitialCropRef = useRef(false);
+  const loadingTimeoutRef = useRef<NodeJS.Timeout>();
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [imageSize, setImageSize] = useState<ImageSize | null>(null);
 
   const onCropEnd = () => {
-    if (cropperRef.current && selectImage) {
-      const cropper = cropperRef.current;
-      const cropCoordinates = cropper.getCoordinates();
-      const cropCanvas = cropper.getCanvas();
-      const cropImagetoString = cropCanvas?.toDataURL();
+    if (!cropperRef.current || !selectImage) return;
+    if (selectImage !== lastLoadedImageRef.current) return;
 
-      if (selectImage === lastLoadedImageRef.current) {
-        if (cropCoordinates) {
-          imageCropDataRef.current.set(selectImage, cropCoordinates);
-          setCropData(cropCoordinates);
-        }
-        if (cropImagetoString) setCropImage(cropImagetoString);
-      }
+    const cropper = cropperRef.current;
+    const cropCoordinates = cropper.getCoordinates();
+    const cropCanvas = cropper.getCanvas();
+    const cropImagetoString = cropCanvas?.toDataURL();
+
+    if (cropCoordinates) {
+      imageCropDataRef.current.set(selectImage, cropCoordinates);
+      setCropData(cropCoordinates);
+    }
+    if (cropImagetoString) {
+      setCropImage(cropImagetoString);
     }
   };
 
@@ -85,35 +87,59 @@ const ImageCropper = ({
 
   useEffect(() => {
     if (selectImage) {
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
+      }
+
       setIsLoaded(false);
+      isInitialCropRef.current = false;
+      lastLoadedImageRef.current = selectImage;
+
       const img = new Image();
       img.src = selectImage;
       img.onload = () => {
-        lastLoadedImageRef.current = selectImage;
-        setImageSize({
+        if (lastLoadedImageRef.current !== selectImage) {
+          return;
+        }
+
+        const imgSize = {
           width: img.width,
           height: img.height
-        });
-        setTimeout(() => {
-          setIsLoaded(true);
+        };
+
+        const savedCropData = imageCropDataRef.current.get(selectImage);
+        if (!savedCropData) {
+          const initialCropData = getInitialCropData(imgSize);
+          setCropData(initialCropData);
+        } else {
+          setCropData(savedCropData);
+        }
+        loadingTimeoutRef.current = setTimeout(() => {
+          if (lastLoadedImageRef.current === selectImage) {
+            setIsLoaded(true);
+          }
         }, 500);
       };
     }
-    return () => {};
+    return () => {
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
+      }
+    };
   }, [selectImage]);
 
   useEffect(() => {
-    if (selectImage && imageSize) {
-      const savedCropData = imageCropDataRef.current.get(selectImage);
+    if (isLoaded && selectImage && !isInitialCropRef.current) {
+      const initialCropTimeout = setTimeout(() => {
+        if (cropperRef.current && lastLoadedImageRef.current === selectImage) {
+          onCropEnd();
+          isInitialCropRef.current = true;
+        }
+      }, 100);
 
-      if (savedCropData) {
-        setCropData(savedCropData);
-      } else {
-        const initialCropData = getInitialCropData(imageSize);
-        setCropData(initialCropData);
-      }
+      return () => clearTimeout(initialCropTimeout);
     }
-  }, [selectImage, imageSize]);
+  }, [isLoaded, selectImage]);
 
   return (
     <div className="relative h-full w-full">
@@ -134,7 +160,7 @@ const ImageCropper = ({
           stencilProps={{
             aspectRatio: cropType === "stillCuts" ? 16 / 9 : 160 / 204
           }}
-          onReady={() => onCropEnd()}
+          onReady={onCropEnd}
           onInteractionEnd={onCropEnd}
           className="h-full w-full"
         />

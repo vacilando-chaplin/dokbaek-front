@@ -7,7 +7,7 @@ import X from "../../../../../../../public/icons/X.svg";
 import LoadingSpinner from "../../../../../../../public/icons/LoadingSpinner.svg";
 import { useState } from "react";
 import DeleteModal from "@/components/molecules/deleteModal";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
 import { profileDraftData } from "@/lib/recoil/handle/edit/common/atom";
 import { usePhotoEditModal } from "@/lib/hooks";
@@ -20,6 +20,7 @@ import {
 } from "../../../types";
 import { categoryMap } from "../../data";
 import { deletePhoto } from "../../api";
+import { deleteModalActiveIdState } from "@/lib/recoil/handle/edit/photo/atom";
 
 interface PhotoPreviewCardProps {
   category: CategoryKey;
@@ -34,13 +35,22 @@ const PhotoPreviewCard = ({
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [deleteModalActive, setDeleteModalActive] = useState(false);
+
+  const [deleteModalActiveId, setDeleteModalActiveId] = useRecoilState(
+    deleteModalActiveIdState
+  );
 
   const setProfileData = useSetRecoilState(profileDraftData);
   const setToastMessage = useSetRecoilState(toastMessage);
 
+  const isDeleteModalActive = deleteModalActiveId === previewPhoto.id;
+
   const onDeleteModalActive = () => {
-    setDeleteModalActive(!deleteModalActive);
+    if (isDeleteModalActive) {
+      setDeleteModalActiveId(null);
+    } else {
+      setDeleteModalActiveId(previewPhoto.id);
+    }
   };
 
   // 사진 삭제
@@ -65,7 +75,7 @@ const PhotoPreviewCard = ({
           [category]: prev[category].filter((item) => item.id !== id)
         }));
 
-        onDeleteModalActive();
+        setDeleteModalActiveId(null);
         setToastMessage("사진을 삭제했어요.");
       },
       onError: () => {
@@ -112,7 +122,9 @@ const PhotoPreviewCard = ({
           setIsLoaded(true);
         }}
       />
-      <div className="absolute h-full w-full opacity-0 transition-opacity group-hover:opacity-100">
+      <div
+        className={`absolute h-full w-full transition-opacity ${isDeleteModalActive || "group-hover:opacity-100"} ${isDeleteModalActive ? "opacity-100" : "opacity-0"}`}
+      >
         <label
           className="absolute right-8 top-2 h-auto w-auto cursor-pointer rounded-md border border-border-default-light bg-background-surface-light p-1 outline-none dark:border-border-default-dark dark:bg-background-surface-dark"
           onClick={(e) => {
@@ -140,7 +152,7 @@ const PhotoPreviewCard = ({
             className="fill-current text-state-negative-light dark:text-state-negative-dark"
           />
         </button>
-        {deleteModalActive && (
+        {isDeleteModalActive && (
           <DeleteModal
             id={previewPhoto.id}
             text="이 사진을 삭제할까요?"
