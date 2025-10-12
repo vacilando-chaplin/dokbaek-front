@@ -8,7 +8,9 @@ const ToastClientWrapper = () => {
   const error = useRecoilValue(loginErrorState);
 
   return (
-    <Toast kind={error ? "error" : ""} fullWidth={false} placement="top" />
+    <div className="flex w-full items-center justify-center">
+      <Toast kind={error ? "error" : ""} fullWidth={false} placement="top" />
+    </div>
   );
 };
 

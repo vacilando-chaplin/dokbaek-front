@@ -21,16 +21,17 @@ import Heart from "../../../../../public/icons/Heart.svg";
 import HeartFill from "../../../../../public/icons/HeartFill.svg";
 import EyeOn from "../../../../../public/icons/EyeOn.svg";
 import EmptyImage from "@/components/atoms/emptyImage";
-import Cookies from "js-cookie";
-import { toastMessage } from "@/lib/atoms";
+import { loginState, toastMessage } from "@/lib/atoms";
 import { deleteProfileLike, postProfileLike } from "@/app/likes/api";
 import { useMutation } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 
 const MainPhoto = () => {
   const loginProfileId = Number(Cookies.get("loginProfileId"));
 
   const [profileData, setProfileData] = useRecoilState(profileViewState);
   const isMyProfile = useRecoilValue(isMyProfileState);
+  const isLoggedIn = useRecoilValue(loginState);
 
   const setCropImage = useSetRecoilState(mainPhotoCropImageState);
   const setSelectImage = useSetRecoilState(mainPhotoImageState);
@@ -91,7 +92,12 @@ const MainPhoto = () => {
 
   // 프로필 좋아요
   const onLike = async () => {
-    if (isNaN(loginProfileId)) {
+    if (loginProfileId === profileData.id) {
+      setToastMessage("자신의 프로필은 좋아요할 수 없어요.");
+      return;
+    }
+
+    if (!isLoggedIn) {
       setToastMessage("해당 기능은 로그인 후 이용할 수 있어요.");
       return;
     }

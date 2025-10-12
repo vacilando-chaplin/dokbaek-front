@@ -106,7 +106,7 @@ export const getFilmoCategories = async () => {
 
 export const getProfileByHandleId = async (handleId: string) => {
   try {
-    const res = await axios.get(`${baseURL}/profile/@${handleId}`);
+    const res = await api.get(`profile/@${handleId}`);
     return res.data;
   } catch (error: any) {
     if (error.response?.status === 404) {

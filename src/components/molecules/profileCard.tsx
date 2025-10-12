@@ -15,8 +15,9 @@ import { routePaths } from "@/constants/routes";
 import { getProfileByProfileId } from "@/lib/api";
 import { getProfileImageUrl } from "@/lib/utils";
 import { MyProfileIdType } from "@/lib/types";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginModalState } from "@/lib/recoil/home/atom";
+import { toastMessage } from "@/lib/atoms";
 
 interface ProfileCardProps {
   profile: ProfileShowcaseResponseType;
@@ -25,10 +26,15 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
+  const loginProfileId = Number(Cookies.get("loginProfileId"));
+
   const [liked, setLiked] = useState(profile.likedByMe);
+  const [likesCount, setLikesCount] = useState(Number(profile.likesCount));
   const [loginModal, setLoginModal] = useRecoilState(loginModalState);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  const setToastMessage = useSetRecoilState(toastMessage);
 
   const jwt = Cookies.get("jwt");
   const router = useRouter();
@@ -56,14 +62,21 @@ const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
       return;
     }
 
+    if (loginProfileId === profile.id) {
+      setToastMessage("자신의 프로필은 좋아요할 수 없어요.");
+      return;
+    }
+
     try {
       if (liked) {
         await deleteProfileLike(profile.id);
         onUnlike?.(profile.id);
         setLiked(false);
+        setLikesCount((prev) => prev - 1);
       } else {
         await postProfileLike(profile.id);
         setLiked(true);
+        setLikesCount((prev) => prev + 1);
       }
       router.refresh();
     } catch (error) {
@@ -114,7 +127,7 @@ const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
               className="fill-current text-static-white"
             />
             <div className="typography-caption2 text-static-white">
-              {profile.likesCount}
+              {likesCount}
             </div>
           </div>
           <div className="flex items-center gap-0.5">
