@@ -26,7 +26,7 @@ const ProfileMeta = () => {
   return (
     <div className="flex h-auto w-full items-center justify-between gap-4 rounded-2xl bg-background-base_inverse-light px-5 py-4 text-content-on_color-light dark:bg-background-base_inverse-dark dark:text-static-black">
       <div className="flex flex-row items-center gap-3">
-        <span className="typography-body1 font-semibold">
+        <span className={`${ profileData.info?.name ? '' : 'hidden' } typography-body1 font-semibold`}>
           {profileData.info?.name ?? ""}
         </span>
         {isMyProfile && (
