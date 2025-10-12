@@ -22,17 +22,13 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const onClickEvent = () => {
-    console.log(filmo);
-  }
-
   // 필모그래피 링크 모달 오픈
   const onYoutubeModalOpen = (link: string) => {
     setYoutubeModal({ url: link, active: true });
   };
 
   return (
-    <div className="flex h-auto w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark max-lg:flex-col" onClick={onClickEvent}>
+    <div className="flex h-auto w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark max-lg:flex-col">
       <div className="flex h-full w-full flex-col justify-between">
         <div className="flex h-auto w-full flex-col gap-1s">
           <div className="flex h-auto w-full flex-col gap-1">
@@ -63,7 +59,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
         </div>
         {/* link */}
         {
-          production.videoUrl ?
+          production.videoUrl &&
             <>
               <button
                 type="button"
@@ -79,13 +75,11 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
                 재생
               </button>
             </>
-            :
-            <></>
         }
       </div>
       <div className="hidden min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100 md:flex max-lg:min-w-full">
         {filmo.thumbnailPath === null ||
-        filmo.thumbnailPath.endsWith("null") ? (
+        filmo.thumbnailPath.endsWith("null") || isError ? (
           <LogoHorizontalSmall
             width="20"
             height="20"
@@ -112,7 +106,6 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
                 setIsLoaded(true);
               }}
             />
-            {isError && <EmptyImage />}
           </div>
         )}
       </div>
