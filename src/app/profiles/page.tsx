@@ -26,6 +26,7 @@ import {
 import LoginModal from "@/components/organisms/loginModal";
 import ActorFilterSidebar from "./components/container/actorFilterSidebar";
 import FilteredProfilesList from "./components/container/filteredProfilesList";
+import ToastClientWrapper from "../home/components/wrapper/toastClientWrapper";
 
 const Profiles = () => {
   const searchParams = useSearchParams();
@@ -233,6 +234,7 @@ const Profiles = () => {
   return (
     <div className="container-max m-auto mt-12 flex w-[90%] flex-col sm:w-[90%] md:w-[85%] lg:w-[70%]">
       <LoginModal />
+      <ToastClientWrapper />
       <section className="mt-11 flex flex-col gap-6">
         <div className="flew-row flex w-full justify-between">
           <p className="typography-heading2 font-semibold text-content-primary-light dark:text-content-primary-dark">
