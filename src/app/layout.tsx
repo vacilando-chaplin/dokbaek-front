@@ -4,6 +4,8 @@ import RecoilRootProvider from "../lib/providers/recoilRootProvider";
 import "../styles/globals.css";
 import QueryRootProvider from "../lib/providers/queryRootProvider";
 import AuthInitializer from "@/lib/providers/authInitializer";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "독백 | 아티스트 섭외 플랫폼",
@@ -64,6 +66,9 @@ export default function RootLayout({
       lang="ko"
       className={`${pretendard.variable} bg-background-surface-light dark:bg-background-surface-dark`}
     >
+      <Suspense fallback={null}>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+      </Suspense>
       <body className={`${pretendard.className}`}>
         <QueryRootProvider>
           <RecoilRootProvider>
