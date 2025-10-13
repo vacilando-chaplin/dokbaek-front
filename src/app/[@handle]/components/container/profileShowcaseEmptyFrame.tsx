@@ -10,8 +10,6 @@ import {useRecoilValue, useSetRecoilState} from "recoil";
 import { routePaths } from "@/constants/routes";
 import {toastMessage} from "@/lib/atoms";
 
-// edit/photo, filmo, video
-
 const ProfileShowcaseEmptyFrame = ({
   text, type
 }: ProfileShowcaseEmptyFrameProps) => {
