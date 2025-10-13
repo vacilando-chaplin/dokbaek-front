@@ -17,3 +17,8 @@ export const profileShowcaseState = atom<ProfileShowcaseType>({
     isLoading: false
   }
 });
+
+export const profileShowcasePageState = atom<number>({
+  key: "profileShowcasePageState",
+  default: 0
+});
