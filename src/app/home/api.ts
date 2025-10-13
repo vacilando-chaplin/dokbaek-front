@@ -1,4 +1,4 @@
-import {api} from '@/lib/axiosInstance';
+import { api } from "@/lib/axiosInstance";
 
 export const getProfileShowcase = async (page: number, size: number) => {
   try {
@@ -7,4 +7,4 @@ export const getProfileShowcase = async (page: number, size: number) => {
   } catch (error) {
     throw error;
   }
-}
+};

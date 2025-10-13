@@ -4,7 +4,10 @@ import BoxButton from "@/components/atoms/boxButton";
 import ArrowDirectionRight from "../../../../../public/icons/ArrowDirectionRight.svg";
 import LoadingSpinner from "../../../../../public/icons/LoadingSpinner.svg";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { profileShowcaseState } from "@/lib/recoil/home/atom";
+import {
+  profileShowcasePageState,
+  profileShowcaseState
+} from "@/lib/recoil/home/atom";
 import { useMutation } from "@tanstack/react-query";
 import { getProfileShowcase } from "../../api";
 import { toastMessage } from "@/lib/atoms";
@@ -13,6 +16,7 @@ const LoadMoreProfilesButton = () => {
   const [profileState, setProfileState] = useRecoilState(profileShowcaseState);
 
   const setToastMessage = useSetRecoilState(toastMessage);
+  const setProfileShowcasePage = useSetRecoilState(profileShowcasePageState);
 
   const loadMoreMutation = useMutation({
     mutationFn: async () => {
@@ -35,6 +39,7 @@ const LoadMoreProfilesButton = () => {
       }));
     },
     onSuccess: (data) => {
+      setProfileShowcasePage(data.currentPage);
       setProfileState((prev) => ({
         profiles: [...prev.profiles, ...data.content],
         currentPage: data.currentPage,
