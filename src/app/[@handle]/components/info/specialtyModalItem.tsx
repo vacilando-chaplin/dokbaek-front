@@ -12,6 +12,7 @@ import {
 } from "@/lib/recoil/handle/atom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
+import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface SpecialtyModalItemProps {
   specialty: ProfileSpecialtyType;
@@ -52,12 +53,9 @@ const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
       </button>
       <AnimatePresence initial={false}>
         {active && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+          <CollapseMotion
             transition={{ duration: 0.15, ease: "easeInOut" }}
-            className="flex w-auto flex-row gap-2 overflow-hidden"
+            className="flex w-auto flex-row gap-2"
           >
             {imageUrl && (
               <Image
@@ -80,7 +78,7 @@ const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
                 onClick={() => onYoutubeModalOpen(mediaUrl)}
               />
             )}
-          </motion.div>
+          </CollapseMotion>
         )}
       </AnimatePresence>
     </div>

@@ -5,6 +5,7 @@ import FilterBox from "./filterBox";
 import FilterHeader from "./filterHeader";
 import { useActive } from "@/lib/hooks";
 import { motion, AnimatePresence } from "framer-motion";
+import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface FilterGenderProps {
   gender: string | null;
@@ -33,13 +34,7 @@ const FilterGender = ({ gender, onReset, onChange }: FilterGenderProps) => {
       />
       <AnimatePresence initial={false}>
         {active && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.1, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
+          <CollapseMotion>
             <RadioGroup
               name="성별"
               size="medium"
@@ -47,7 +42,7 @@ const FilterGender = ({ gender, onReset, onChange }: FilterGenderProps) => {
               value={gender || null}
               onChange={onChange}
             />
-          </motion.div>
+          </CollapseMotion>
         )}
       </AnimatePresence>
     </FilterBox>
