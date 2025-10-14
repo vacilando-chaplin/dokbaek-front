@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Chips from "@/components/atoms/chips";
 import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
 import SpecialtySearchDropdown from "./specialtySearchDropdown";
+import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface FilterSpecialtyProps {
   specialties: SpecialtyType[];
@@ -74,13 +75,7 @@ const FilterSpecialty = ({
         />
         <AnimatePresence initial={false}>
           {boxActive.active && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.1, ease: "easeInOut" }}
-              className="flex h-auto w-full flex-col gap-2"
-            >
+            <CollapseMotion className="flex h-auto w-full flex-col gap-2">
               <SpecialtySearchDropdown
                 size="medium"
                 name="specialty"
@@ -110,7 +105,7 @@ const FilterSpecialty = ({
                   );
                 })}
               </div>
-            </motion.div>
+            </CollapseMotion>
           )}
         </AnimatePresence>
       </div>

@@ -11,6 +11,8 @@ import {
 import { convertToBase64, getFileMimeTypeFromUrl } from "@/lib/utils";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import imageCompression from "browser-image-compression";
+import { AnimatePresence } from "framer-motion";
+import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface MainPhotoMenuProps {
   active: boolean;
@@ -71,43 +73,48 @@ const MainPhotoMenu = ({
     "typography-body3 flex h-[38px] w-full gap-2 cursor-pointer rounded-md px-3 py-2 font-regular text-content-primary-light hover:bg-gray-50 active:bg-gray-150 dark:text-content-primary-dark dark:hover:bg-background-surface-dark dark:active:bg-background-surface-dark";
 
   return (
-    active && (
-      <div className="interaction-default absolute right-2 top-[52px] flex h-auto w-20 animate-enter flex-col rounded-xl bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark">
-        <label className={buttonStyle}>
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => {
-              onMainPhotoChangeModalOpen();
+    <AnimatePresence initial={false}>
+      {active && (
+        <CollapseMotion
+          transition={{ duration: 0.1, ease: "easeInOut" }}
+          className="absolute right-2 top-[52px] flex h-auto w-20 flex-col rounded-xl bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark"
+        >
+          <label className={buttonStyle}>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                onMainPhotoChangeModalOpen();
+                onActive();
+                onSelectFile(e);
+              }}
+            />
+            변경
+          </label>
+          <button
+            type="button"
+            className={buttonStyle}
+            onClick={() => {
               onActive();
-              onSelectFile(e);
+              onMainPhotoEditModalOpen();
             }}
-          />
-          변경
-        </label>
-        <button
-          type="button"
-          className={buttonStyle}
-          onClick={() => {
-            onActive();
-            onMainPhotoEditModalOpen();
-          }}
-        >
-          편집
-        </button>
-        <button
-          type="button"
-          className={buttonStyle}
-          onClick={() => {
-            onActive();
-            onMainPhotoDeleteModalOpen();
-          }}
-        >
-          삭제
-        </button>
-      </div>
-    )
+          >
+            편집
+          </button>
+          <button
+            type="button"
+            className={buttonStyle}
+            onClick={() => {
+              onActive();
+              onMainPhotoDeleteModalOpen();
+            }}
+          >
+            삭제
+          </button>
+        </CollapseMotion>
+      )}
+    </AnimatePresence>
   );
 };
 

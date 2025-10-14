@@ -1,7 +1,11 @@
+"use client";
+
 import { sizeStyleType } from "@/lib/types";
 import ArrowTriangleDown from "../../../public/icons/ArrowTriangleDown.svg";
 import Option from "../atoms/option";
 import HelperText from "../atoms/helperText";
+import { AnimatePresence, motion } from "framer-motion";
+import CollapseMotion from "../atoms/collapseMotion";
 
 interface SearchDropdownProps {
   size: string;
@@ -71,31 +75,37 @@ const SearchDropdown = ({
         </button>
       </div>
       {helperText && <HelperText type="info" text={helperText} />}
-      {active &&
-        (isEmpty ? (
-          <div className="interaction-default typography-body3 absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 font-normal text-gray-300 shadow-low dark:bg-background-elevated-dark">
-            <label>일치하는 항목이 없습니다.</label>
-          </div>
-        ) : (
-          <ul
-            className={`scrollbar dark:dark-scrollbar-dropdown interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
-          >
-            {list.map((item: string, index: number) => {
-              return (
-                <Option
-                  key={`${item}${index}`}
-                  name={name}
-                  item={item}
-                  size={size}
-                  active={active}
-                  selected={selected}
-                  onClick={onClick}
-                  onActive={onActive}
-                />
-              );
-            })}
-          </ul>
-        ))}
+      <AnimatePresence initial={false}>
+        {active &&
+          (isEmpty ? (
+            <CollapseMotion className="typography-body3 absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 font-normal text-gray-300 shadow-low dark:bg-background-elevated-dark">
+              <label>일치하는 항목이 없습니다.</label>
+            </CollapseMotion>
+          ) : (
+            <motion.ul
+              initial={{ maxHeight: 0, opacity: 0 }}
+              animate={{ maxHeight: 400, opacity: 1 }}
+              exit={{ maxHeight: 0, opacity: 0 }}
+              transition={{ duration: 0.1, ease: "easeInOut" }}
+              className={`scrollbar dark:dark-scrollbar-dropdown absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
+            >
+              {list.map((item: string, index: number) => {
+                return (
+                  <Option
+                    key={`${item}${index}`}
+                    name={name}
+                    item={item}
+                    size={size}
+                    active={active}
+                    selected={selected}
+                    onClick={onClick}
+                    onActive={onActive}
+                  />
+                );
+              })}
+            </motion.ul>
+          ))}
+      </AnimatePresence>
     </div>
   );
 };

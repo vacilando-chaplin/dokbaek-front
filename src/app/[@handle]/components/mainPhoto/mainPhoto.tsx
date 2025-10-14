@@ -42,7 +42,7 @@ const MainPhoto = () => {
 
   const mainPhotoPreview = profileData?.mainPhotoPreviewPath ?? "";
 
-  const { active, onActive } = useActive();
+  const { active, onClose, onActive } = useActive();
 
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -183,7 +183,7 @@ const MainPhoto = () => {
       <MainPhotoMenuButton onActive={onActive} />
       <MainPhotoMenu
         active={active}
-        onActive={onActive}
+        onActive={onClose}
         onSelectFile={onSelectFile}
       />
     </div>

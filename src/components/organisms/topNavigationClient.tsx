@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { routePaths } from "@/constants/routes";
 import { handleNameState, isMyProfileState } from "@/lib/recoil/handle/atom";
 import { AnimatePresence, motion } from "framer-motion";
+import CollapseMotion from "../atoms/collapseMotion";
 
 interface UserMenuType {
   name: string;
@@ -154,12 +155,9 @@ const TopNavigationClient = () => {
               </button>
               <AnimatePresence initial={false}>
                 {userMenuActive && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
+                  <CollapseMotion
                     transition={{ duration: 0.1, ease: "easeInOut" }}
-                    className="absolute right-0 top-10 z-10 flex h-auto max-h-[332px] w-[120px] list-none flex-col overflow-hidden rounded-xl bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark"
+                    className="absolute right-0 top-10 z-10 flex h-auto max-h-[332px] w-[120px] list-none flex-col rounded-xl bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark"
                   >
                     {userMenu.map((item: UserMenuType) => {
                       return (
@@ -175,7 +173,7 @@ const TopNavigationClient = () => {
                         </button>
                       );
                     })}
-                  </motion.div>
+                  </CollapseMotion>
                 )}
               </AnimatePresence>
             </div>

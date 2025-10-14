@@ -6,6 +6,7 @@ import FilterHeader from "./filterHeader";
 import FilterInput from "./filterInput";
 import { motion, AnimatePresence } from "framer-motion";
 import RangeSlider from "./rangeSlider";
+import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface FilterRangeInputProps {
   min: number;
@@ -53,13 +54,7 @@ const FilterRangeInput = ({
       />
       <AnimatePresence initial={false}>
         {active && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.1, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
+          <CollapseMotion>
             <div className="flex flex-col items-center gap-6">
               <div className="flex w-full flex-row items-center gap-2">
                 <FilterInput
@@ -89,7 +84,7 @@ const FilterRangeInput = ({
                 onChange={onRangeChange}
               />
             </div>
-          </motion.div>
+          </CollapseMotion>
         )}
       </AnimatePresence>
     </FilterBox>
