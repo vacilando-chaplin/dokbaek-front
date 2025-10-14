@@ -6,7 +6,7 @@ import { deleteSignOut, getProfileMe } from "@/lib/api";
 import Cookies from "js-cookie";
 import BoxButton from "../atoms/boxButton";
 import Link from "next/link";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { currentPath, loginState, toastMessage } from "@/lib/atoms";
 import Person from "../../../public/icons/Person.svg";
 import Heart from "../../../public/icons/Heart.svg";
@@ -14,7 +14,7 @@ import { useState } from "react";
 import { removeStorageData, setLoginProfileId } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { routePaths } from "@/constants/routes";
-import { handleNameState } from "@/lib/recoil/handle/atom";
+import { handleNameState, isMyProfileState } from "@/lib/recoil/handle/atom";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface UserMenuType {
@@ -25,6 +25,8 @@ interface UserMenuType {
 const TopNavigationClient = () => {
   const router = useRouter();
   const pathName = usePathname();
+
+  const isMyProfile = useRecoilValue(isMyProfileState);
 
   const setPathName = useSetRecoilState(currentPath);
   const setToastMessage = useSetRecoilState(toastMessage);
@@ -116,32 +118,32 @@ const TopNavigationClient = () => {
             <div className="flex flex-row items-center justify-center gap-1">
               <Link
                 href={routePaths.profiles()}
-                className="typography-body3 flex items-center rounded-lg px-2 py-1 font-semibold text-content-secondary-light hover:bg-hover-secondaryOutlined hover:text-accent-primary-light active:bg-pressed-secondaryOutlined dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
+                className={`typography-body3 flex items-center rounded-lg px-2 py-1 font-semibold hover:bg-hover-secondaryOutlined hover:text-accent-primary-light active:bg-pressed-secondaryOutlined dark:text-content-secondary-dark dark:hover:text-accent-primary-dark ${pathName === routePaths.profiles() ? "bg-pressed-secondaryOutlined text-accent-primary-light dark:text-accent-primary-dark" : "text-content-secondary-light"}`}
               >
                 배우 찾기
               </Link>
               <button
                 type="button"
-                className="typography-body3 flex items-center rounded-lg px-2 py-1 font-semibold text-content-secondary-light hover:bg-hover-secondaryOutlined hover:text-accent-primary-light active:bg-pressed-secondaryOutlined dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
+                className={`typography-body3 flex items-center rounded-lg px-2 py-1 font-semibold hover:bg-hover-secondaryOutlined hover:text-accent-primary-light active:bg-pressed-secondaryOutlined dark:text-content-secondary-dark dark:hover:text-accent-primary-dark ${pathName?.startsWith("/@") && isMyProfile ? "bg-pressed-secondaryOutlined text-accent-primary-light dark:text-accent-primary-dark" : "text-content-secondary-light"} `}
                 onClick={onMoveMyProfile}
               >
                 내 프로필
               </button>
               <Link
                 href={routePaths.likes()}
-                className="group flex items-center gap-2.5 rounded-lg p-2 hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined"
+                className={`group flex items-center gap-2.5 rounded-lg p-2 hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined ${pathName === routePaths.likes() && "bg-pressed-secondaryOutlined"}`}
               >
                 <Heart
                   width="20"
                   height="20"
-                  className="fill-current text-content-secondary-light group-hover:text-state-negative-light group-active:text-state-negative-light dark:text-content-secondary-dark"
+                  className={`fill-current group-hover:text-state-negative-light group-active:text-state-negative-light ${pathName === routePaths.likes() ? "text-state-negative-light dark:text-state-negative-dark" : "text-content-secondary-light dark:text-content-secondary-dark"}`}
                 />
               </Link>
             </div>
             <div className="group relative">
               <button
                 type="button"
-                className={`relative flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50 hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined dark:border-border-default-dark dark:bg-gray-900 ${userMenuActive && "bg-pressed-secondaryOutlined"}`}
+                className={`relative flex h-9 w-9 items-center justify-center rounded-[100px] border border-border-default-light bg-gray-50 hover:bg-hover-secondaryOutlined active:bg-pressed-secondaryOutlined dark:border-border-default-dark dark:bg-gray-900 ${(userMenuActive || pathName === routePaths.account()) && "bg-pressed-secondaryOutlined"}`}
                 onClick={onUserMenuClick}
               >
                 <Person
@@ -183,7 +185,7 @@ const TopNavigationClient = () => {
           <div className="flex flex-row gap-5">
             <Link
               href={routePaths.profiles()}
-              className="typography-body3 flex items-center rounded-lg px-2 py-1 font-semibold text-content-secondary-light hover:bg-hover-secondaryOutlined hover:text-accent-primary-light active:bg-pressed-secondaryOutlined dark:text-content-secondary-dark dark:hover:text-accent-primary-dark"
+              className={`typography-body3 flex items-center rounded-lg px-2 py-1 font-semibold hover:bg-hover-secondaryOutlined hover:text-accent-primary-light active:bg-pressed-secondaryOutlined dark:text-content-secondary-dark dark:hover:text-accent-primary-dark ${pathName === routePaths.profiles() ? "bg-pressed-secondaryOutlined text-accent-primary-light dark:text-accent-primary-dark" : "text-content-secondary-light"}`}
             >
               배우 찾기
             </Link>
