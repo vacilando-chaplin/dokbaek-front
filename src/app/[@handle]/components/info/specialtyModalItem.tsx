@@ -57,7 +57,7 @@ const SpecialtyModalItem = ({ specialty }: SpecialtyModalItemProps) => {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.15, ease: "easeInOut" }}
-            className="flex w-auto animate-enter flex-row gap-2 overflow-hidden"
+            className="flex w-auto flex-row gap-2 overflow-hidden"
           >
             {imageUrl && (
               <Image
