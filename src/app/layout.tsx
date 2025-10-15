@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     google: "5Ea2iwbh8ni_RPYUTmjyxaaEOzvmHNsK0gSH4F_LMp0"
   },
   other: {
-    "naver-site-verification": "e03b1cbc9e244e05b85731941e13b6baab682e9a"
+    "naver-site-verification": "3385c0f722949ea1ec0593a830cd531bd1f7d0e6"
   },
   alternates: {
     types: {
