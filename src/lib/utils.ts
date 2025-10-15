@@ -1,4 +1,6 @@
 import Cookies from "js-cookie";
+import { SITE_CONFIG } from "@/lib/config";
+import { ProfileShowcaseResponseType } from "@/app/home/types";
 
 export const setOnlyNumber = (value: string) => {
   return value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
@@ -197,4 +199,37 @@ export const getProfileImageUrl = (url: string | null | undefined) => {
   }
 
   return url;
+};
+
+export const fetchPublicProfiles = async (): Promise<
+  ProfileShowcaseResponseType[]
+> => {
+  const allProfiles: ProfileShowcaseResponseType[] = [];
+
+  let page = 0;
+  const size = 20;
+
+  while (true) {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/profile/showcase?page=${page}&size=${size}`,
+      { cache: "no-store" }
+    );
+
+    if (!res.ok) break;
+
+    const data = await res.json();
+    const content = data?.data?.content || [];
+    const hasNext = data?.data?.hasNext;
+
+    const publicProfiles = content.filter(
+      (p: ProfileShowcaseResponseType) => p.status === "PUBLIC"
+    );
+
+    allProfiles.push(...publicProfiles);
+
+    if (!hasNext) break;
+    page++;
+  }
+
+  return allProfiles;
 };
