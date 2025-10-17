@@ -12,7 +12,7 @@ const VideoShowcaseList = () => {
   const videoList = profileData?.videos || [];
 
   return videoList.length >= 1 ? (
-    <div className="grid h-auto w-full grid-cols-3 flex-row gap-2">
+    <div className="grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(224px,_1fr))] [@media(min-width:1140px)]:grid-cols-3 gap-2">
       {videoList.map((video: ProfileVideoDataType) => {
         return <YoutubeVideo key={video.id} link={video.url} />;
       })}
