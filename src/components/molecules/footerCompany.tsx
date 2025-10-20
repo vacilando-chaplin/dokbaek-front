@@ -1,5 +1,3 @@
-import React from "react";
-
 const FooterCompany = () => {
   return (
     <div className="flex h-auto w-full max-w-[1272px] flex-col gap-2">

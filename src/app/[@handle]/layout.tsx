@@ -70,6 +70,8 @@ export const generateMetadata = async ({
       }
     };
   } catch (error) {
+    console.error("프로필 메타데이터 로드 실패:", error);
+
     return {
       title: "배우님의 정보를 불러올 수 없는 프로필 입니다.",
       description: "배우님의 프로필을 불러오는 도중 오류가 발생했어요.",

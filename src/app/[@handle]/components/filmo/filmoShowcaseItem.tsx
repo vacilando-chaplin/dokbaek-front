@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import PlayCircle from "../../../../../public/icons/PlayCircle.svg";
 import PlayFill from "../../../../../public/icons/PlayFill.svg";
 import LogoHorizontalSmall from "../../../../../public/icons/LogoHorizontalSmall.svg";
 import { useSetRecoilState } from "recoil";
@@ -9,7 +8,6 @@ import { filmoYoutubeModalState } from "@/lib/recoil/handle/atom";
 import { ProfileFilmoDataType } from "../../edit/types";
 import { useState } from "react";
 import LoadingSpinner from "../../../../../public/icons/LoadingSpinner.svg";
-import EmptyImage from "@/components/atoms/emptyImage";
 
 interface FilmoShowcaseItemProps {
   filmo: ProfileFilmoDataType;
@@ -30,20 +28,28 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
   return (
     <div className="flex h-auto w-full gap-4 rounded-2xl border border-border-default-light p-5 dark:border-border-default-dark">
       <div className="flex h-full w-full flex-col justify-between">
-        <div className="flex h-auto w-full flex-col gap-1s">
+        <div className="flex h-auto w-full flex-col gap-1">
           <div className="flex h-auto w-full flex-col gap-1">
             <label className="typography-caption1 hidden font-medium text-content-tertiary-light dark:text-content-tertiary-dark md:block">
-              { featured
-                ?
-                  <span>
-                    <b className="font-semibold text-accent-primary-light dark:text-accent-primary-light">대표작</b>
-                    <b className="text-gray-200"> | </b>
-                  </span>
-                : ''
-              }
-              {production.productionYear >= 1
-                ? <>{production.productionYear} <b className="text-gray-200"> | </b> {production.category.name}</>
-                : production.category.name}
+              {featured ? (
+                <span>
+                  <b className="font-semibold text-accent-primary-light dark:text-accent-primary-light">
+                    대표작
+                  </b>
+                  <b className="text-gray-200"> | </b>
+                </span>
+              ) : (
+                ""
+              )}
+              {production.productionYear >= 1 ? (
+                <>
+                  {production.productionYear}{" "}
+                  <b className="text-gray-200"> | </b>{" "}
+                  {production.category.name}
+                </>
+              ) : (
+                production.category.name
+              )}
             </label>
             <label className="typography-body1 font-semibold text-content-primary-light dark:text-content-primary-dark">
               {production.title}
@@ -58,28 +64,28 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
           </div>
         </div>
         {/* link */}
-        {
-          production.videoUrl &&
-            <>
-              <button
-                type="button"
-                className="hidden md:flex items-center justify-center gap-0.5 py-[3px] px-[8px] pl-[6px] bg-[#EAF2FE] w-fit h-[20px] rounded-[100px] typography-caption2 text-accent-primary-light dark:text-accent-primary-light"
-                disabled={!production.videoUrl}
-                onClick={() => onYoutubeModalOpen(production.videoUrl)}
-              >
-                <PlayFill
-                  width="12"
-                  height="12"
-                  className={`fill-current flex-shrink-0 align-middle ${production.videoUrl ? "text-accent-primary-light dark:text-accent-primary-light" : "text-accent-primary-light dark:text-accent-primary-light"}`}
-                />
-                재생
-              </button>
-            </>
-        }
+        {production.videoUrl && (
+          <>
+            <button
+              type="button"
+              className="typography-caption2 hidden h-[20px] w-fit items-center justify-center gap-0.5 rounded-[100px] bg-[#EAF2FE] px-[8px] py-[3px] pl-[6px] text-accent-primary-light dark:text-accent-primary-light md:flex"
+              disabled={!production.videoUrl}
+              onClick={() => onYoutubeModalOpen(production.videoUrl)}
+            >
+              <PlayFill
+                width="12"
+                height="12"
+                className={`fill-current flex-shrink-0 align-middle ${production.videoUrl ? "text-accent-primary-light dark:text-accent-primary-light" : "text-accent-primary-light dark:text-accent-primary-light"}`}
+              />
+              재생
+            </button>
+          </>
+        )}
       </div>
       <div className="hidden min-h-[114px] min-w-[76px] items-center justify-center rounded-lg bg-gray-100 md:flex">
         {filmo.thumbnailPath === null ||
-        filmo.thumbnailPath.endsWith("null") || isError ? (
+        filmo.thumbnailPath.endsWith("null") ||
+        isError ? (
           <LogoHorizontalSmall
             width="20"
             height="20"

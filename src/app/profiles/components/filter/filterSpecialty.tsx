@@ -4,7 +4,7 @@ import { useActive, useDebounce } from "@/lib/hooks";
 import FilterHeader from "./filterHeader";
 import { useEffect, useState } from "react";
 import { getSpecialty } from "@/app/[@handle]/edit/info/api";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import Chips from "@/components/atoms/chips";
 import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
 import SpecialtySearchDropdown from "./specialtySearchDropdown";

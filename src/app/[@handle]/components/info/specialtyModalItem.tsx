@@ -10,7 +10,7 @@ import {
   specialtyItemIdState,
   specialtyYoutubeModalState
 } from "@/lib/recoil/handle/atom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import CollapseMotion from "@/components/atoms/collapseMotion";
 

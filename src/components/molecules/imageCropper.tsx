@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Coordinates, Cropper, CropperRef } from "react-advanced-cropper";
+import { Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 import LoadingSpinner from "../../../public/icons/LoadingSpinner.svg";
+import { Coordinates } from "@/app/[@handle]/types";
 
 interface ImageCropperProps {
   cropData: any;

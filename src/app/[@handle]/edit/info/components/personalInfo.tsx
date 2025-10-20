@@ -27,8 +27,7 @@ interface PersonalInfoProps {
 
 const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
   const [profileData, setProfileData] = useRecoilState(profileDraftData);
-  const [specialties, setSpecialties] =
-    useRecoilState<SpecialtyType[]>(specialtyData);
+  const setSpecialties = useSetRecoilState<SpecialtyType[]>(specialtyData);
   const setProfileSpecialtyModal = useSetRecoilState(
     profileSpecialtyModalState
   );
@@ -64,7 +63,13 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
       ...prev,
       info: {
         ...prev.info,
-        [name]: name === "name" ? value.replace(/[A-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g, '') : value
+        [name]:
+          name === "name"
+            ? value.replace(
+                /[A-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g,
+                ""
+              )
+            : value
       }
     }));
   };
@@ -296,7 +301,9 @@ const PersonalInfo = ({ profileId }: PersonalInfoProps) => {
               onChange={onContactChange}
               onBlur={onSaveInfo}
             />
-            <p className="typography-caption1 mt-[5px] text-content-tertiary-light dark:text-content-tertiary-dark">전화번호는 다른 사람에게 보이지 않아요.</p>
+            <p className="typography-caption1 mt-[5px] text-content-tertiary-light dark:text-content-tertiary-dark">
+              전화번호는 다른 사람에게 보이지 않아요.
+            </p>
           </div>
           <div className="flex w-full flex-col">
             <Label label="이메일" />

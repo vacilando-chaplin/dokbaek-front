@@ -4,7 +4,7 @@ import RadioGroup from "@/components/organisms/radioGroup";
 import FilterBox from "./filterBox";
 import FilterHeader from "./filterHeader";
 import { useActive } from "@/lib/hooks";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface FilterGenderProps {
