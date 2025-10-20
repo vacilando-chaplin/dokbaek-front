@@ -22,13 +22,31 @@ const nextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: "20mb"
+    },
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js"
+        }
+      }
     }
   },
   webpack(config) {
     config.module.rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"]
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: [
+        {
+          loader: "@svgr/webpack",
+          options: {
+            typescript: true,
+            ext: "tsx"
+          }
+        }
+      ]
     });
+
     return config;
   }
 };
