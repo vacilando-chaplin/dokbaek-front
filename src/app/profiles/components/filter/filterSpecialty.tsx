@@ -4,11 +4,10 @@ import { useActive, useDebounce } from "@/lib/hooks";
 import FilterHeader from "./filterHeader";
 import { useEffect, useState } from "react";
 import { getSpecialty } from "@/app/[@handle]/edit/info/api";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Chips from "@/components/atoms/chips";
 import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
 import SpecialtySearchDropdown from "./specialtySearchDropdown";
-import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface FilterSpecialtyProps {
   specialties: SpecialtyType[];
@@ -68,14 +67,20 @@ const FilterSpecialty = ({
           specialties={SpecialtyNameList}
           onReset={() => {
             onReset();
-            searchActive.onClose();
+            setSearchSpecialty("");
             setSpecialtyList([]);
           }}
           onActive={boxActive.onActive}
         />
         <AnimatePresence initial={false}>
           {boxActive.active && (
-            <CollapseMotion className="flex h-auto w-full flex-col gap-2">
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.1, ease: "easeInOut" }}
+              className="flex h-auto w-full flex-col gap-2"
+            >
               <SpecialtySearchDropdown
                 size="medium"
                 name="specialty"
@@ -105,7 +110,7 @@ const FilterSpecialty = ({
                   );
                 })}
               </div>
-            </CollapseMotion>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
