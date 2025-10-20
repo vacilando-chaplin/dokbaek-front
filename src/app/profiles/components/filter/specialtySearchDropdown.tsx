@@ -3,6 +3,8 @@ import ArrowTriangleDown from "../../../../../public/icons/ArrowTriangleDown.svg
 import HelperText from "@/components/atoms/helperText";
 import { SpecialtyType } from "@/components/molecules/addableSearchDropdown";
 import SpecialtySearchDropdownOption from "./specialtysearchDropdownOption";
+import { AnimatePresence, motion } from "framer-motion";
+import CollapseMotion from "@/components/atoms/collapseMotion";
 
 interface SpecialtySearchDropdownProps {
   size: string;
@@ -69,29 +71,35 @@ const SpecialtySearchDropdown = ({
         </button>
       </div>
       {helperText && <HelperText type="info" text={helperText} />}
-      {active &&
-        (isEmpty ? (
-          <div className="interaction-default typography-body3 absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 font-normal text-gray-300 shadow-low dark:bg-background-elevated-dark">
-            <label>검색하신 특기가 존재하지 않습니다.</label>
-          </div>
-        ) : (
-          <ul
-            className={`scrollbar dark:dark-scrollbar-dropdown interaction-default absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
-          >
-            {list.map((item: SpecialtyType) => {
-              return (
-                <SpecialtySearchDropdownOption
-                  key={item.id}
-                  item={item}
-                  size={size}
-                  selected={selected}
-                  onClick={onClick}
-                  onActive={onActive}
-                />
-              );
-            })}
-          </ul>
-        ))}
+      <AnimatePresence initial={false}>
+        {active &&
+          (isEmpty ? (
+            <CollapseMotion className="interaction-default typography-body3 absolute top-11 z-40 w-full overflow-auto rounded-xl bg-background-elevated-light p-3 font-normal text-gray-300 shadow-low dark:bg-background-elevated-dark">
+              <label>검색하신 특기가 존재하지 않습니다.</label>
+            </CollapseMotion>
+          ) : (
+            <motion.ul
+              initial={{ maxHeight: 0, opacity: 0 }}
+              animate={{ maxHeight: 400, opacity: 1 }}
+              exit={{ maxHeight: 0, opacity: 0 }}
+              transition={{ duration: 0.1, ease: "easeInOut" }}
+              className={`scrollbar dark:dark-scrollbar-dropdown absolute top-11 z-40 h-auto max-h-[400px] w-full list-none flex-col overflow-auto bg-background-elevated-light p-2 shadow-low dark:bg-background-elevated-dark ${sizeStyle[size]}`}
+            >
+              {list.map((item: SpecialtyType) => {
+                return (
+                  <SpecialtySearchDropdownOption
+                    key={item.id}
+                    item={item}
+                    size={size}
+                    selected={selected}
+                    onClick={onClick}
+                    onActive={onActive}
+                  />
+                );
+              })}
+            </motion.ul>
+          ))}
+      </AnimatePresence>
     </div>
   );
 };
