@@ -24,10 +24,6 @@ const VideoModal = () => {
   const setProfileData = useSetRecoilState(profileDraftData);
   const setToastMessage = useSetRecoilState(toastMessage);
 
-  const disabled =
-    videoInputs.includes("https://www.youtube.com") ||
-    videoInputs.includes("https://youtu.be");
-
   // 비디오 링크 입력
   const onVideoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVideoInputs(e.target.value);
@@ -106,7 +102,8 @@ const VideoModal = () => {
 
   // 비디오 모달 저장 버튼 클릭
   const onVideoModalSave = () => {
-    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
+    const regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
     const match = videoInputs.match(regex);
 
     if (match && match[1]) {
@@ -121,7 +118,8 @@ const VideoModal = () => {
 
   // 비디오 편집 모달 편집 완료
   const onVideoModalEdit = () => {
-    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
+    const regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
     const match = videoInputs.match(regex);
 
     if (match && match[1]) {
@@ -136,16 +134,17 @@ const VideoModal = () => {
   };
 
   const isButtonDisabled = () => {
-    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
+    const regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]{11})/;
     const share_regex = /^https?:\/\/(www\.)?youtu\.be\/([\w-]{11})(\?.*)?$/;
     const match = videoInputs.match(regex);
 
-    if (match && match[1] || share_regex.test(videoInputs)) {
+    if ((match && match[1]) || share_regex.test(videoInputs)) {
       return false;
     } else {
       return true;
     }
-  }
+  };
 
   return (
     videoModal.active && (

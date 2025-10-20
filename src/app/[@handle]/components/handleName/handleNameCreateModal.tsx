@@ -70,6 +70,7 @@ const HandleNameCreateModal = () => {
             router.replace(routePaths.profile(handleId));
           } catch (error) {
             setToastMessage("프로필 생성 중 오류가 발생했어요.");
+            console.error("프로필 생성 실패:", error);
           }
         } else {
           setToastMessage("이미 존재하는 프로필 아이디에요.");

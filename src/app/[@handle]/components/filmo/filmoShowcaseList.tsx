@@ -19,7 +19,7 @@ const FilmoShowcaseList = () => {
   const visibleFilmoList = [...featured, ...nonFeatured].slice(0, maxVisible);
 
   return visibleFilmoList.length >= 1 ? (
-    <div className="grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(224px,_1fr))] [@media(min-width:1140px)]:grid-cols-3 gap-2">
+    <div className="grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(224px,_1fr))] gap-2 [@media(min-width:1140px)]:grid-cols-3">
       {visibleFilmoList.map((filmo) => {
         return <FilmoShowcaseItem key={filmo.id} filmo={filmo} />;
       })}

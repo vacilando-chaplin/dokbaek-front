@@ -4,7 +4,11 @@ import ImageCropper from "@/components/molecules/imageCropper";
 import ModalFooter from "@/components/molecules/modalFooter";
 import ModalHeader from "@/components/molecules/modalHeader";
 import Image from "next/image";
-import { PhotoModalType, SelectedImagesType } from "../../../../types";
+import {
+  Coordinates,
+  PhotoModalType,
+  SelectedImagesType
+} from "../../../../types";
 import { useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { toastMessage } from "@/lib/atoms";
@@ -14,7 +18,6 @@ import {
   ProfilePhotoDataType,
   ProfileRecentPhotoDataType
 } from "../../../types";
-import { Coordinates } from "react-advanced-cropper";
 import { CategoryKey, RecentPhotoCategory } from "../../types";
 import Cookies from "js-cookie";
 import X from "../../../../../../../public/icons/X.svg";
@@ -123,7 +126,7 @@ const PhotoCropModal = () => {
 
         if (selectedImages.length > 1) {
           if (category === "photos" || category === "stillCuts") {
-            for (const [_, images] of selectedImages.entries()) {
+            for (const images of selectedImages.values()) {
               const imageToUpload = images.preview || images.origin;
               const result = await postPhoto(
                 profileId,

@@ -2,7 +2,7 @@ import axios from "axios";
 import { api } from "./axiosInstance";
 import { profileInit } from "./data";
 
-export const deleteSignOut = async (jwt: string) => {
+export const deleteSignOut = async () => {
   try {
     const res = await api.delete("/auth/signout");
     return res.data;

@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import { SITE_CONFIG } from "@/lib/config";
 import { ProfileShowcaseResponseType } from "@/app/home/types";
 
 export const setOnlyNumber = (value: string) => {

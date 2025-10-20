@@ -1,5 +1,3 @@
-import React from "react";
-
 const FooterCopyright = () => {
   return (
     <div className="flex h-auto w-full max-w-[1272px]">

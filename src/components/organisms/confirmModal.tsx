@@ -26,7 +26,7 @@ const ConfirmModal = ({
   onConfirm
 }: ConfirmModalProps) => {
   return (
-    <section className="fixed inset-0 z-[999] flex max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 md:inset-0 dark:bg-background-scrim-dark">
+    <section className="fixed inset-0 z-[999] flex max-h-full min-h-[80vh] w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-background-scrim-light bg-opacity-40 dark:bg-background-scrim-dark md:inset-0">
       <div
         className={`interaction-default relative flex h-auto max-w-[480px] animate-enter flex-col rounded-3xl bg-background-elevated-light shadow-medium dark:bg-background-elevated-dark ${dense ? "gap-8 p-6" : "gap-10 p-8"} ${resizing === "fixed" ? "w-[480px]" : "w-full"}`}
       >

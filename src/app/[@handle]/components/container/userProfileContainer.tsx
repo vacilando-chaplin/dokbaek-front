@@ -24,7 +24,11 @@ const UserProfileContainer = () => {
       const mainHeight = mainRef.current.offsetHeight;
       const subHeight = subRef.current.offsetHeight;
 
-      mainHeight >= subHeight ? setLinear("main") : setLinear("sub");
+      if (mainHeight >= subHeight) {
+        setLinear("main");
+      } else {
+        setLinear("sub");
+      }
     }
   }, []);
 

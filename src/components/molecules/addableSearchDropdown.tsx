@@ -32,10 +32,7 @@ const AddableSearchDropdown = ({
   onChange,
   onAdd
 }: AddableSearchDropdownProps) => {
-  const [search, setSearch] = useState("");
   const [active, setActive] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
 
   const sizeStyle: sizeStyleType = {
     large: "rounded-[14px]",

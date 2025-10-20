@@ -1,6 +1,11 @@
-import { Coordinates } from "react-advanced-cropper";
-
 export type SelectedPhotoLabelType = "photos" | "stillCuts" | "recentPhotos";
+
+export interface Coordinates {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
 
 export interface PhotoOriginModalType {
   active: boolean;

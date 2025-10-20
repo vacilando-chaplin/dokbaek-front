@@ -1,5 +1,5 @@
 import BoxButton from "@/components/atoms/boxButton";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DEFAULT_MIN_HEIGHT,
   DEFAULT_MAX_HEIGHT,

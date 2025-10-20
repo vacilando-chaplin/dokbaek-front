@@ -116,14 +116,14 @@ const FilmoItem = ({ filmo }: FilmoItemProps) => {
         {/* link */}
         <button
           type="button"
-          className="hidden md:flex items-center justify-center gap-0.5 py-[3px] px-[8px] pl-[6px] bg-[#EAF2FE] w-fit h-[20px] rounded-lg typography-caption2 text-accent-primary-light dark:text-accent-primary-light"
+          className="typography-caption2 hidden h-[20px] w-fit items-center justify-center gap-0.5 rounded-lg bg-[#EAF2FE] px-[8px] py-[3px] pl-[6px] text-accent-primary-light dark:text-accent-primary-light md:flex"
           disabled={!production.videoUrl}
           onClick={() => onLinkModalOpen(production.videoUrl)}
         >
           <PlayFill
-              width="12"
-              height="12"
-              className={`fill-current ${production.videoUrl ? "text-accent-primary-light dark:text-accent-primary-light" : "text-accent-primary-light dark:text-accent-primary-light"}`}
+            width="12"
+            height="12"
+            className={`fill-current ${production.videoUrl ? "text-accent-primary-light dark:text-accent-primary-light" : "text-accent-primary-light dark:text-accent-primary-light"}`}
           />
           재생
         </button>

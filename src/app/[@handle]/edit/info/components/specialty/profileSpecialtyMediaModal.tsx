@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ModalFooter from "@/components/molecules/modalFooter";
 import TextInput from "@/components/atoms/textInput";
 

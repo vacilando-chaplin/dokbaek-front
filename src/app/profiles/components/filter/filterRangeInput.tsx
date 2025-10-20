@@ -4,7 +4,7 @@ import { useActive } from "@/lib/hooks";
 import FilterBox from "./filterBox";
 import FilterHeader from "./filterHeader";
 import FilterInput from "./filterInput";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import RangeSlider from "./rangeSlider";
 import CollapseMotion from "@/components/atoms/collapseMotion";
 

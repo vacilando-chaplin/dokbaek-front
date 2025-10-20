@@ -15,7 +15,7 @@ import { removeStorageData, setLoginProfileId } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { routePaths } from "@/constants/routes";
 import { handleNameState, isMyProfileState } from "@/lib/recoil/handle/atom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import CollapseMotion from "../atoms/collapseMotion";
 
 interface UserMenuType {
@@ -51,7 +51,7 @@ const TopNavigationClient = () => {
         throw new Error();
       }
 
-      await deleteSignOut(jwt);
+      await deleteSignOut();
     },
     onSuccess: () => {
       removeStorageData();
