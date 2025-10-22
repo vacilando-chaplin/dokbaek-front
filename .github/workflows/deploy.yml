@@ -1,7 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Deploy to EC2 (build locally)
+name: Deploy to EC2
 
 on:
   push:
@@ -13,45 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
         with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Next.js app
-        run: npm run build
-
-      - name: Upload build to EC2
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          source: |
-            .next
-            public
-            package.json
-            ecosystem.config.js
-            next.config.js
-            run.sh
-          target: ${{ secrets.DEPLOY_PATH }}
-          strip_components: 0
-
-      - name: Run app on EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ${{ secrets.DEPLOY_PATH }}
-            npm install --omit=dev
-            chmod +x ./run.sh
-            ./run.sh
+            cd /home/ec2-user/filogram-front
+
+            # 기존 프로세스 종료
+            pkill -f "next-server" 2>/dev/null || true
+            pkill -f "npm.*start" 2>/dev/null || true
+
+            # 코드 업데이트
+            git stash
+            git pull origin main
+
+            # 의존성 설치
+            npm install
+
+            # 빌드
+            npm run build
+
+            # PM2로 서버 재시작
+            pm2 start npm -- start

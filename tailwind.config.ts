@@ -1,25 +1,56 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))"
       },
-            // toast enter and leave animation
+      screens: {
+        "photo-max-lg": { max: "1200px" },
+        "photo-max-md": { max: "1000px" },
+        "photo-max-sm": { max: "850px" },
+        sm: "640px",
+        md: "768px",
+        lg: "1524px"
+      },
+      // toast enter and leave animation
       animation: {
+        "toast-slide-down": "toastSlideDown 0.3s ease-in-out forwards",
+        "toast-slide-up": "toastSlideUp 0.3s ease-in-out forwards",
         enter: "enter 300ms ease-out",
         leave: "leave 300ms ease-in forwards"
       },
       keyframes: {
+        toastSlideDown: {
+          "0%": {
+            top: "0px",
+            opacity: "0.1"
+          },
+          "100%": {
+            top: "40px",
+            opacity: "1"
+          }
+        },
+        toastSlideUp: {
+          "0%": {
+            bottom: "0px",
+            opacity: "0.1"
+          },
+          "100%": {
+            bottom: "40px",
+            opacity: "1"
+          }
+        },
         enter: {
           "0%": {
             opacity: "0",
@@ -43,14 +74,14 @@ const config: Config = {
       },
       // shadow
       boxShadow: {
-        light: "0 4px 16px 0 rgba(0, 0, 0, 0.1)",
-        modal: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
-        header: "0 16px 8px 0 rgba(255, 255, 255, 0.5)",
-        footer: "0 -16px 8px 0 rgba(255, 255, 255, 0.5)"
+        low: "0 4px 16px 0 rgba(0, 0, 0, 0.1)",
+        medium: "0 8px 24px 0px rgba(0, 0, 0, 0.16)",
+        high: "0 12px 40px 0 rgba(0, 0, 0, 0.2)",
+        drop: "0 0 8px 0 rgba(0, 0, 0, 0.1)"
       },
       // Pretendard font 추가
       fontFamily: {
-        pretendard: ["var(--font-pretendard)"],
+        pretendard: ["var(--font-pretendard)"]
       },
       // Typography Text Style
       fontSize: {
@@ -78,6 +109,7 @@ const config: Config = {
         caption2: "-0.01em"
       },
       fontWeight: {
+        bold: "700",
         semibold: "600",
         medium: "500",
         regular: "400"
@@ -100,6 +132,20 @@ const config: Config = {
       static: {
         white: "#ffffff",
         black: "#000000"
+      },
+      hover: {
+        primary: "#405EDE",
+        primaryOutlined: "rgba(71, 105, 247, 0.05)",
+        secondaryOutlined: "#F5F5F5",
+        negative: "#DB3F36",
+        chip: "#F2F2F2"
+      },
+      pressed: {
+        primary: "#3853C4",
+        primaryOutlined: "rgba(71, 105, 247, 0.1)",
+        secondaryOutlined: "#EBEBEB",
+        negative: "#C23830",
+        chip: "#E6E6E6"
       },
       gray: {
         50: "#F8F9FA",
@@ -189,13 +235,13 @@ const config: Config = {
           dark: "#F8F9FA"
         },
         scrim: {
-          light: "#00000066",
-          dark: "#000000CC"
+          light: "rgba(0, 0, 0, 0.4)",
+          dark: "rgba(0, 0, 0, 0.8)"
         }
       },
       border: {
         default: {
-          light: "#CED4DA",
+          light: "#DEE2E6",
           dark: "#5E656C"
         },
         active: {
@@ -203,7 +249,7 @@ const config: Config = {
           dark: "#E9ECEF"
         },
         disabled: {
-          light: "#DEE2E6",
+          light: "#E9ECEF",
           dark: "#495057"
         },
         default_inverse: {
@@ -289,8 +335,9 @@ const config: Config = {
           dark: "#FACAC7"
         }
       }
-    },
+    }
   },
-  plugins: [],
+  plugins: []
 };
+
 export default config;

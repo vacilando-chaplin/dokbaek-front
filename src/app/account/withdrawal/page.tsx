@@ -1,0 +1,47 @@
+import WithdrawalContainer from "./components/withdrawalContainer";
+import WithdrawalAgreement from "./components/withdrawalAgreement";
+import WithdrawalConfirm from "./components/withdrawalConfirm";
+import WithdrawalReasons from "./components/withdrawalReasons";
+import { ReasonType } from "./type";
+import { getWithdrawReasonServer } from "@/lib/api/withdraw/api";
+import { Metadata } from "next";
+import { cookies } from "next/headers";
+import { getProfileMeServer } from "@/lib/api/common/api";
+
+export const metadata: Metadata = {
+  title: "독백 | 회원 탈퇴",
+  description: "회원 탈퇴 진행"
+};
+
+const Withdrawal = async () => {
+  const cookieStore = cookies();
+  const jwt = cookieStore.get("jwt")?.value;
+
+  const profileRes = jwt ? await getProfileMeServer() : null;
+  const name = profileRes?.data.data.info.name ?? "배우";
+
+  const getReasons = await getWithdrawReasonServer();
+
+  const initialReasons =
+    getReasons &&
+    getReasons.data.reasons.map((reason: ReasonType) => ({
+      ...reason,
+      checked: false
+    }));
+
+  return (
+    <section className="flex h-auto w-[560px] max-w-[560px] flex-col gap-10 pb-28 pt-24">
+      <WithdrawalContainer title="탈퇴하기 전에 확인해주세요.">
+        <span className="typography-body1 font-normal text-content-primary-light dark:text-content-primary-dark">
+          독백에 등록된 {name}님의 모든 정보가 영구적으로 삭제되어 복구할 수
+          없어요.
+        </span>
+      </WithdrawalContainer>
+      <WithdrawalReasons initialReasons={initialReasons} />
+      <WithdrawalAgreement />
+      <WithdrawalConfirm initialReasons={initialReasons} />
+    </section>
+  );
+};
+
+export default Withdrawal;

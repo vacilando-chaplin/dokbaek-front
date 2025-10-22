@@ -20,20 +20,19 @@
     },
     "ecmaVersion": "latest"
   },
-  "plugins": ["import", "react", "prettier", "next"],
+  "plugins": ["import", "react", "@typescript-eslint", "prettier"],
   "extends": [
     "next/core-web-vitals",
-    "plugin:import/recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "prettier",
-    "next"
+    "plugin:import/recommended",
+    "plugin:prettier/recommended"
   ],
   "rules": {
-    "indent": ["error", 2],
-    "semi": ["error", "always"],
-    "quotes": ["error", "double"],
-    "@typescript-eslint/no-explicit-any": "off"
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "@next/next/no-img-element": "off"
   }
 }

@@ -1,0 +1,56 @@
+"use client";
+
+import { useLayoutEffect, useRef, useState } from "react";
+import UserProfileCard from "./userProfileCard";
+import MainPhotoCropModal from "../mainPhoto/mainPhotoCropModal";
+import MainPhotoDeleteModal from "../mainPhoto/mainPhotoDeleteModal";
+import SpecialtyModal from "../info/specialtyModal";
+import UserProfileShowcase from "./userProfileShowcase";
+import PhotoOriginModal from "../photo/photoOriginModal";
+import FilmoShowcaseModal from "../filmo/filmoShowcaseModal";
+import FilmoYoutubeModal from "../filmo/filmoYoutubeModal";
+import HandleNameEditModal from "../handleName/handleNameEditModal";
+import SpecialtyYoutubeModal from "../info/specialtyYoutubeModal";
+import SpecialtyImageModal from "../info/specialtyImageModal";
+
+const UserProfileContainer = () => {
+  const mainRef = useRef<HTMLDivElement>(null);
+  const subRef = useRef<HTMLDivElement>(null);
+
+  const [linear, setLinear] = useState<"main" | "sub">("sub");
+
+  useLayoutEffect(() => {
+    if (mainRef.current && subRef.current) {
+      const mainHeight = mainRef.current.offsetHeight;
+      const subHeight = subRef.current.offsetHeight;
+
+      if (mainHeight >= subHeight) {
+        setLinear("main");
+      } else {
+        setLinear("sub");
+      }
+    }
+  }, []);
+
+  return (
+    <div className="no-scrollbar mt-12 flex h-full w-full flex-row justify-between overflow-hidden bg-background-surface-light dark:bg-background-surface-dark">
+      <div ref={mainRef} className="min-w-[500px] flex-[1_1_30%]">
+        <UserProfileCard linear={linear} />
+      </div>
+      <div ref={subRef} className="flex-[1_1_70%]">
+        <UserProfileShowcase linear={linear} />
+      </div>
+      <MainPhotoCropModal />
+      <MainPhotoDeleteModal />
+      <SpecialtyModal />
+      <SpecialtyImageModal />
+      <SpecialtyYoutubeModal />
+      <PhotoOriginModal />
+      <FilmoShowcaseModal />
+      <FilmoYoutubeModal />
+      <HandleNameEditModal />
+    </div>
+  );
+};
+
+export default UserProfileContainer;

@@ -1,0 +1,234 @@
+import Cookies from "js-cookie";
+import { ProfileShowcaseResponseType } from "@/app/home/types";
+
+export const setOnlyNumber = (value: string) => {
+  return value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
+};
+
+export const contactFormat = (contact: string): string => {
+  const number = contact.trim().replace(/[^0-9]/g, "");
+
+  if (number.length < 4) return number;
+  if (number.length < 7) return number.replace(/(\d{3})(\d{1})/, "$1-$2");
+  if (number.length < 11)
+    return number.replace(/(\d{3})(\d{3})(\d{1})/, "$1-$2-$3");
+  return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+};
+
+export const base64ToBlob = (base64String: string) => {
+  const [metadata, base64Data] = base64String.split(";base64,");
+  const mimeType = metadata.split(":")[1];
+  const binaryData = atob(base64Data); // Base64 문자열을 바이너리로 디코딩
+
+  // Blob 객체 생성
+  const byteArrays = [];
+  for (let offset = 0; offset < binaryData.length; offset += 1024) {
+    const slice = binaryData.slice(offset, offset + 1024);
+    const byteArray = new Uint8Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteArray[i] = slice.charCodeAt(i);
+    }
+    byteArrays.push(byteArray);
+  }
+  return new Blob(byteArrays, { type: mimeType });
+};
+
+export const getFileMimeTypeFromUrl = async (url: string) => {
+  const response = await fetch(url);
+  const contentType = response.headers.get("Content-Type");
+
+  if (contentType && contentType === "application/octet-stream") {
+    const buffer = await response.arrayBuffer();
+    const uint8Array = new Uint8Array(buffer);
+
+    if (uint8Array[0] === 0xff && uint8Array[1] === 0xd8) {
+      return "image/jpeg";
+    }
+    if (uint8Array[0] === 0x89 && uint8Array[1] === 0x50) {
+      return "image/png";
+    }
+
+    return "unknown";
+  }
+
+  return contentType || "unknown";
+};
+
+export const convertToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string); // base64 문자열 반환
+    reader.onerror = reject;
+    reader.readAsDataURL(file); // 파일을 base64로 변환
+  });
+};
+
+const loginOptions = {
+  expires: 0.5,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  sameSite: "strict" as const
+};
+
+const refreshTokenOptions = {
+  expires: 7,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  sameSite: "strict" as const
+};
+
+const cookieRemoveOptions = {
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  sameSite: "strict" as const
+};
+
+export const removeStorageData = () => {
+  localStorage.removeItem("recoil-persist");
+
+  Cookies.remove("jwt", cookieRemoveOptions);
+  Cookies.remove("refresh_token", cookieRemoveOptions);
+  Cookies.remove("loginProfileId", cookieRemoveOptions);
+};
+
+export const setToken = (name: string, token: string) => {
+  Cookies.set(name, token, loginOptions);
+};
+
+export const setRefreshToken = (name: string, refreshToken: string) => {
+  Cookies.set(name, refreshToken, refreshTokenOptions);
+};
+
+export const setLoginProfileId = (name: string, loginProfileId: string) => {
+  Cookies.set(name, loginProfileId, loginOptions);
+};
+
+export const setLoginForm = (name: string, loginForm: string) => {
+  Cookies.set(name, loginForm, refreshTokenOptions);
+};
+
+export const isValidHandle = (handle: string) => {
+  return handle.length > 2 && /^[a-z0-9]+$/.test(handle);
+};
+
+export const getVideoId = (url: string) => {
+  const urlObj = new URL(url);
+
+  // youtube.com/watch?v= 형태
+  if (urlObj.hostname.includes("youtube.com")) {
+    return urlObj.searchParams.get("v");
+  }
+
+  // youtu.be/ 형태
+  if (urlObj.hostname.includes("youtu.be")) {
+    return urlObj.pathname.slice(1);
+  }
+
+  return null;
+};
+
+export const sortObject = (obj: any): any => {
+  if (Array.isArray(obj)) {
+    return obj.map(sortObject).sort((a, b) => {
+      if (a?.displayOrder !== undefined && b?.displayOrder !== undefined) {
+        return a.displayOrder - b.displayOrder;
+      }
+      return 0;
+    });
+  }
+  if (obj && typeof obj === "object") {
+    const sorted: any = {};
+    Object.keys(obj)
+      .sort()
+      .forEach((key) => {
+        // id 필드는 제외하고 정렬
+        if (key !== "id") {
+          sorted[key] = sortObject(obj[key]);
+        }
+      });
+    return sorted;
+  }
+  return obj;
+};
+
+// 기존 프로필 비교
+export const hasProfileChanges = (original: any, draft: any): boolean => {
+  const originalData = original?.data;
+  const draftData = draft?.data.data;
+
+  if (!originalData || !draftData) return true;
+
+  // info 객체 비교
+  const originalInfo = sortObject(originalData.info || {});
+  const draftInfo = sortObject(draftData.info || {});
+
+  if (JSON.stringify(originalInfo) !== JSON.stringify(draftInfo)) {
+    return true;
+  }
+
+  // 배열 객체 비교
+  const arrayFields = [
+    "education",
+    "specialties",
+    "photos",
+    "stillCuts",
+    "recentPhotos",
+    "filmos",
+    "videos"
+  ];
+
+  for (const field of arrayFields) {
+    const originalArray = sortObject(originalData[field] || []);
+    const draftArray = sortObject(draftData[field] || []);
+
+    if (JSON.stringify(originalArray) !== JSON.stringify(draftArray)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+export const getProfileImageUrl = (url: string | null | undefined) => {
+  if (!url) return null;
+
+  // 기본 S3 도메인만 있는 경우 (대표사진 없음)
+  if (url === "https://filogram.s3.ap-northeast-2.amazonaws.com/") {
+    return null;
+  }
+
+  return url;
+};
+
+export const fetchPublicProfiles = async (): Promise<
+  ProfileShowcaseResponseType[]
+> => {
+  const allProfiles: ProfileShowcaseResponseType[] = [];
+
+  let page = 0;
+  const size = 20;
+
+  while (true) {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/profile/showcase?page=${page}&size=${size}`,
+      { cache: "no-store" }
+    );
+
+    if (!res.ok) break;
+
+    const data = await res.json();
+    const content = data?.data?.content || [];
+    const hasNext = data?.data?.hasNext;
+
+    const publicProfiles = content.filter(
+      (p: ProfileShowcaseResponseType) => p.status === "PUBLIC"
+    );
+
+    allProfiles.push(...publicProfiles);
+
+    if (!hasNext) break;
+    page++;
+  }
+
+  return allProfiles;
+};
