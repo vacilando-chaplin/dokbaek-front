@@ -23,10 +23,6 @@ jobs:
           script: |
             cd /home/ec2-user/filogram-front
 
-            # 기존 프로세스 종료
-            pkill -f "next-server" 2>/dev/null || true
-            pkill -f "npm.*start" 2>/dev/null || true
-
             # 코드 업데이트
             git stash
             git pull origin main
@@ -37,5 +33,6 @@ jobs:
             # 빌드
             npm run build
 
-            # PM2로 서버 재시작
-            pm2 start npm -- start
+            # PM2로 서버 재시작 (프로세스가 있으면 restart, 없으면 start)
+            pm2 restart filogram-front || pm2 start npm --name "filogram-front" -- start
+            pm2 save
