@@ -6,10 +6,11 @@ import QueryRootProvider from "../lib/providers/queryRootProvider";
 import AuthInitializer from "@/lib/providers/authInitializer";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Suspense } from "react";
+import { SITE_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "독백 | 아티스트 섭외 플랫폼",
-  description: "아티스트 섭외 플랫폼",
+  title: SITE_CONFIG.title,
+  description: SITE_CONFIG.description,
   keywords: ["아티스트, 배우, 섭외, 캐스팅, 플랫폼"],
   metadataBase: new URL("https://dokbaek.com"),
   icons: [
@@ -17,8 +18,8 @@ export const metadata: Metadata = {
     { rel: "shortcut icon", url: "/favicon.ico" }
   ],
   openGraph: {
-    title: "독백 | 아티스트 섭외 플랫폼",
-    description: "아티스트 섭외 플랫폼",
+    title: SITE_CONFIG.title,
+    description: SITE_CONFIG.description,
     url: "https://dokbaek.com",
     siteName: "독백",
     locale: "ko_KR",
@@ -28,14 +29,14 @@ export const metadata: Metadata = {
         url: "https://dokbaek.com/images/DokbaekOpenGraphImage.png",
         width: 1200,
         height: 630,
-        alt: "독백 | 아티스트 섭외 플랫폼"
+        alt: SITE_CONFIG.title
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "독백 | 아티스트 섭외 플랫폼",
-    description: "아티스트 섭외 플랫폼",
+    title: SITE_CONFIG.title,
+    description: SITE_CONFIG.description,
     images: ["https://dokbaek.com/images/DokbaekOpenGraphImage.png"]
   },
   robots: {
