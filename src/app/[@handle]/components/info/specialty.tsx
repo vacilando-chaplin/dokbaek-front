@@ -23,7 +23,7 @@ const Specialty = () => {
   return (
     specialties.length >= 1 && (
       <ProfileInfoFrame title="특기">
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row flex-wrap gap-1">
           {specialties.map((specialty) => {
             return (
               <button
@@ -32,7 +32,7 @@ const Specialty = () => {
                 onClick={() => onSpecialtyModalOpen(specialty.specialty.id)}
                 className="interaction-default flex h-auto w-auto items-center gap-0.5 rounded-lg bg-accent-light-light px-2 py-[5px] hover:bg-[#1E85EF26] active:bg-[#1E85EF33] dark:bg-accent-light-dark"
               >
-                <span className="typography-body3 font-normal text-accent-primary-light dark:text-accent-primary-dark">
+                <span className="typography-body3 text-nowrap font-normal text-accent-primary-light dark:text-accent-primary-dark">
                   {specialty.specialty.specialtyName}
                 </span>
               </button>
