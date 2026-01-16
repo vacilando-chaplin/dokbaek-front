@@ -35,3 +35,4 @@ jobs:
 
             # PM2로 서버 재시작
             pm2 reload filogram-front || pm2 start pnpm --name "filogram-front" -- start
+            pm2 save
