@@ -28,11 +28,11 @@ jobs:
             git pull origin main
 
             # 의존성 설치
-            npm install
+            pnpm install --frozen-lockfile
 
             # 빌드
-            npm run build
+            pnpm build
 
-            # PM2로 서버 재시작 (프로세스가 있으면 restart, 없으면 start)
-            pm2 restart filogram-front || pm2 start npm --name "filogram-front" -- start
+            # PM2로 서버 재시작
+            pm2 reload filogram-front || pm2 start pnpm --name "filogram-front" -- start
             pm2 save
