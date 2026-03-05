@@ -2,12 +2,13 @@ import { cookies } from "next/headers";
 import Toast from "@/components/atoms/toast";
 import HandleInitializer from "./components/provider/initializer";
 import { notFound } from "next/navigation";
-import { getFilmoCategories, getProfileByHandleId } from "./api";
+import { getFilmoCategories } from "./api";
 import { profileInit } from "@/lib/data";
 import { Suspense } from "react";
 import TopNavigation from "@/components/organisms/topNavigation";
 import { Metadata } from "next";
 import { ProfileFilmoDataType } from "./edit/types";
+import { getProfileByHandleIdServer } from "@/lib/api/profile/common/api";
 
 export const generateMetadata = async ({
   params
@@ -18,14 +19,16 @@ export const generateMetadata = async ({
   const handleName = decodeURIComponent(rawHandle).substring(1);
 
   try {
-    const res = await getProfileByHandleId(handleName);
+    const res = await getProfileByHandleIdServer(handleName);
 
-    if (!res || !res.data) {
+    if (!res) {
       return {
         title: "존재하지 않는 프로필 입니다.",
         description: "존재하지 않는 배우의 프로필 입니다."
       };
     }
+
+    const isForbidden = res.isForbidden;
 
     const profileData = res.data;
     const profileName = profileData.info.name || "배우";
@@ -65,8 +68,8 @@ export const generateMetadata = async ({
       },
       // 공개 프로필일 때의 웹 크롤링 설정
       robots: {
-        index: true,
-        follow: true
+        index: !isForbidden,
+        follow: !isForbidden
       }
     };
   } catch (error) {
@@ -94,7 +97,7 @@ const Layout = async ({
   const rawHandle = params["@handle"];
   const handleName = decodeURIComponent(rawHandle).substring(1);
 
-  const res = await getProfileByHandleId(handleName);
+  const res = await getProfileByHandleIdServer(handleName);
 
   if (!res) {
     notFound();
@@ -103,8 +106,10 @@ const Layout = async ({
   const categoryRes = await getFilmoCategories();
   const filmoCategories = categoryRes.data;
 
-  const profileData = res ? res?.data : profileInit;
+  const profileData = res.data || profileInit;
   const isMyProfile = loginProfileId === profileData?.id;
+  // const isForbidden = res.isForbidden;
+  // 추후 개인 프로필, 공개 프로필 설정 가능하게 변경 시 분기 처리
 
   return (
     <div className="relative flex min-h-dvh w-full flex-col items-center bg-background-base-light dark:bg-background-base-dark">
