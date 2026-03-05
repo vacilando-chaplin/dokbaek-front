@@ -24,8 +24,8 @@ jobs:
             cd /home/ec2-user/filogram-front
 
             # 코드 업데이트
-            git stash
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
 
             # 의존성 설치
             pnpm install --frozen-lockfile
