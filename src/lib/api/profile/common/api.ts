@@ -33,3 +33,27 @@ export const postProfileDraftServer = async (profileId: number) => {
     throw error;
   }
 };
+
+export const getProfileByHandleIdServer = async (handleId: string) => {
+  const cookie = cookies();
+  const jwt = cookie.get("jwt")?.value;
+  const api = createServerAxios(jwt);
+
+  try {
+    const res = await api.get(`profile/@${handleId}`);
+    return { ...res.data, isForbidden: false };
+  } catch (error: any) {
+    if (error.response?.status === 403) {
+      return {
+        ...(error.response.data?.data || error.response.data),
+        isForbidden: true
+      };
+    }
+
+    if (error.response?.status === 404) {
+      return null;
+    }
+
+    throw error;
+  }
+};

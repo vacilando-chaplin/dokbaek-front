@@ -30,6 +30,7 @@ import { getProfileByHandleId } from "../../api";
 import { loginState } from "@/lib/atoms";
 import { getProfileMe } from "@/lib/api";
 import { setLoginProfileId } from "@/lib/utils";
+import { profileInit } from "@/lib/data";
 
 interface HandleInitializerProps {
   children: React.ReactNode;
@@ -95,14 +96,16 @@ const HandleInitializer = ({
   useEffect(() => {
     const getCurrentProfile = async () => {
       const res = await getProfileByHandleId(handleName);
-      const data = res.data;
 
-      setProfileData(data);
+      // const isForbidden = res.isForbidden;
+      // 추후 개인 프로필, 공개 프로필 설정 가능하게 변경 시 분기 처리
+
+      setProfileData(res.data || profileInit);
     };
     const getMyProfileId = async () => {
       if (isLoggedIn) {
         const res = await getProfileMe();
-        const MyId = res.data.data.id;
+        const MyId = res?.data.data.id;
 
         if (MyId) {
           setLoginProfileId("loginProfileId", String(MyId));

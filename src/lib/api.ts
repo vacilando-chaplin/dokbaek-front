@@ -30,7 +30,10 @@ export const getProfileMe = async () => {
   try {
     const res = await api.get("/profile/me");
     return res;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response?.status === 404) {
+      return null;
+    }
     throw error;
   }
 };
