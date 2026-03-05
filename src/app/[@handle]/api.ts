@@ -107,11 +107,19 @@ export const getFilmoCategories = async () => {
 export const getProfileByHandleId = async (handleId: string) => {
   try {
     const res = await api.get(`profile/@${handleId}`);
-    return res.data;
+    return { ...res.data, isForbidden: false };
   } catch (error: any) {
+    if (error.response?.status === 403) {
+      return {
+        ...(error.response.data?.data || error.response.data),
+        isForbidden: true
+      };
+    }
+
     if (error.response?.status === 404) {
       return null;
     }
+
     throw error;
   }
 };

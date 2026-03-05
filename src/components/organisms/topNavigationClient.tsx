@@ -69,7 +69,7 @@ const TopNavigationClient = () => {
   const moveMyProfileMutation = useMutation({
     mutationFn: getProfileMe,
     onSuccess: (res) => {
-      const data = res.data.data;
+      const data = res?.data.data;
 
       if (data.handleId) {
         setHandleName(data.handleId);
