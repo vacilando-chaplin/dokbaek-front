@@ -104,7 +104,9 @@ const ProfileCard = ({ profile, myProfileId, onUnlike }: ProfileCardProps) => {
             fill
             loading="lazy"
             unoptimized={true}
-            className="h-full w-full rounded-lg object-cover"
+            className={`h-full w-full rounded-lg object-cover transition-opacity duration-300 ${
+              isLoaded ? "opacity-100" : "opacity-0"
+            }`}
             onLoad={() => setIsLoaded(true)}
             onError={() => {
               setIsError(true);

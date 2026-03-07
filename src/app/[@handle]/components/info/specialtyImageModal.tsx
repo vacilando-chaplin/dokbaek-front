@@ -46,7 +46,7 @@ const SpecialtyImageModal = () => {
               <img
                 src={imageModal.imageUrl}
                 alt="specialtyImage"
-                className="max-h-[70vh] max-w-full rounded-2xl object-contain"
+                className={`max-h-[70vh] max-w-full rounded-2xl object-contain transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
                 onLoad={() => setIsLoaded(true)}
                 onError={() => {
                   setIsError(true);

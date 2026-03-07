@@ -112,16 +112,16 @@ const PhotoOriginModal = () => {
                 <LoadingSpinner
                   width="24"
                   height="24"
-                  className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-dark dark:text-content-primary-dark"
+                  className="fill-current absolute left-1/2 top-1/2 animate-spin text-content-primary-light dark:text-content-primary-dark"
                 />
               )}
               {!isError && (
                 <img
                   src={selectedPhotoList[currentIndex].path}
                   alt="photo"
-                  className={`max-h-[70vh] w-full rounded-2xl ${
+                  className={`max-h-[70vh] w-full rounded-2xl transition-opacity duration-300 ${
                     photoLabel === "stillCuts" ? "min-w-[40vw]" : "min-w-[20vw]"
-                  }`}
+                  } ${isLoaded ? "opacity-100" : "opacity-0"}`}
                   onLoad={() => setIsLoaded(true)}
                   onError={() => {
                     setIsError(true);

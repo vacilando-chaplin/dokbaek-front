@@ -104,7 +104,7 @@ const FilmoShowcaseItem = ({ filmo }: FilmoShowcaseItemProps) => {
               src={filmo.thumbnailPath}
               alt={production.title}
               fill
-              className="object-cover"
+              className={`object-cover transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
               unoptimized={true}
               onLoad={() => setIsLoaded(true)}
               onError={() => {

@@ -62,7 +62,9 @@ const PhotoShowcaseImage = ({ photo, index }: PhotoShowcaseImageProps) => {
           quality={50}
           loading="lazy"
           unoptimized={true}
-          className="rounded-2xl object-cover opacity-100 hover:opacity-30"
+          className={`rounded-2xl object-cover transition-all duration-300 ${
+            isLoaded ? "opacity-100 hover:opacity-30" : "opacity-0"
+          }`}
           onLoad={() => setIsLoaded(true)}
           onError={() => {
             setIsError(true);

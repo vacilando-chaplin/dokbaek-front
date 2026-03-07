@@ -131,7 +131,9 @@ const MainPhoto = () => {
           setIsError(true);
           setIsLoaded(true);
         }}
-        className="h-full w-full rounded-2xl object-cover"
+        className={`h-full w-full rounded-2xl object-cover transition-opacity duration-300 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
       />
       <div className="absolute bottom-2 right-2 flex flex-row gap-1.5 rounded-lg bg-background-scrim-light px-2 py-1 dark:bg-background-scrim-dark">
         {!isMyProfile ? (
