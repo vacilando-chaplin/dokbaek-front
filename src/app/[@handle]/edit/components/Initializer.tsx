@@ -6,7 +6,7 @@ import {
   draftModalState,
   profileDraftData
 } from "@/lib/recoil/handle/edit/common/atom";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 import { getProfileDraftClient } from "../../api";
 import { getProfileByProfileId } from "@/lib/api";
 import { hasProfileChanges } from "@/lib/utils";
@@ -25,8 +25,16 @@ const Initializer = ({
   const setData = useSetRecoilState(profileDraftData);
   const setDraftModal = useSetRecoilState(draftModalState);
 
-  useLayoutEffect(() => {
-    setData({ ...profileInitData, info: { ...profileInitData.info } });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && profileInitData) {
+      setData({ ...profileInitData, info: { ...profileInitData.info } });
+    }
   }, [profileInitData]);
 
   useEffect(() => {
@@ -51,6 +59,10 @@ const Initializer = ({
     };
     onCheckForChanges();
   }, [profileId]);
+
+  if (!mounted) {
+    return <div className="invisible">{children}</div>;
+  }
 
   return <>{children}</>;
 };

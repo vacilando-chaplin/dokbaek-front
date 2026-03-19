@@ -8,6 +8,8 @@ import Initializer from "./components/Initializer";
 import ListMenu from "./components/listMenu";
 import BottomBar from "./components/bottomBar";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import ProfileEditLoading from "./loading";
 
 export const metadata: Metadata = {
   robots: {
@@ -52,11 +54,13 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="relative mb-16 mt-16 flex flex-row justify-center gap-4 p-10">
-      <ListMenu />
-      <Initializer profileId={profileId} profileInitData={nullCheckedData}>
-        {children}
-      </Initializer>
-      <BottomBar profileId={profileId} />
+      <Suspense fallback={<ProfileEditLoading />}>
+        <ListMenu />
+        <Initializer profileId={profileId} profileInitData={nullCheckedData}>
+          {children}
+        </Initializer>
+        <BottomBar profileId={profileId} />
+      </Suspense>
     </div>
   );
 };
